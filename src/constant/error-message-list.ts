@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@/constant/HttpStatusCode'
+import { HttpStatusCode } from '@/constant/http-status-code'
 export const ErrorMessageList = new Map<HttpStatusCode, string>([
     // [200, '响应成功'],
     // [201, '创建成功'],

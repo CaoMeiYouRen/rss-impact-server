@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { FindOptionsWhere, Repository } from 'typeorm'
 import { USER_REPOSITORY } from '@/db/database.providers'
 import { User } from '@/db/models/user.entity'
-import { HttpError } from '@/models/HttpError'
+import { HttpError } from '@/models/http-error'
 
 @Injectable()
 export class UserService {
@@ -34,10 +34,10 @@ export class UserService {
         delete user.createdAt
         delete user.updatedAt
         if (await this.findOne({ username: user.username })) {
-            throw new HttpError(400, 'The username already exists!')
+            throw new HttpError(400, '用户名已存在！')
         }
         if (await this.findOne({ email: user.email })) {
-            throw new HttpError(400, 'The email already exists!')
+            throw new HttpError(400, '邮箱已存在！')
         }
         const newUser = await this.userRepository.save(user)
         delete newUser.password

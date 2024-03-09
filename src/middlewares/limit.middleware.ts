@@ -1,6 +1,6 @@
 import RateLimit from 'express-rate-limit'
-import { ErrorMessageList } from '@/constant/ErrorMessageList'
-import { ResponseDto } from '@/models/ResponseDto'
+import { ErrorMessageList } from '@/constant/error-message-list'
+import { ResponseDto } from '@/models/response.dto'
 /**
  * 限流器
  */

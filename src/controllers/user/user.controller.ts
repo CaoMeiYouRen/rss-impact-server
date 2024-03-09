@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { User } from '@/db/models/user.entity'
-import { CrudQuery } from '@/decorators/crud-query/crud-query.decorator'
+import { CrudQuery } from '@/decorators/crud-query.decorator'
 import { UserService } from '@/services/user/user.service'
 
 @ApiTags('user')

@@ -18,8 +18,8 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule)
     if (__DEV__) {
         const options = new DocumentBuilder()
-            .setTitle('nest template docs')
-            .setDescription('nest template docs')
+            .setTitle('RSS Impact server docs')
+            .setDescription('RSS Impact server docs')
             .setVersion('0.1.0')
             .addBearerAuth()
             .build()
