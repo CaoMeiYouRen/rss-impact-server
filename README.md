@@ -102,18 +102,18 @@ npm run commit
 
 3. 商业化使用的产品或服务中，必须包含与原项目明显不同的功能或改进。这些不同之处需要在产品描述中向最终用户充分披露。
 
-4. 个人可以基于本项目进行非商业化使用，无需遵守第3条的额外条件。 
+4. 个人可以基于本项目进行非商业化使用，无需遵守第 3 条的额外条件。 
 
 5. 非商业化使用是指不以营利为目的的使用。
 
-6. 如果您至少向本项目提交并被合并1个有效的功能改进或问题修复，可以免除第3条的条件。
+6. 如果您至少向本项目提交并被合并 1 个有效的功能改进或问题修复，可以免除第 3 条的条件。本条仅适用于个人。
 
 7. 项目所有者保留对违反以上授权说明的个人和商业实体追究的权利。
 
-8. 本授权说明可能会进行修改或更新。修改后的授权说明从公布修改内容的次日00:00(UTC+8)时起开始生效,并适用于此后对本项目的使用。
+8. 本授权说明可能会进行修改或更新。修改后的授权说明从公布修改内容的次日 00:00(UTC+8) 时起开始生效,并适用于此后对本项目的使用。
 
 Copyright © 2024 [CaoMeiYouRen](https://github.com/CaoMeiYouRen).<br />
-This project is [AGPL--3.0](https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/LICENSE) licensed.
+This project is [AGPL-3.0](https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/LICENSE) licensed.
 
 ***
 _This README was generated with ❤️ by [cmyr-template-cli](https://github.com/CaoMeiYouRen/cmyr-template-cli)_
