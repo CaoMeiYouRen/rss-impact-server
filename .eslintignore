@@ -1,0 +1,10 @@
+node_modules
+public
+dist
+build
+*.js
+/test/unit/coverage/
+/test/unit/specs/
+*.min.*
+*.spec.*
+*.test.*

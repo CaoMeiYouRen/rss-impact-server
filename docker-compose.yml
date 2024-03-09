@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  server:
+    # image: ${GITEE_DOCKER_IMAGE}
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      TZ: "Asia/Shanghai"
+      TIMEOUT: 10000
+      # MONGODB_DB_NAME: "mongo-db"
+      # MONGODB_HOST: "mongo"
+      # MONGODB_PORT: 27017
+      # MONGODB_URL: "mongodb://mongo:27017/"
+      # MONGODB_USER: "admin"
+      # MONGODB_PASSWORD: "123456"
+      # REDIS_HOST: "redis"
+      # REDIS_PORT: 6379
+      # depends_on:
+      #   - redis
+      #   - mongo
+      #   - mysql
+      #   mongo:
+      #     image: mongo:4.2
+      #     restart: always
+      #     # ports:
+      #     #   - "27017:27017"
+      #     environment:
+      #       MONGO_INITDB_ROOT_USERNAME: "admin"
+      #       MONGO_INITDB_ROOT_PASSWORD: "123456"
+      #     volumes:
+      #       - mongo-data:/data/db
+      #   redis:
+      #     image: redis:6-alpine
+      #     restart: always
+      #     volumes:
+      #       - redis-data:/data
+      #   mysql:
+      #     image: mysql:8
+      #     restart: always
+      #     environment:
+      #       MYSQL_ROOT_PASSWORD: "root"
+      #       MYSQL_ROOT_HOST: "%"
+      #       MYSQL_DATABASE: "test"
+      #     volumes:
+      #       - mysql-data:/data
+      # volumes:
+      #   mongo-data:
+      #   redis-data:
+      #   mysql-data:

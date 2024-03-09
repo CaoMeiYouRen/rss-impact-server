@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    open-pull-requests-limit: 20
+    schedule:
+      interval: daily
+      time: 19:00
+      timezone: Asia/Shanghai
+    ignore:
+      - dependency-name: mongoose
+        versions:
+          - ">= 5.10.18"
+      - dependency-name: "@types/mongoose"
+        versions:
+          - ">= 5.10.2"
+      - dependency-name: semantic-release

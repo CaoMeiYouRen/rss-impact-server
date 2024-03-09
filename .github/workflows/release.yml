@@ -1,0 +1,41 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: "latest"
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+      - name: Cache Dependency
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ~/.yarn
+            ~/.cache/pnpm
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
+          key: pnpm-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: pnpm-${{ runner.os }}
+      - run: pnpm i --fix-lockfile
+      - run: pnpm run lint
+      - run: pnpm run build
+      # - env:
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: pnpm run release
