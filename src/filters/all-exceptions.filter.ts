@@ -8,7 +8,7 @@ import {
 import { Response } from 'express'
 import { HttpError } from '@/models/HttpError'
 import { ErrorMessageList } from '@/constant/ErrorMessageList'
-import { HttpStatusCode } from '@/models/HttpStatusCode'
+import { HttpStatusCode } from '@/constant/HttpStatusCode'
 import { __DEV__ } from '@/app.config'
 import { ResponseDto } from '@/models/ResponseDto'
 

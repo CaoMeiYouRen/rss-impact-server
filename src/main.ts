@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/order
 import { PORT, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias from 'module-alias'
@@ -20,7 +21,7 @@ async function bootstrap() {
             .setTitle('nest template docs')
             .setDescription('nest template docs')
             .setVersion('0.1.0')
-            // .addBearerAuth()
+            .addBearerAuth()
             .build()
         const document = SwaggerModule.createDocument(app, options)
         SwaggerModule.setup('docs', app, document)
@@ -32,7 +33,7 @@ async function bootstrap() {
     app.use(consoleLogger)
     app.useGlobalFilters(new AllExceptionsFilter())
     app.useGlobalInterceptors(new TimeoutInterceptor())
-    app.useGlobalPipes(new ValidationPipe())
+    app.useGlobalPipes(new ValidationPipe({ transform: true }))
     app.set('trust proxy', true)
 
     await app.listen(PORT)

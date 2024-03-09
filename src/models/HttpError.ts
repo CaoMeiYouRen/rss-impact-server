@@ -1,5 +1,5 @@
 import { HttpException } from '@nestjs/common'
-import { HttpStatusCode } from './HttpStatusCode'
+import { HttpStatusCode } from '@/constant/HttpStatusCode'
 /**
  * 自定义HttpError
  *

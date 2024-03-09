@@ -37,3 +37,7 @@ lerna-debug.log*
 .env.*.local
 
 audit.json
+
+/data
+*.db
+*.sqlite

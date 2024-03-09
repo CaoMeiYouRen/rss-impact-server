@@ -1,15 +1,39 @@
-import { Controller } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
-import { Crud } from 'nestjs-mongoose-crud'
-import { InjectModel } from 'nestjs-typegoose-next'
-import { User, UserModel } from '@/db/models/User.model'
+import { User } from '@/db/models/user.entity'
+import { CrudQuery } from '@/decorators/crud-query/crud-query.decorator'
+import { UserService } from '@/services/user/user.service'
 
-@Crud({
-    model: User,
-})
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-    constructor(@InjectModel(User) private readonly model: UserModel) {
+
+    constructor(private readonly userService: UserService) {
+
+    }
+
+    @Get('')
+    async find(@CrudQuery('query') query: any) {
+        return this.userService.find(query)
+    }
+
+    @Get(':id')
+    async findOneById(@Param('id') id: number) {
+        return this.userService.findOneById(id)
+    }
+
+    @Post('')
+    async create(@Body() body: User) {
+        return this.userService.create(body)
+    }
+
+    @Put('')
+    async update(@Body() body: User) {
+        return this.userService.update(body)
+    }
+
+    @Delete(':id')
+    async delete(@Param('id') id: number) {
+        return this.userService.delete(id)
     }
 }
