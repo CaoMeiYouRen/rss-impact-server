@@ -3,9 +3,9 @@ FROM caomeiyouren/alpine-nodejs:1.1.0 as builder
 
 WORKDIR /app
 
-COPY package.json .npmrc /app/
+COPY package.json .npmrc pnpm-lock.yaml /app/
 
-RUN pnpm i
+RUN pnpm i --frozen-lockfile
 
 COPY . /app
 
