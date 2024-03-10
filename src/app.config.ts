@@ -31,3 +31,5 @@ export const TIMEOUT = Number(env.TIMEOUT || 10 * 1000)
 export const MONGODB_URL = env.MONGODB_URL
 export const MONGODB_USER = env.MONGODB_USER
 export const MONGODB_PASSWORD = env.MONGODB_PASSWORD
+
+export const SESSION_SECRET = env.SESSION_SECRET

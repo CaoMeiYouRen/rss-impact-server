@@ -9,9 +9,10 @@ export const CurrentUser = createParamDecorator((data, ctx: ExecutionContext) =>
     const req: Request = ctx.switchToHttp().getRequest()
     const user = req.user as User
     if (user?.password) {
-        user.password = undefined
+        delete user.password
     }
     return user || {
+        id: 0,
         username: '',
         email: '',
         roles: [],

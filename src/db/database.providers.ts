@@ -3,6 +3,8 @@ import { DataSource } from 'typeorm'
 import { User } from './models/user.entity'
 // import { MYSQL_HOST, MYSQL_PORT, MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_DATABASE } from '@/app.config'
 
+export const DATABASE_PATH = path.join(__dirname, '../../data/database.sqlite')
+
 export const DATA_SOURCE = 'DATA_SOURCE'
 export const USER_REPOSITORY = 'USER_REPOSITORY'
 
@@ -19,7 +21,7 @@ export const databaseProviders = [
                 // database: MYSQL_DATABASE,
                 // TODO 适配更多数据库
                 type: 'sqlite',
-                database: path.join(__dirname, '../../data/database.sqlite'),
+                database: DATABASE_PATH,
                 entities: [
                     path.join(__dirname, './models/*{.ts,.js}'),
                 ],

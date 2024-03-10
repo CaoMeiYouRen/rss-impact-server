@@ -1,12 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Session } from '@nestjs/common'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { User } from '@/db/models/user.entity'
 import { CrudQuery } from '@/decorators/crud-query.decorator'
 import { UserService } from '@/services/user/user.service'
+import { CurrentUser } from '@/decorators/current-user.decorator'
+import { Auth } from '@/decorators/auth.decorator'
 
+@Auth()
 @ApiTags('user')
 @Controller('user')
 export class UserController {
+
+    private readonly logger: Logger = new Logger(UserController.name)
 
     constructor(private readonly userService: UserService) {
 
@@ -15,6 +20,14 @@ export class UserController {
     @Get('')
     async find(@CrudQuery('query') query: any) {
         return this.userService.find(query)
+    }
+
+    @Get('me')
+    @ApiOperation({ summary: '获取个人信息' })
+    @ApiResponse({ status: 200, type: User })
+    async getMe(@CurrentUser() user: User, @Session() session: Record<string, any>) {
+        this.logger.debug('session', JSON.stringify(session, null, 4))
+        return user
     }
 
     @Get(':id')

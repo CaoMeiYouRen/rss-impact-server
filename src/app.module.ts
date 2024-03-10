@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Global, Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { CommonModule } from './common/common.module'
@@ -8,11 +8,19 @@ import { UserController } from './controllers/user/user.controller'
 import { AuthController } from './controllers/auth/auth.controller'
 import { AuthService } from './services/auth/auth.service'
 import { LocalStrategy } from './strategies/local.strategy'
+import { SessionStrategy } from './strategies/session.strategy'
+import { TokenStrategy } from './strategies/token.strategy'
 
+@Global()
 @Module({
     imports: [
         CommonModule,
         DatabaseModule,
+    ],
+    exports: [
+        AppService,
+        UserService,
+        AuthService,
     ],
     controllers: [
         AppController,
@@ -24,6 +32,8 @@ import { LocalStrategy } from './strategies/local.strategy'
         UserService,
         AuthService,
         LocalStrategy,
+        SessionStrategy,
+        TokenStrategy,
     ],
 })
 export class AppModule { }
