@@ -41,7 +41,7 @@ async function bootstrap() {
     app.use(consoleLogger)
     app.useGlobalFilters(new AllExceptionsFilter())
     app.useGlobalInterceptors(new TimeoutInterceptor())
-    app.useGlobalPipes(new ValidationPipe({ transform: true }))
+    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }))
 
     const sessionOptions: SessionOptions = {
         secret: SESSION_SECRET,

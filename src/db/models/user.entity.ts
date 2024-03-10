@@ -1,7 +1,8 @@
 
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, Index } from 'typeorm'
-import { hash, hashSync } from 'bcryptjs'
-import { IsEmail, Length } from 'class-validator'
+import { hashSync } from 'bcryptjs'
+import { IsEmail, IsInt, Length, Min, isInt } from 'class-validator'
+import { OmitType, PartialType } from '@nestjs/swagger'
 
 @Entity()
 export class User {
@@ -13,6 +14,8 @@ export class User {
     // }
 
     @PrimaryGeneratedColumn()
+    @IsInt()
+    @Min(0)
     id: number
 
     // @IsNotEmpty()
@@ -33,7 +36,7 @@ export class User {
 
     @BeforeInsert()
     @BeforeUpdate()
-    hashPassword() {
+    private hashPassword() {
         if (this.password) {
             this.password = hashSync(this.password, 10)
         }
@@ -62,3 +65,6 @@ export class User {
     updatedAt: Date
 }
 
+export class CreateUser extends OmitType(User, ['id', 'createdAt', 'updatedAt'] as const) { }
+
+export class UpdateUser extends PartialType(OmitType(User, ['createdAt', 'updatedAt'] as const)) { }

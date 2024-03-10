@@ -1,6 +1,6 @@
 import { SetMetadata, applyDecorators, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger'
+import { ApiQuery } from '@nestjs/swagger'
 import { ApiBaseDes } from './api-base-des.decorator'
 import { RolesGuard } from '@/guards/roles.guard'
 
