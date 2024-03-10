@@ -5,6 +5,7 @@ import { CreateUser, UpdateUser, User } from '@/db/models/user.entity'
 import { HttpError } from '@/models/http-error'
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from '@/app.config'
 import { Role } from '@/constant/role'
+import { getAccessToken } from '@/utils/helper'
 
 @Injectable()
 export class UserService implements OnApplicationBootstrap {
@@ -18,7 +19,7 @@ export class UserService implements OnApplicationBootstrap {
         this.initAdmin()
     }
 
-    async initAdmin() {
+    private async initAdmin() {
         // 初始化 admin 用户
         const userCount = await this.userRepository.count({})
         if (userCount === 0) {

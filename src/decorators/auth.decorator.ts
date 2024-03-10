@@ -1,6 +1,6 @@
 import { SetMetadata, applyDecorators, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiQuery } from '@nestjs/swagger'
+import { ApiHeader, ApiQuery } from '@nestjs/swagger'
 import { ApiBaseDes } from './api-base-des.decorator'
 import { RolesGuard } from '@/guards/roles.guard'
 
@@ -21,6 +21,10 @@ export function Auth(authType: AuthType = 'session', ...roles: string[]) {
         ApiBaseDes(),
         authType === 'token' && ApiQuery({
             name: 'accessToken',
+            required: false,
+        }),
+        authType === 'token' && ApiHeader({
+            name: 'access-token',
             required: false,
         }),
     ].filter(Boolean)

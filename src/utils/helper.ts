@@ -45,3 +45,15 @@ export function timeFormat(date: number | string | Date = Date.now(), pattern: s
 export function printTime(str: any) {
     console.log(`${chalk.yellow(timeFormat(Date.now(), 'YYYY-MM-DD HH:mm:ss.SSS'))} : ${chalk.green(JSON.stringify(str))}`)
 }
+
+export function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = Math.random() * 16 | 0
+        const v = c === 'x' ? r : r & 0x3 | 0x8
+        return v.toString(16)
+    })
+}
+
+export function getAccessToken() {
+    return `rss-impact:${uuid()}`
+}

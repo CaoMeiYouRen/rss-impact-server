@@ -2,7 +2,6 @@ import { Strategy } from 'passport-strategy'
 import { PassportStrategy } from '@nestjs/passport'
 import { Request } from 'express'
 import { Injectable } from '@nestjs/common'
-import { User } from '@/db/models/user.entity'
 import { HttpError } from '@/models/http-error'
 import { UserService } from '@/services/user/user.service'
 
@@ -29,9 +28,8 @@ export class TokenStrategy extends PassportStrategy(Strategy, 'token') {
     }
 
     async validate(accessToken: string) {
-        // TODO
         const user = await this.userService.findOne({
-            // accessToken,
+            accessToken,
         })
         if (!user) {
             throw new HttpError(401, '无效的 accessToken ！')
