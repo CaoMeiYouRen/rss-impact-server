@@ -1,9 +1,30 @@
+import path from 'path'
 import { Global, Module } from '@nestjs/common'
-import { databaseProviders } from './database.providers'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { User } from './models/user.entity'
+
+export const DATABASE_PATH = path.join(__dirname, '../../data/database.sqlite')
+
+const entities = [User]
+
+const repositories = TypeOrmModule.forFeature(entities)
 
 @Global()
 @Module({
-    providers: [...databaseProviders],
-    exports: [...databaseProviders],
+    imports: [
+        TypeOrmModule.forRootAsync({
+            useFactory() {
+                return {
+                    type: 'sqlite',
+                    database: DATABASE_PATH,
+                    entities,
+                    synchronize: true,
+                    autoLoadEntities: true,
+                }
+            },
+        }),
+        repositories,
+    ],
+    exports: [repositories],
 })
 export class DatabaseModule { }

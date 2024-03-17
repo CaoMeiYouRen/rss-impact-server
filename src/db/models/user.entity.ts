@@ -1,24 +1,20 @@
 
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate, Index } from 'typeorm'
-import { hashSync } from 'bcryptjs'
-import { IsEmail, IsInt, IsNotEmpty, Length, Min, isInt } from 'class-validator'
+import { Entity, Column, BeforeInsert, BeforeUpdate, Index } from 'typeorm'
+import { hash } from 'bcryptjs'
+import { IsEmail, IsNotEmpty, Length } from 'class-validator'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
+import { Base } from './base.entity'
 import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
 
 @Entity()
-export class User {
+export class User extends Base {
 
     // constructor(user?: Partial<User>) {
     //     if (user) {
     //         Object.assign(this, user)
     //     }
     // }
-
-    @PrimaryGeneratedColumn()
-    @IsInt()
-    @Min(0)
-    id: number
 
     @ApiProperty({ description: '用户名', example: 'admin' })
     @IsNotEmpty()
@@ -41,9 +37,9 @@ export class User {
 
     @BeforeInsert()
     @BeforeUpdate()
-    private hashPassword() {
+    private async hashPassword() {
         if (this.password) {
-            this.password = hashSync(this.password, 10)
+            this.password = await hash(this.password, 10)
         }
     }
 
@@ -79,20 +75,15 @@ export class User {
     accessToken: string
 
     @BeforeInsert()
-    // @BeforeUpdate()
+    @BeforeUpdate()
     private createAccessToken() { // 初始化 accessToken
         if (!this.accessToken) {
             this.accessToken = getAccessToken()
         }
     }
 
-    @CreateDateColumn()
-    createdAt: Date
-
-    @UpdateDateColumn()
-    updatedAt: Date
 }
 
 export class CreateUser extends OmitType(User, ['id', 'createdAt', 'updatedAt', 'accessToken'] as const) { }
 
-export class UpdateUser extends PartialType(OmitType(User, ['createdAt', 'updatedAt'] as const)) { }
+export class UpdateUser extends PartialType(OmitType(User, ['createdAt', 'updatedAt', 'accessToken'] as const)) { }

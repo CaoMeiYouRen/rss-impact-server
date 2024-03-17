@@ -1,10 +1,9 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Session } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CreateUser, UpdateUser, User } from '@/db/models/user.entity'
 import { CrudQuery } from '@/decorators/crud-query.decorator'
 import { UserService } from '@/services/user/user.service'
 import { CurrentUser } from '@/decorators/current-user.decorator'
-import { Auth } from '@/decorators/auth.decorator'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
 

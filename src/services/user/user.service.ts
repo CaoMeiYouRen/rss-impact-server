@@ -1,18 +1,17 @@
-import { Inject, Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
+import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { FindOptionsWhere, Repository } from 'typeorm'
-import { USER_REPOSITORY } from '@/db/database.providers'
+import { InjectRepository } from '@nestjs/typeorm'
 import { CreateUser, UpdateUser, User } from '@/db/models/user.entity'
 import { HttpError } from '@/models/http-error'
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from '@/app.config'
 import { Role } from '@/constant/role'
-import { getAccessToken } from '@/utils/helper'
 
 @Injectable()
 export class UserService implements OnApplicationBootstrap {
 
     private readonly logger = new Logger(UserService.name)
 
-    constructor(@Inject(USER_REPOSITORY) private readonly userRepository: Repository<User>) {
+    constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
     }
 
     onApplicationBootstrap() {

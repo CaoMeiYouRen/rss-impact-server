@@ -16,7 +16,7 @@ import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { limiter } from './middlewares/limit.middleware'
 import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
 import { consoleLogger, fileLogger } from './middlewares/logger.middleware'
-import { DATABASE_PATH } from './db/database.providers'
+import { DATABASE_PATH } from './db/database.module'
 
 const SQLiteStore = ConnectSqlite3(session)
 
