@@ -10,6 +10,7 @@ import { AuthService } from './services/auth/auth.service'
 import { LocalStrategy } from './strategies/local.strategy'
 import { SessionStrategy } from './strategies/session.strategy'
 import { TokenStrategy } from './strategies/token.strategy'
+import { FeedController } from './controllers/feed/feed.controller'
 
 @Global()
 @Module({
@@ -26,6 +27,7 @@ import { TokenStrategy } from './strategies/token.strategy'
         AppController,
         UserController,
         AuthController,
+        FeedController,
     ],
     providers: [
         AppService,

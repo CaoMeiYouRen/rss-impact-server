@@ -7,6 +7,7 @@ import {
     Body,
     createParamDecorator,
     ExecutionContext,
+    Logger,
 } from '@nestjs/common'
 import { ApiOperation, ApiQuery } from '@nestjs/swagger'
 import { Request } from 'express'
@@ -20,6 +21,7 @@ import { getConditions, checkAuth } from '@/utils/check'
 import { PAGE_LIMIT_MAX } from '@/app.config'
 import { Role } from '@/constant/role'
 import { AclBase } from '@/db/models/acl-base.entity'
+import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
 
 export interface ICrudQuery extends CrudRouteForFind {
     where?: any
@@ -33,13 +35,6 @@ export interface ICrudQuery extends CrudRouteForFind {
     relations?: any[]
 }
 
-export interface CrudPlaceholderDto {
-    // acl?: ACL
-    id: number
-    user: User
-    [key: string]: unknown
-}
-
 export const CrudQuery = createParamDecorator((name, ctx: ExecutionContext) => {
     const req: Request = ctx.switchToHttp().getRequest()
     try {
@@ -51,10 +46,12 @@ export const CrudQuery = createParamDecorator((name, ctx: ExecutionContext) => {
 
 export class AclCrudController {
 
+    private readonly logger: Logger
+
     __AVUE_CRUD_CONFIG__
 
     constructor(
-        public repository: Repository<AclBase>, // Record<string, never> | any|
+        public readonly repository: Repository<AclBase>, // Record<string, never> | any|
     ) {
     }
 
@@ -64,7 +61,7 @@ export class AclCrudController {
         return this.__AVUE_CRUD_CONFIG__ || {}
     }
 
-    @ApiOperation({ summary: 'Find all records' })
+    @ApiOperation({ summary: '查找所有记录' })
     @ApiQuery({
         name: 'query',
         type: String,
@@ -83,7 +80,7 @@ export class AclCrudController {
         limit = user?.roles?.includes(Role.admin) ? limit : Math.min(limit, PAGE_LIMIT_MAX)
         skip = skip || (page - 1) * limit
         const conditions = getConditions(user)
-        // Logger.debug(query, AclCrudController.name)
+        this.logger.debug(query)
         const [data, total] = await this.repository.findAndCount({
             where: {
                 ...where,
@@ -102,7 +99,7 @@ export class AclCrudController {
         }
     }
 
-    @ApiOperation({ summary: 'Find a record' })
+    @ApiOperation({ summary: '查找记录' })
     @Get(':id')
     async findOne(@Param('id') id: number, @CurrentUser() user: User) {
         if (!isInt(id) || !min(id, 0)) {
@@ -122,37 +119,53 @@ export class AclCrudController {
         return document
     }
 
-    @ApiOperation({ summary: 'Create a record' })
+    @ApiOperation({ summary: '创建记录' })
     @Post('')
     async create(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
         body.user = user
+        if (body.id) {
+            delete body.id
+        }
+        if (body.createdAt) {
+            delete body.createdAt
+        }
+        if (body.updatedAt) {
+            delete body.updatedAt
+        }
         const newDocument = await this.repository.save(this.repository.create(body))
         return newDocument
     }
 
-    @ApiOperation({ summary: 'Update a record' })
+    @ApiOperation({ summary: '更新记录' })
     @Put('')
     async update(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
         const id = body.id
+        if (body.createdAt) {
+            delete body.createdAt
+        }
+        if (body.updatedAt) {
+            delete body.updatedAt
+        }
         const document = await this.repository.findOne({
             where: {
                 id,
             },
+            relations: ['user'],
         })
         if (!checkAuth(document, user)) {
             throw new HttpError(403, '该用户没有权限访问')
         }
-        // TODO 改成事务
-        await this.repository.update({ id }, body)
-        const newDocument = this.repository.findOne({
-            where: {
-                id,
-            },
-        })
-        return newDocument
+        try {
+            await this.repository.update(id, body)
+            const updatedDocument = await this.repository.findOne({ where: { id } })
+            return updatedDocument
+        } catch (error) {
+            this.logger.error(error)
+            throw new HttpError(500, '更新记录失败')
+        }
     }
 
-    @ApiOperation({ summary: 'Delete a record' })
+    @ApiOperation({ summary: '删除记录' })
     @Delete(':id')
     async delete(@Param('id') id: number, @CurrentUser() user: User) {
         if (!isInt(id) || !min(id, 0)) {
@@ -162,14 +175,18 @@ export class AclCrudController {
             where: {
                 id,
             },
+            relations: ['user'],
         })
         if (!checkAuth(document, user)) {
             throw new HttpError(403, '该用户没有权限访问')
         }
-        // TODO 增加事务
-        await this.repository.delete(id)
-        return {
-            id,
+        try {
+            await this.repository.delete(id)
+            return document
+        } catch (error) {
+            this.logger.error(error)
+            throw new HttpError(500, '删除记录失败')
         }
+
     }
 }

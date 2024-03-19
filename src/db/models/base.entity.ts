@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm'
 import { IsInt, Min } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import dayjs from 'dayjs'
@@ -12,10 +12,12 @@ export class Base {
     id: number
 
     @ApiProperty({ description: '创建时间', example: dayjs().toDate() })
+    @Index()
     @CreateDateColumn()
     createdAt: Date
 
     @ApiProperty({ description: '更新时间', example: dayjs().toDate() })
+    @Index()
     @UpdateDateColumn()
     updatedAt: Date
 

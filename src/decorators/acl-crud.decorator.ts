@@ -1,9 +1,11 @@
 import { get, merge, union } from 'lodash'
 import { PARAMTYPES_METADATA } from '@nestjs/common/constants'
 import dayjs from 'dayjs'
+import { Logger } from '@nestjs/common'
 import { AvueCrudConfig, CrudOptionsWithModel, Field } from '@/interfaces/avue'
 import { AclCrudController } from '@/controllers/acl-crud/acl-crud.controller'
 import { SET_ACL_CRUD_FIELD_OPTION } from '@/constant/decorator'
+import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
 
 const CRUD_ROUTES = {
     // dicData: 'dicData',
@@ -17,10 +19,6 @@ const CRUD_ROUTES = {
 const allMethods = Object.values(CRUD_ROUTES)
 
 interface AclOptions extends CrudOptionsWithModel {
-}
-
-class CrudPlaceholderDto {
-    fake?: string
 }
 
 function cloneDecorators(from: unknown, to: unknown) {
@@ -177,7 +175,9 @@ export const AclCrud = (options: AclOptions): ClassDecorator => (target) => { //
     const controller = target.prototype
     const crudController = new AclCrudController(options.model)
     const methods = allMethods.filter((v) => get(options, `routes.${v}`) !== false)
-
+    if (!controller.logger) {
+        controller.logger = new Logger(target.name)
+    }
     for (const method of methods) {
         if (controller[method]) {
             continue
@@ -205,7 +205,6 @@ export const AclCrud = (options: AclOptions): ClassDecorator => (target) => { //
 
         // get exists param types
         const types: [] = Reflect.getMetadata(PARAMTYPES_METADATA, controller, method)
-
         Reflect.decorate([
             // replace fake dto to real dto
             Reflect.metadata(PARAMTYPES_METADATA, types.map((v: any) => {

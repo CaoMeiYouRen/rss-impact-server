@@ -3,6 +3,7 @@ import { Entity, Column, BeforeInsert, BeforeUpdate, Index } from 'typeorm'
 import { hash } from 'bcryptjs'
 import { IsEmail, IsNotEmpty, Length } from 'class-validator'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
+
 import { Base } from './base.entity'
 import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
@@ -19,7 +20,7 @@ export class User extends Base {
     @ApiProperty({ description: '用户名', example: 'admin' })
     @IsNotEmpty()
     @Length(0, 128)
-    @Index('USER_USERNAME_INDEX')
+    @Index('USER_USERNAME_INDEX', { unique: true })
     @Column({
         unique: true,
         length: 128,
@@ -47,7 +48,7 @@ export class User extends Base {
     @IsNotEmpty()
     @IsEmail({})
     @Length(0, 128)
-    @Index('USER_EMAIL_INDEX')
+    @Index('USER_EMAIL_INDEX', { unique: true })
     @Column({
         unique: true,
         length: 128,
@@ -66,7 +67,7 @@ export class User extends Base {
     @ApiProperty({ description: '接口访问令牌，部分情况可替代账号密码', example: getAccessToken() })
     @IsNotEmpty()
     @Length(0, 128, { each: true })
-    @Index('USER_ACCESS_TOKEN_INDEX')
+    @Index('USER_ACCESS_TOKEN_INDEX', { unique: true })
     @Column({
         unique: true,
         length: 128,
