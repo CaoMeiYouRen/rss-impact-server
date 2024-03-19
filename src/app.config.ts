@@ -27,6 +27,9 @@ export const TZ = env.TZ || 'Asia/Shanghai'
 
 export const TIMEOUT = Number(env.TIMEOUT || 10 * 1000)
 
+// 每页最大查询条数
+export const PAGE_LIMIT_MAX = Number(env.PAGE_LIMIT_MAX || 1000)
+
 // mongodb 配置
 // export const MONGODB_URL = env.MONGODB_URL
 // export const MONGODB_USER = env.MONGODB_USER

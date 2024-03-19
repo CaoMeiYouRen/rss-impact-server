@@ -32,6 +32,16 @@ export class UserService implements OnApplicationBootstrap {
         }
     }
 
+    async dicData() {
+        return (await this.userRepository.find({
+            where: {},
+            select: ['id', 'username'],
+        })).map((e) => ({
+            label: e.username,
+            value: e.id,
+        }))
+    }
+
     async find(where: FindOptionsWhere<User> | FindOptionsWhere<User>[]) {
         return this.userRepository.find({
             where,

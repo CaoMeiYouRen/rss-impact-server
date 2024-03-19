@@ -27,8 +27,15 @@ export class UserController {
     @Get('me')
     @ApiOperation({ summary: '获取个人信息' })
     @ApiResponse({ status: 200, type: User })
-    async getMe(@CurrentUser() user: User) {
+    async me(@CurrentUser() user: User) {
         return user
+    }
+
+    @UseAdmin()
+    @Get('dicData')
+    @ApiOperation({ summary: '获取 dicData' })
+    async dicData() {
+        return this.userService.dicData()
     }
 
     @UseAdmin()
