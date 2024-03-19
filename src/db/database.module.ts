@@ -15,6 +15,7 @@ const repositories = TypeOrmModule.forFeature(entities)
         TypeOrmModule.forRootAsync({
             useFactory() {
                 return {
+                    // TODO mysql 支持
                     type: 'sqlite',
                     database: DATABASE_PATH,
                     entities,

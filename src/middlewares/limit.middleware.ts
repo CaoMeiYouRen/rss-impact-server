@@ -5,6 +5,7 @@ import { ResponseDto } from '@/models/response.dto'
  * 限流器
  */
 export const limiter = RateLimit({
+    // TODO redis store 支持
     max: 10,
     windowMs: 1000,
     handler(req, res) { // 响应格式

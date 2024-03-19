@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/order
-import { PORT, SESSION_SECRET, __DEV__ } from './app.config'
+import { PORT, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias from 'module-alias'
 moduleAlias.addAlias('@', path.join(__dirname, './'))
@@ -8,17 +8,12 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import helmet from 'helmet'
 import { ValidationPipe } from '@nestjs/common'
-import session, { SessionOptions, Store } from 'express-session'
-import ms from 'ms'
-import ConnectSqlite3 from 'connect-sqlite3'
 import { AppModule } from './app.module'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { limiter } from './middlewares/limit.middleware'
 import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
 import { consoleLogger, fileLogger } from './middlewares/logger.middleware'
-import { DATABASE_PATH } from './db/database.module'
-
-const SQLiteStore = ConnectSqlite3(session)
+import { sessionMiddleware } from './middlewares/session.middleware'
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule)
@@ -43,23 +38,7 @@ async function bootstrap() {
     app.useGlobalInterceptors(new TimeoutInterceptor())
     app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }))
 
-    const sessionOptions: SessionOptions = {
-        secret: SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            secure: true,
-            maxAge: ms('30d'),
-        },
-        store: new SQLiteStore({
-            dir: path.dirname(DATABASE_PATH),
-            db: path.basename(DATABASE_PATH),
-        }) as Store,
-    }
-    if (__DEV__) {
-        sessionOptions.cookie.secure = false
-    }
-    app.use(session(sessionOptions))
+    app.use(sessionMiddleware)
 
     app.set('trust proxy', true)
 
