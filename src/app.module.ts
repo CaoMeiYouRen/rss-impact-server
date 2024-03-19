@@ -11,6 +11,7 @@ import { LocalStrategy } from './strategies/local.strategy'
 import { SessionStrategy } from './strategies/session.strategy'
 import { TokenStrategy } from './strategies/token.strategy'
 import { FeedController } from './controllers/feed/feed.controller'
+import { CategoryController } from './controllers/category/category.controller'
 
 @Global()
 @Module({
@@ -28,6 +29,7 @@ import { FeedController } from './controllers/feed/feed.controller'
         UserController,
         AuthController,
         FeedController,
+        CategoryController,
     ],
     providers: [
         AppService,

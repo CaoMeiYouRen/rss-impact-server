@@ -1,8 +1,17 @@
-import { Column, Entity, Index } from 'typeorm'
+import { Column, Entity, Index, ManyToOne } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsBoolean, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
+import { IsBoolean, IsInt, IsNotEmpty, IsUrl, Length, Min, ValidateIf } from 'class-validator'
 import { AclBase } from './acl-base.entity'
+import { Category } from './category.entity'
 
+/**
+ * RSS 订阅表
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-03-19
+ * @export
+ * @class Feed
+ */
 @Entity()
 export class Feed extends AclBase {
 
@@ -11,11 +20,11 @@ export class Feed extends AclBase {
     @IsUrl({}, { message: '$property 必须为标准URL格式' })
     @Length(0, 2048, { message: '$property 的长度必须在 $constraint1 到 $constraint2 个字符！' })
     @Index({
-        unique: true,
+        // unique: true,
     })
     @Column({
         length: 2048,
-        unique: true,
+        // unique: true,
     })
     url: string
 
@@ -58,6 +67,16 @@ export class Feed extends AclBase {
         default: true,
     })
     isEnabled: boolean
+
+    @ApiProperty({ description: '分组ID', example: 1 })
+    @IsInt()
+    @Min(0)
+    @Column({ nullable: true })
+    categoryId: number
+
+    @ApiProperty({ description: '分组', example: null, type: () => Category })
+    @ManyToOne(() => Category, (category) => category.feeds)
+    category: Category
 }
 
 export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] as const) { }

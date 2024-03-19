@@ -3,10 +3,11 @@ import { Global, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
+import { Category } from './models/category.entity'
 
 export const DATABASE_PATH = path.join(__dirname, '../../data/database.sqlite')
 
-const entities = [User, Feed]
+const entities = [User, Feed, Category]
 
 const repositories = TypeOrmModule.forFeature(entities)
 

@@ -7,6 +7,7 @@ export class AclBase extends Base {
 
     // acl
 
+    @ApiProperty({ description: '所属用户ID', example: 1 })
     @Column({ nullable: true })
     userId: number
 

@@ -122,6 +122,7 @@ export class AclCrudController {
     @ApiOperation({ summary: '创建记录' })
     @Post('')
     async create(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
+        this.logger.debug(JSON.stringify(body, null, 4))
         body.user = user
         if (body.id) {
             delete body.id
@@ -139,6 +140,7 @@ export class AclCrudController {
     @ApiOperation({ summary: '更新记录' })
     @Put('')
     async update(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
+        this.logger.debug(JSON.stringify(body, null, 4))
         const id = body.id
         if (body.createdAt) {
             delete body.createdAt
