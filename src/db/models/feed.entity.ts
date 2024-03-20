@@ -1,8 +1,9 @@
 import { Column, Entity, Index, ManyToOne } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsBoolean, IsInt, IsNotEmpty, IsUrl, Length, Min, ValidateIf } from 'class-validator'
+import { IsBoolean, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
+import { IsId } from '@/decorators/is-id.decorator'
 
 /**
  * RSS 订阅表
@@ -69,8 +70,7 @@ export class Feed extends AclBase {
     isEnabled: boolean
 
     @ApiProperty({ description: '分组ID', example: 1 })
-    @IsInt()
-    @Min(0)
+    @IsId()
     @Column({ nullable: true })
     categoryId: number
 

@@ -18,7 +18,8 @@ const CRUD_ROUTES = {
 }
 const allMethods = Object.values(CRUD_ROUTES)
 
-interface AclOptions extends CrudOptionsWithModel {
+export interface AclOptions extends CrudOptionsWithModel {
+    relations?: string[]
 }
 
 function cloneDecorators(from: unknown, to: unknown) {
@@ -176,7 +177,16 @@ export const AclCrud = (options: AclOptions): ClassDecorator => (target) => { //
     const crudController = new AclCrudController(options.model)
     const methods = allMethods.filter((v) => get(options, `routes.${v}`) !== false)
     if (!controller.logger) {
-        controller.logger = new Logger(target.name)
+        Object.defineProperty(controller, 'logger', {
+            value: new Logger(target.name),
+            writable: false, // 只读
+        })
+    }
+    if (!controller.__OPTIONS__) {
+        Object.defineProperty(controller, '__OPTIONS__', {
+            value: options,
+            writable: false, // 只读
+        })
     }
     for (const method of methods) {
         if (controller[method]) {

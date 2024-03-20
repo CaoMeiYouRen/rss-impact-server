@@ -12,7 +12,7 @@ import {
 import { ApiOperation, ApiQuery } from '@nestjs/swagger'
 import { Request } from 'express'
 import { Repository } from 'typeorm'
-import { isInt, min } from 'class-validator'
+import { merge } from 'lodash'
 import { AvueCrudConfig, CrudRouteForFind } from '@/interfaces/avue'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
@@ -22,17 +22,34 @@ import { PAGE_LIMIT_MAX } from '@/app.config'
 import { Role } from '@/constant/role'
 import { AclBase } from '@/db/models/acl-base.entity'
 import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
+import { AclOptions } from '@/decorators/acl-crud.decorator'
+import { isId } from '@/decorators/is-id.decorator'
 
 export interface ICrudQuery extends CrudRouteForFind {
+    /**
+     * 查询条件
+     */
     where?: any
+    /**
+     * 数量限制
+     */
     limit?: number
+    /**
+     * 页数
+     */
     page?: number
+    /**
+     * 跳过多少页
+     */
     skip?: number
     sort?: string | any
     populate?: string | any
     select?: string | any
     collation?: any
-    relations?: any[]
+    /**
+     * 要关联其他表关系的字段
+     */
+    relations?: string[]
 }
 
 export const CrudQuery = createParamDecorator((name, ctx: ExecutionContext) => {
@@ -49,6 +66,8 @@ export class AclCrudController {
     private readonly logger: Logger
 
     __AVUE_CRUD_CONFIG__
+
+    __OPTIONS__: AclOptions
 
     constructor(
         public readonly repository: Repository<AclBase>, // Record<string, never> | any|
@@ -89,7 +108,7 @@ export class AclCrudController {
             skip,
             take: limit,
             order: sort,
-            relations,
+            relations: merge(relations, this?.__OPTIONS__?.relations), // uniq([...relations, ...this?.__OPTIONS__?.relations || []]),
         })
         return {
             total,
@@ -102,13 +121,14 @@ export class AclCrudController {
     @ApiOperation({ summary: '查找记录' })
     @Get(':id')
     async findOne(@Param('id') id: number, @CurrentUser() user: User) {
-        if (!isInt(id) || !min(id, 0)) {
+        if (!isId(id)) {
             throw new HttpError(400, '无效的 Id！')
         }
         const document = await this.repository.findOne({
             where: {
                 id,
             },
+            relations: this?.__OPTIONS__?.relations,
         })
         if (!checkAuth(document, user)) {
             throw new HttpError(403, '该用户没有权限访问')
@@ -157,20 +177,23 @@ export class AclCrudController {
         if (!checkAuth(document, user)) {
             throw new HttpError(403, '该用户没有权限访问')
         }
-        try {
-            await this.repository.update(id, body)
-            const updatedDocument = await this.repository.findOne({ where: { id } })
-            return updatedDocument
-        } catch (error) {
-            this.logger.error(error)
-            throw new HttpError(500, '更新记录失败')
+        if (!document) {
+            throw new HttpError(404, '该 Id 对应的资源不存在！')
         }
+        // try {
+        await this.repository.update(id, body)
+        const updatedDocument = await this.repository.findOne({ where: { id } })
+        return updatedDocument
+        // } catch (error) {
+        //     this.logger.error(error)
+        //     throw new HttpError(500, '更新记录失败')
+        // }
     }
 
     @ApiOperation({ summary: '删除记录' })
     @Delete(':id')
     async delete(@Param('id') id: number, @CurrentUser() user: User) {
-        if (!isInt(id) || !min(id, 0)) {
+        if (!isId(id)) {
             throw new HttpError(400, '无效的 Id！')
         }
         const document = await this.repository.findOne({
@@ -182,13 +205,15 @@ export class AclCrudController {
         if (!checkAuth(document, user)) {
             throw new HttpError(403, '该用户没有权限访问')
         }
-        try {
-            await this.repository.delete(id)
-            return document
-        } catch (error) {
-            this.logger.error(error)
-            throw new HttpError(500, '删除记录失败')
+        if (!document) {
+            throw new HttpError(404, '该 Id 对应的资源不存在！')
         }
-
+        // try {
+        await this.repository.delete(id)
+        return document
+        // } catch (error) {
+        //     this.logger.error(error)
+        //     throw new HttpError(500, '删除记录失败')
+        // }
     }
 }

@@ -15,6 +15,7 @@ import { Category } from '@/db/models/category.entity'
             column: [],
         },
     },
+    relations: ['feeds'],
 })
 @ApiTags('category')
 @Controller('category')

@@ -15,6 +15,7 @@ import { AclCrud } from '@/decorators/acl-crud.decorator'
             column: [],
         },
     },
+    relations: ['category'],
 })
 @ApiTags('feed')
 @Controller('feed')
