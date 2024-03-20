@@ -57,3 +57,7 @@ export function uuid() {
 export function getAccessToken() {
     return `rss-impact:${uuid()}`
 }
+
+export function isImageUrl(img: string) {
+    return /\.(jpe?g|png|gif|webp|bmp|svg)$/i.test(img)
+}

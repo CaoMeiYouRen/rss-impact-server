@@ -2,12 +2,14 @@ import { Column, ManyToOne } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { Base } from './base.entity'
 import { User } from './user.entity'
+import { IsId } from '@/decorators/is-id.decorator'
 
 export class AclBase extends Base {
 
     // acl
 
     @ApiProperty({ description: '所属用户ID', example: 1 })
+    @IsId()
     @Column({ nullable: true })
     userId: number
 

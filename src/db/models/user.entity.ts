@@ -7,6 +7,7 @@ import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { Base } from './base.entity'
 import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 @Entity()
 export class User extends Base {
@@ -27,6 +28,9 @@ export class User extends Base {
     })
     username: string
 
+    @SetAclCrudField({
+        type: 'password',
+    })
     @ApiProperty({ description: '密码', example: '123456' })
     @IsNotEmpty()
     @Length(0, 128)
@@ -64,9 +68,14 @@ export class User extends Base {
     })
     roles: string[]
 
-    @ApiProperty({ description: '接口访问令牌，部分情况可替代账号密码', example: getAccessToken() })
-    @IsNotEmpty()
-    @Length(0, 128, { each: true })
+    @SetAclCrudField({
+        addDisplay: false,
+        editDisabled: true,
+        readonly: true,
+    })
+    @ApiProperty({ title: '接口访问令牌', description: '接口访问令牌，部分情况可替代账号密码', example: getAccessToken() })
+    // @IsNotEmpty()
+    // @Length(0, 128)
     @Index('USER_ACCESS_TOKEN_INDEX', { unique: true })
     @Column({
         unique: true,

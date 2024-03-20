@@ -25,7 +25,7 @@ import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
 import { AclOptions } from '@/decorators/acl-crud.decorator'
 import { isId } from '@/decorators/is-id.decorator'
 
-export interface ICrudQuery extends CrudRouteForFind {
+export class ICrudQuery implements CrudRouteForFind {
     /**
      * 查询条件
      */
