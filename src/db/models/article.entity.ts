@@ -1,10 +1,12 @@
-import { Entity, Column, Index } from 'typeorm'
+import { Entity, Column, Index, OneToMany } from 'typeorm'
 import { Item, Enclosure } from 'rss-parser'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsArray, IsDateString, IsNotEmpty, IsNumber, IsObject, IsUrl, Length, Max, Min, ValidateIf, ValidateNested } from 'class-validator'
 import dayjs from 'dayjs'
 import { Type } from 'class-transformer'
-import { Base } from './base.entity'
+import { AclBase } from './acl-base.entity'
+import { Feed } from './feed.entity'
+import { IsId } from '@/decorators/is-id.decorator'
 
 class EnclosureImpl implements Enclosure {
     @IsUrl()
@@ -31,17 +33,17 @@ class EnclosureImpl implements Enclosure {
  * @class Article
  */
 @Entity()
-export class Article extends Base implements Item {
+export class Article extends AclBase implements Item {
 
     /** guid/id */
     @ApiProperty({ title: '全局索引', example: '499d4cee' })
     @IsNotEmpty()
     @Index({
-        unique: true,
+        // unique: true,
     })
     @Column({
         length: 2048,
-        unique: true,
+        // unique: true,
     })
     guid: string
 
@@ -95,14 +97,24 @@ export class Article extends Base implements Item {
     })
     author?: string
 
-    /**
-     * 摘要 summary/contentSnippet/content:encodedSnippet
-     */
-    @ApiProperty({ title: '摘要', example: '这是一段摘要' })
+    // contentSnippet/content:encodedSnippet
+    @ApiProperty({ title: '摘要', example: '这是一段内容摘要' })
     @Length(0, 65536)
     @ValidateIf((o) => typeof o.summary !== 'undefined')
     @Column({
         length: 65536,
+        nullable: true,
+    })
+    contentSnippet?: string
+
+    /**
+     * 总结 summary
+     */
+    @ApiProperty({ title: '总结', example: '这是一段总结' })
+    @Length(0, 1024)
+    @ValidateIf((o) => typeof o.summary !== 'undefined')
+    @Column({
+        length: 1024,
         nullable: true,
     })
     summary?: string
@@ -133,4 +145,13 @@ export class Article extends Base implements Item {
         nullable: true,
     })
     enclosure?: EnclosureImpl
+
+    @ApiProperty({ description: '订阅源ID', example: 1 })
+    @IsId()
+    @Column({ nullable: true })
+    feedId: number
+
+    @ApiProperty({ description: '订阅源', example: [], type: () => Feed })
+    @OneToMany(() => Feed, (feed) => feed.articles)
+    feed: Feed
 }

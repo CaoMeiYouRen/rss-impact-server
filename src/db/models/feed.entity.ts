@@ -1,9 +1,12 @@
-import { Column, Entity, Index, ManyToOne } from 'typeorm'
+import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsBoolean, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
+import { Article } from './article.entity'
 import { IsId } from '@/decorators/is-id.decorator'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { RssLabelList } from '@/constant/rss-cron'
 
 /**
  * RSS 订阅表
@@ -55,12 +58,23 @@ export class Feed extends AclBase {
     })
     imageUrl?: string
 
-    @ApiProperty({ description: '是否活跃', example: true })
-    @IsBoolean({ message: '是否活跃必须为 Boolean' })
-    @Column({
-        default: true,
+    @SetAclCrudField({
+        dicData: RssLabelList,
     })
-    isActive: boolean
+    @ApiProperty({ description: 'Cron', example: 'EVERY_10_MINUTES' })
+    @Length(0, 256, { message: 'Cron最大不能超过256个字符' })
+    @Column({
+        length: 256,
+        default: 'EVERY_10_MINUTES',
+    })
+    cron: string
+
+    // @ApiProperty({ description: '是否活跃', example: true })
+    // @IsBoolean({ message: '是否活跃必须为 Boolean' })
+    // @Column({
+    //     default: true,
+    // })
+    // isActive: boolean
 
     @ApiProperty({ description: '是否启用', example: true })
     @IsBoolean({ message: '是否启用必须为 Boolean' })
@@ -77,6 +91,10 @@ export class Feed extends AclBase {
     @ApiProperty({ description: '分组', example: null, type: () => Category })
     @ManyToOne(() => Category, (category) => category.feeds)
     category: Category
+
+    @ApiProperty({ description: '文章列表', example: [], type: () => [Article] })
+    @OneToMany(() => Article, (article) => article.feed)
+    articles: Article[]
 }
 
 export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] as const) { }

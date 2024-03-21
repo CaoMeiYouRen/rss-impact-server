@@ -163,12 +163,9 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
                 extra.alone = true // 单个超链接/图片
             }
         }
-
-        // else if (prop === 'createdAt') {
-        //     label = '创建时间'
-        // } else if (prop === 'updatedAt') {
-        //     label = '更新时间'
-        // }
+        if (Array.isArray(setAclCrudFieldOption?.dicData)) { // 如果有 dicData，就设置为 select
+            extra.type = 'select'
+        }
         return {
             label,
             prop,

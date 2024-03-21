@@ -12,6 +12,8 @@ import { SessionStrategy } from './strategies/session.strategy'
 import { TokenStrategy } from './strategies/token.strategy'
 import { FeedController } from './controllers/feed/feed.controller'
 import { CategoryController } from './controllers/category/category.controller'
+import { ArticleController } from './controllers/article/article.controller'
+import { TasksService } from './services/tasks/tasks.service'
 
 @Global()
 @Module({
@@ -30,6 +32,7 @@ import { CategoryController } from './controllers/category/category.controller'
         AuthController,
         FeedController,
         CategoryController,
+        ArticleController,
     ],
     providers: [
         AppService,
@@ -38,6 +41,7 @@ import { CategoryController } from './controllers/category/category.controller'
         LocalStrategy,
         SessionStrategy,
         TokenStrategy,
+        TasksService,
     ],
 })
 export class AppModule { }

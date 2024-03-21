@@ -144,6 +144,9 @@ export class AclCrudController {
     async create(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
         this.logger.debug(JSON.stringify(body, null, 4))
         body.user = user
+        if (body.userId) { // 以 user 字段为准
+            delete body.userId
+        }
         if (body.id) {
             delete body.id
         }

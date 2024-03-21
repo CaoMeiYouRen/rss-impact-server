@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import chalk from 'chalk'
+import _ from 'lodash'
 import { TZ } from '@/app.config'
 
 dayjs.extend(utc)
@@ -19,6 +20,20 @@ dayjs.tz.setDefault(TZ)
  */
 export async function sleep(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time))
+}
+
+/**
+ * 随机延时一段时间
+ *
+ * @author CaoMeiYouRen
+ * @date 2022-06-04
+ * @export
+ * @param [min=1000] 延时最小值
+ * @param [max=10000] 延时最大值
+ */
+export async function randomSleep(min = 1000, max = 10000) {
+    const time = _.random(min, max, false)
+    await sleep(time)
 }
 
 /**
@@ -60,4 +75,51 @@ export function getAccessToken() {
 
 export function isImageUrl(img: string) {
     return /\.(jpe?g|png|gif|webp|bmp|svg)$/i.test(img)
+}
+
+/**
+ * 递归删除对象中指定的属性
+ * @author CaoMeiYouRen
+ * @date 2022-09-27
+ * @export
+ * @param obj 原始对象
+ * @param props 需要删除的属性名称列表
+ */
+export function deepOmit(obj: any, props: string[]) {
+    if (typeof obj !== 'object' || obj === null) { // 类型不为object的或类型为null的都直接返回
+        return obj
+    }
+    props.forEach((key) => { // 排除当前层级的 props
+        delete obj[key]
+    })
+    const keys = Object.keys(obj) // 数组或对象
+    for (let i = 0; i < keys.length; i++) { // 遍历所有key
+        const key = keys[i]
+        obj[key] = deepOmit(obj[key], props)// 递归
+    }
+    return obj
+}
+
+/**
+ * 深度处理冗余的空白字符串
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-03-21
+ * @export
+ * @param obj
+ */
+export function deepTrim(obj: any) {
+    if (typeof obj !== 'object' || obj === null) { // 类型不为object的或类型为null的都直接返回
+        return obj
+    }
+    const keys = Object.keys(obj) // 数组或对象
+    for (let i = 0; i < keys.length; i++) { // 遍历所有key
+        const key = keys[i]
+        if (typeof obj[key] === 'string') {
+            obj[key] = obj[key].trim() // 移除空白字符串
+        } else {
+            obj[key] = deepTrim(obj[key]) // 递归
+        }
+    }
+    return obj
 }
