@@ -1,4 +1,4 @@
-import { Entity, Column, Index, OneToMany } from 'typeorm'
+import { Entity, Column, Index, ManyToOne } from 'typeorm'
 import { Item, Enclosure } from 'rss-parser'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsArray, IsDateString, IsNotEmpty, IsNumber, IsObject, IsUrl, Length, Max, Min, ValidateIf, ValidateNested } from 'class-validator'
@@ -152,6 +152,6 @@ export class Article extends AclBase implements Item {
     feedId: number
 
     @ApiProperty({ description: '订阅源', example: [], type: () => Feed })
-    @OneToMany(() => Feed, (feed) => feed.articles)
+    @ManyToOne(() => Feed, (feed) => feed.articles)
     feed: Feed
 }

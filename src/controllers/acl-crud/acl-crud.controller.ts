@@ -107,8 +107,10 @@ export class AclCrudController {
             },
             skip,
             take: limit,
-            order: sort,
-            relations: merge(relations, this?.__OPTIONS__?.relations), // uniq([...relations, ...this?.__OPTIONS__?.relations || []]),
+            order: merge({
+                createdAt: 'DESC',
+            }, this?.__OPTIONS__?.order, sort),
+            relations: merge(this?.__OPTIONS__?.relations, relations), // uniq([...relations, ...this?.__OPTIONS__?.relations || []]),
         })
         return {
             total,

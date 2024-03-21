@@ -16,6 +16,9 @@ import { Article } from '@/db/models/article.entity'
         },
     },
     relations: ['feed'],
+    order: {
+        publishDate: 'DESC',
+    },
 })
 @ApiTags('article')
 @Controller('article')

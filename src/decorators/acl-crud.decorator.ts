@@ -2,7 +2,7 @@ import { get, merge, union, upperFirst } from 'lodash'
 import { PARAMTYPES_METADATA } from '@nestjs/common/constants'
 import dayjs from 'dayjs'
 import { Logger } from '@nestjs/common'
-import { getMetadataArgsStorage } from 'typeorm'
+import { FindOneOptions, FindOptionsOrder, getMetadataArgsStorage } from 'typeorm'
 import { getMetadataStorage } from 'class-validator'
 import { AvueCrudConfig, CrudOptionsWithModel, Field } from '@/interfaces/avue'
 import { AclCrudController } from '@/controllers/acl-crud/acl-crud.controller'
@@ -21,8 +21,9 @@ const CRUD_ROUTES = {
 }
 const allMethods = Object.values(CRUD_ROUTES)
 
-export interface AclOptions extends CrudOptionsWithModel {
+export interface AclOptions extends CrudOptionsWithModel, FindOneOptions {
     relations?: string[]
+    order?: FindOptionsOrder<any>
 }
 
 function cloneDecorators(from: unknown, to: unknown) {

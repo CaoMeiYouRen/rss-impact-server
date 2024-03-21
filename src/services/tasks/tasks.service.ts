@@ -39,6 +39,7 @@ export class TasksService implements OnApplicationBootstrap {
             const feeds = await this.getAllFeeds()
             feeds.forEach((feed) => {
                 this.enableFeedTask(feed)
+                this.getRssContent(feed)
             })
         } catch (error) {
             this.logger.error(error)
@@ -52,24 +53,27 @@ export class TasksService implements OnApplicationBootstrap {
      * @date 2024-03-21
      * @param feed
      */
-    async getRssContent(feed: Feed) {
+    private async getRssContent(feed: Feed) {
         const fid = feed.id
         const uid = feed.userId
         const url = feed.url
         const rss = await rssParserURL(url)
         if (Array.isArray(rss?.items)) {
             // 根据 guid 去重复 | 每个 user 的 不重复
+            const guids = rss.items.map((e) => e.guid)
             const existingArticles = await this.articleRepository.find({
                 where: {
-                    guid: In([rss.items.map((e) => e.guid)]),
+                    guid: In(guids),
                     userId: uid,
                 },
+                select: ['guid'],
             })
             const diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid).map((item) => {
                 const article = rssItemToArticle(item)
                 article.feedId = fid
                 article.userId = uid
-                return article
+                article.author = article.author || rss.author
+                return this.articleRepository.create(article)
             })
             await this.articleRepository.save(diffArticles)
         }

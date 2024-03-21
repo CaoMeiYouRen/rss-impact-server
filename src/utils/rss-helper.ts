@@ -43,7 +43,12 @@ export async function rssParserString(xml: string) {
  * @param rss
  */
 export function rssNormalize(rss: Record<string, any>) {
-    return deepTrim(rss) as (Record<string, any> & Output<Record<string, any>>)
+    const _rss = deepTrim(rss) as (Record<string, any> & Output<Record<string, any>>)
+    _rss.items = _rss.items.map((e) => {
+        e.guid = e.guid || e.link || e.id || uuid()
+        return e
+    })
+    return _rss
 }
 
 /**
@@ -56,7 +61,7 @@ export function rssNormalize(rss: Record<string, any>) {
  */
 export function rssItemToArticle(item: Record<string, any> & Item) {
     const article = new Article()
-    article.guid = item.guid || item.link || uuid()
+    article.guid = item.guid || item.link || item.id || uuid()
     article.link = item.link
     article.title = item.title
     article.content = item['content:encoded'] || item.content
