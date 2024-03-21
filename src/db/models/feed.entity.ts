@@ -48,7 +48,7 @@ export class Feed extends AclBase {
     @ApiProperty({ description: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
     @IsUrl({}, { message: '封面Url必须为标准URL格式' })
     @Length(0, 2048, { message: '封面Url最大不能超过 $constraint2 个字符！' })
-    @ValidateIf((o) => ['string', 'undefined'].includes(typeof o.imageUrl))
+    @ValidateIf((o) => ['string'].includes(typeof o.imageUrl))
     @Column({
         length: 2048,
         nullable: true,

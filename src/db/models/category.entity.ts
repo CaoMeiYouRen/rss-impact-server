@@ -26,7 +26,7 @@ export class Category extends AclBase {
 
     @ApiProperty({ description: '分组简介', example: '分组A' })
     @Length(0, 2048, { message: '简介的长度必须在 $constraint1 到 $constraint2 个字符！' })
-    @ValidateIf((o) => ['string', 'undefined'].includes(typeof o.description))
+    @ValidateIf((o) => ['string'].includes(typeof o.description))
     @Column({
         nullable: true,
         length: 4096,
