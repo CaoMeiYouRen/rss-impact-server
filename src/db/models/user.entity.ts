@@ -18,7 +18,7 @@ export class User extends Base {
     //     }
     // }
 
-    @ApiProperty({ description: '用户名', example: 'admin' })
+    @ApiProperty({ title: '用户名', example: 'admin' })
     @IsNotEmpty()
     @Length(0, 128)
     @Index('USER_USERNAME_INDEX', { unique: true })
@@ -31,7 +31,7 @@ export class User extends Base {
     @SetAclCrudField({
         type: 'password',
     })
-    @ApiProperty({ description: '密码', example: '123456' })
+    @ApiProperty({ title: '密码', example: '123456' })
     @IsNotEmpty()
     @Length(0, 128)
     @Column({
@@ -48,7 +48,7 @@ export class User extends Base {
         }
     }
 
-    @ApiProperty({ description: '邮箱', example: 'admin@example.com' })
+    @ApiProperty({ title: '邮箱', example: 'admin@example.com' })
     @IsNotEmpty()
     @IsEmail({})
     @Length(0, 128)
@@ -59,7 +59,7 @@ export class User extends Base {
     })
     email: string
 
-    @ApiProperty({ description: '角色', example: [Role.admin] })
+    @ApiProperty({ title: '角色', example: [Role.admin] })
     @IsNotEmpty()
     @Length(0, 256, { each: true })
     @Column({

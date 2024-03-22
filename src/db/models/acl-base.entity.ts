@@ -9,13 +9,13 @@ export class AclBase extends Base {
 
     // acl
 
-    @ApiProperty({ description: '所属用户ID', example: 1 })
+    @ApiProperty({ title: '所属用户ID', example: 1 })
     @IsId()
     @ValidateIf((o) => typeof o.userId !== 'undefined')
     @Column({ nullable: true })
     userId: number
 
-    @ApiProperty({ description: '所属用户', example: 1, type: () => User })
+    @ApiProperty({ title: '所属用户', example: 1, type: () => User })
     @ManyToOne(() => User)
     user: User
 

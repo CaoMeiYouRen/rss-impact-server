@@ -70,6 +70,10 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
         let value: any = options?.default
         let extra: any = {}
         const label = swaggerOption?.title || swaggerOption?.description || upperFirst(prop)
+        const tip = swaggerOption?.description
+        if (tip) {
+            extra.tip = tip
+        }
         // console.log(swaggerOption)
         switch (propType) {
             case 'String': {
@@ -164,7 +168,7 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
                 extra.alone = true // 单个超链接/图片
             }
         }
-        if (Array.isArray(setAclCrudFieldOption?.dicData)) { // 如果有 dicData，就设置为 select
+        if (setAclCrudFieldOption?.dicUrl || Array.isArray(setAclCrudFieldOption?.dicData)) { // 如果有 dicData 或 dicUrl，就设置为 select
             extra.type = 'select'
         }
         return {

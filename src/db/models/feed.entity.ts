@@ -1,9 +1,10 @@
-import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm'
+import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsBoolean, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
 import { Article } from './article.entity'
+import { Hook } from './hook.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
@@ -19,7 +20,7 @@ import { RssLabelList } from '@/constant/rss-cron'
 @Entity()
 export class Feed extends AclBase {
 
-    @ApiProperty({ description: 'URL', example: 'https://blog.cmyr.ltd/atom.xml' })
+    @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/atom.xml' })
     @IsNotEmpty({ message: '$property 不能为空' })
     @IsUrl({}, { message: '$property 必须为标准URL格式' })
     @Length(0, 2048, { message: '$property 的长度必须在 $constraint1 到 $constraint2 个字符！' })
@@ -32,7 +33,7 @@ export class Feed extends AclBase {
     })
     url: string
 
-    @ApiProperty({ description: '标题', example: '这是一个标题' })
+    @ApiProperty({ title: '标题', example: '这是一个标题' })
     @IsNotEmpty({ message: '标题不能为空' })
     @Length(0, 256, { message: '标题最大不能超过 $constraint2 个字符' })
     @Column({
@@ -40,7 +41,7 @@ export class Feed extends AclBase {
     })
     title: string
 
-    @ApiProperty({ description: '简介', example: '这是一段简介' })
+    @ApiProperty({ title: '简介', example: '这是一段简介' })
     @IsNotEmpty({ message: '简介不能为空' })
     @Length(0, 4096, { message: '简介最大不能超过 $constraint2 个字符' })
     @Column({
@@ -48,7 +49,7 @@ export class Feed extends AclBase {
     })
     description: string
 
-    @ApiProperty({ description: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
+    @ApiProperty({ title: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
     @IsUrl({}, { message: '封面Url必须为标准URL格式' })
     @Length(0, 2048, { message: '封面Url最大不能超过 $constraint2 个字符！' })
     @ValidateIf((o) => ['string'].includes(typeof o.imageUrl))
@@ -61,7 +62,7 @@ export class Feed extends AclBase {
     @SetAclCrudField({
         dicData: RssLabelList,
     })
-    @ApiProperty({ description: 'Cron', example: 'EVERY_10_MINUTES' })
+    @ApiProperty({ title: 'Cron', example: 'EVERY_10_MINUTES' })
     @Length(0, 256, { message: 'Cron最大不能超过256个字符' })
     @Column({
         length: 256,
@@ -69,32 +70,37 @@ export class Feed extends AclBase {
     })
     cron: string
 
-    // @ApiProperty({ description: '是否活跃', example: true })
+    // @ApiProperty({ title: '是否活跃', example: true })
     // @IsBoolean({ message: '是否活跃必须为 Boolean' })
     // @Column({
     //     default: true,
     // })
     // isActive: boolean
 
-    @ApiProperty({ description: '是否启用', example: true })
+    @ApiProperty({ title: '是否启用', example: true })
     @IsBoolean({ message: '是否启用必须为 Boolean' })
     @Column({
         default: true,
     })
     isEnabled: boolean
 
-    @ApiProperty({ description: '分组ID', example: 1 })
+    @ApiProperty({ title: '分组ID', example: 1 })
     @IsId()
     @Column({ nullable: true })
     categoryId: number
 
-    @ApiProperty({ description: '分组', example: null, type: () => Category })
+    @ApiProperty({ title: '分组', example: null, type: () => Category })
     @ManyToOne(() => Category, (category) => category.feeds)
     category: Category
 
-    @ApiProperty({ description: '文章列表', example: [], type: () => [Article] })
+    @ApiProperty({ title: '文章列表', example: [], type: () => [Article] })
     @OneToMany(() => Article, (article) => article.feed)
     articles: Article[]
+
+    @ApiProperty({ title: 'Hook列表', example: [], type: () => [Hook] })
+    @ManyToMany(() => Hook, (hook) => hook.feeds)
+    @JoinTable()
+    hooks: Hook[]
 }
 
 export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] as const) { }

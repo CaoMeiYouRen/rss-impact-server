@@ -5,10 +5,11 @@ import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
 import { Category } from './models/category.entity'
 import { Article } from './models/article.entity'
+import { Hook } from './models/hook.entity'
 
 export const DATABASE_PATH = path.join(__dirname, '../../data/database.sqlite')
 
-const entities = [User, Feed, Category, Article]
+const entities = [User, Feed, Category, Article, Hook]
 
 const repositories = TypeOrmModule.forFeature(entities)
 

@@ -39,7 +39,7 @@ export class TasksService implements OnApplicationBootstrap {
             const feeds = await this.getAllFeeds()
             feeds.forEach((feed) => {
                 this.enableFeedTask(feed)
-                this.getRssContent(feed)
+                // this.getRssContent(feed)
             })
         } catch (error) {
             this.logger.error(error)
@@ -76,6 +76,7 @@ export class TasksService implements OnApplicationBootstrap {
                 return this.articleRepository.create(article)
             })
             await this.articleRepository.save(diffArticles)
+            // TODO。此处要触发 Hook
         }
     }
 

@@ -14,6 +14,7 @@ import { FeedController } from './controllers/feed/feed.controller'
 import { CategoryController } from './controllers/category/category.controller'
 import { ArticleController } from './controllers/article/article.controller'
 import { TasksService } from './services/tasks/tasks.service'
+import { HookController } from './controllers/hook/hook.controller'
 
 @Global()
 @Module({
@@ -33,6 +34,7 @@ import { TasksService } from './services/tasks/tasks.service'
         FeedController,
         CategoryController,
         ArticleController,
+        HookController,
     ],
     providers: [
         AppService,
