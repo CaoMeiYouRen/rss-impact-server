@@ -77,7 +77,7 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
         // console.log(swaggerOption)
         switch (propType) {
             case 'String': {
-                const lengthOption = validatorOptions.find((e) => e.name === 'isLength')
+                const lengthOption = validatorOptions.find((e) => ['isLength', 'jsonStringLength'].includes(e.name))
                 type = 'input'
                 value = typeof value === 'undefined' ? '' : value
                 extra = {

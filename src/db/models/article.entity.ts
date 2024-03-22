@@ -7,7 +7,7 @@ import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
-import { JsonStringLengthRange } from '@/decorators/json-string-length-range.decorator'
+import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 
 class EnclosureImpl implements Enclosure {
     @IsUrl()
@@ -124,7 +124,7 @@ export class Article extends AclBase implements Item {
      * 分类列表，和 RSS 的分组不是同一个
      */
     @ApiProperty({ title: '分类列表', example: ['tag1', 'tag2'] })
-    @JsonStringLengthRange(0, 512, { each: true })
+    @JsonStringLength(0, 512, { each: true })
     @IsArray()
     @ValidateIf((o) => typeof o.categories !== 'undefined')
     @Column({
@@ -137,7 +137,7 @@ export class Article extends AclBase implements Item {
     /** 附件 */
     @ApiProperty({ title: '附件', example: { url: '', length: '', type: '' }, type: () => EnclosureImpl })
     @Type(() => EnclosureImpl)
-    @JsonStringLengthRange(0, 1024, { each: true })
+    @JsonStringLength(0, 1024, { each: true })
     @ValidateNested()
     @IsObject()
     @ValidateIf((o) => typeof o.enclosure !== 'undefined')

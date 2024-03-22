@@ -4,7 +4,7 @@ import { IsBoolean, IsObject, Length } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { HookType } from '@/constant/hook'
-import { JsonStringLengthRange } from '@/decorators/json-string-length-range.decorator'
+import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 
 @Entity()
 export class Hook extends AclBase {
@@ -25,7 +25,7 @@ export class Hook extends AclBase {
     type: HookType
 
     @ApiProperty({ title: '配置', example: {} })
-    @JsonStringLengthRange(0, 2048)
+    @JsonStringLength(0, 2048)
     @IsObject()
     @Column({
         type: 'simple-json',
@@ -34,7 +34,7 @@ export class Hook extends AclBase {
     config: any
 
     @ApiProperty({ title: '过滤条件', example: {} })
-    @JsonStringLengthRange(0, 2048)
+    @JsonStringLength(0, 2048)
     @IsObject()
     @Column({
         type: 'simple-json',

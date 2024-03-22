@@ -10,10 +10,10 @@ import { registerDecorator, ValidationOptions, ValidationArguments } from 'class
  * @param [max]
  * @param [validationOptions]
  */
-export function JsonStringLengthRange(min?: number, max?: number, validationOptions?: ValidationOptions) {
+export function JsonStringLength(min?: number, max?: number, validationOptions?: ValidationOptions) {
     return function (object: unknown, propertyName: string) {
         registerDecorator({
-            name: 'jsonStringLengthRange',
+            name: 'jsonStringLength',
             target: object?.constructor,
             propertyName,
             constraints: [min, max],
