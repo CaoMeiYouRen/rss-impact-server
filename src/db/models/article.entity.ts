@@ -142,7 +142,7 @@ export class Article extends AclBase implements Item {
     })
     categories?: string[]
 
-    /** 附件 */
+    /** 附件 enclosure/mediaContent */
     @ApiProperty({ title: '附件', type: () => EnclosureImpl })
     @Type(() => EnclosureImpl)
     @ValidateNested()

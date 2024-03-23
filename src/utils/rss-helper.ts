@@ -34,6 +34,11 @@ export async function rssParserString(xml: string) {
     return rssNormalize(rss)
 }
 
+function formatGuid(e: any) {
+    e.guid = e.link || e.guid || e.id || uuid()
+    return e
+}
+
 /**
  * RSS 规范化
  *
@@ -44,10 +49,7 @@ export async function rssParserString(xml: string) {
  */
 export function rssNormalize(rss: Record<string, any>) {
     const _rss = deepTrim(rss) as (Record<string, any> & Output<Record<string, any>>)
-    _rss.items = _rss.items.map((e) => {
-        e.guid = e.guid || e.link || e.id || uuid()
-        return e
-    })
+    _rss.items = _rss.items.map((e) => formatGuid(e))
     return _rss
 }
 
@@ -61,7 +63,7 @@ export function rssNormalize(rss: Record<string, any>) {
  */
 export function rssItemToArticle(item: Record<string, any> & Item) {
     const article = new Article()
-    article.guid = item.guid || item.link || item.id || uuid()
+    article.guid = formatGuid(item)
     article.link = item.link
     article.title = item.title
     article.content = item['content:encoded'] || item.content
@@ -71,7 +73,7 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     article.author = item.author || item.creator || item['dc:creator']
     article.contentSnippet = item['content:encodedSnippet'] || item.contentSnippet
     article.summary = item.summary
-    article.categories = item.categories // 如果是 atom 格式，会丢失 categories 字段
-    article.enclosure = item.enclosure
+    article.categories = item.categories
+    article.enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
     return article
 }

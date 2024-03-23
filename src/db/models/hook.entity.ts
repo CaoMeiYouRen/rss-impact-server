@@ -70,6 +70,7 @@ export class Hook extends AclBase {
     @Column({
         type: 'simple-json',
         length: 2048,
+        default: '{}',
     })
     config: HookConfig
 
@@ -78,13 +79,13 @@ export class Hook extends AclBase {
     @ValidateNested()
     @JsonStringLength(0, 2048)
     @IsObject()
-    @ValidateIf((o) => typeof o.filter !== 'undefined')
+    // @ValidateIf((o) => typeof o.filter !== 'undefined')
     @Column({
         type: 'simple-json',
         length: 2048,
-        nullable: true,
+        default: '{}',
     })
-    filter?: Filter
+    filter: Filter
 
     @ApiProperty({ title: '反转模式', description: '如果服务可访问，则认为是故障', example: false })
     @IsBoolean()

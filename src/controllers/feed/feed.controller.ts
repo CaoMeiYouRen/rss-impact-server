@@ -1,13 +1,12 @@
 import { Body, Controller, Logger, Post, Put } from '@nestjs/common'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
-import { In, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { CreateFeed, Feed, UpdateFeed } from '@/db/models/feed.entity'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
-import { Hook } from '@/db/models/hook.entity'
 import { HttpError } from '@/models/http-error'
 import { checkAuth } from '@/utils/check'
 
@@ -29,7 +28,6 @@ export class FeedController {
     private readonly logger = new Logger(FeedController.name)
 
     constructor(@InjectRepository(Feed) private readonly repository: Repository<Feed>,
-        @InjectRepository(Hook) private readonly hookRepository: Repository<Hook>,
     ) {
     }
 
@@ -42,13 +40,6 @@ export class FeedController {
             delete body.user
         }
         const feed = this.repository.create(body)
-        const hooks = await this.hookRepository.find({
-            where: {
-                id: In(body.hookIds), // 有可能出现不存在于表中的 hookId In(feed.hookIds)
-            },
-            select: ['id'],
-        })
-        feed.hooks = hooks
         const newDocument = await this.repository.save(feed)
 
         return newDocument
@@ -75,13 +66,6 @@ export class FeedController {
             throw new HttpError(404, '该 Id 对应的资源不存在！')
         }
         const feed = this.repository.create(body)
-        const hooks = await this.hookRepository.find({
-            where: {
-                id: In(body.hookIds), // 有可能出现不存在于表中的 hookId
-            },
-            select: ['id'],
-        })
-        feed.hooks = hooks
         const updatedDocument = await this.repository.save(feed)
         return updatedDocument
     }
