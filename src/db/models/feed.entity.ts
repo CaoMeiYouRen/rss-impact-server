@@ -1,6 +1,7 @@
 import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsBoolean, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
+import { IsArray, IsBoolean, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
+import { Expose } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
 import { Article } from './article.entity'
@@ -89,13 +90,18 @@ export class Feed extends AclBase {
     @Column({ nullable: true })
     categoryId: number
 
-    @ApiProperty({ title: '分组', example: null, type: () => Category })
+    @ApiProperty({ title: '分组', type: () => Category })
     @ManyToOne(() => Category, (category) => category.feeds)
     category: Category
 
     @ApiProperty({ title: '文章列表', example: [], type: () => [Article] })
     @OneToMany(() => Article, (article) => article.feed)
     articles: Article[]
+
+    @ApiProperty({ title: 'HookID 列表', example: [1] })
+    @IsId({ each: true })
+    @IsArray()
+    hookIds: number[]
 
     @ApiProperty({ title: 'Hook列表', example: [], type: () => [Hook] })
     @ManyToMany(() => Hook, (hook) => hook.feeds)

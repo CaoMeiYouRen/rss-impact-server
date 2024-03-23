@@ -1,10 +1,50 @@
 import { Column, Entity, ManyToMany } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsObject, Length } from 'class-validator'
+import { IsArray, IsBoolean, IsNumber, IsObject, IsString, Length, Max, Min, ValidateIf, ValidateNested } from 'class-validator'
+import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
-import { HookType } from '@/constant/hook'
+import { HookConfig, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
+
+export class Filter {
+
+    @ApiProperty({ title: '条数限制', example: 20 })
+    @IsNumber()
+    @Min(0)
+    @Max(Number.MAX_SAFE_INTEGER)
+    @ValidateIf((o) => typeof o.length !== 'undefined')
+    limit?: number
+
+    @ApiProperty({ title: '过滤标题', example: '标题1|标题2' })
+    @Length(0, 256)
+    @ValidateIf((o) => typeof o.title !== 'undefined')
+    title?: string
+
+    @ApiProperty({ title: '过滤描述', example: '描述1|描述2' })
+    @Length(0, 1024)
+    @ValidateIf((o) => typeof o.title !== 'undefined')
+    description?: string
+
+    @ApiProperty({ title: '过滤作者', example: 'CaoMeiYouRen' })
+    @Length(0, 128)
+    @ValidateIf((o) => typeof o.author !== 'undefined')
+    author?: string
+
+    @ApiProperty({ title: '过滤分类', example: ['tag1', 'tag2'] })
+    @JsonStringLength(0, 512)
+    @IsArray()
+    @IsString({ each: true })
+    @ValidateIf((o) => typeof o.categories !== 'undefined')
+    categories?: string[]
+
+    @ApiProperty({ title: '过滤时间(秒)', example: 3600 })
+    @IsNumber()
+    @Min(0)
+    @Max(Number.MAX_SAFE_INTEGER)
+    @ValidateIf((o) => typeof o.length !== 'undefined')
+    time?: number
+}
 
 @Entity()
 export class Hook extends AclBase {
@@ -24,24 +64,27 @@ export class Hook extends AclBase {
     })
     type: HookType
 
-    @ApiProperty({ title: '配置', example: {} })
+    @ApiProperty({ title: '配置', example: {}, type: () => Object })
     @JsonStringLength(0, 2048)
     @IsObject()
     @Column({
         type: 'simple-json',
         length: 2048,
     })
-    config: any
+    config: HookConfig
 
-    @ApiProperty({ title: '过滤条件', example: {} })
+    @ApiProperty({ title: '过滤条件', type: () => Filter })
+    @Type(() => Filter)
+    @ValidateNested()
     @JsonStringLength(0, 2048)
     @IsObject()
+    @ValidateIf((o) => typeof o.filter !== 'undefined')
     @Column({
         type: 'simple-json',
         length: 2048,
         nullable: true,
     })
-    filter?: any
+    filter?: Filter
 
     @ApiProperty({ title: '反转模式', description: '如果服务可访问，则认为是故障', example: false })
     @IsBoolean()

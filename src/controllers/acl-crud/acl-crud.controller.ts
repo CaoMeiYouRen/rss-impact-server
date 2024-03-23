@@ -185,14 +185,8 @@ export class AclCrudController {
         if (!document) {
             throw new HttpError(404, '该 Id 对应的资源不存在！')
         }
-        // try {
-        await this.repository.update(id, body)
-        const updatedDocument = await this.repository.findOne({ where: { id } })
+        const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
         return updatedDocument
-        // } catch (error) {
-        //     this.logger.error(error)
-        //     throw new HttpError(500, '更新记录失败')
-        // }
     }
 
     @ApiOperation({ summary: '删除记录' })

@@ -1,3 +1,6 @@
+import { PushAllInOneConfig } from '@/interfaces/push-type'
+import { AjaxConfig } from '@/utils/ajax'
+
 export const HookMap = {
     notification: '推送通知',
     webhook: 'Webhook',
@@ -11,3 +14,51 @@ export const HookList = Object.entries(HookMap).map(([value, label]) => ({
 }))
 
 export type HookType = keyof typeof HookMap
+
+export type NotificationConfig = PushAllInOneConfig
+
+export type WebhookConfig = AjaxConfig
+
+export type DownloadConfig = {
+    /**
+     * 要下载的文件的后缀名 逗号分割 .jpg,.png
+     */
+    suffixes: string
+    /**
+     * 下载到的路径
+     */
+    dirPath: string
+}
+
+export type BitTorrentConfig = {
+    /**
+     * BT下载器类型，目前仅支持 qBittorrent
+     */
+    type: 'qBittorrent'
+    /**
+     * 服务器地址
+     */
+    host: string
+    /**
+     * 端口
+     */
+    port: number
+    /**
+     * 用户名
+     */
+    username: string
+    /**
+     * 密码
+     */
+    password: string
+    /**
+     * 下载路径
+     */
+    downloadPath: string
+    /**
+     * 使用 HTTPS 而不是 HTTP
+     */
+    useHttps: boolean
+}
+
+export type HookConfig = NotificationConfig | WebhookConfig | DownloadConfig | BitTorrentConfig

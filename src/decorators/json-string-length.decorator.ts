@@ -20,7 +20,7 @@ export function JsonStringLength(min?: number, max?: number, validationOptions?:
             options: validationOptions,
             validator: {
                 validate(value: any, args: ValidationArguments) {
-                    const [relatedMin, relatedMax] = args.constraints
+                    const [relatedMin, relatedMax] = args.constraints || []
                     const stringifiedValue = JSON.stringify(value)
                     const length = stringifiedValue.length
                     if (

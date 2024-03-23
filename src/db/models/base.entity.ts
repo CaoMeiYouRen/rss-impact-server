@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { ValidateIf } from 'class-validator'
 import { IsId } from '@/decorators/is-id.decorator'
 
-export class Base {
+export abstract class Base {
 
     @ApiProperty({ title: 'ID', example: 1 })
     @PrimaryGeneratedColumn()

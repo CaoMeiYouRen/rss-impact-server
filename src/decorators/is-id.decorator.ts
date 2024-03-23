@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common'
-import { isInt, IsInt, max, Max, min, Min } from 'class-validator'
+import { isInt, IsInt, max, Max, min, Min, ValidationOptions } from 'class-validator'
 
 /**
  * 验证是否为整数 ID （integer 类型）。
@@ -8,11 +8,11 @@ import { isInt, IsInt, max, Max, min, Min } from 'class-validator'
  * @date 2024-03-20
  * @export
  */
-export function IsId() {
+export function IsId(validationOptions?: ValidationOptions) {
     return applyDecorators(
-        IsInt(),
-        Min(1),
-        Max(Number.MAX_SAFE_INTEGER),
+        IsInt(validationOptions),
+        Min(1, validationOptions),
+        Max(Number.MAX_SAFE_INTEGER, validationOptions),
     )
 }
 
