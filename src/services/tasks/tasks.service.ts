@@ -1,15 +1,26 @@
+import os from 'os'
+import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, In } from 'typeorm'
 import { CronJob } from 'cron'
-import { differenceWith } from 'lodash'
+import { differenceWith, flattenDeep } from 'lodash'
+import XRegExp from 'xregexp'
+import dayjs from 'dayjs'
+import fs from 'fs-extra'
+import pLimit from 'p-limit'
+import md5 from 'md5'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, TZ } from '@/app.config'
-import { randomSleep } from '@/utils/helper'
+import { getAllUrls, randomSleep, download } from '@/utils/helper'
 import { rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
+import { Hook } from '@/db/models/hook.entity'
+import { BitTorrentConfig, DownloadConfig, NotificationConfig, WebhookConfig } from '@/constant/hook'
+import { ajax } from '@/utils/ajax'
+import { Resource } from '@/db/models/resource.entiy'
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -20,6 +31,8 @@ export class TasksService implements OnApplicationBootstrap {
         private scheduler: SchedulerRegistry,
         @InjectRepository(Feed) private readonly feedRepository: Repository<Feed>,
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
+        @InjectRepository(Hook) private readonly hookRepository: Repository<Hook>,
+        @InjectRepository(Resource) private readonly resourceRepository: Repository<Resource>,
     ) { }
 
     onApplicationBootstrap() {
@@ -31,6 +44,7 @@ export class TasksService implements OnApplicationBootstrap {
             where: {
                 isEnabled: true,
             },
+            // relations: ['hooks'],
         })
     }
 
@@ -75,8 +89,146 @@ export class TasksService implements OnApplicationBootstrap {
                 article.author = article.author || rss.author
                 return this.articleRepository.create(article)
             })
-            await this.articleRepository.save(diffArticles)
-            // TODO。此处要触发 Hook
+
+            if (diffArticles?.length) {
+                const newArticles = await this.articleRepository.save(diffArticles)
+                await this.triggerHooks(feed, newArticles)
+            }
+        }
+    }
+
+    /**
+     * 触发 Hooks
+     *
+     * @author CaoMeiYouRen
+     * @date 2024-03-25
+     * @private
+     * @param feed
+     * @param articles
+     */
+    private async triggerHooks(feed: Feed, articles: Article[]) {
+        const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['hooks'], select: ['hooks'] }))?.hooks // 拉取最新的 hook 配置
+        if (!hooks?.length || !articles?.length) {
+            return
+        }
+        // const uid = feed.userId
+        const filterFields = ['title', 'summary', 'author', 'categories']
+        try {
+            const downloadLimit = pLimit(os.cpus().length) // 下载并发数
+            await Promise.allSettled(hooks
+                .map(async (hook) => {
+                    const filteredArticles = articles
+                        .filter((article) => {
+                            if (!article.publishDate || !hook.filter.time) { // 没有 publishDate/filter.time 不受过滤时间限制
+                                return true
+                            }
+                            return dayjs().diff(article.publishDate, 'second') <= hook.filter.time
+                        })
+                        // TODO 考虑增加 filterout 功能
+                        .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
+                            if (!hook.filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+                                return true
+                            }
+                            if (field === 'categories') {
+                                return article[field].some((category) => XRegExp(hook.filter[field], 'ig').test(category), // 有一个 category 对的上就为 true
+                                )
+                            }
+                            return XRegExp(hook.filter[field], 'ig').test(article[field])
+                        }),
+                        )
+                        .slice(0, hook.filter.limit || 20) // 默认最多 20 条
+                    if (!filteredArticles?.length) {
+                        return
+                    }
+                    switch (hook.type) {
+                        case 'notification': {
+                            // push all in one
+                            const config = hook.config as NotificationConfig
+                            return
+                        }
+                        case 'webhook': {
+                            const config = hook.config as WebhookConfig
+                            await ajax({
+                                ...config,
+                                data: filteredArticles as any,
+                            })
+                            // TODO 记录 webhook 执行结果
+                            return
+                        }
+                        case 'download': {
+                            const config = hook.config as DownloadConfig
+                            const suffixes = config.suffixes.split(',').map((e) => e.trim())
+                            const skipHashes = config.skipHashes.split(',').map((e) => e.trim())
+                            const { dirPath, timeout = 60 } = config
+                            const allUrls = flattenDeep(filteredArticles.map((article) => getAllUrls(article.content))).filter((url) => suffixes.some((suffix) => url.toLowerCase().endsWith(suffix.toLowerCase())), // 匹配后缀名，不区分大小写
+                            )
+                            if (!allUrls?.length) {
+                                return
+                            }
+                            if (!await fs.pathExists(dirPath)) {
+                                await fs.mkdir(dirPath)
+                            }
+                            // TODO 下载
+                            await Promise.allSettled(allUrls.map((url) => downloadLimit(async () => {
+                                const ext = path.extname(url)
+                                const hashname = md5(url)
+                                const filename = hashname + ext
+                                const filepath = path.resolve(path.join(dirPath, filename))
+                                this.logger.log(`正在下载文件: ${filename}`)
+                                if (await fs.pathExists(filepath)) { // 如果已经下载了，则跳过
+                                    // this.logger.log(`文件 ${filename} 已存在，跳过下载`)
+                                    return
+                                }
+                                // 如果在数据库里
+                                const resource = await this.resourceRepository.findOne({
+                                    where: { url },
+                                })
+                                if (resource) {
+                                    this.logger.log(`文件 ${filename} 已存在，跳过下载`)
+                                    return
+                                }
+                                const newResource = this.resourceRepository.create({
+                                    url,
+                                    path: filepath,
+                                    status: 'unknown',
+                                })
+                                try {
+                                    // 由于 hash 只能在下载后计算得出，所以第一次下载依旧会下载整个文件
+                                    const fileInfo = await download(url, filepath, timeout * 1000)
+                                    newResource.type = fileInfo.type
+                                    newResource.size = fileInfo.size
+                                    newResource.hash = fileInfo.hash
+                                    if (skipHashes.includes(fileInfo.hash)) {
+                                        newResource.status = 'ban'
+                                        await fs.remove(filepath) // 移除被 ban 的文件
+                                        newResource.path = ''
+                                        this.logger.log(`文件 ${filename} 在 skipHashes 内，已删除`)
+                                    } else {
+                                        newResource.status = 'success'
+                                        this.logger.log(`文件 ${filename} 下载成功`)
+                                    }
+                                } catch (error) {
+                                    newResource.status = 'fail'
+                                    this.logger.error(error)
+                                } finally {
+                                    await this.resourceRepository.save(newResource)
+                                }
+
+                            })))
+                            return
+                        }
+                        case 'bitTorrent': {
+                            const config = hook.config as BitTorrentConfig
+                            return
+                        }
+                        default:
+                            this.logger.warn('未匹配到任何类型的Hook！')
+
+                    }
+                }),
+            )
+        } catch (error) {
+            this.logger.error(error)
         }
     }
 
@@ -110,7 +262,7 @@ export class TasksService implements OnApplicationBootstrap {
                     } catch (error) {
                         this.logger.error(error)
                         // 如果出现异常就停止 该 rss
-                        await this.disableFeedTask(feed)
+                        // await this.disableFeedTask(feed)
                     }
                 },
             })

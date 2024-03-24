@@ -35,6 +35,7 @@ export async function rssParserString(xml: string) {
 }
 
 function formatGuid(e: any) {
+    // link 基本上是全局唯一的，guid 在部分情况下不唯一（freshrss 的 guid 为时间戳）
     e.guid = e.link || e.guid || e.id || uuid()
     return e
 }
@@ -63,7 +64,7 @@ export function rssNormalize(rss: Record<string, any>) {
  */
 export function rssItemToArticle(item: Record<string, any> & Item) {
     const article = new Article()
-    article.guid = formatGuid(item)
+    article.guid = formatGuid(item).guid
     article.link = item.link
     article.title = item.title
     article.content = item['content:encoded'] || item.content

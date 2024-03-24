@@ -15,6 +15,7 @@ import { CategoryController } from './controllers/category/category.controller'
 import { ArticleController } from './controllers/article/article.controller'
 import { TasksService } from './services/tasks/tasks.service'
 import { HookController } from './controllers/hook/hook.controller'
+import { ResourceController } from './controllers/resource/resource.controller'
 
 @Global()
 @Module({
@@ -35,6 +36,7 @@ import { HookController } from './controllers/hook/hook.controller'
         CategoryController,
         ArticleController,
         HookController,
+        ResourceController,
     ],
     providers: [
         AppService,

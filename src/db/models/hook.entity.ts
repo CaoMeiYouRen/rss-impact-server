@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsNumber, IsObject, IsString, Length, Max, Min, ValidateIf, ValidateNested } from 'class-validator'
+import { IsBoolean, IsNumber, IsObject, Length, Max, Min, ValidateIf, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
@@ -21,22 +21,23 @@ export class Filter {
     @ValidateIf((o) => typeof o.title !== 'undefined')
     title?: string
 
-    @ApiProperty({ title: '过滤描述', example: '描述1|描述2' })
+    @ApiProperty({ title: '过滤总结', example: '总结1|总结2' })
     @Length(0, 1024)
     @ValidateIf((o) => typeof o.title !== 'undefined')
-    description?: string
+    summary?: string
 
     @ApiProperty({ title: '过滤作者', example: 'CaoMeiYouRen' })
     @Length(0, 128)
     @ValidateIf((o) => typeof o.author !== 'undefined')
     author?: string
 
-    @ApiProperty({ title: '过滤分类', example: ['tag1', 'tag2'] })
-    @JsonStringLength(0, 512)
-    @IsArray()
-    @IsString({ each: true })
+    @ApiProperty({ title: '过滤分类', example: 'tag1|tag2' })
+    // @JsonStringLength(0, 512)
+    // @IsArray()
+    // @IsString({ each: true })
+    @Length(0, 256)
     @ValidateIf((o) => typeof o.categories !== 'undefined')
-    categories?: string[]
+    categories?: string
 
     @ApiProperty({ title: '过滤时间(秒)', example: 3600 })
     @IsNumber()

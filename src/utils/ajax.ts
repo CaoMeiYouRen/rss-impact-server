@@ -1,13 +1,14 @@
-import axios, { AxiosResponse, Method, AxiosRequestHeaders } from 'axios'
+import axios, { AxiosResponse, Method, AxiosRequestHeaders, ResponseType } from 'axios'
 
 export interface AjaxConfig {
     url: string
     query?: Record<string, unknown>
-    data?: Record<string, unknown>
+    data?: Record<string | number | symbol, unknown> | Record<string | number | symbol, unknown>[]
     method?: Method
     headers?: AxiosRequestHeaders
     timeout?: number
     baseURL?: string
+    responseType?: ResponseType
 }
 
 /**
@@ -20,7 +21,7 @@ export interface AjaxConfig {
  */
 export async function ajax<T = any>(config: AjaxConfig): Promise<AxiosResponse<T>> {
     try {
-        const { url, query = {}, data = {}, method = 'GET', headers = {}, timeout = 10000, baseURL } = config
+        const { url, query = {}, data, method = 'GET', headers = {}, timeout = 10000, baseURL, responseType } = config
         const resp = await axios(url, {
             method,
             headers,
@@ -28,6 +29,7 @@ export async function ajax<T = any>(config: AjaxConfig): Promise<AxiosResponse<T
             data,
             timeout,
             baseURL,
+            responseType,
         })
         return resp
     } catch (error) {

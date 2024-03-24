@@ -1,8 +1,13 @@
+import path from 'path'
+import crypto from 'crypto'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import chalk from 'chalk'
 import _ from 'lodash'
+import fs, { ReadStream } from 'fs-extra'
+import FileType from 'file-type'
+import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 
 dayjs.extend(utc)
@@ -122,4 +127,74 @@ export function deepTrim(obj: any) {
         }
     }
     return obj
+}
+
+type DownloadFileType = {
+    size: number
+    type: string
+    hash: string
+}
+
+export async function download(url: string, filepath: string, timeout = 60 * 1000): Promise<DownloadFileType> {
+    // TODO 处理跨域/防盗链问题
+    const resp = await ajax({
+        url,
+        timeout,
+        headers: {} as any,
+        responseType: 'stream',
+    })
+    const stream = resp.data as ReadStream
+    const { mime } = await FileType.fromStream(stream)
+    const writer = fs.createWriteStream(filepath)
+    stream.pipe(writer)
+    return new Promise<DownloadFileType>((resolve, reject) => {
+        writer.on('finish', async () => {
+            const stat = await fs.stat(filepath)
+            // const { mime } = await FileType.fromFile(filepath)
+            const hash = await getMd5ByStream(filepath)
+            resolve({
+                size: stat.size,
+                type: mime,
+                hash,
+            })
+        })
+        writer.on('error', reject)
+    })
+}
+
+/**
+ * 提取所有 src 中的 URL
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-03-24
+ * @export
+ * @param content
+ */
+export function getAllUrls(content: string): string[] {
+    const res = content.matchAll(/src="(.*?)"/g) || []
+    return [...res].map((e) => e?.[1])
+}
+
+/**
+ * 流式求 md5，避免占用内存过高
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-03-24
+ * @export
+ * @param filePath
+ */
+export function getMd5ByStream(filePath: string) {
+    return new Promise<string>((resolve, reject) => {
+        const hash = crypto.createHash('md5')
+
+        const stream = fs.createReadStream(filePath)
+
+        stream.on('error', (err) => reject(err))
+
+        stream.on('data', (chunk) => hash.update(chunk))
+
+        stream.on('end', () => {
+            resolve(hash.digest('hex'))
+        })
+    })
 }

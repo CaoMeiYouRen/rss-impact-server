@@ -15,7 +15,12 @@ export const HookList = Object.entries(HookMap).map(([value, label]) => ({
 
 export type HookType = keyof typeof HookMap
 
-export type NotificationConfig = PushAllInOneConfig
+export type NotificationConfig = PushAllInOneConfig & {
+    /**
+     * 是否合并推送
+     */
+    isMergePush: boolean
+}
 
 export type WebhookConfig = AjaxConfig
 
@@ -24,10 +29,20 @@ export type DownloadConfig = {
      * 要下载的文件的后缀名 逗号分割 .jpg,.png
      */
     suffixes: string
+
+    /**
+     * 要跳过的文件 md5 逗号分割
+     */
+    skipHashes: string
     /**
      * 下载到的路径
      */
     dirPath: string
+
+    /**
+     * 超时时间(秒)
+     */
+    timeout?: number
 }
 
 export type BitTorrentConfig = {
