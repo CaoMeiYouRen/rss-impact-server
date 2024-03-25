@@ -11,10 +11,11 @@ import dayjs from 'dayjs'
 import fs from 'fs-extra'
 import pLimit from 'p-limit'
 import md5 from 'md5'
+import FileType from 'file-type'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream } from '@/utils/helper'
 import { rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -111,7 +112,7 @@ export class TasksService implements OnApplicationBootstrap {
         if (!hooks?.length || !articles?.length) {
             return
         }
-        // const uid = feed.userId
+        const userId = feed.userId
         const filterFields = ['title', 'summary', 'author', 'categories']
         try {
             const downloadLimit = pLimit(os.cpus().length) // 下载并发数
@@ -130,8 +131,8 @@ export class TasksService implements OnApplicationBootstrap {
                                 return true
                             }
                             if (field === 'categories') {
-                                return article[field].some((category) => XRegExp(hook.filter[field], 'ig').test(category), // 有一个 category 对的上就为 true
-                                )
+                                // 有一个 category 对的上就为 true
+                                return article[field].some((category) => XRegExp(hook.filter[field], 'ig').test(category))
                             }
                             return XRegExp(hook.filter[field], 'ig').test(article[field])
                         }),
@@ -148,7 +149,7 @@ export class TasksService implements OnApplicationBootstrap {
                         }
                         case 'webhook': {
                             const config = hook.config as WebhookConfig
-                            await ajax({
+                            const resp = await ajax({
                                 ...config,
                                 data: filteredArticles as any,
                             })
@@ -157,34 +158,47 @@ export class TasksService implements OnApplicationBootstrap {
                         }
                         case 'download': {
                             const config = hook.config as DownloadConfig
-                            const suffixes = config.suffixes.split(',').map((e) => e.trim())
                             const skipHashes = config.skipHashes.split(',').map((e) => e.trim())
-                            const { dirPath, timeout = 60 } = config
-                            const allUrls = flattenDeep(filteredArticles.map((article) => getAllUrls(article.content))).filter((url) => suffixes.some((suffix) => url.toLowerCase().endsWith(suffix.toLowerCase())), // 匹配后缀名，不区分大小写
-                            )
+                            // TODO 如果下载的路径可以随意修改，似乎会引起一些问题
+                            const { suffixes, dirPath = './data/download', timeout = 60 } = config
+                            const allUrls = flattenDeep(filteredArticles
+                                .map((article) => getAllUrls(article.content)))
+                                .filter((url) => XRegExp(suffixes, 'i').test(url)) // 匹配后缀名，不区分大小写
                             if (!allUrls?.length) {
                                 return
                             }
                             if (!await fs.pathExists(dirPath)) {
                                 await fs.mkdir(dirPath)
                             }
-                            // TODO 下载
                             await Promise.allSettled(allUrls.map((url) => downloadLimit(async () => {
                                 const ext = path.extname(url)
                                 const hashname = md5(url)
                                 const filename = hashname + ext
                                 const filepath = path.resolve(path.join(dirPath, filename))
                                 this.logger.log(`正在下载文件: ${filename}`)
-                                if (await fs.pathExists(filepath)) { // 如果已经下载了，则跳过
-                                    // this.logger.log(`文件 ${filename} 已存在，跳过下载`)
-                                    return
-                                }
                                 // 如果在数据库里
                                 const resource = await this.resourceRepository.findOne({
                                     where: { url },
                                 })
                                 if (resource) {
-                                    this.logger.log(`文件 ${filename} 已存在，跳过下载`)
+                                    this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
+                                    return
+                                }
+                                if (await fs.pathExists(filepath)) { // 如果已经下载了，则跳过
+                                    this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
+                                    // 同步到数据库
+                                    const stat = await fs.stat(filepath)
+                                    const { mime } = await FileType.fromFile(filepath)
+                                    const hash = await getMd5ByStream(filepath)
+                                    const newResource = this.resourceRepository.create({
+                                        url,
+                                        path: filepath,
+                                        status: 'success',
+                                        size: stat.size,
+                                        type: mime,
+                                        hash,
+                                    })
+                                    await this.resourceRepository.save(newResource)
                                     return
                                 }
                                 const newResource = this.resourceRepository.create({

@@ -7,15 +7,17 @@ import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { Resource } from '@/db/models/resource.entiy'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
 
-@UseSession()
+// 资源管理，admin 限定
+// @UseSession()
+@UseAdmin()
 @AclCrud({
     model: Resource,
     routes: {
         create: false,
         update: false,
-        delete: {
-            decorators: [UseAdmin()],
-        },
+        // delete: {
+        //     decorators: [UseAdmin()],
+        // },
     },
     config: {
         option: {

@@ -144,13 +144,13 @@ export async function download(url: string, filepath: string, timeout = 60 * 100
         responseType: 'stream',
     })
     const stream = resp.data as ReadStream
-    const { mime } = await FileType.fromStream(stream)
+    // const { mime } = await FileType.fromStream(stream)
     const writer = fs.createWriteStream(filepath)
     stream.pipe(writer)
     return new Promise<DownloadFileType>((resolve, reject) => {
         writer.on('finish', async () => {
             const stat = await fs.stat(filepath)
-            // const { mime } = await FileType.fromFile(filepath)
+            const { mime } = await FileType.fromFile(filepath)
             const hash = await getMd5ByStream(filepath)
             resolve({
                 size: stat.size,

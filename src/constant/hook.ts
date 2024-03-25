@@ -26,7 +26,7 @@ export type WebhookConfig = AjaxConfig
 
 export type DownloadConfig = {
     /**
-     * 要下载的文件的后缀名 逗号分割 .jpg,.png
+     * 要下载的文件的后缀名，支持正则 .(jpe?g|png|gif|webp|bmp)$
      */
     suffixes: string
 
