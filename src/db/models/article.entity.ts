@@ -162,6 +162,6 @@ export class Article extends AclBase implements Item {
     feedId: number
 
     @ApiProperty({ title: '订阅源', type: () => Feed })
-    @ManyToOne(() => Feed) // , (feed) => feed.articles
+    @ManyToOne(() => Feed, (feed) => feed.articles)
     feed: Feed
 }

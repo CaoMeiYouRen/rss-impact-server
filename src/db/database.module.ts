@@ -7,10 +7,11 @@ import { Category } from './models/category.entity'
 import { Article } from './models/article.entity'
 import { Hook } from './models/hook.entity'
 import { Resource } from './models/resource.entiy'
+import { WebhookLog } from './models/webhook-log.entity'
 
 export const DATABASE_PATH = path.join(__dirname, '../../data/database.sqlite')
 
-const entities = [User, Feed, Category, Article, Hook, Resource]
+const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog]
 
 const repositories = TypeOrmModule.forFeature(entities)
 

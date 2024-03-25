@@ -5,7 +5,7 @@ import { SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, In } from 'typeorm'
 import { CronJob } from 'cron'
-import { differenceWith, flattenDeep } from 'lodash'
+import { differenceWith, flattenDeep, pick } from 'lodash'
 import XRegExp from 'xregexp'
 import dayjs from 'dayjs'
 import fs from 'fs-extra'
@@ -22,18 +22,22 @@ import { Hook } from '@/db/models/hook.entity'
 import { BitTorrentConfig, DownloadConfig, NotificationConfig, WebhookConfig } from '@/constant/hook'
 import { ajax } from '@/utils/ajax'
 import { Resource } from '@/db/models/resource.entiy'
+import { WebhookLog } from '@/db/models/webhook-log.entity'
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
 
     private readonly logger = new Logger(TasksService.name)
 
+    // eslint-disable-next-line max-params
     constructor(
         private scheduler: SchedulerRegistry,
         @InjectRepository(Feed) private readonly feedRepository: Repository<Feed>,
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
         @InjectRepository(Hook) private readonly hookRepository: Repository<Hook>,
         @InjectRepository(Resource) private readonly resourceRepository: Repository<Resource>,
+        @InjectRepository(WebhookLog) private readonly webhookLogRepository: Repository<WebhookLog>,
+
     ) { }
 
     onApplicationBootstrap() {
@@ -72,6 +76,7 @@ export class TasksService implements OnApplicationBootstrap {
         const fid = feed.id
         const uid = feed.userId
         const url = feed.url
+        // TODO 处理反转触发的 Hook
         const rss = await rssParserURL(url)
         if (Array.isArray(rss?.items)) {
             // 根据 guid 去重复 | 每个 user 的 不重复
@@ -149,17 +154,34 @@ export class TasksService implements OnApplicationBootstrap {
                         }
                         case 'webhook': {
                             const config = hook.config as WebhookConfig
-                            const resp = await ajax({
-                                ...config,
-                                data: filteredArticles as any,
-                            })
-                            // TODO 记录 webhook 执行结果
+                            try {
+                                this.logger.log(`正在触发 Webhook: ${config?.url}`)
+                                const resp = await ajax({
+                                    ...config,
+                                    data: filteredArticles as any,
+                                })
+                                await this.webhookLogRepository.save(this.webhookLogRepository.create({
+                                    ...pick(resp, ['data', 'status', 'statusText', 'headers']),
+                                    hookId: hook.id,
+                                }))
+                                this.logger.log(`触发 Webhook: ${config?.url} 成功`)
+                            } catch (error) {
+                                this.logger.error(error)
+                                await this.webhookLogRepository.save(this.webhookLogRepository.create({
+                                    data: error?.response?.data || error?.response || error,
+                                    status: 500,
+                                    statusText: 'Internal Server Error',
+                                    headers: error?.response?.headers || {},
+                                    hookId: hook.id,
+                                    userId,
+                                }))
+                            }
                             return
                         }
                         case 'download': {
                             const config = hook.config as DownloadConfig
                             const skipHashes = config.skipHashes.split(',').map((e) => e.trim())
-                            // TODO 如果下载的路径可以随意修改，似乎会引起一些问题
+                            // TODO 如果下载的路径可以随意修改，似乎会引起一些问题；可以考虑分路径存储用户下载，同时增加ACL校验
                             const { suffixes, dirPath = './data/download', timeout = 60 } = config
                             const allUrls = flattenDeep(filteredArticles
                                 .map((article) => getAllUrls(article.content)))
