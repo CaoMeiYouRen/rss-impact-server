@@ -1,9 +1,9 @@
 import { Column, Entity, Index } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsNumber, IsUrl, Length, Max, Min } from 'class-validator'
+import { IsNotEmpty, IsUrl, Length } from 'class-validator'
 import md5 from 'md5'
-import { AclBase } from './acl-base.entity'
 import { Base } from './base.entity'
+import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 
 // TODO 考虑区分相同文件在不同用户的权限
 /**
@@ -44,9 +44,7 @@ export class Resource extends Base {
     type: string
 
     @ApiProperty({ title: '文件大小(B)', description: '单位为 B', example: 114514 })
-    @IsNumber()
-    @Min(0)
-    @Max(Number.MAX_SAFE_INTEGER)
+    @IsSafePositiveInteger()
     @Column({})
     size: number
 

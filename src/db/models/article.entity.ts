@@ -1,13 +1,14 @@
 import { Entity, Column, Index, ManyToOne } from 'typeorm'
 import { Item, Enclosure } from 'rss-parser'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsArray, IsDateString, IsNotEmpty, IsNumber, IsObject, IsString, IsUrl, Length, Max, Min, ValidateIf, ValidateNested } from 'class-validator'
+import { IsArray, IsDateString, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
 import dayjs from 'dayjs'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
+import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 
 class EnclosureImpl implements Enclosure {
 
@@ -18,9 +19,7 @@ class EnclosureImpl implements Enclosure {
     url: string
 
     @ApiProperty({ title: '附件长度', example: 114514 })
-    @IsNumber()
-    @Min(0)
-    @Max(Number.MAX_SAFE_INTEGER)
+    @IsSafePositiveInteger()
     @ValidateIf((o) => typeof o.length !== 'undefined')
     length?: number
 
@@ -105,7 +104,7 @@ export class Article extends AclBase implements Item {
     author?: string
 
     // contentSnippet/content:encodedSnippet
-    @ApiProperty({ title: '摘要', example: '这是一段内容摘要' })
+    @ApiProperty({ title: '摘要', description: '纯文本格式，无 HTML', example: '这是一段内容摘要' })
     @Length(0, 65536)
     @ValidateIf((o) => typeof o.summary !== 'undefined')
     @Column({

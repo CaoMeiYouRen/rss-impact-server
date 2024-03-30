@@ -1,18 +1,17 @@
 import { Column, Entity, ManyToMany } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsNumber, IsObject, Length, Max, Min, ValidateIf, ValidateNested } from 'class-validator'
+import { IsBoolean, IsObject, Length, ValidateIf, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { HookConfig, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
+import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 
 export class Filter {
 
     @ApiProperty({ title: '条数限制', example: 20 })
-    @IsNumber()
-    @Min(0)
-    @Max(Number.MAX_SAFE_INTEGER)
+    @IsSafePositiveInteger(1000)
     @ValidateIf((o) => typeof o.length !== 'undefined')
     limit?: number
 
@@ -40,9 +39,7 @@ export class Filter {
     categories?: string
 
     @ApiProperty({ title: '过滤时间(秒)', example: 3600 })
-    @IsNumber()
-    @Min(0)
-    @Max(Number.MAX_SAFE_INTEGER)
+    @IsSafePositiveInteger()
     @ValidateIf((o) => typeof o.length !== 'undefined')
     time?: number
 }

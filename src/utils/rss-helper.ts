@@ -1,8 +1,9 @@
 import Parser, { Output, Item } from 'rss-parser'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
-import { deepTrim, uuid } from './helper'
+import { deepTrim, htmlToMarkdown, timeFormat, uuid } from './helper'
 import { Article } from '@/db/models/article.entity'
+import { Feed } from '@/db/models/feed.entity'
 
 export const rssParser = new Parser()
 
@@ -77,4 +78,68 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     article.categories = item.categories
     article.enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
     return article
+}
+
+export type ArticleFormatoption = {
+    // 是否为 Markdown 格式
+    isMarkdown?: boolean
+    // 是否为 纯文本（去除 HTML）
+    isSnippet?: boolean
+}
+
+export function articleItemFormat(item: Article, option: ArticleFormatoption = {}) {
+    const { isMarkdown = false, isSnippet = false } = option
+    const title: string = item.title?.replace(/\.\.\.$/, '') // 移除句末省略号
+    let text = ''
+    const content = isSnippet ? item.contentSnippet : item.content
+
+    // 排除内容和标题重复
+    if (title && !content?.startsWith(title)) {
+        text += `${title}\n`
+    }
+    text += `${content}\n`
+    if (isMarkdown) {
+        text = htmlToMarkdown(text)
+        text += '\n'
+    }
+    if (item.author) {
+        text += `作者：${item.author}\n`
+    }
+    if (item.enclosure?.url) {
+        text += `资源链接：${item.enclosure?.url}\n`
+    }
+    if (item.link) {
+        text += `链接：${item.link}\n`
+    }
+    if (item.publishDate) {
+        const date = timeFormat(item.publishDate, 'YYYY-MM-DD HH:mm:ss')
+        text += `时间：${date}`
+    }
+
+    text = text.replace(/(\n[\s|\t]*\r*\n)/g, '\n') // 去除多余换行符
+    if (isMarkdown) {
+        text = text.replace(/\n/g, '\n\n') // 替换为markdown下的换行
+    }
+    return {
+        title,
+        text,
+        date: item.publishDate || '',
+    }
+}
+
+/**
+ * 格式化 Article
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-03-26
+ * @export
+ * @param articles
+ * @param [markdown=false]
+ */
+export function articlesFormat(articles: Article[], option: ArticleFormatoption = {}) {
+    const text = articles
+        .map((item) => articleItemFormat(item, option))
+        .map((e) => e.text)
+        .join(option?.isMarkdown ? '\n\n' : '\n')
+    return text
 }

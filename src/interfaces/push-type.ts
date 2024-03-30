@@ -77,7 +77,11 @@ export type PushConfig = {
         TELEGRAM_PROTECT_CONTENT?: boolean
         TELEGRAM_MESSAGE_THREAD_ID?: string
     }
-    OneBot: {
+    Discord?: {
+        DISCORD_WEBHOOK: string
+        DISCORD_USERNAME: string
+    }
+    OneBot?: {
         ONE_BOT_BASE_URL: string
         ONE_BOT_ACCESS_TOKEN?: string
         ONE_BOT_MSG_TYPE: OneBotMsgType
@@ -102,6 +106,7 @@ export const PushTypeMap: Record<PushType, string> = {
     Email: 'BER邮件',
     UniPush: 'uni-push2',
     Telegram: 'Telegram',
+    Discord: 'Discord',
     OneBot: 'OneBot',
 }
 
@@ -179,6 +184,10 @@ export const DEFAULT_PUSH_CONFIG: Required<PushConfig> = {
         TELEGRAM_PROTECT_CONTENT: false,
         TELEGRAM_MESSAGE_THREAD_ID: '',
     },
+    Discord: {
+        DISCORD_WEBHOOK: '',
+        DISCORD_USERNAME: '',
+    },
     OneBot: {
         ONE_BOT_BASE_URL: '',
         ONE_BOT_ACCESS_TOKEN: '',
@@ -204,6 +213,7 @@ export const DEFAULT_PARAM_CONFIG: ParamConfig = {
     PushDeer: [],
     UniPush: [],
     Telegram: [],
+    Discord: [],
     OneBot: [],
 }
 
@@ -277,6 +287,10 @@ export const PUSH_CONFIG_MAP: PushConfigMapType = {
         TELEGRAM_SEND_SILENTLY: '是否静默发送',
         TELEGRAM_PROTECT_CONTENT: '阻止转发/保存',
         TELEGRAM_MESSAGE_THREAD_ID: '话题 ID',
+    },
+    Discord: {
+        DISCORD_WEBHOOK: 'Webhook 地址',
+        DISCORD_USERNAME: '机器人名称',
     },
     OneBot: {
         ONE_BOT_BASE_URL: 'HTTP 基础路径',

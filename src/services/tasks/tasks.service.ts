@@ -16,13 +16,14 @@ import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream } from '@/utils/helper'
-import { rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
+import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
 import { BitTorrentConfig, DownloadConfig, NotificationConfig, WebhookConfig } from '@/constant/hook'
 import { ajax } from '@/utils/ajax'
 import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
+import { runPushAllInOne } from '@/utils/notification'
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -150,6 +151,20 @@ export class TasksService implements OnApplicationBootstrap {
                         case 'notification': {
                             // push all in one
                             const config = hook.config as NotificationConfig
+                            const { isMergePush = false, isMarkdown = false, isSnippet = false, ...pushConfig } = config
+                            const title = `检测到【 ${feed.title} 】有更新`
+                            // TODO 需考虑 推送内容过长的问题
+                            if (isMergePush) {
+                                // 合并推送
+                                const desp = articlesFormat(filteredArticles, { isMarkdown, isSnippet })
+                                const result = await runPushAllInOne(title, desp.slice(0, 4096), pushConfig)
+                                return
+                            }
+                            // 逐条推送
+                            await Promise.allSettled(filteredArticles.map(async (article) => {
+                                const { text: desp } = articleItemFormat(article, { isMarkdown, isSnippet })
+                                const result = await runPushAllInOne(title, desp.slice(0, 4096), pushConfig)
+                            }))
                             return
                         }
                         case 'webhook': {

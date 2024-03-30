@@ -7,6 +7,7 @@ import chalk from 'chalk'
 import _ from 'lodash'
 import fs, { ReadStream } from 'fs-extra'
 import FileType from 'file-type'
+import Turndown from 'turndown'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 
@@ -197,4 +198,13 @@ export function getMd5ByStream(filePath: string) {
             resolve(hash.digest('hex'))
         })
     })
+}
+
+export function htmlToMarkdown(html: string): string {
+    const turndownService = new Turndown({
+        headingStyle: 'atx',
+        bulletListMarker: '-',
+    })
+    const markdown = turndownService.turndown(html)
+    return markdown
 }
