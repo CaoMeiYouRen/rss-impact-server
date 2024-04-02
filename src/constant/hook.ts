@@ -83,6 +83,11 @@ export type BitTorrentConfig = {
      * 使用 HTTPS 而不是 HTTP
      */
     useHttps: boolean
+
+    /**
+     * 最大体积
+     */
+    maxSize?: number
 }
 
 export type HookConfig = NotificationConfig | WebhookConfig | DownloadConfig | BitTorrentConfig

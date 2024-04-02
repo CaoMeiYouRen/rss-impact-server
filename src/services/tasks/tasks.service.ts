@@ -12,6 +12,7 @@ import fs from 'fs-extra'
 import pLimit from 'p-limit'
 import md5 from 'md5'
 import FileType from 'file-type'
+import { QBittorrent } from '@ctrl/qbittorrent'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, TZ } from '@/app.config'
@@ -270,6 +271,19 @@ export class TasksService implements OnApplicationBootstrap {
                         }
                         case 'bitTorrent': {
                             const config = hook.config as BitTorrentConfig
+                            const { type } = config
+                            const btArticles = filteredArticles.filter((article) => article.enclosure?.type === 'application/x-bittorrent') // 排除BT以外的
+                            if (!btArticles?.length) {
+                                return
+                            }
+                            switch (type) {
+                                case 'qBittorrent':
+
+                                    break
+
+                                default:
+                                    throw new Error(`不支持的BT下载器类型: ${type}`)
+                            }
                             return
                         }
                         default:

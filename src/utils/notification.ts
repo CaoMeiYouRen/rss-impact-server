@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { ServerChanTurbo, CustomEmail, Dingtalk, WechatRobot, WechatApp, PushPlus, IGot, Qmsg, XiZhi, PushDeer, Discord, OneBot, Telegram, MsgType, TemplateType, CustomEmailType, OneBotMsgType, ChannelType, PushDeerPushType, QmsgPushType } from 'push-all-in-one'
+import { ServerChanTurbo, CustomEmail, Dingtalk, WechatRobot, WechatApp, PushPlus, IGot, Qmsg, XiZhi, PushDeer, Discord, OneBot, Telegram } from 'push-all-in-one'
 import { PushAllInOneConfig, PushType } from '@/interfaces/push-type'
 
 /**
