@@ -27,6 +27,15 @@ export class Resource extends Base {
     })
     url: string
 
+    @ApiProperty({ title: '文件名称', example: 'favicon-16x16-next.png' })
+    @IsNotEmpty()
+    @Length(0, 1024)
+    @Column({
+        length: 1024,
+        nullable: true,
+    })
+    name: string
+
     @ApiProperty({ title: '文件路径', example: '/data/download/favicon-16x16-next.png' })
     @IsNotEmpty()
     @Length(0, 2048)

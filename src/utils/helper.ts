@@ -208,3 +208,22 @@ export function htmlToMarkdown(html: string): string {
     const markdown = turndownService.turndown(html)
     return markdown
 }
+
+/**
+ * 缩短磁力链接
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-04-03
+ * @export
+ * @param hash
+ * @param [tracker]
+ */
+export function getMagnetUri(hash: string, tracker?: string) {
+    const search = new URLSearchParams({
+        xt: `urn:btih:${hash}`,
+    })
+    if (tracker) {
+        search.append('tr', tracker)
+    }
+    return `magnet:?${search.toString()}`  // 磁力链接
+}

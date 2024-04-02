@@ -12,6 +12,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strictPropertyInitialization": false,
+        "resolveJsonModule": true,
         "outDir": "./dist",
         "baseUrl": "./",
         "incremental": true,

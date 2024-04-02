@@ -7,7 +7,9 @@ import { Feed } from './feed.entity'
 import { HookConfig, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
-
+/**
+ * 仅保留想要的，必须全部符合
+ */
 export class Filter {
 
     @ApiProperty({ title: '条数限制', example: 20 })
@@ -31,9 +33,6 @@ export class Filter {
     author?: string
 
     @ApiProperty({ title: '过滤分类', example: 'tag1|tag2' })
-    // @JsonStringLength(0, 512)
-    // @IsArray()
-    // @IsString({ each: true })
     @Length(0, 256)
     @ValidateIf((o) => typeof o.categories !== 'undefined')
     categories?: string
@@ -42,6 +41,31 @@ export class Filter {
     @IsSafePositiveInteger()
     @ValidateIf((o) => typeof o.length !== 'undefined')
     time?: number
+}
+/**
+ * 排除不想要的，有一个符合就排除
+ */
+export class FilterOut {
+
+    @ApiProperty({ title: '过滤标题', example: '标题1|标题2' })
+    @Length(0, 256)
+    @ValidateIf((o) => typeof o.title !== 'undefined')
+    title?: string
+
+    @ApiProperty({ title: '过滤总结', example: '总结1|总结2' })
+    @Length(0, 1024)
+    @ValidateIf((o) => typeof o.title !== 'undefined')
+    summary?: string
+
+    @ApiProperty({ title: '过滤作者', example: 'CaoMeiYouRen' })
+    @Length(0, 128)
+    @ValidateIf((o) => typeof o.author !== 'undefined')
+    author?: string
+
+    @ApiProperty({ title: '过滤分类', example: 'tag1|tag2' })
+    @Length(0, 256)
+    @ValidateIf((o) => typeof o.categories !== 'undefined')
+    categories?: string
 }
 
 @Entity()
@@ -84,6 +108,19 @@ export class Hook extends AclBase {
         default: '{}',
     })
     filter: Filter
+
+    @ApiProperty({ title: '过滤出条件', description: '去掉不要的内容', type: () => FilterOut })
+    @Type(() => FilterOut)
+    @ValidateNested()
+    @JsonStringLength(0, 2048)
+    @IsObject()
+    // @ValidateIf((o) => typeof o.filter !== 'undefined')
+    @Column({
+        type: 'simple-json',
+        length: 2048,
+        default: '{}',
+    })
+    filterout: FilterOut
 
     @ApiProperty({ title: '反转模式', description: '如果服务可访问，则认为是故障', example: false })
     @IsBoolean()

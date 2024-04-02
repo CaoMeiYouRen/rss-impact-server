@@ -60,13 +60,9 @@ export type BitTorrentConfig = {
      */
     type: 'qBittorrent'
     /**
-     * 服务器地址
+     * 服务器URL，例如 http://localhost:8080/
      */
-    host: string
-    /**
-     * 端口
-     */
-    port: number
+    baseUrl: string
     /**
      * 用户名
      */
@@ -76,14 +72,9 @@ export type BitTorrentConfig = {
      */
     password: string
     /**
-     * 下载路径
+     * 下载路径(服务器上的地址)
      */
-    downloadPath: string
-    /**
-     * 使用 HTTPS 而不是 HTTP
-     */
-    useHttps: boolean
-
+    downloadPath?: string
     /**
      * 最大体积
      */
