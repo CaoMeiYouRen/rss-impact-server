@@ -230,6 +230,9 @@ devDependencies:
   '@types/supertest':
     specifier: ^6.0.2
     version: 6.0.2
+  '@types/turndown':
+    specifier: ^5.0.4
+    version: 5.0.4
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.0.0
     version: 7.5.0(@typescript-eslint/parser@6.21.0)(eslint@8.57.0)(typescript@5.4.3)
@@ -2336,6 +2339,10 @@ packages:
     dependencies:
       '@types/methods': 1.1.4
       '@types/superagent': 4.1.14
+    dev: true
+
+  /@types/turndown@5.0.4:
+    resolution: {integrity: sha512-28GI33lCCkU4SGH1GvjDhFgOVr+Tym4PXGBIU1buJUa6xQolniPArtUT+kv42RR2N9MsMLInkr904Aq+ESHBJg==}
     dev: true
 
   /@types/unist@2.0.10:

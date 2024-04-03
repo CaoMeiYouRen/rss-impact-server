@@ -2,12 +2,11 @@ import { Column, Entity, Index } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsUrl, Length } from 'class-validator'
 import md5 from 'md5'
-import { Base } from './base.entity'
+import { AclBase } from './acl-base.entity'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 
-// TODO 考虑区分相同文件在不同用户的权限
 /**
- * 文件资源
+ * 文件资源。
  *
  * @author CaoMeiYouRen
  * @date 2024-03-25
@@ -15,7 +14,7 @@ import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
  * @class Resource
  */
 @Entity()
-export class Resource extends Base {
+export class Resource extends AclBase {
 
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/images/favicon-16x16-next.png' })
     @IsNotEmpty()
@@ -73,4 +72,5 @@ export class Resource extends Base {
         length: 16,
     })
     status: 'success' | 'fail' | 'skip' | 'unknown'
+
 }

@@ -3,7 +3,6 @@ import queryString from 'query-string'
 import dayjs from 'dayjs'
 import { deepTrim, htmlToMarkdown, timeFormat, uuid } from './helper'
 import { Article } from '@/db/models/article.entity'
-import { Feed } from '@/db/models/feed.entity'
 
 export const rssParser = new Parser()
 

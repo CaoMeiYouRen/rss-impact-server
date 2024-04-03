@@ -16,7 +16,7 @@ import { QBittorrent } from '@cao-mei-you-ren/qbittorrent'
 import torrent2magnet from 'torrent2magnet-js'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, TZ } from '@/app.config'
+import { __DEV__, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
@@ -123,7 +123,6 @@ export class TasksService implements OnApplicationBootstrap {
         if (!hooks?.length || !articles?.length) {
             return
         }
-        const userId = feed.userId
         const filterFields = ['title', 'summary', 'author', 'categories']
         try {
             await Promise.allSettled(hooks
@@ -185,6 +184,7 @@ export class TasksService implements OnApplicationBootstrap {
         const { isMergePush = false, isMarkdown = false, isSnippet = false, ...pushConfig } = config
         const title = `检测到【 ${feed.title} 】有更新`
         // TODO 需考虑 推送内容过长的问题
+        // TODO 增加 推送日志
         if (isMergePush) {
             // 合并推送
             const desp = articlesFormat(articles, { isMarkdown, isSnippet })
@@ -199,7 +199,7 @@ export class TasksService implements OnApplicationBootstrap {
     }
 
     private async webhook(hook: Hook, feed: Feed, articles: Article[]) {
-        const userId = feed.userId
+        const userId = hook.userId
         try {
             const config = hook.config as WebhookConfig
             this.logger.log(`正在触发 Webhook: ${config?.url}`)
@@ -227,10 +227,11 @@ export class TasksService implements OnApplicationBootstrap {
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
     private async downloadHook(hook: Hook, feed: Feed, articles: Article[], downloadLimit: pLimit.Limit) {
+        const userId = hook.userId
         const config = hook.config as DownloadConfig
         const skipHashes = config.skipHashes.split(',').map((e) => e.trim())
-        // TODO 如果下载的路径可以随意修改，似乎会引起一些问题；可以考虑分路径存储用户下载，同时增加ACL校验
-        const { suffixes, dirPath = './data/download', timeout = 60 } = config
+        const { suffixes, timeout = 60 } = config
+        const dirPath = path.resolve(RESOURCE_DOWNLOAD_PATH) // 解析为绝对路径
         const allUrls = flattenDeep(articles
             .map((article) => getAllUrls(article.content)))
             .filter((url) => XRegExp(suffixes, 'i').test(url)) // 匹配后缀名，不区分大小写
@@ -245,15 +246,32 @@ export class TasksService implements OnApplicationBootstrap {
             const hashname = md5(url)
             const filename = hashname + ext
             const filepath = path.resolve(path.join(dirPath, filename))
-            this.logger.log(`正在下载文件: ${filename}`)
+            this.logger.debug(`正在检测文件: ${filename}`)
             // 如果在数据库里
-            const resource = await this.resourceRepository.findOne({
-                where: { url },
+            let resource = await this.resourceRepository.findOne({
+                where: { url, userId },
             })
             if (resource) {
                 this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
                 return
             }
+            // 查找数据库内是否有其他用户存储了相同 URL 的文件
+            resource = await this.resourceRepository.findOne({
+                where: { url },
+            })
+            // 如果有，则为该用户复制一份
+            if (resource?.status === 'success') { // sikp/fail/unknown 的情况下重新下载
+                delete resource.id
+                delete resource.user
+                delete resource.createdAt
+                delete resource.updatedAt
+                resource.userId = userId
+                resource.status = skipHashes.includes(resource.hash) ? 'skip' : resource.status
+                await this.resourceRepository.save(resource)
+                this.logger.debug(`文件 ${filename} 下载成功`)
+                return
+            }
+
             if (await fs.pathExists(filepath)) { // 如果已经下载了，则跳过
                 this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
                 // 同步到数据库
@@ -268,6 +286,7 @@ export class TasksService implements OnApplicationBootstrap {
                     size: stat.size,
                     type: mime,
                     hash,
+                    userId,
                 })
                 await this.resourceRepository.save(newResource)
                 return
@@ -276,16 +295,20 @@ export class TasksService implements OnApplicationBootstrap {
                 url,
                 path: filepath,
                 status: 'unknown',
+                userId,
             })
+
             try {
                 // 由于 hash 只能在下载后计算得出，所以第一次下载依旧会下载整个文件
+                this.logger.debug(`正在下载文件: ${filename}`)
                 const fileInfo = await download(url, filepath, timeout * 1000)
                 newResource.type = fileInfo.type
                 newResource.size = fileInfo.size
                 newResource.hash = fileInfo.hash
                 if (skipHashes.includes(fileInfo.hash)) {
                     newResource.status = 'skip'
-                    await fs.remove(filepath) // 移除被 ban 的文件
+                    // await fs.remove(filepath) // 移除被 ban 的文件
+                    // TODO 当所有 resource 的状态都不为 success 时，移除该文件
                     newResource.path = ''
                     this.logger.log(`文件 ${filename} 在 skipHashes 内，已删除`)
                 } else {

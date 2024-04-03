@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common'
-import { isInt, IsInt, IsNumber, isPositive, IsPositive, max, Max, min, Min, ValidationOptions } from 'class-validator'
+import { isInt, IsInt, max, Max, min, Min, ValidationOptions } from 'class-validator'
 
 /**
  * 验证是否为安全整数

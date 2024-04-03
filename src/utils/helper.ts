@@ -1,4 +1,3 @@
-import path from 'path'
 import crypto from 'crypto'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -210,7 +209,7 @@ export function htmlToMarkdown(html: string): string {
 }
 
 /**
- * 缩短磁力链接
+ * 获取磁力链接
  *
  * @author CaoMeiYouRen
  * @date 2024-04-03
@@ -219,11 +218,10 @@ export function htmlToMarkdown(html: string): string {
  * @param [tracker]
  */
 export function getMagnetUri(hash: string, tracker?: string) {
-    const search = new URLSearchParams({
-        xt: `urn:btih:${hash}`,
-    })
     if (tracker) {
+        const search = new URLSearchParams({})
         search.append('tr', tracker)
+        return `magnet:?urn:btih:${hash}&${search.toString()}`
     }
-    return `magnet:?${search.toString()}`  // 磁力链接
+    return `magnet:?urn:btih:${hash}`
 }

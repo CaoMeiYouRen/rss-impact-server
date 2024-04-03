@@ -40,3 +40,5 @@ export const SESSION_SECRET = env.SESSION_SECRET
 // admin 用户 配置
 export const ADMIN_PASSWORD = env.ADMIN_PASSWORD
 export const ADMIN_EMAIL = env.ADMIN_EMAIL
+
+export const RESOURCE_DOWNLOAD_PATH = env.RESOURCE_DOWNLOAD_PATH
