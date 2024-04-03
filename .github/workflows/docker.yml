@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - master
-env:
-  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/rss-impact-server:${{ github.sha::8 }}
-  # 仅取消针对当前工作流正在进行的作业或运行
+
+# 仅取消针对当前工作流正在进行的作业或运行
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -19,11 +18,15 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
+      - name: Lowercase the repo name
+        run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+      - name: Get short commit hash
+        run: echo "TAG=${GITHUB_SHA::8}" >>${GITHUB_ENV}
       - name: Build Docker Image
-        run: docker build -t ${{ IMAGE_NAME }} .
+        run: docker build -t ${{ env.REPO }}/${{ env.TAG }} .
 
       # - name: Login to Docker Hub
       #   run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
 
       # - name: Push Docker Image
-      #   run: docker push ${{ IMAGE_NAME }}
+      #   run: docker push ${{ env.IMAGE_NAME }}
