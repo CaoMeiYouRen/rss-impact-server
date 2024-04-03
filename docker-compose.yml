@@ -12,6 +12,12 @@ services:
       PORT: 3000
       TZ: "Asia/Shanghai"
       TIMEOUT: 10000
+      ADMIN_PASSWORD: '123456'
+      ADMIN_EMAIL: 'admin@example.com'
+      SESSION_SECRET: 'RSS_IMPACT'
+      RESOURCE_DOWNLOAD_PATH: './data/download'
+    volumes:
+      - ./data:/app/data
       # MONGODB_DB_NAME: "mongo-db"
       # MONGODB_HOST: "mongo"
       # MONGODB_PORT: 27017

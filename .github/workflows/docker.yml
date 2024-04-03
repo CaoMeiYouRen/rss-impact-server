@@ -1,0 +1,24 @@
+name: Publish Docker Image
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Build Docker Image
+        run: docker build -t ${{ github.repository/*/.*/ }}:${{ github.sha::8 }} .
+
+      # - name: Login to Docker Hub
+      #   run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      # - name: Push Docker Image
+      #   run: docker push ${{ github.repository/*/.*/ }}:${{ github.sha::8 }}
