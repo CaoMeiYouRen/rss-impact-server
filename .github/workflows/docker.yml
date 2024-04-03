@@ -24,9 +24,7 @@ jobs:
         run: echo "TAG=${GITHUB_SHA::8}" >>${GITHUB_ENV}
       - name: Build Docker Image
         run: docker build -t ${{ env.REPO }}/${{ env.TAG }} .
-
-      # - name: Login to Docker Hub
-      #   run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
-
-      # - name: Push Docker Image
-      #   run: docker push ${{ env.IMAGE_NAME }}
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push Docker Image
+        run: docker push ${{ env.REPO }}/${{ env.TAG }}
