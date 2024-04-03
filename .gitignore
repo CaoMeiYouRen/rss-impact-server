@@ -41,3 +41,5 @@ audit.json
 /data
 *.db
 *.sqlite
+# 前端静态资源
+/public

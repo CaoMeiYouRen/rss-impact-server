@@ -29,6 +29,7 @@ async function bootstrap() {
         SwaggerModule.setup('docs', app, document)
 
     }
+    app.setGlobalPrefix('/api')
     app.enableCors({})
     app.use(limiter)
     app.use(helmet({}))
