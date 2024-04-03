@@ -18,7 +18,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, DOWNLOAD_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri, timeFormat } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -28,6 +28,8 @@ import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
 import { runPushAllInOne } from '@/utils/notification'
 import { isSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
+import { User } from '@/db/models/user.entity'
+import { Role } from '@/constant/role'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
 
@@ -42,10 +44,9 @@ export class TasksService implements OnApplicationBootstrap {
         private readonly resourceService: ResourceService,
         @InjectRepository(Feed) private readonly feedRepository: Repository<Feed>,
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
-        @InjectRepository(Hook) private readonly hookRepository: Repository<Hook>,
         @InjectRepository(Resource) private readonly resourceRepository: Repository<Resource>,
         @InjectRepository(WebhookLog) private readonly webhookLogRepository: Repository<WebhookLog>,
-
+        @InjectRepository(User) private readonly userRepository: Repository<User>,
     ) { }
 
     onApplicationBootstrap() {
@@ -84,30 +85,130 @@ export class TasksService implements OnApplicationBootstrap {
         const fid = feed.id
         const uid = feed.userId
         const url = feed.url
-        // TODO 处理反转触发的 Hook
-        const rss = await rssParserURL(url)
-        if (Array.isArray(rss?.items)) {
-            // 根据 guid 去重复 | 每个 user 的 不重复
-            const guids = rss.items.map((e) => e.guid)
-            const existingArticles = await this.articleRepository.find({
-                where: {
-                    guid: In(guids),
-                    userId: uid,
-                },
-                select: ['guid'],
-            })
-            const diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid).map((item) => {
-                const article = rssItemToArticle(item)
-                article.feedId = fid
-                article.userId = uid
-                article.author = article.author || rss.author
-                return this.articleRepository.create(article)
-            })
 
-            if (diffArticles?.length) {
-                const newArticles = await this.articleRepository.save(diffArticles)
-                await this.triggerHooks(feed, newArticles)
+        try {
+            const rss = await rssParserURL(url)
+            if (Array.isArray(rss?.items)) {
+                // 根据 guid 去重复 | 每个 user 的 不重复
+                const guids = rss.items.map((e) => e.guid)
+                const existingArticles = await this.articleRepository.find({
+                    where: {
+                        guid: In(guids),
+                        userId: uid,
+                    },
+                    select: ['guid'],
+                })
+                const diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid).map((item) => {
+                    const article = rssItemToArticle(item)
+                    article.feedId = fid
+                    article.userId = uid
+                    article.author = article.author || rss.author
+                    return this.articleRepository.create(article)
+                })
+
+                if (diffArticles?.length) {
+                    const newArticles = await this.articleRepository.save(diffArticles)
+                    await this.triggerHooks(feed, newArticles)
+                }
             }
+        } catch (error) {
+            this.logger.error(error)
+            await this.reverseTriggerHooks(feed, error)
+        }
+    }
+    /**
+     * 处理反转触发的 Hook
+     *
+     * @author CaoMeiYouRen
+     * @date 2024-04-04
+     * @private
+     * @param feed
+     * @param error
+     */
+    private async reverseTriggerHooks(feed: Feed, error: Error) {
+        // 拉取最新的 hook 配置
+        const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['hooks'], select: ['hooks'] }))
+            ?.hooks
+            ?.filter((hook) => hook.isReversed && ['notification', 'webhook'].includes(hook.type), // 处理反转触发的 Hook；只触发 notification/webhook 类型的
+            )
+
+        if (!hooks?.length) {
+            return
+        }
+        const userId = feed.userId
+        const user = await this.userRepository.findOne({ where: { id: userId } })
+        const isAdmin = user?.roles?.includes(Role.admin) // 只有 admin 用户可以看到 堆栈
+        await Promise.allSettled(hooks.map(async (hook) => {
+            switch (hook.type) {
+                case 'notification':
+                    await this.reverseNotificationHook(hook, feed, error, isAdmin)
+                    return
+                case 'webhook': {
+                    const data = {
+                        feed,
+                        message: error?.message,
+                        stack: __DEV__ || isAdmin ? error?.stack : undefined,
+                        cause: __DEV__ || isAdmin ? error?.cause : undefined,
+                        date: new Date(),
+                    }
+                    await this.webhook(hook, feed, data)
+                    return
+                }
+                default:
+                    this.logger.warn(`${hook.type} 类型的 Hook 无法反转触发！`)
+
+            }
+        }))
+    }
+
+    // 反转触发通知
+    private async reverseNotificationHook(hook: Hook, feed: Feed, error: Error, isAdmin: boolean) {
+        const config = hook.config as NotificationConfig
+        const { isMarkdown = false } = config
+        const title = `检测到【 ${feed.title} 】发生错误，请及时检查`
+        let desp = `URL：${feed.url}
+错误名称：${error?.name}
+错误信息：${error?.message}
+错误堆栈：${__DEV__ || isAdmin ? error?.stack : ''}
+错误原因：${__DEV__ || isAdmin ? error?.cause : ''}
+发生时间：${timeFormat()}`
+        if (isMarkdown) {
+            desp = desp.replace(/\n/g, '\n\n') // 替换为markdown下的换行
+        }
+        await this.notification(hook, feed, title, desp)
+    }
+
+    private async notification(hook: Hook, feed: Feed, title: string, desp: string) {
+        const userId = hook.userId
+        const config = hook.config as NotificationConfig
+        const { maxLength = 4096 } = config
+        const webhookLog = this.webhookLogRepository.create({
+            hookId: hook.id,
+            userId,
+            feedId: feed.id,
+            status: 'unknown',
+            type: 'notification',
+        })
+        try {
+            this.logger.log(`正在执行推送渠道 ${config.type}`)
+            const resp = await runPushAllInOne(title.slice(0, 256), desp.slice(0, maxLength), config)
+            await this.webhookLogRepository.save(this.webhookLogRepository.create({
+                ...webhookLog,
+                ...pick(resp, ['data', 'statusText', 'headers']),
+                status: 'success',
+                statusCode: resp.status,
+            }))
+            this.logger.log(`执行推送渠道 ${config.type} 成功`)
+        } catch (error) {
+            this.logger.error(error)
+            await this.webhookLogRepository.save(this.webhookLogRepository.create({
+                ...webhookLog,
+                data: error?.response?.data || error?.response || error,
+                statusCode: 500,
+                statusText: 'Internal Server Error',
+                headers: error?.response?.headers || {},
+                status: 'fail',
+            }))
         }
     }
 
@@ -126,91 +227,81 @@ export class TasksService implements OnApplicationBootstrap {
             return
         }
         const filterFields = ['title', 'summary', 'author', 'categories']
-        try {
-            await Promise.allSettled(hooks
-                .map(async (hook) => {
-                    const filteredArticles = articles
-                        .filter((article) => {
-                            if (!article.publishDate || !hook.filter.time) { // 没有 publishDate/filter.time 不受过滤时间限制
-                                return true
-                            }
-                            return dayjs().diff(article.publishDate, 'second') <= hook.filter.time
-                        })
-                        // 先判断 filterout
-                        .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
-                            if (!hook.filterout[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
-                                return true
-                            }
-                            if (field === 'categories') {
-                                // 有一个 category 对的上就 排除
-                                return !article[field].some((category) => XRegExp(hook.filterout[field], 'ig').test(category))
-                            }
-                            return !XRegExp(hook.filterout[field], 'ig').test(article[field])
-                        }))
-                        // 再判断 filter
-                        .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
-                            if (!hook.filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
-                                return true
-                            }
-                            if (field === 'categories') {
-                                // 有一个 category 对的上就为 true
-                                return article[field].some((category) => XRegExp(hook.filter[field], 'ig').test(category))
-                            }
-                            return XRegExp(hook.filter[field], 'ig').test(article[field])
-                        }))
-                        .slice(0, hook.filter.limit || 20) // 默认最多 20 条
-                    if (!filteredArticles?.length) {
+        // try {
+        await Promise.allSettled(hooks
+            .map(async (hook) => {
+                const filteredArticles = articles
+                    .filter((article) => {
+                        if (!article.publishDate || !hook.filter.time) { // 没有 publishDate/filter.time 不受过滤时间限制
+                            return true
+                        }
+                        return dayjs().diff(article.publishDate, 'second') <= hook.filter.time
+                    })
+                    // 先判断 filterout
+                    .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
+                        if (!hook.filterout[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+                            return true
+                        }
+                        if (field === 'categories') {
+                            // 有一个 category 对的上就 排除
+                            return !article[field].some((category) => XRegExp(hook.filterout[field], 'ig').test(category))
+                        }
+                        return !XRegExp(hook.filterout[field], 'ig').test(article[field])
+                    }))
+                    // 再判断 filter
+                    .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
+                        if (!hook.filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+                            return true
+                        }
+                        if (field === 'categories') {
+                            // 有一个 category 对的上就为 true
+                            return article[field].some((category) => XRegExp(hook.filter[field], 'ig').test(category))
+                        }
+                        return XRegExp(hook.filter[field], 'ig').test(article[field])
+                    }))
+                    .slice(0, hook.filter.limit || 20) // 默认最多 20 条
+                if (!filteredArticles?.length) {
+                    return
+                }
+                switch (hook.type) {
+                    case 'notification': {
+                        await this.notificationHook(hook, feed, filteredArticles)
                         return
                     }
-                    switch (hook.type) {
-                        case 'notification': {
-                            await this.notificationHook(hook, feed, filteredArticles)
-                            return
-                        }
-                        case 'webhook': {
-                            await this.webhook(hook, feed, filteredArticles)
-                            return
-                        }
-                        case 'download': {
-                            // 下载并发数是全局的，所以需要从外部传入
-                            await this.downloadHook(hook, feed, filteredArticles, downloadLimit)
-                            return
-                        }
-                        case 'bitTorrent': {
-                            await this.bitTorrentHook(hook, feed, filteredArticles)
-                            return
-                        }
-                        default:
-                            this.logger.warn('未匹配到任何类型的Hook！')
-
+                    case 'webhook': {
+                        await this.webhook(hook, feed, filteredArticles)
+                        return
                     }
-                }),
-            )
-        } catch (error) {
-            this.logger.error(error)
-        }
+                    case 'download': {
+                        // 下载并发数是全局的，所以需要从外部传入
+                        await this.downloadHook(hook, feed, filteredArticles, downloadLimit)
+                        return
+                    }
+                    case 'bitTorrent': {
+                        await this.bitTorrentHook(hook, feed, filteredArticles)
+                        return
+                    }
+                    default:
+                        this.logger.warn('未匹配到任何类型的Hook！')
+
+                }
+            }),
+        )
+        // } catch (error) {
+        //     this.logger.error(error)
+        // }
     }
 
     private async notificationHook(hook: Hook, feed: Feed, articles: Article[]) {
-        const userId = hook.userId
         const config = hook.config as NotificationConfig
-        const { isMergePush = false, isMarkdown = false, isSnippet = false, maxLength = 4096, ...pushConfig } = config
+        const { isMergePush = false, isMarkdown = false, isSnippet = false } = config
         const title = `检测到【 ${feed.title} 】有更新`
-        // TODO 需考虑 推送内容过长的问题
-        // TODO 如果过长，则考虑分割推送
-        const webhookLog = this.webhookLogRepository.create({
-            hookId: hook.id,
-            userId,
-            feedId: feed.id,
-            status: 'unknown',
-            type: 'notification',
-        })
         const notifications: { title: string, desp: string }[] = []
         if (isMergePush) {
             // 合并推送
             notifications.push({
                 title,
-                desp: articlesFormat(articles, { isMarkdown, isSnippet }).slice(0, maxLength),
+                desp: articlesFormat(articles, { isMarkdown, isSnippet }),
             })
         } else {
             // 逐条推送
@@ -219,36 +310,17 @@ export class TasksService implements OnApplicationBootstrap {
                     const { text: desp, title: itemTitle } = articleItemFormat(article, { isMarkdown, isSnippet })
                     return {
                         title: itemTitle,
-                        desp: desp.slice(0, maxLength),
+                        desp,
                     }
                 }))
         }
+        // TODO 如果过长，则考虑分割推送
         await Promise.allSettled(notifications.map(async (notification) => {
-            try {
-                this.logger.log(`正在执行推送渠道 ${config.type}`)
-                const resp = await runPushAllInOne(notification.title, notification.desp, pushConfig)
-                await this.webhookLogRepository.save(this.webhookLogRepository.create({
-                    ...webhookLog,
-                    ...pick(resp, ['data', 'statusText', 'headers']),
-                    status: 'success',
-                    statusCode: resp.status,
-                }))
-                this.logger.log(`执行推送渠道 ${config.type} 成功`)
-            } catch (error) {
-                this.logger.error(error)
-                await this.webhookLogRepository.save(this.webhookLogRepository.create({
-                    ...webhookLog,
-                    data: error?.response?.data || error?.response || error,
-                    statusCode: 500,
-                    statusText: 'Internal Server Error',
-                    headers: error?.response?.headers || {},
-                    status: 'fail',
-                }))
-            }
+            await this.notification(hook, feed, notification.title, notification.desp)
         }))
     }
 
-    private async webhook(hook: Hook, feed: Feed, articles: Article[]) {
+    private async webhook(hook: Hook, feed: Feed, data: Article[] | any) {
         const userId = hook.userId
         const webhookLog = this.webhookLogRepository.create({
             hookId: hook.id,
@@ -262,24 +334,24 @@ export class TasksService implements OnApplicationBootstrap {
             this.logger.log(`正在触发 Webhook: ${config?.url}`)
             const resp = await ajax({
                 ...config,
-                data: articles as any,
+                data: data as any,
             })
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
+                ...webhookLog,
                 ...pick(resp, ['data', 'statusText', 'headers']),
                 status: 'success',
                 statusCode: resp.status,
-                ...webhookLog,
             }))
             this.logger.log(`触发 Webhook: ${config?.url} 成功`)
         } catch (error) {
             this.logger.error(error)
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
+                ...webhookLog,
                 data: error?.response?.data || error?.response || error,
                 statusCode: 500,
                 statusText: 'Internal Server Error',
                 headers: error?.response?.headers || {},
                 status: 'fail',
-                ...webhookLog,
             }))
         }
     }
