@@ -29,6 +29,10 @@ export type NotificationConfig = PushAllInOneConfig & {
     * 是否为 纯文本（去除 HTML）
     */
     isSnippet: boolean
+    /**
+     * 一次推送的最大长度
+     */
+    maxLength: number
 }
 
 export type WebhookConfig = AjaxConfig

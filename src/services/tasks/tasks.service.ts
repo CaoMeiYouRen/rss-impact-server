@@ -14,6 +14,7 @@ import md5 from 'md5'
 import FileType from 'file-type'
 import { QBittorrent } from '@cao-mei-you-ren/qbittorrent'
 import torrent2magnet from 'torrent2magnet-js'
+import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
@@ -37,7 +38,8 @@ export class TasksService implements OnApplicationBootstrap {
 
     // eslint-disable-next-line max-params
     constructor(
-        private scheduler: SchedulerRegistry,
+        private readonly scheduler: SchedulerRegistry,
+        private readonly resourceService: ResourceService,
         @InjectRepository(Feed) private readonly feedRepository: Repository<Feed>,
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
         @InjectRepository(Hook) private readonly hookRepository: Repository<Hook>,
@@ -180,26 +182,71 @@ export class TasksService implements OnApplicationBootstrap {
     }
 
     private async notificationHook(hook: Hook, feed: Feed, articles: Article[]) {
+        const userId = hook.userId
         const config = hook.config as NotificationConfig
-        const { isMergePush = false, isMarkdown = false, isSnippet = false, ...pushConfig } = config
+        const { isMergePush = false, isMarkdown = false, isSnippet = false, maxLength = 4096, ...pushConfig } = config
         const title = `检测到【 ${feed.title} 】有更新`
         // TODO 需考虑 推送内容过长的问题
-        // TODO 增加 推送日志
+        // TODO 如果过长，则考虑分割推送
+        const webhookLog = this.webhookLogRepository.create({
+            hookId: hook.id,
+            userId,
+            feedId: feed.id,
+            status: 'unknown',
+            type: 'notification',
+        })
+        const notifications: { title: string, desp: string }[] = []
         if (isMergePush) {
             // 合并推送
-            const desp = articlesFormat(articles, { isMarkdown, isSnippet })
-            const result = await runPushAllInOne(title, desp.slice(0, 4096), pushConfig)
-            return
+            notifications.push({
+                title,
+                desp: articlesFormat(articles, { isMarkdown, isSnippet }).slice(0, maxLength),
+            })
+        } else {
+            // 逐条推送
+            notifications.push(
+                ...articles.map((article) => {
+                    const { text: desp, title: itemTitle } = articleItemFormat(article, { isMarkdown, isSnippet })
+                    return {
+                        title: itemTitle,
+                        desp: desp.slice(0, maxLength),
+                    }
+                }))
         }
-        // 逐条推送
-        await Promise.allSettled(articles.map(async (article) => {
-            const { text: desp } = articleItemFormat(article, { isMarkdown, isSnippet })
-            const result = await runPushAllInOne(title, desp.slice(0, 4096), pushConfig)
+        await Promise.allSettled(notifications.map(async (notification) => {
+            try {
+                this.logger.log(`正在执行推送渠道 ${config.type}`)
+                const resp = await runPushAllInOne(notification.title, notification.desp, pushConfig)
+                await this.webhookLogRepository.save(this.webhookLogRepository.create({
+                    ...webhookLog,
+                    ...pick(resp, ['data', 'statusText', 'headers']),
+                    status: 'success',
+                    statusCode: resp.status,
+                }))
+                this.logger.log(`执行推送渠道 ${config.type} 成功`)
+            } catch (error) {
+                this.logger.error(error)
+                await this.webhookLogRepository.save(this.webhookLogRepository.create({
+                    ...webhookLog,
+                    data: error?.response?.data || error?.response || error,
+                    statusCode: 500,
+                    statusText: 'Internal Server Error',
+                    headers: error?.response?.headers || {},
+                    status: 'fail',
+                }))
+            }
         }))
     }
 
     private async webhook(hook: Hook, feed: Feed, articles: Article[]) {
         const userId = hook.userId
+        const webhookLog = this.webhookLogRepository.create({
+            hookId: hook.id,
+            userId,
+            feedId: feed.id,
+            status: 'unknown',
+            type: 'webhook',
+        })
         try {
             const config = hook.config as WebhookConfig
             this.logger.log(`正在触发 Webhook: ${config?.url}`)
@@ -208,19 +255,21 @@ export class TasksService implements OnApplicationBootstrap {
                 data: articles as any,
             })
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
-                ...pick(resp, ['data', 'status', 'statusText', 'headers']),
-                hookId: hook.id,
+                ...pick(resp, ['data', 'statusText', 'headers']),
+                status: 'success',
+                statusCode: resp.status,
+                ...webhookLog,
             }))
             this.logger.log(`触发 Webhook: ${config?.url} 成功`)
         } catch (error) {
             this.logger.error(error)
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
                 data: error?.response?.data || error?.response || error,
-                status: 500,
+                statusCode: 500,
                 statusText: 'Internal Server Error',
                 headers: error?.response?.headers || {},
-                hookId: hook.id,
-                userId,
+                status: 'fail',
+                ...webhookLog,
             }))
         }
     }
@@ -293,6 +342,7 @@ export class TasksService implements OnApplicationBootstrap {
             }
             const newResource = this.resourceRepository.create({
                 url,
+                name: filename,
                 path: filepath,
                 status: 'unknown',
                 userId,
@@ -307,10 +357,10 @@ export class TasksService implements OnApplicationBootstrap {
                 newResource.hash = fileInfo.hash
                 if (skipHashes.includes(fileInfo.hash)) {
                     newResource.status = 'skip'
-                    // await fs.remove(filepath) // 移除被 ban 的文件
-                    // TODO 当所有 resource 的状态都不为 success 时，移除该文件
                     newResource.path = ''
                     this.logger.log(`文件 ${filename} 在 skipHashes 内，已删除`)
+                    // 尝试移除文件
+                    await this.resourceService.removeFile(newResource)
                 } else {
                     newResource.status = 'success'
                     this.logger.log(`文件 ${filename} 下载成功`)
@@ -326,6 +376,7 @@ export class TasksService implements OnApplicationBootstrap {
     }
 
     private async bitTorrentHook(hook: Hook, feed: Feed, articles: Article[]) {
+        const userId = hook.userId
         const config = hook.config as BitTorrentConfig
         const { type } = config
         const btArticles = articles.filter((article) => article.enclosure?.type === 'application/x-bittorrent' && article.enclosure?.url) // 排除BT以外的
@@ -358,6 +409,7 @@ export class TasksService implements OnApplicationBootstrap {
                             path: '',
                             status: 'unknown',
                             hash,
+                            userId,
                         })
                         const newResource = await this.resourceRepository.save(resource)
                         // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
@@ -423,6 +475,7 @@ export class TasksService implements OnApplicationBootstrap {
                             size: magnet.xl,  // 体积大小
                             type: 'application/x-bittorrent',
                             hash,
+                            userId,
                         })
                         // TODO 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
                         if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= magnet.xl) {

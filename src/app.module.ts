@@ -16,6 +16,7 @@ import { ArticleController } from './controllers/article/article.controller'
 import { TasksService } from './services/tasks/tasks.service'
 import { HookController } from './controllers/hook/hook.controller'
 import { ResourceController } from './controllers/resource/resource.controller'
+import { ResourceService } from './services/resource/resource.service'
 
 @Global()
 @Module({
@@ -27,6 +28,7 @@ import { ResourceController } from './controllers/resource/resource.controller'
         AppService,
         UserService,
         AuthService,
+        ResourceService,
     ],
     controllers: [
         AppController,
@@ -46,6 +48,7 @@ import { ResourceController } from './controllers/resource/resource.controller'
         SessionStrategy,
         TokenStrategy,
         TasksService,
+        ResourceService,
     ],
 })
 export class AppModule { }

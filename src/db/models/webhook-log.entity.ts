@@ -4,6 +4,7 @@ import { IsInt, IsNotEmpty, IsObject, Length, Max, Min, ValidateIf } from 'class
 import { AxiosResponseHeaders, RawAxiosResponseHeaders } from 'axios'
 import { AclBase } from './acl-base.entity'
 import { Hook } from './hook.entity'
+import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 
@@ -34,7 +35,23 @@ export class WebhookLog extends AclBase {
     @Min(100)
     @Max(600)
     @Column({})
-    status: number
+    statusCode: number
+
+    @ApiProperty({ title: '类型', description: 'webhook 或 notification', example: 'webhook' })
+    @IsNotEmpty()
+    @Length(0, 16)
+    @Column({
+        length: 16,
+    })
+    type: 'webhook' | 'notification'
+
+    @ApiProperty({ title: '状态', example: 'success' })
+    @IsNotEmpty()
+    @Length(0, 16)
+    @Column({
+        length: 16,
+    })
+    status: 'success' | 'fail' | 'unknown'
 
     @ApiProperty({ title: '状态码名称', example: 'OK' })
     @IsNotEmpty()
@@ -54,6 +71,15 @@ export class WebhookLog extends AclBase {
         nullable: true,
     })
     headers?: RawAxiosResponseHeaders | AxiosResponseHeaders
+
+    @ApiProperty({ title: '订阅源ID', example: 1 })
+    @IsId()
+    @Column({ nullable: true })
+    feedId: number
+
+    @ApiProperty({ title: '订阅源', type: () => Feed })
+    @ManyToOne(() => Feed)
+    feed: Feed
 
     @ApiProperty({ title: 'HookID', example: 1 })
     @IsId()
