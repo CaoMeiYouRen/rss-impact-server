@@ -34,3 +34,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ env.REPO }}:${{ env.TAG }},${{ env.REPO }}:latest
+      - name: Deploy to Jenkins
+        run: curl -X POST -L --user ${{ secrets.JENKINS_TOKEN }} ${{ secrets.JENKINS_URL }}/buildWithParameters?token=${{ JENKINS_JOB_TOKEN }}&DOCKER_IMAGE=${{ env.REPO }}:${{ env.TAG }}
