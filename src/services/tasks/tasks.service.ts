@@ -17,7 +17,7 @@ import torrent2magnet from 'torrent2magnet-js'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
+import { __DEV__, DOWNLOAD_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
@@ -29,7 +29,7 @@ import { WebhookLog } from '@/db/models/webhook-log.entity'
 import { runPushAllInOne } from '@/utils/notification'
 import { isSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 
-const downloadLimit = pLimit(Math.min(os.cpus().length, 5)) // 下载并发数，最大不超过 5
+const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -136,7 +136,18 @@ export class TasksService implements OnApplicationBootstrap {
                             }
                             return dayjs().diff(article.publishDate, 'second') <= hook.filter.time
                         })
-                        // TODO 考虑增加 filterout 功能
+                        // 先判断 filterout
+                        .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
+                            if (!hook.filterout[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+                                return true
+                            }
+                            if (field === 'categories') {
+                                // 有一个 category 对的上就 排除
+                                return !article[field].some((category) => XRegExp(hook.filterout[field], 'ig').test(category))
+                            }
+                            return !XRegExp(hook.filterout[field], 'ig').test(article[field])
+                        }))
+                        // 再判断 filter
                         .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
                             if (!hook.filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
                                 return true
@@ -146,8 +157,7 @@ export class TasksService implements OnApplicationBootstrap {
                                 return article[field].some((category) => XRegExp(hook.filter[field], 'ig').test(category))
                             }
                             return XRegExp(hook.filter[field], 'ig').test(article[field])
-                        }),
-                        )
+                        }))
                         .slice(0, hook.filter.limit || 20) // 默认最多 20 条
                     if (!filteredArticles?.length) {
                         return
@@ -446,6 +456,7 @@ export class TasksService implements OnApplicationBootstrap {
                             }
                             await this.resourceRepository.save(resource) // 更新状态
                         }, 60 * 1000) // 等待 60 秒后更新 元数据
+                        // TODO 优化更新元数据逻辑
                         return
                     }
                     // 如果是 http，则下载 bt 种子
