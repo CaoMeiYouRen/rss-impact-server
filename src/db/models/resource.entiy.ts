@@ -72,5 +72,5 @@ export class Resource extends Base {
     @Column({
         length: 16,
     })
-    status: 'success' | 'fail' | 'ban' | 'unknown'
+    status: 'success' | 'fail' | 'skip' | 'unknown'
 }

@@ -26,6 +26,7 @@ import { ajax } from '@/utils/ajax'
 import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
 import { runPushAllInOne } from '@/utils/notification'
+import { isSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, 5)) // 下载并发数，最大不超过 5
 
@@ -283,7 +284,7 @@ export class TasksService implements OnApplicationBootstrap {
                 newResource.size = fileInfo.size
                 newResource.hash = fileInfo.hash
                 if (skipHashes.includes(fileInfo.hash)) {
-                    newResource.status = 'ban'
+                    newResource.status = 'skip'
                     await fs.remove(filepath) // 移除被 ban 的文件
                     newResource.path = ''
                     this.logger.log(`文件 ${filename} 在 skipHashes 内，已删除`)
@@ -325,6 +326,10 @@ export class TasksService implements OnApplicationBootstrap {
                         const reg = /urn:btih:(.{40})/
                         const hash = reg.exec(url)?.[1]?.toLowerCase()
                         const magnetUri = getMagnetUri(hash) // 磁力链接
+                        if (await this.resourceRepository.findOne({ where: { hash } })) {
+                            this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
+                            return
+                        }
                         const resource = this.resourceRepository.create({
                             url: magnetUri,
                             path: '',
@@ -332,7 +337,7 @@ export class TasksService implements OnApplicationBootstrap {
                             hash,
                         })
                         const newResource = await this.resourceRepository.save(resource)
-                        // TODO 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
+                        // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
                         setTimeout(async () => {
                             const torrentInfo = await qBittorrent.getTorrent(hash)
                             const tracker = torrentInfo.raw?.tracker
@@ -340,8 +345,12 @@ export class TasksService implements OnApplicationBootstrap {
                             newResource.url = newMagnetUri
                             newResource.name = torrentInfo.name
                             newResource.size = torrentInfo.totalSize // 总大小
-                            if (maxSize && Number.isSafeInteger(maxSize) && maxSize > 0 && maxSize <= torrentInfo.totalSize) {
-                                // TODO 处理大小超过限制的
+                            if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= torrentInfo.totalSize) {
+                                this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
+                                await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
+                                newResource.status = 'skip'
+                                await this.resourceRepository.save(newResource)
+                                return
                             }
                             switch (torrentInfo.state) {
                                 case 'error':
@@ -353,7 +362,7 @@ export class TasksService implements OnApplicationBootstrap {
                                 case 'downloading':
                                     newResource.status = 'success'
                                     break
-                                case 'seeding':
+                                case 'seeding': // 如果是做种后完成的话，也是 seeding 状态
                                     newResource.status = 'success'
                                     break
                                 default: // paused/queued/checking/unknown
@@ -366,28 +375,41 @@ export class TasksService implements OnApplicationBootstrap {
                     }
                     // 如果是 http，则下载 bt 种子
                     if (/^(https?:\/\/)/.test(url)) {
+                        if (await this.resourceRepository.findOne({ where: { url } })) {
+                            this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
+                            return
+                        }
                         const resp = await ajax<ArrayBuffer>({
                             url,
                             responseType: 'arraybuffer',
                             timeout: 60 * 1000,
                         })
                         const torrent = new Uint8Array(resp.data)
-                        const status = await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
                         const magnet = torrent2magnet(torrent)
                         const hash = magnet.infohash.toLowerCase() // hash
                         const magnetUri = getMagnetUri(hash, magnet.main_tracker)
+                        if (await this.resourceRepository.findOne({ where: { hash } })) {
+                            this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
+                            return
+                        }
                         const newResource = this.resourceRepository.create({
-                            url: magnetUri,
+                            url, // 保存 bt 种子链接，避免每次都要下载种子
                             name: magnet.dn, // 名称
                             path: '', // 文件在服务器上的地址，没有必要，故统一留空
-                            status: status ? 'success' : 'fail',
+                            status: 'unknown',
                             size: magnet.xl,  // 体积大小
                             type: 'application/x-bittorrent',
                             hash,
                         })
-                        if (maxSize && Number.isSafeInteger(maxSize) && maxSize > 0 && maxSize <= magnet.xl) {
-                            // TODO 处理大小超过限制的
+                        // TODO 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
+                        if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= magnet.xl) {
+                            this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
+                            newResource.status = 'skip'
+                            await this.resourceRepository.save(newResource)
+                            return
                         }
+                        const status = await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
+                        newResource.status = status ? 'success' : 'fail'
                         await this.resourceRepository.save(newResource)
                     }
                 }))

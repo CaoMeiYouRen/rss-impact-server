@@ -13,7 +13,7 @@ import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 export class Filter {
 
     @ApiProperty({ title: '条数限制', example: 20 })
-    @IsSafePositiveInteger(1000)
+    @IsSafePositiveInteger(10000)
     @ValidateIf((o) => typeof o.length !== 'undefined')
     limit?: number
 
