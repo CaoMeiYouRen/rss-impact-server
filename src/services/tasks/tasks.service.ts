@@ -306,7 +306,7 @@ export class TasksService implements OnApplicationBootstrap {
             }
             // 查找数据库内是否有其他用户存储了相同 URL 的文件
             resource = await this.resourceRepository.findOne({
-                where: { url },
+                where: { url, status: 'success' },
             })
             // 如果有，则为该用户复制一份
             if (resource?.status === 'success') { // sikp/fail/unknown 的情况下重新下载
@@ -400,7 +400,7 @@ export class TasksService implements OnApplicationBootstrap {
                         const reg = /urn:btih:(.{40})/
                         const hash = reg.exec(url)?.[1]?.toLowerCase()
                         const magnetUri = getMagnetUri(hash) // 磁力链接
-                        if (await this.resourceRepository.findOne({ where: { hash } })) {
+                        if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
                             this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
                             return
                         }
@@ -450,7 +450,7 @@ export class TasksService implements OnApplicationBootstrap {
                     }
                     // 如果是 http，则下载 bt 种子
                     if (/^(https?:\/\/)/.test(url)) {
-                        if (await this.resourceRepository.findOne({ where: { url } })) {
+                        if (await this.resourceRepository.findOne({ where: { url, userId } })) {
                             this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
                             return
                         }
@@ -463,7 +463,7 @@ export class TasksService implements OnApplicationBootstrap {
                         const magnet = torrent2magnet(torrent)
                         const hash = magnet.infohash.toLowerCase() // hash
                         const magnetUri = getMagnetUri(hash, magnet.main_tracker)
-                        if (await this.resourceRepository.findOne({ where: { hash } })) {
+                        if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
                             this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
                             return
                         }
