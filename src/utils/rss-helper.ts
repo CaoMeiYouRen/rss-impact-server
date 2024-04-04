@@ -50,7 +50,7 @@ function formatGuid(e: any) {
  */
 export function rssNormalize(rss: Record<string, any>) {
     const _rss = deepTrim(rss) as (Record<string, any> & Output<Record<string, any>>)
-    _rss.items = _rss.items.map((e) => formatGuid(e))
+    _rss.items = _rss?.items?.map((e) => formatGuid(e))
     return _rss
 }
 
@@ -96,10 +96,12 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
     if (title && !content?.startsWith(title)) {
         text += `${title}\n`
     }
-    text += `${content}\n`
+
     if (isMarkdown) {
-        text = htmlToMarkdown(text)
+        text = htmlToMarkdown(content)
         text += '\n'
+    } else {
+        text += `${content}\n`
     }
     if (item.author) {
         text += `作者：${item.author}\n`
