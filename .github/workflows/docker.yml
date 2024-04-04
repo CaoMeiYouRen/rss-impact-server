@@ -11,9 +11,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  test:
+    name: Test
     runs-on: ubuntu-latest
-
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: "latest"
+      - name: Setup Node.js@lts environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+      - name: Cache Dependency
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ~/.yarn
+            ~/.cache/pnpm
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
+          key: pnpm-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: pnpm-${{ runner.os }}
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm run lint
+      - run: pnpm run build
+      - run: pnpm run test:e2e
+  build:
+    needs: test # 等待 test 执行成功
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
