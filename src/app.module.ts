@@ -17,6 +17,7 @@ import { TasksService } from './services/tasks/tasks.service'
 import { HookController } from './controllers/hook/hook.controller'
 import { ResourceController } from './controllers/resource/resource.controller'
 import { ResourceService } from './services/resource/resource.service'
+import { WebhookLogController } from './controllers/webhook-log/webhook-log.controller'
 
 @Global()
 @Module({
@@ -39,6 +40,7 @@ import { ResourceService } from './services/resource/resource.service'
         ArticleController,
         HookController,
         ResourceController,
+        WebhookLogController,
     ],
     providers: [
         AppService,

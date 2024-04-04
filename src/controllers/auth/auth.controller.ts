@@ -4,7 +4,9 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { LoginDto } from '@/models/login.dto'
+import { ResponseDto } from '@/models/response.dto'
 
+// TODO 考虑增加注册逻辑
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
@@ -16,6 +18,8 @@ export class AuthController {
     @ApiOperation({ summary: '登录' })
     async login(@Body() _dto: LoginDto, @CurrentUser() user: User, @Session() session: Record<string, any>) {
         session.uid = user.id
-        return user
+        return new ResponseDto({
+            message: 'OK',
+        })
     }
 }
