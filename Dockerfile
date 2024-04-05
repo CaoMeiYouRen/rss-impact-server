@@ -1,4 +1,15 @@
-# 阶段一：构建阶段
+# 前端构建阶段
+FROM caomeiyouren/alpine-nodejs:1.1.0 as frontend-builder
+# 如果前端更新了，但后端没有更新，需要发版时，修改该变量
+ENV FRONTEND_VERSION='0.0.1'
+
+WORKDIR /frontend
+
+RUN git clone https://github.com/CaoMeiYouRen/rss-impact-web.git /frontend --depth=1
+# /frontend/dist
+RUN pnpm i --frozen-lockfile && pnpm run build
+
+# 构建阶段
 FROM caomeiyouren/alpine-nodejs:1.1.0 as builder
 
 WORKDIR /app
@@ -11,7 +22,7 @@ COPY . /app
 
 RUN pnpm run build
 
-# 阶段二：缩小阶段
+# 缩小阶段
 FROM caomeiyouren/alpine-nodejs:1.1.0 as docker-minifier
 
 WORKDIR /app
@@ -26,14 +37,16 @@ RUN export PROJECT_ROOT=/app/ && \
     mv /app/app-minimal/node_modules /app/ && \
     rm -rf /app/app-minimal
 
-# 阶段三：生产阶段
+# 生产阶段
 FROM caomeiyouren/alpine-nodejs-minimize:1.0.0
 
 ENV NODE_ENV production
 
 WORKDIR /app
-
+# 后端部分
 COPY --from=docker-minifier /app /app
+# 前端部分
+COPY --from=frontend-builder /frontend/dist /app/public
 
 EXPOSE 3000
 
