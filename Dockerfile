@@ -6,9 +6,10 @@ ENV FRONTEND_VERSION='0.0.1'
 WORKDIR /frontend
 
 RUN git clone https://github.com/CaoMeiYouRen/rss-impact-web.git /frontend --depth=1
-# /frontend/dist
-RUN pnpm i --frozen-lockfile && pnpm run build
 
+RUN pnpm i --frozen-lockfile
+
+RUN pnpm run build
 # 构建阶段
 FROM caomeiyouren/alpine-nodejs:1.1.0 as builder
 
