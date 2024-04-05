@@ -52,7 +52,6 @@
     "class-validator": "^0.14.1",
     "connect-sqlite3": "^0.9.13",
     "cron": "^3.1.6",
-    "crypto-hash": "github:CaoMeiYouRen/crypto-hash",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",
     "express-rate-limit": "^7.2.0",
@@ -152,33 +151,22 @@
   "pnpm": {
     "overrides": {
       "@types/superagent": "4.1.14",
-      "@typegoose/typegoose": "9.12.1",
-      "crypto-hash": "github:CaoMeiYouRen/crypto-hash",
-      "mongodb": "4.9.1",
-      "mongoose": "6.6.3"
+      "crypto-hash": "github:CaoMeiYouRen/crypto-hash"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
-        "@types/mongoose",
         "express",
-        "mongodb",
         "webpack"
       ]
     }
   },
   "overrides": {
     "@types/superagent": "4.1.14",
-    "@typegoose/typegoose": "9.12.1",
-    "crypto-hash": "github:CaoMeiYouRen/crypto-hash",
-    "mongodb": "4.9.1",
-    "mongoose": "6.6.3"
+    "crypto-hash": "github:CaoMeiYouRen/crypto-hash"
   },
   "resolutions": {
     "@types/superagent": "4.1.14",
-    "@typegoose/typegoose": "9.12.1",
-    "crypto-hash": "github:CaoMeiYouRen/crypto-hash",
-    "mongodb": "4.9.1",
-    "mongoose": "6.6.3"
+    "crypto-hash": "github:CaoMeiYouRen/crypto-hash"
   },
   "config": {
     "commitizen": {
