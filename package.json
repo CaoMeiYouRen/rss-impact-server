@@ -75,11 +75,11 @@
     "query-string": "^7.1.3",
     "reflect-metadata": "^0.2.1",
     "rimraf": "^5.0.5",
-    "rss-parser": "github:CaoMeiYouRen/rss-parser",
+    "rss-parser": "CaoMeiYouRen/rss-parser",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
     "swagger-ui-express": "^5.0.0",
-    "torrent2magnet-js": "github:CaoMeiYouRen/torrent2magnet-js",
+    "torrent2magnet-js": "CaoMeiYouRen/torrent2magnet-js",
     "tslib": "^2.6.2",
     "turndown": "^7.1.3",
     "typeorm": "^0.3.20",
@@ -151,7 +151,7 @@
   "pnpm": {
     "overrides": {
       "@types/superagent": "4.1.14",
-      "crypto-hash": "github:CaoMeiYouRen/crypto-hash"
+      "crypto-hash": "CaoMeiYouRen/crypto-hash"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
@@ -162,11 +162,11 @@
   },
   "overrides": {
     "@types/superagent": "4.1.14",
-    "crypto-hash": "github:CaoMeiYouRen/crypto-hash"
+    "crypto-hash": "CaoMeiYouRen/crypto-hash"
   },
   "resolutions": {
     "@types/superagent": "4.1.14",
-    "crypto-hash": "github:CaoMeiYouRen/crypto-hash"
+    "crypto-hash": "CaoMeiYouRen/crypto-hash"
   },
   "config": {
     "commitizen": {

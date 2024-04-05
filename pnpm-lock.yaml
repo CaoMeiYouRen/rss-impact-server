@@ -6,7 +6,7 @@ settings:
 
 overrides:
   '@types/superagent': 4.1.14
-  crypto-hash: github:CaoMeiYouRen/crypto-hash
+  crypto-hash: CaoMeiYouRen/crypto-hash
 
 dependencies:
   '@cao-mei-you-ren/qbittorrent':
@@ -133,7 +133,7 @@ dependencies:
     specifier: ^5.0.5
     version: 5.0.5
   rss-parser:
-    specifier: github:CaoMeiYouRen/rss-parser
+    specifier: CaoMeiYouRen/rss-parser
     version: github.com/CaoMeiYouRen/rss-parser/5a6601402d88976127f8b74e21775e6950de2be9
   rxjs:
     specifier: ^7.8.1
@@ -145,7 +145,7 @@ dependencies:
     specifier: ^5.0.0
     version: 5.0.0
   torrent2magnet-js:
-    specifier: github:CaoMeiYouRen/torrent2magnet-js
+    specifier: CaoMeiYouRen/torrent2magnet-js
     version: github.com/CaoMeiYouRen/torrent2magnet-js/da37f8a3db79613f804ebe4068521d48b4024ba8
   tslib:
     specifier: ^2.6.2
@@ -6648,7 +6648,6 @@ packages:
 
   /is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
-    requiresBuild: true
     dev: true
 
   /is-bigint@1.0.4:
@@ -7724,7 +7723,6 @@ packages:
 
   /lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
-    requiresBuild: true
     dev: true
 
   /lines-and-columns@2.0.4:
@@ -12532,7 +12530,7 @@ packages:
     dev: false
 
   github.com/CaoMeiYouRen/rss-parser/5a6601402d88976127f8b74e21775e6950de2be9:
-    resolution: {commit: 5a6601402d88976127f8b74e21775e6950de2be9, repo: git+ssh://git@github.com/CaoMeiYouRen/rss-parser.git, type: git}
+    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/rss-parser/tar.gz/5a6601402d88976127f8b74e21775e6950de2be9}
     name: rss-parser
     version: 3.13.0
     dependencies:
@@ -12550,7 +12548,7 @@ packages:
     dev: false
 
   github.com/CaoMeiYouRen/torrent2magnet-js/da37f8a3db79613f804ebe4068521d48b4024ba8:
-    resolution: {commit: da37f8a3db79613f804ebe4068521d48b4024ba8, repo: git+ssh://git@github.com/CaoMeiYouRen/torrent2magnet-js.git, type: git}
+    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/torrent2magnet-js/tar.gz/da37f8a3db79613f804ebe4068521d48b4024ba8}
     name: torrent2magnet-js
     version: 1.1.5
     dependencies:
