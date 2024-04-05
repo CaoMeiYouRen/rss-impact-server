@@ -106,7 +106,7 @@
     "@types/module-alias": "^2.0.4",
     "@types/morgan": "^1.9.9",
     "@types/ms": "^0.7.34",
-    "@types/node": "^20.11.25",
+    "@types/node": "^20.12.4",
     "@types/passport-local": "^1.0.38",
     "@types/passport-strategy": "^0.2.38",
     "@types/supertest": "^6.0.2",
