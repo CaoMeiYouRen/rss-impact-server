@@ -87,7 +87,7 @@
     "yaml": "^2.4.1"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^15.0.0",
+    "@commitlint/config-conventional": "^19.1.0",
     "@nestjs/cli": "^10.3.2",
     "@nestjs/schematics": "^10.1.1",
     "@nestjs/testing": "^10.3.3",

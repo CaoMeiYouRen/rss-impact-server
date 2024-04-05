@@ -165,8 +165,8 @@ dependencies:
 
 devDependencies:
   '@commitlint/config-conventional':
-    specifier: ^15.0.0
-    version: 15.0.0
+    specifier: ^19.1.0
+    version: 19.1.0
   '@nestjs/cli':
     specifier: ^10.3.2
     version: 10.3.2(webpack-cli@5.1.4)
@@ -728,11 +728,12 @@ packages:
     engines: {node: '>=0.1.90'}
     dev: false
 
-  /@commitlint/config-conventional@15.0.0:
-    resolution: {integrity: sha512-eZBRL8Lk3hMNHp1wUMYj0qrZQEsST1ai7KHR8J1IDD9aHgT7L2giciibuQ+Og7vxVhR5WtYDvh9xirXFVPaSkQ==}
-    engines: {node: '>=v12'}
+  /@commitlint/config-conventional@19.1.0:
+    resolution: {integrity: sha512-KIKD2xrp6Uuk+dcZVj3++MlzIr/Su6zLE8crEDQCZNvWHNQSeeGbzOlNtsR32TUy6H3JbP7nWgduAHCaiGQ6EA==}
+    engines: {node: '>=v18'}
     dependencies:
-      conventional-changelog-conventionalcommits: 4.6.3
+      '@commitlint/types': 19.0.3
+      conventional-changelog-conventionalcommits: 7.0.2
     dev: true
 
   /@commitlint/config-validator@19.0.3:
@@ -795,7 +796,6 @@ packages:
       '@types/conventional-commits-parser': 5.0.0
       chalk: 5.3.0
     dev: true
-    optional: true
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -834,7 +834,7 @@ packages:
     resolution: {integrity: sha512-FmecYRCzpuPqAQhe/M1hHU81j+HjSzagEJJSQcJfdqc0cHVqNt7emo7YiJP3oOoVjq256vH4+ZimGErwFNvRpQ==}
     engines: {node: '>=18'}
     dependencies:
-      crypto-hash: github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
+      crypto-hash: git/github.com+CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
       uint8array-extras: 1.1.0
     dev: false
 
@@ -2135,7 +2135,6 @@ packages:
     dependencies:
       '@types/node': 20.12.4
     dev: true
-    optional: true
 
   /@types/cookiejar@2.1.5:
     resolution: {integrity: sha512-he+DHOWReW0nghN24E1WUqM0efK4kI9oTqDm6XmK8ZPe2djZ90BSNdGnIyCLzCPw7/pogPlGbzI2wHGGmi4O/Q==}
@@ -4057,13 +4056,11 @@ packages:
       - supports-color
     dev: true
 
-  /conventional-changelog-conventionalcommits@4.6.3:
-    resolution: {integrity: sha512-LTTQV4fwOM4oLPad317V/QNQ1FY4Hju5qeBIM1uTHbrnCE+Eg4CdRZ3gO2pUeR+tzWdp80M2j3qFFEDWVqOV4g==}
-    engines: {node: '>=10'}
+  /conventional-changelog-conventionalcommits@7.0.2:
+    resolution: {integrity: sha512-NKXYmMR/Hr1DevQegFB4MwfM5Vv0m4UIxKZTTYuD98lpTknaZlSRrDOG4X7wIXpGkfsYxZTghUN+Qq+T0YQI7w==}
+    engines: {node: '>=16'}
     dependencies:
       compare-func: 2.0.0
-      lodash: 4.17.21
-      q: 1.5.1
     dev: true
 
   /conventional-changelog-writer@5.0.1:
@@ -10855,9 +10852,6 @@ packages:
   /sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       bindings: 1.5.0
       node-addon-api: 7.1.0
@@ -12522,8 +12516,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
 
-  github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
-    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118}
+  git/github.com+CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
+    resolution: {commit: cbe97d052b7da4eaf3fa774ac2fae4ad225aa118, repo: git@github.com:CaoMeiYouRen/crypto-hash.git, type: git}
     name: crypto-hash
     version: 3.0.0
     engines: {node: '>=18'}
