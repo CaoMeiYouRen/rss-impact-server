@@ -12,12 +12,12 @@ export abstract class Base {
     @ValidateIf((o) => typeof o.id !== 'undefined')
     id: number
 
-    @ApiProperty({ title: '创建时间', example: dayjs().toDate() })
+    @ApiProperty({ title: '创建时间', example: dayjs('2024-01-01').toDate() })
     @Index()
     @CreateDateColumn()
     createdAt: Date
 
-    @ApiProperty({ title: '更新时间', example: dayjs().toDate() })
+    @ApiProperty({ title: '更新时间', example: dayjs('2024-01-01').toDate() })
     @Index()
     @UpdateDateColumn()
     updatedAt: Date

@@ -4,7 +4,7 @@ import path from 'path'
 import moduleAlias from 'module-alias'
 moduleAlias.addAlias('@', path.join(__dirname, './'))
 import { NestFactory } from '@nestjs/core'
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import helmet from 'helmet'
 import { ValidationPipe } from '@nestjs/common'
@@ -20,7 +20,7 @@ async function bootstrap() {
 
     app.setGlobalPrefix('/api')
     if (__DEV__) {
-        const options = new DocumentBuilder()
+        const config = new DocumentBuilder()
             .setTitle('RSS Impact server docs')
             .setDescription('RSS Impact server docs')
             .setVersion('0.1.0')
@@ -28,7 +28,13 @@ async function bootstrap() {
             // .addCookieAuth()
             // .setBasePath('/api')
             .build()
-        const document = SwaggerModule.createDocument(app, options)
+        const options: SwaggerDocumentOptions = {
+            operationIdFactory: (
+                controllerKey: string,
+                methodKey: string,
+            ) => `${controllerKey.replace(/Controller/i, '')}_${methodKey}`,
+        }
+        const document = SwaggerModule.createDocument(app, config, options)
         SwaggerModule.setup('docs', app, document)
     }
 

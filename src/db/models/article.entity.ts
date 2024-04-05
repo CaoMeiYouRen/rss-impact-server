@@ -86,7 +86,7 @@ export class Article extends AclBase implements Item {
     /**
      *发布日期 pubDate/isoDate
      */
-    @ApiProperty({ title: '发布日期', example: dayjs().toDate() })
+    @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     @IsDateString()
     @ValidateIf((o) => typeof o.publishDate !== 'undefined')
     @Column({

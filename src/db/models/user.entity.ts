@@ -74,7 +74,7 @@ export class User extends Base {
         editDisabled: true,
         readonly: true,
     })
-    @ApiProperty({ title: '接口访问令牌', description: '接口访问令牌，部分情况可替代账号密码', example: getAccessToken() })
+    @ApiProperty({ title: '接口访问令牌', description: '接口访问令牌，部分情况可替代账号密码', example: 'rss-impact:fef26d6e-040f-4a7b-8d6a-4e4f12e107b6' })
     // @IsNotEmpty()
     // @Length(0, 128)
     @Index('USER_ACCESS_TOKEN_INDEX', { unique: true })
