@@ -1,10 +1,11 @@
 import { Strategy } from 'passport-strategy'
 import { PassportStrategy } from '@nestjs/passport'
 import { Request } from 'express'
-import { Session, SessionData } from 'express-session'
 import { Injectable } from '@nestjs/common'
 import { HttpError } from '@/models/http-error'
 import { UserService } from '@/services/user/user.service'
+import { isId } from '@/decorators/is-id.decorator'
+import { ISession } from '@/interfaces/session'
 
 @Injectable()
 export class SessionStrategy extends PassportStrategy(Strategy, 'session') {
@@ -15,9 +16,9 @@ export class SessionStrategy extends PassportStrategy(Strategy, 'session') {
     }
 
     authenticate(req: Request): void {
-        const session = req.session as (Session & Partial<SessionData> & { uid: number })
+        const session = req.session as ISession
         const uid = session?.uid
-        if (!uid || uid <= 0 || Number.isNaN(uid)) {
+        if (!isId(uid)) {
             throw new HttpError(401, '用户未登录！')
         }
         this.validate(uid)
