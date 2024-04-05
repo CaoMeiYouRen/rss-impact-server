@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
-import { Category } from '@/db/models/category.entity'
+import { Category, CreateCategory, FindCategory, UpdateCategory } from '@/db/models/category.entity'
 
 @UseSession()
 @AclCrud({
@@ -13,6 +13,17 @@ import { Category } from '@/db/models/category.entity'
         option: {
             title: '分组管理',
             column: [],
+        },
+    },
+    routes: {
+        find: {
+            dto: FindCategory,
+        },
+        create: {
+            dto: CreateCategory,
+        },
+        update: {
+            dto: UpdateCategory,
         },
     },
     relations: ['feeds'],

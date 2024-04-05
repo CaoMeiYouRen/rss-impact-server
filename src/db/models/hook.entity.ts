@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany } from 'typeorm'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsBoolean, IsObject, Length, ValidateIf, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
@@ -7,6 +7,7 @@ import { Feed } from './feed.entity'
 import { HookConfig, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 /**
  * 仅保留想要的，必须全部符合
  */
@@ -132,4 +133,13 @@ export class Hook extends AclBase {
     @ApiProperty({ title: '订阅源列表', example: [], type: () => [Feed] })
     @ManyToMany(() => Feed, (feed) => feed.hooks)
     feeds: Feed[]
+}
+
+export class CreateHook extends OmitType(Hook, ['id', 'createdAt', 'updatedAt'] as const) { }
+
+export class UpdateHook extends PartialType(OmitType(Hook, ['createdAt', 'updatedAt'] as const)) { }
+
+export class FindHook extends FindPlaceholderDto<Hook> {
+    @ApiProperty({ type: () => [Hook] })
+    declare data: Hook[]
 }

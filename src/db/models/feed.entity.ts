@@ -9,6 +9,7 @@ import { Hook } from './hook.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 /**
  * RSS 订阅表
@@ -116,3 +117,8 @@ export class Feed extends AclBase {
 export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] as const) { }
 
 export class UpdateFeed extends PartialType(OmitType(Feed, ['createdAt', 'updatedAt'] as const)) { }
+
+export class FindFeed extends FindPlaceholderDto<Feed> {
+    @ApiProperty({ type: () => [Feed] })
+    declare data: Feed[]
+}

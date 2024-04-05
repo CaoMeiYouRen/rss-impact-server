@@ -9,7 +9,7 @@ import {
     ExecutionContext,
     Logger,
 } from '@nestjs/common'
-import { ApiOperation, ApiQuery } from '@nestjs/swagger'
+import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger'
 import { Request } from 'express'
 import { Repository } from 'typeorm'
 import { merge } from 'lodash'
@@ -24,6 +24,8 @@ import { AclBase } from '@/db/models/acl-base.entity'
 import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
 import { AclOptions } from '@/decorators/acl-crud.decorator'
 import { isId } from '@/decorators/is-id.decorator'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { AvueCrudConfigImpl } from '@/models/avue.dto'
 
 export class ICrudQuery implements CrudRouteForFind {
     /**
@@ -74,12 +76,14 @@ export class AclCrudController {
     ) {
     }
 
+    @ApiResponse({ status: 200, type: AvueCrudConfigImpl })
     @ApiOperation({ summary: '获取 config' })
     @Get('config')
     async config(): Promise<AvueCrudConfig> {
         return this.__AVUE_CRUD_CONFIG__ || {}
     }
 
+    @ApiResponse({ status: 200, type: FindPlaceholderDto })
     @ApiOperation({ summary: '查找所有记录' })
     @ApiQuery({
         name: 'query',
@@ -120,6 +124,7 @@ export class AclCrudController {
         }
     }
 
+    @ApiResponse({ status: 200, type: CrudPlaceholderDto })
     @ApiOperation({ summary: '查找记录' })
     @Get(':id')
     async findOne(@Param('id') id: number, @CurrentUser() user: User) {
@@ -141,6 +146,7 @@ export class AclCrudController {
         return document
     }
 
+    @ApiResponse({ status: 201, type: CrudPlaceholderDto })
     @ApiOperation({ summary: '创建记录' })
     @Post('')
     async create(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
@@ -162,6 +168,7 @@ export class AclCrudController {
         return newDocument
     }
 
+    @ApiResponse({ status: 200, type: CrudPlaceholderDto })
     @ApiOperation({ summary: '更新记录' })
     @Put('')
     async update(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
@@ -189,6 +196,7 @@ export class AclCrudController {
         return updatedDocument
     }
 
+    @ApiResponse({ status: 200, type: CrudPlaceholderDto })
     @ApiOperation({ summary: '删除记录' })
     @Delete(':id')
     async delete(@Param('id') id: number, @CurrentUser() user: User) {

@@ -4,6 +4,7 @@ import { IsNotEmpty, IsUrl, Length } from 'class-validator'
 import md5 from 'md5'
 import { AclBase } from './acl-base.entity'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 /**
  * 文件资源。
@@ -73,4 +74,9 @@ export class Resource extends AclBase {
     })
     status: 'success' | 'fail' | 'skip' | 'unknown'
 
+}
+
+export class FindResource extends FindPlaceholderDto<Resource> {
+    @ApiProperty({ type: () => [Resource] })
+    declare data: Resource[]
 }

@@ -1,6 +1,6 @@
 import { Entity, Column, Index, ManyToOne } from 'typeorm'
 import { Item, Enclosure } from 'rss-parser'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsArray, IsDateString, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
 import dayjs from 'dayjs'
 import { Type } from 'class-transformer'
@@ -9,6 +9,7 @@ import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 class EnclosureImpl implements Enclosure {
 
@@ -163,4 +164,13 @@ export class Article extends AclBase implements Item {
     @ApiProperty({ title: '订阅源', type: () => Feed })
     @ManyToOne(() => Feed, (feed) => feed.articles)
     feed: Feed
+}
+
+export class CreateArticle extends OmitType(Article, ['id', 'createdAt', 'updatedAt'] as const) { }
+
+export class UpdateArticle extends PartialType(OmitType(Article, ['createdAt', 'updatedAt'] as const)) { }
+
+export class FindArticle extends FindPlaceholderDto<Article> {
+    @ApiProperty({ type: () => [Article] })
+    declare data: Article[]
 }

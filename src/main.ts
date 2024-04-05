@@ -18,18 +18,20 @@ import { sessionMiddleware } from './middlewares/session.middleware'
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
+    app.setGlobalPrefix('/api')
     if (__DEV__) {
         const options = new DocumentBuilder()
             .setTitle('RSS Impact server docs')
             .setDescription('RSS Impact server docs')
             .setVersion('0.1.0')
-            .addBearerAuth()
+            // .addBearerAuth()
+            // .addCookieAuth()
+            // .setBasePath('/api')
             .build()
         const document = SwaggerModule.createDocument(app, options)
         SwaggerModule.setup('docs', app, document)
-
     }
-    app.setGlobalPrefix('/api')
+
     app.enableCors({})
     app.use(limiter)
     app.use(helmet({}))
@@ -38,7 +40,6 @@ async function bootstrap() {
     app.useGlobalFilters(new AllExceptionsFilter())
     app.useGlobalInterceptors(new TimeoutInterceptor())
     app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }))
-
     app.use(sessionMiddleware)
 
     app.set('trust proxy', true)

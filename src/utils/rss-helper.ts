@@ -50,7 +50,9 @@ function formatGuid(e: any) {
  */
 export function rssNormalize(rss: Record<string, any>) {
     const _rss = deepTrim(rss) as (Record<string, any> & Output<Record<string, any>>)
-    _rss.items = _rss?.items?.map((e) => formatGuid(e))
+    if (_rss?.items?.length) {
+        _rss.items = _rss.items.map((e) => formatGuid(e))
+    }
     return _rss
 }
 

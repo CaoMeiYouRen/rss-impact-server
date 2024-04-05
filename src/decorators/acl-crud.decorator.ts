@@ -9,6 +9,7 @@ import { AclCrudController } from '@/controllers/acl-crud/acl-crud.controller'
 import { SET_ACL_CRUD_FIELD_OPTION } from '@/constant/decorator'
 import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
 import { isImageUrl } from '@/utils/helper'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 const CRUD_ROUTES = {
     // dicData: 'dicData',
@@ -265,5 +266,36 @@ export const AclCrud = (options: AclOptions): ClassDecorator => (target) => { //
             ...get(options, `routes.${method}.decorators`, []),
         ], controller, method, Object.getOwnPropertyDescriptor(controller, method))
 
+        // 解决 swagger response 问题
+        const apiResponse: Record<string, any> = Reflect.getMetadata('swagger/apiResponse', crudController[method])
+        if (apiResponse) {
+            // console.log(apiResponse)
+            // replace fake dto to real dto
+            Reflect.defineMetadata('swagger/apiResponse', Object.fromEntries(Object.entries(apiResponse).map(([key, value]) => {
+                if (!value?.type) {
+                    return [key, value]
+                }
+                if (value?.type?.name === FindPlaceholderDto.name) {
+                    // const raw = Reflect.getMetadata('swagger/apiModelProperties', value.type.prototype, 'data')
+                    // Reflect.defineMetadata('swagger/apiModelProperties', {
+                    //     ...raw,
+                    //     type: [options.model],
+                    // }, value.type.prototype)
+                    return [key, {
+                        ...value,
+                        type: get(options, `routes.${method}.dto`, value?.type),
+                    }]
+                }
+                if (value?.type?.name === CrudPlaceholderDto.name) {
+                    return [key, {
+                        ...value,
+                        type: options.model,
+                    }]
+                }
+                // console.log(Controller.name, method, value?.type?.name, options.model.name, value?.type?.name === options.model.name)
+                return [key, value]
+            })), controller[method])
+
+        }
     }
 }

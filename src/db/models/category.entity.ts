@@ -1,8 +1,9 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsNotEmpty, Length, ValidateIf } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 /**
  * 分组表
@@ -37,4 +38,13 @@ export class Category extends AclBase {
     @OneToMany(() => Feed, (feed) => feed.category)
     feeds: Feed[]
 
+}
+
+export class CreateCategory extends OmitType(Category, ['id', 'createdAt', 'updatedAt'] as const) { }
+
+export class UpdateCategory extends PartialType(OmitType(Category, ['createdAt', 'updatedAt'] as const)) { }
+
+export class FindCategory extends FindPlaceholderDto<Category> {
+    @ApiProperty({ type: () => [Category] })
+    declare data: Category[]
 }

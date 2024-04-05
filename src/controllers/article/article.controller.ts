@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
-import { Article } from '@/db/models/article.entity'
+import { Article, CreateArticle, FindArticle, UpdateArticle } from '@/db/models/article.entity'
 
 @UseSession()
 @AclCrud({
@@ -13,6 +13,17 @@ import { Article } from '@/db/models/article.entity'
         option: {
             title: '文章管理',
             column: [],
+        },
+    },
+    routes: {
+        find: {
+            dto: FindArticle,
+        },
+        create: {
+            dto: CreateArticle,
+        },
+        update: {
+            dto: UpdateArticle,
         },
     },
     relations: ['feed'],

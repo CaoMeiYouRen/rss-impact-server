@@ -3,7 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
-import { Resource } from '@/db/models/resource.entiy'
+import { FindResource, Resource } from '@/db/models/resource.entiy'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
@@ -15,11 +15,11 @@ import { ResourceService } from '@/services/resource/resource.service'
 @AclCrud({
     model: Resource,
     routes: {
+        find: {
+            dto: FindResource,
+        },
         create: false,
         update: false,
-        // delete: {
-        //     decorators: [UseAdmin()],
-        // },
     },
     config: {
         option: {

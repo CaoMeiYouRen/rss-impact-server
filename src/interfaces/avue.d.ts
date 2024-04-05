@@ -223,6 +223,7 @@ export declare interface CrudRouteForFind extends CrudRoute {
     skip?: number
     select?: string | any
     collation?: any
+    dto?: any
 }
 
 export declare interface CrudRouteForFindOne extends CrudRoute {
@@ -239,6 +240,7 @@ export declare interface CrudRoutes {
     create?: CrudRouteWithDto | false
     update?: CrudRouteWithDto | false
     delete?: CrudRoute | false
+    config?: CrudRoute | false
 }
 
 export declare interface CrudRouteWithDto extends CrudRoute {

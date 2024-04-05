@@ -8,6 +8,7 @@ import { Base } from './base.entity'
 import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 @Entity()
 export class User extends Base {
@@ -97,3 +98,8 @@ export class User extends Base {
 export class CreateUser extends OmitType(User, ['id', 'createdAt', 'updatedAt', 'accessToken'] as const) { }
 
 export class UpdateUser extends PartialType(OmitType(User, ['createdAt', 'updatedAt', 'accessToken'] as const)) { }
+
+export class FindUser extends FindPlaceholderDto<User> {
+    @ApiProperty({ type: () => [User] })
+    declare data: User[]
+}

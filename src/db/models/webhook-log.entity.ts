@@ -7,6 +7,7 @@ import { Hook } from './hook.entity'
 import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 /**
  * webhook 执行结果
@@ -89,4 +90,9 @@ export class WebhookLog extends AclBase {
     @ApiProperty({ title: 'Hook', type: () => Hook })
     @ManyToOne(() => Hook)
     hook: Hook
+}
+
+export class FindWebhookLog extends FindPlaceholderDto<WebhookLog> {
+    @ApiProperty({ type: () => [WebhookLog] })
+    declare data: WebhookLog[]
 }

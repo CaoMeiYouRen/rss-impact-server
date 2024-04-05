@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
-import { Hook } from '@/db/models/hook.entity'
+import { CreateHook, FindHook, Hook, UpdateHook } from '@/db/models/hook.entity'
 
 @UseSession()
 @AclCrud({
@@ -13,6 +13,17 @@ import { Hook } from '@/db/models/hook.entity'
         option: {
             title: 'Hook管理',
             column: [],
+        },
+    },
+    routes: {
+        find: {
+            dto: FindHook,
+        },
+        create: {
+            dto: CreateHook,
+        },
+        update: {
+            dto: UpdateHook,
         },
     },
     relations: [],

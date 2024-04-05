@@ -17,6 +17,7 @@ export class AuthController {
     @UseGuards(AuthGuard('local'))
     @ApiOperation({ summary: '登录' })
     async login(@Body() _dto: LoginDto, @CurrentUser() user: User, @Session() session: Record<string, any>) {
+        // TODO 考虑增加 session 管理
         session.uid = user.id
         return new ResponseDto({
             message: 'OK',
