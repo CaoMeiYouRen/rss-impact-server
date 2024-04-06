@@ -165,8 +165,8 @@ dependencies:
 
 devDependencies:
   '@cao-mei-you-ren/avue-types':
-    specifier: ^1.0.0
-    version: 1.0.0
+    specifier: ^1.1.0
+    version: 1.1.0
   '@commitlint/config-conventional':
     specifier: ^15.0.0
     version: 15.0.0
@@ -705,8 +705,8 @@ packages:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
 
-  /@cao-mei-you-ren/avue-types@1.0.0:
-    resolution: {integrity: sha512-FyEC8gDQnHLVzRduqXHEbAyh4Wwb0heaK5bjJ5cB3wPiTwTqodhgdy0Rs0wW5c7WKGIgS4FsGn3DGR2bFktoPg==}
+  /@cao-mei-you-ren/avue-types@1.1.0:
+    resolution: {integrity: sha512-+ueuoY3qHiBIf6dTk4GA5QQ5Rg1YHE48r6VK4NL8ZsQ72K56c0WzJyDPgu8zQUT0xqkKRfyteQnz74ekmqlIiQ==}
     engines: {node: '>=16'}
     dependencies:
       tslib: 2.6.2
@@ -844,7 +844,7 @@ packages:
     resolution: {integrity: sha512-FmecYRCzpuPqAQhe/M1hHU81j+HjSzagEJJSQcJfdqc0cHVqNt7emo7YiJP3oOoVjq256vH4+ZimGErwFNvRpQ==}
     engines: {node: '>=18'}
     dependencies:
-      crypto-hash: github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
+      crypto-hash: git@github.com+CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
       uint8array-extras: 1.1.0
     dev: false
 
@@ -12534,8 +12534,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
 
-  github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
-    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118}
+  git@github.com+CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
+    resolution: {commit: cbe97d052b7da4eaf3fa774ac2fae4ad225aa118, repo: git@github.com:CaoMeiYouRen/crypto-hash.git, type: git}
     name: crypto-hash
     version: 3.0.0
     engines: {node: '>=18'}

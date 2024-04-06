@@ -1,4 +1,7 @@
-import { Option, ColumnCommonProps, ColumnDicProps, ColumnProps, Page } from '@cao-mei-you-ren/avue-types'
+import { Option, Column, Page, DicData } from '@cao-mei-you-ren/avue-types'
+
+export { DicData }
+
 export declare interface AvueCrudConfig {
     option?: AvueCrudOption
     [key: string]: any
@@ -71,7 +74,7 @@ export declare interface AvueCrudOption extends Option {
     selectionFixed?: boolean
     searchBtn?: boolean
     selectable?: boolean
-    reserveSelection?: true
+    reserveSelection?: boolean
     selectClearBtn?: boolean
     showHeader?: boolean
     showSummary?: boolean
@@ -85,7 +88,6 @@ export declare interface AvueCrudOption extends Option {
     viewBtn?: boolean
     width?: number
     column?: Field[]
-    group?: Field[]
     [key: string]: any
 }
 
@@ -240,7 +242,7 @@ export declare interface CrudRouteWithDto extends CrudRoute {
     transform?: (data: any) => any
 }
 
-export declare interface Field extends ColumnCommonProps, ColumnDicProps, ColumnProps {
+export declare interface Field extends Column {
     prop: string
     label?: string
     icon?: string
@@ -276,9 +278,4 @@ export declare interface PaginateKeys extends Page {
 
 export declare interface Fields {
     [key: string]: Field
-}
-
-export declare type DicData = {
-    label: string
-    value: unknown
 }

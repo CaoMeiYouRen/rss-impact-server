@@ -26,7 +26,7 @@ export class Column implements Field {
     min?: number
     format?: string
     @ApiProperty({
-        type: [Rule],
+        type: () => [Rule],
     })
     rules?: Rule[]
     maxlength?: number
@@ -51,15 +51,82 @@ export class Option implements AvueCrudOption {
     excelBtn?: boolean
     title?: string
     @ApiProperty({
-        type: [Column],
+        type: () => [Column],
     })
     column: Column[]
+
+    addRowBtn?: boolean
+    calcHeight?: number
+    cancelBtnTitle?: string
+    dataType?: string
+    cellBtn?: boolean
+    dateBtn?: boolean
+    cancelBtn?: boolean
+    dateDefault?: boolean
+    dicData?: any
+    dicMethod?: string
+    dicQuery?: any
+    dicUrl?: string
+    defaultSort?: any
+    dialogFullscreen?: boolean
+    dialogEscape?: boolean
+    dialogClickModal?: boolean
+    dialogCloseBtn?: boolean
+    dialogModal?: boolean
+    dialogTop?: string | number
+    dialogType?: string
+    dialogWidth?: string | number
+    dialogHeight?: string | number
+    defaultExpandAll?: boolean
+    expandRowKeys?: string[]
+    emptyText?: string
+    expand?: boolean
+    expandWidth?: number
+    expandFixed?: boolean
+    filterBtn?: boolean
+    formWidth?: string | number
+    height?: number
+    header?: boolean
+    indexLabel?: string
+    indexWidth?: number
+    indexFixed?: boolean
+    rowKey?: string
+    indeterminate?: boolean
+    labelWidth?: number
+    maxHeight?: number
+    menu?: boolean
+    menuWidth?: number
+    menuXsWidth?: number
+    menuAlign?: string
+    menuType?: string
+    menuBtnTitle?: string
+    pageSize?: string
+    pageSizes?: number[]
+    printBtn?: boolean
+    saveBtn?: boolean
+    updateBtn?: boolean
+    cancalBtn?: boolean
+    saveBtnTitle?: string
+    selection?: boolean
+    selectionWidth?: number
+    selectionFixed?: boolean
+    searchBtn?: boolean
+    selectable?: boolean
+    selectClearBtn?: boolean
+    showHeader?: boolean
+    showSummary?: boolean
+    sumColumnList?: string[]
+    tip?: string
+    tipPlacement?: string
+    checkStrictly?: boolean
+    updateBtnTitle?: string
+    width?: number
 
 }
 
 export class AvueCrudConfigImpl implements AvueCrudConfig {
     @ApiProperty({
-        type: Option,
+        type: () => Option,
     })
     option: Option
 }
