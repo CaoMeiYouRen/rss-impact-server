@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { AvueCrudConfig, Field } from '@/interfaces/avue'
+import { AvueCrudConfig, Field, AvueCrudOption } from '@/interfaces/avue'
 
 export class Rule {
     required: boolean
@@ -10,7 +10,7 @@ export class DicData {
     label: string
     value: string
 }
-export class Column {
+export class Column implements Field {
     label: string
     prop: string
     @ApiProperty({
@@ -37,7 +37,7 @@ export class Column {
     })
     dicData?: DicData[]
 }
-export class Option {
+export class Option implements AvueCrudOption {
     index?: boolean
     align?: string
     border?: boolean
@@ -54,6 +54,7 @@ export class Option {
         type: [Column],
     })
     column: Column[]
+
 }
 
 export class AvueCrudConfigImpl implements AvueCrudConfig {
