@@ -844,7 +844,7 @@ packages:
     resolution: {integrity: sha512-FmecYRCzpuPqAQhe/M1hHU81j+HjSzagEJJSQcJfdqc0cHVqNt7emo7YiJP3oOoVjq256vH4+ZimGErwFNvRpQ==}
     engines: {node: '>=18'}
     dependencies:
-      crypto-hash: git@github.com+CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
+      crypto-hash: github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
       uint8array-extras: 1.1.0
     dev: false
 
@@ -12534,8 +12534,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
 
-  git@github.com+CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
-    resolution: {commit: cbe97d052b7da4eaf3fa774ac2fae4ad225aa118, repo: git@github.com:CaoMeiYouRen/crypto-hash.git, type: git}
+  github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
+    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118}
     name: crypto-hash
     version: 3.0.0
     engines: {node: '>=18'}
