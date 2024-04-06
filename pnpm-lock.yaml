@@ -164,6 +164,9 @@ dependencies:
     version: 2.4.1
 
 devDependencies:
+  '@cao-mei-you-ren/avue-types':
+    specifier: ^1.0.0
+    version: 1.0.0
   '@commitlint/config-conventional':
     specifier: ^15.0.0
     version: 15.0.0
@@ -700,6 +703,13 @@ packages:
 
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+    dev: true
+
+  /@cao-mei-you-ren/avue-types@1.0.0:
+    resolution: {integrity: sha512-FyEC8gDQnHLVzRduqXHEbAyh4Wwb0heaK5bjJ5cB3wPiTwTqodhgdy0Rs0wW5c7WKGIgS4FsGn3DGR2bFktoPg==}
+    engines: {node: '>=16'}
+    dependencies:
+      tslib: 2.6.2
     dev: true
 
   /@cao-mei-you-ren/qbittorrent@1.0.1:

@@ -100,7 +100,7 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
     }
 
     if (isMarkdown) {
-        text = htmlToMarkdown(content)
+        text += htmlToMarkdown(content)
         text += '\n'
     } else {
         text += `${content}\n`

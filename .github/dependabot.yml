@@ -8,10 +8,7 @@ updates:
       time: "05:00"
       timezone: Asia/Shanghai
     ignore:
-      - dependency-name: mongoose
-        versions:
-          - ">= 5.10.18"
-      - dependency-name: "@types/mongoose"
-        versions:
-          - ">= 5.10.2"
       - dependency-name: semantic-release
+      - dependency-name: "@commitlint/config-conventional"
+        versions:
+          - ">= 19.0.0"

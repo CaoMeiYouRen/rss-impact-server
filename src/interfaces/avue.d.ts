@@ -1,10 +1,10 @@
-
+import { Option, ColumnCommonProps, ColumnDicProps, ColumnProps, Page } from '@cao-mei-you-ren/avue-types'
 export declare interface AvueCrudConfig {
     option?: AvueCrudOption
     [key: string]: any
 }
 
-export declare interface AvueCrudOption {
+export declare interface AvueCrudOption extends Option {
     addBtn?: boolean
     addRowBtn?: boolean
     align?: string
@@ -75,7 +75,6 @@ export declare interface AvueCrudOption {
     selectClearBtn?: boolean
     showHeader?: boolean
     showSummary?: boolean
-    size?: string
     sumColumnList?: string[]
     stripe?: boolean
     tip?: string
@@ -191,13 +190,6 @@ export declare interface AvueFormOption {
     [key: string]: any
 }
 
-export declare type CenterConfig = {
-    userInfo: AvueCrudOption
-    resetPassword: AvueCrudOption
-    accessToken: AvueCrudOption
-    [key: string]: AvueCrudOption
-}
-
 export declare interface CrudOptions {
     routes?: CrudRoutes
 }
@@ -248,7 +240,7 @@ export declare interface CrudRouteWithDto extends CrudRoute {
     transform?: (data: any) => any
 }
 
-export declare interface Field {
+export declare interface Field extends ColumnCommonProps, ColumnDicProps, ColumnProps {
     prop: string
     label?: string
     icon?: string
@@ -266,7 +258,7 @@ export declare interface Field {
     column?: Field[]
     addDisplay?: boolean
     editDisabled?: boolean
-    dicData?: DicData
+    dicData?: DicData[]
     [key: string]: any
 }
 
@@ -275,7 +267,7 @@ export declare interface OptionItem {
     value: string
 }
 
-export declare interface PaginateKeys {
+export declare interface PaginateKeys extends Page {
     data?: string
     total?: string
     lastPage?: string
@@ -289,4 +281,4 @@ export declare interface Fields {
 export declare type DicData = {
     label: string
     value: unknown
-}[]
+}
