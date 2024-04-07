@@ -106,7 +106,7 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
                 break
             case 'Date':
                 type = 'datetime'
-                format = 'yyyy-MM-dd HH:mm:ss.SSS'
+                format = 'YYYY-MM-DD HH:mm:ss'
                 value = typeof value === 'undefined' ? dayjs().toDate() : value
                 break
             case 'Array':
@@ -184,16 +184,20 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
             ...setAclCrudFieldOption,
         }
     })
-    const column: Field[] = merge([], dbColumn, config?.option?.column)
-    // column.unshift({
-    //     label: 'Id',
-    //     prop: 'id',
-    //     addDisplay: false,
-    //     editDisabled: true,
-    //     overHidden: true,
-    // })
+    let column: Field[] = merge([], dbColumn, config?.option?.column)
+
+    // 找到 updatedAt 和 createdAt 对应的列对象
+    const updatedAtColumn = column.find((col) => col.prop === 'updatedAt')
+    const createdAtColumn = column.find((col) => col.prop === 'createdAt')
+
+    // 从原数组中移除这两个列对象
+    column = column.filter((col) => col.prop !== 'updatedAt' && col.prop !== 'createdAt')
+
+    // 将它们添加到数组末尾
+    column.push(updatedAtColumn, createdAtColumn)
+
     const defaultOption = {
-        // title: '',
+        title: '',
         index: false,
         align: 'center',
         border: true,
@@ -205,6 +209,7 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
         delBtn: true,
         viewBtn: true,
         excelBtn: true,
+        grid: false,
     }
     const newConfig = {
         option: merge({}, defaultOption, config?.option, { column }),
