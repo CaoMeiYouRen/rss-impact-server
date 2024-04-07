@@ -134,7 +134,7 @@ export class Article extends AclBase implements Item {
     @SetAclCrudField({
         type: 'array',
     })
-    @ApiProperty({ title: '分类列表', example: ['tag1', 'tag2'] })
+    @ApiProperty({ title: '分类列表', description: 'RSS 源定义的分类，和 本地RSS 的分组不是同一个', example: ['tag1', 'tag2'] })
     @JsonStringLength(0, 512)
     @IsArray()
     @IsString({ each: true })
@@ -160,6 +160,13 @@ export class Article extends AclBase implements Item {
     })
     enclosure?: EnclosureImpl
 
+    @SetAclCrudField({
+        dicUrl: '/feed/dicData',
+        props: {
+            label: 'title',
+            value: 'id',
+        },
+    })
     @ApiProperty({ title: '订阅源ID', example: 1 })
     @IsId()
     @Column({ nullable: true })
@@ -167,10 +174,6 @@ export class Article extends AclBase implements Item {
 
     @SetAclCrudField({
         hide: true,
-        addDisplay: false,
-        editDisabled: true,
-        editDisplay: false,
-        readonly: true,
     })
     @ApiProperty({ title: '订阅源', type: () => Feed })
     @ManyToOne(() => Feed, (feed) => feed.articles)

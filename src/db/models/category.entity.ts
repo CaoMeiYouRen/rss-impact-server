@@ -36,6 +36,7 @@ export class Category extends AclBase {
     description?: string
 
     @SetAclCrudField({
+        hide: true,
     })
     @ApiProperty({ title: '订阅链接', example: [], type: () => [Feed] })
     @OneToMany(() => Feed, (feed) => feed.category)

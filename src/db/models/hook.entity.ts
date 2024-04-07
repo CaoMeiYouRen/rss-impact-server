@@ -8,6 +8,7 @@ import { HookConfig, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 /**
  * 仅保留想要的，必须全部符合
  */
@@ -97,7 +98,7 @@ export class Hook extends AclBase {
     })
     config: HookConfig
 
-    @ApiProperty({ title: '过滤条件', type: () => Filter })
+    @ApiProperty({ title: '过滤条件', description: '保留想要的内容', type: () => Filter })
     @Type(() => Filter)
     @ValidateNested()
     @JsonStringLength(0, 2048)
@@ -130,6 +131,9 @@ export class Hook extends AclBase {
     })
     isReversed: boolean
 
+    @SetAclCrudField({
+        hide: true,
+    })
     @ApiProperty({ title: '订阅源列表', example: [], type: () => [Feed] })
     @ManyToMany(() => Feed, (feed) => feed.hooks)
     feeds: Feed[]

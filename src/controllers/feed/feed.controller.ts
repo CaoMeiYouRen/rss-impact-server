@@ -26,7 +26,7 @@ import { AclCrud } from '@/decorators/acl-crud.decorator'
             dto: UpdateFeed,
         },
     },
-    // relations: ['category'],
+    relations: ['hooks'],
     props: {
         label: 'title',
         value: 'id',

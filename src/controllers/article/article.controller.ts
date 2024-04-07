@@ -19,14 +19,16 @@ import { Article, CreateArticle, FindArticle, UpdateArticle } from '@/db/models/
         find: {
             dto: FindArticle,
         },
-        create: {
-            dto: CreateArticle,
-        },
-        update: {
-            dto: UpdateArticle,
-        },
+        create: false,
+        update: false,
+        // create: {
+        //     dto: CreateArticle,
+        // },
+        // update: {
+        //     dto: UpdateArticle,
+        // },
     },
-    // relations: ['feed'],
+    relations: [],
     order: {
         publishDate: 'DESC',
     },

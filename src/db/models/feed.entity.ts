@@ -86,6 +86,13 @@ export class Feed extends AclBase {
     })
     isEnabled: boolean
 
+    @SetAclCrudField({
+        dicUrl: '/category/dicData',
+        props: {
+            label: 'name',
+            value: 'id',
+        },
+    })
     @ApiProperty({ title: '分组ID', example: 1 })
     @IsId()
     @Column({ nullable: true })
@@ -93,21 +100,23 @@ export class Feed extends AclBase {
 
     @SetAclCrudField({
         hide: true,
-        addDisplay: false,
-        editDisabled: true,
-        editDisplay: false,
-        readonly: true,
     })
     @ApiProperty({ title: '分组', type: () => Category })
     @ManyToOne(() => Category, (category) => category.feeds)
     category: Category
 
+    @SetAclCrudField({
+        hide: true,
+    })
     @ApiProperty({ title: '文章列表', example: [], type: () => [Article] })
     // @Type(() => Article)
     // @IsArray()
     @OneToMany(() => Article, (article) => article.feed)
     articles: Article[]
 
+    @SetAclCrudField({
+
+    })
     @ApiProperty({ title: 'Hook列表', example: [], type: () => [Hook] })
     @Type(() => Hook)
     @IsArray()

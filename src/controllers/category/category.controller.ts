@@ -26,6 +26,10 @@ import { Category, CreateCategory, FindCategory, UpdateCategory } from '@/db/mod
             dto: UpdateCategory,
         },
     },
+    props: {
+        label: 'name',
+        value: 'id',
+    },
     // relations: ['feeds'],
 })
 @ApiTags('category')
