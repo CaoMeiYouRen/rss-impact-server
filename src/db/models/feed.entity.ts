@@ -91,6 +91,13 @@ export class Feed extends AclBase {
     @Column({ nullable: true })
     categoryId: number
 
+    @SetAclCrudField({
+        hide: true,
+        addDisplay: false,
+        editDisabled: true,
+        editDisplay: false,
+        readonly: true,
+    })
     @ApiProperty({ title: '分组', type: () => Category })
     @ManyToOne(() => Category, (category) => category.feeds)
     category: Category
@@ -100,11 +107,6 @@ export class Feed extends AclBase {
     // @IsArray()
     @OneToMany(() => Article, (article) => article.feed)
     articles: Article[]
-
-    // @ApiProperty({ title: 'HookID 列表', example: [1] })
-    // @IsId({ each: true })
-    // @IsArray()
-    // hookIds: number[]
 
     @ApiProperty({ title: 'Hook列表', example: [], type: () => [Hook] })
     @Type(() => Hook)

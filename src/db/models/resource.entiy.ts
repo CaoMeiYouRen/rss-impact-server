@@ -5,6 +5,8 @@ import md5 from 'md5'
 import { AclBase } from './acl-base.entity'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { StatusList, StatusType } from '@/constant/hook'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 /**
  * 文件资源。
@@ -66,13 +68,16 @@ export class Resource extends AclBase {
     })
     hash: string
 
+    @SetAclCrudField({
+        dicData: StatusList,
+    })
     @ApiProperty({ title: '文件状态', example: 'success' })
     @IsNotEmpty()
     @Length(0, 16)
     @Column({
         length: 16,
     })
-    status: 'success' | 'fail' | 'skip' | 'unknown'
+    status: StatusType
 
 }
 

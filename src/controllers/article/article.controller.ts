@@ -26,7 +26,7 @@ import { Article, CreateArticle, FindArticle, UpdateArticle } from '@/db/models/
             dto: UpdateArticle,
         },
     },
-    relations: ['feed'],
+    // relations: ['feed'],
     order: {
         publishDate: 'DESC',
     },

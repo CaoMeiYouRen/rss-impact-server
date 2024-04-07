@@ -4,6 +4,7 @@ import { IsNotEmpty, Length, ValidateIf } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 /**
  * 分组表
@@ -34,6 +35,8 @@ export class Category extends AclBase {
     })
     description?: string
 
+    @SetAclCrudField({
+    })
     @ApiProperty({ title: '订阅链接', example: [], type: () => [Feed] })
     @OneToMany(() => Feed, (feed) => feed.category)
     feeds: Feed[]

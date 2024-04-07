@@ -25,7 +25,7 @@ import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
 import { AclOptions } from '@/decorators/acl-crud.decorator'
 import { isId } from '@/decorators/is-id.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
-import { AvueCrudConfigImpl } from '@/models/avue.dto'
+import { AvueCrudConfigImpl, DicData } from '@/models/avue.dto'
 
 export class ICrudQuery implements CrudRouteForFind {
     /**
@@ -81,6 +81,22 @@ export class AclCrudController {
     @Get('config')
     async config(): Promise<AvueCrudConfig> {
         return this.__AVUE_CRUD_CONFIG__ || {}
+    }
+
+    @ApiResponse({ status: 200, type: [DicData] })
+    @Get('/dicData')
+    async dicData(@CurrentUser() user: User) {
+        const conditions = getConditions(user)
+        const data = await this.repository.find({
+            where: {
+                ...conditions,
+            },
+            order: {
+                createdAt: 'DESC',
+            },
+            select: [this?.__OPTIONS__?.props?.label, this?.__OPTIONS__?.props?.value] as any[],
+        })
+        return data
     }
 
     @ApiResponse({ status: 200, type: FindPlaceholderDto })

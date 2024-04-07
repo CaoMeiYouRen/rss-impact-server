@@ -27,6 +27,10 @@ import { CreateHook, FindHook, Hook, UpdateHook } from '@/db/models/hook.entity'
         },
     },
     relations: [],
+    props: {
+        label: 'name',
+        value: 'id',
+    },
 })
 @ApiTags('hook')
 @Controller('hook')

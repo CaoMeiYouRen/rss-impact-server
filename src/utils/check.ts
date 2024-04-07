@@ -20,6 +20,6 @@ export function getConditions(user: User) {
         return {}
     }
     return {
-        user: user.id,
+        userId: user.id,
     }
 }

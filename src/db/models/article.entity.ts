@@ -10,6 +10,7 @@ import { IsId } from '@/decorators/is-id.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 class EnclosureImpl implements Enclosure {
 
@@ -130,6 +131,9 @@ export class Article extends AclBase implements Item {
     /**
      * 分类列表，和 RSS 的分组不是同一个
      */
+    @SetAclCrudField({
+        type: 'array',
+    })
     @ApiProperty({ title: '分类列表', example: ['tag1', 'tag2'] })
     @JsonStringLength(0, 512)
     @IsArray()
@@ -161,6 +165,13 @@ export class Article extends AclBase implements Item {
     @Column({ nullable: true })
     feedId: number
 
+    @SetAclCrudField({
+        hide: true,
+        addDisplay: false,
+        editDisabled: true,
+        editDisplay: false,
+        readonly: true,
+    })
     @ApiProperty({ title: '订阅源', type: () => Feed })
     @ManyToOne(() => Feed, (feed) => feed.articles)
     feed: Feed

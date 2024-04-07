@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import { Logger } from '@nestjs/common'
 import { FindOneOptions, FindOptionsOrder, getMetadataArgsStorage } from 'typeorm'
 import { getMetadataStorage } from 'class-validator'
+import { Props } from '@cao-mei-you-ren/avue-types'
 import { AvueCrudConfig, CrudOptionsWithModel, Field } from '@/interfaces/avue'
 import { AclCrudController } from '@/controllers/acl-crud/acl-crud.controller'
 import { SET_ACL_CRUD_FIELD_OPTION } from '@/constant/decorator'
@@ -12,7 +13,7 @@ import { isImageUrl } from '@/utils/helper'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 const CRUD_ROUTES = {
-    // dicData: 'dicData',
+    dicData: 'dicData',
     config: 'config',
     find: 'find',
     findOne: 'findOne',
@@ -25,6 +26,7 @@ const allMethods = Object.values(CRUD_ROUTES)
 export interface AclOptions extends CrudOptionsWithModel, FindOneOptions {
     relations?: string[]
     order?: FindOptionsOrder<any>
+    props?: Props
 }
 
 function cloneDecorators(from: unknown, to: unknown) {
@@ -40,7 +42,10 @@ function clonePropDecorators(from: unknown, to: unknown, name: string | symbol) 
     })
 }
 
-function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = {}): AvueCrudConfig {
+function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
+    const instance = aclOptions?.model?.prototype
+    const clazz = aclOptions?.model
+    const config = aclOptions?.config as AvueCrudConfig
     const obj = instance
     const metadata = getMetadataArgsStorage()
     const metadataStorage = getMetadataStorage()
@@ -79,7 +84,7 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
         switch (propType) {
             case 'String': {
                 const lengthOption = validatorOptions.find((e) => ['isLength', 'jsonStringLength'].includes(e.name))
-                type = 'input'
+                type = options.type === 'text' ? 'textarea' : 'input'
                 value = typeof value === 'undefined' ? '' : value
                 extra = {
                     maxlength: options?.length ?? lengthOption?.constraints?.[1] ?? 2048,
@@ -194,7 +199,7 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
     column = column.filter((col) => col.prop !== 'updatedAt' && col.prop !== 'createdAt')
 
     // 将它们添加到数组末尾
-    column.push(updatedAtColumn, createdAtColumn)
+    column.push(createdAtColumn, updatedAtColumn)
 
     const defaultOption = {
         title: '',
@@ -204,12 +209,12 @@ function initAvueCrudConfig(instance: any, clazz: any, config: AvueCrudConfig = 
         stripe: true,
         columnBtn: true,
         refreshBtn: true,
-        addBtn: true,
-        editBtn: true,
-        delBtn: true,
-        viewBtn: true,
+        addBtn: aclOptions?.routes?.create !== false,
+        editBtn: aclOptions?.routes?.update !== false,
+        delBtn: aclOptions?.routes?.delete !== false,
+        viewBtn: aclOptions?.routes?.find !== false,
         excelBtn: true,
-        grid: false,
+        gridBtn: false,
     }
     const newConfig = {
         option: merge({}, defaultOption, config?.option, { column }),
@@ -236,7 +241,7 @@ export const AclCrud = (options: AclOptions): ClassDecorator => (target) => { //
     }
     if (!controller.__AVUE_CRUD_CONFIG__) {
         Object.defineProperty(controller, '__AVUE_CRUD_CONFIG__', {
-            value: initAvueCrudConfig(options?.model?.prototype, options?.model, options?.config),
+            value: initAvueCrudConfig(options),
             writable: false, // 只读
         })
     }

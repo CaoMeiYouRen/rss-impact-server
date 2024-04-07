@@ -4,11 +4,18 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
-import { WebhookLog } from '@/db/models/webhook-log.entity'
+import { FindWebhookLog, WebhookLog } from '@/db/models/webhook-log.entity'
 
 @UseSession()
 @AclCrud({
     model: WebhookLog,
+    routes: {
+        find: {
+            dto: FindWebhookLog,
+        },
+        create: false,
+        update: false,
+    },
     config: {
         option: {
             title: 'Webhook和通知日志',

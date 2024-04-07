@@ -26,7 +26,7 @@ import { Category, CreateCategory, FindCategory, UpdateCategory } from '@/db/mod
             dto: UpdateCategory,
         },
     },
-    relations: ['feeds'],
+    // relations: ['feeds'],
 })
 @ApiTags('category')
 @Controller('category')

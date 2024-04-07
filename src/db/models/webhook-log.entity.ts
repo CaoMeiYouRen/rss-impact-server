@@ -8,6 +8,8 @@ import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { HookList, StatusList } from '@/constant/hook'
 
 /**
  * webhook 执行结果
@@ -38,6 +40,9 @@ export class WebhookLog extends AclBase {
     @Column({})
     statusCode: number
 
+    @SetAclCrudField({
+        dicData: HookList,
+    })
     @ApiProperty({ title: '类型', description: 'webhook 或 notification', example: 'webhook' })
     @IsNotEmpty()
     @Length(0, 16)
@@ -46,6 +51,9 @@ export class WebhookLog extends AclBase {
     })
     type: 'webhook' | 'notification'
 
+    @SetAclCrudField({
+        dicData: StatusList,
+    })
     @ApiProperty({ title: '状态', example: 'success' })
     @IsNotEmpty()
     @Length(0, 16)
@@ -73,20 +81,48 @@ export class WebhookLog extends AclBase {
     })
     headers?: RawAxiosResponseHeaders | AxiosResponseHeaders
 
-    @ApiProperty({ title: '订阅源ID', example: 1 })
+    @SetAclCrudField({
+        dicUrl: '/feed/dicData',
+        props: {
+            label: 'title',
+            value: 'id',
+        },
+    })
+    @ApiProperty({ title: '订阅源', example: 1 })
     @IsId()
     @Column({ nullable: true })
     feedId: number
 
+    @SetAclCrudField({
+        hide: true,
+        addDisplay: false,
+        editDisabled: true,
+        editDisplay: false,
+        readonly: true,
+    })
     @ApiProperty({ title: '订阅源', type: () => Feed })
     @ManyToOne(() => Feed)
     feed: Feed
 
-    @ApiProperty({ title: 'HookID', example: 1 })
+    @SetAclCrudField({
+        dicUrl: '/hook/dicData',
+        props: {
+            label: 'name',
+            value: 'id',
+        },
+    })
+    @ApiProperty({ title: 'Hook', example: 1 })
     @IsId()
     @Column({ nullable: true })
     hookId: number
 
+    @SetAclCrudField({
+        hide: true,
+        addDisplay: false,
+        editDisabled: true,
+        editDisplay: false,
+        readonly: true,
+    })
     @ApiProperty({ title: 'Hook', type: () => Hook })
     @ManyToOne(() => Hook)
     hook: Hook

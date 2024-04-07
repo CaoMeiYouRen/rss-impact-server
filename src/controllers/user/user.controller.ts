@@ -24,7 +24,7 @@ import { AvueCrudConfigImpl } from '@/models/avue.dto'
         },
     },
     routes: {
-
+        dicData: false,
     },
     relations: [],
 })

@@ -15,6 +15,20 @@ export const HookList = Object.entries(HookMap).map(([value, label]) => ({
 
 export type HookType = keyof typeof HookMap
 
+export const StatusMap = {
+    success: '成功',
+    fail: '失败',
+    skip: '跳过',
+    unknown: '未知',
+}
+
+export const StatusList = Object.entries(StatusMap).map(([value, label]) => ({
+    label,
+    value,
+}))
+
+export type StatusType = keyof typeof StatusMap
+
 export type NotificationConfig = PushAllInOneConfig & {
     /**
      * 是否合并推送

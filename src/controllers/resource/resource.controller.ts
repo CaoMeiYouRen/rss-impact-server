@@ -23,7 +23,7 @@ import { ResourceService } from '@/services/resource/resource.service'
     },
     config: {
         option: {
-            title: '文件资源管理',
+            title: '资源管理',
             column: [],
         },
     },

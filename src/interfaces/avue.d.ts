@@ -227,14 +227,13 @@ export declare interface CrudRouteForFindOne extends CrudRoute {
 }
 
 export declare interface CrudRoutes {
-    grid?: false
-    form?: false
+    dicData?: CrudRoute | false
+    config?: CrudRoute | false
     find?: CrudRouteForFind | false
     findOne?: CrudRouteForFindOne | false
     create?: CrudRouteWithDto | false
     update?: CrudRouteWithDto | false
     delete?: CrudRoute | false
-    config?: CrudRoute | false
 }
 
 export declare interface CrudRouteWithDto extends CrudRoute {
@@ -261,6 +260,7 @@ export declare interface Field extends Column {
     addDisplay?: boolean
     editDisabled?: boolean
     dicData?: DicData[]
+    hide?: boolean
     [key: string]: any
 }
 
