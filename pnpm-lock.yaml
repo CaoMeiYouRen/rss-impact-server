@@ -57,6 +57,9 @@ dependencies:
   class-validator:
     specifier: ^0.14.1
     version: 0.14.1
+  connect-history-api-fallback:
+    specifier: ^2.0.0
+    version: 2.0.0
   connect-sqlite3:
     specifier: ^0.9.13
     version: 0.9.15
@@ -188,6 +191,9 @@ devDependencies:
   '@types/bcryptjs':
     specifier: ^2.4.6
     version: 2.4.6
+  '@types/connect-history-api-fallback':
+    specifier: ^1.5.4
+    version: 1.5.4
   '@types/connect-sqlite3':
     specifier: ^0.9.5
     version: 0.9.5
@@ -2127,6 +2133,13 @@ packages:
       '@types/node': 20.12.4
     dev: true
 
+  /@types/connect-history-api-fallback@1.5.4:
+    resolution: {integrity: sha512-n6Cr2xS1h4uAulPRdlw6Jl6s1oG8KrVilPN2yUITEs+K48EzMJJ3W1xy8K5eWuFvjp3R74AOIGSmp2UfBJ8HFw==}
+    dependencies:
+      '@types/express-serve-static-core': 4.19.0
+      '@types/node': 20.12.4
+    dev: true
+
   /@types/connect-sqlite3@0.9.5:
     resolution: {integrity: sha512-T9HqA7a+eOSM+0ktRZbS1z7WOsRw0ZF3gaQjaExEN8wOnjmnPClkCgM815ta7vyeDF7wxL3aPmDOwrWuYKMr+g==}
     dependencies:
@@ -4018,6 +4031,11 @@ packages:
       ini: 1.3.8
       proto-list: 1.2.4
     dev: true
+
+  /connect-history-api-fallback@2.0.0:
+    resolution: {integrity: sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA==}
+    engines: {node: '>=0.8'}
+    dev: false
 
   /connect-sqlite3@0.9.15:
     resolution: {integrity: sha512-aJGDtASX8DTUZ++7iTN97vR0vGFpm8jDFew/qHK3veISkCpVpPS0tMdqs7i9fiHLaqaU0Jh3c4sUvNxsizaSTA==}
