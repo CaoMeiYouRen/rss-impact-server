@@ -12,7 +12,7 @@ import { UseAdmin } from '@/decorators/use-admin.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { AvueCrudConfig } from '@/interfaces/avue'
 import { PAGE_LIMIT_MAX } from '@/app.config'
-import { AvueCrudConfigImpl } from '@/models/avue.dto'
+import { AvueCrudConfigImpl, DicData } from '@/models/avue.dto'
 
 @UseSession()
 @AclCrud({
@@ -32,7 +32,7 @@ import { AvueCrudConfigImpl } from '@/models/avue.dto'
 @Controller('user')
 export class UserController {
 
-    __AVUE_CRUD_CONFIG__
+    __AVUE_CRUD_CONFIG__: AvueCrudConfig
 
     constructor(@InjectRepository(User) private readonly repository: Repository<User>,
         private readonly userService: UserService,
@@ -89,6 +89,7 @@ export class UserController {
         return user
     }
 
+    @ApiResponse({ status: 200, type: [DicData] })
     @ApiOperation({ summary: '获取 dicData' })
     @UseAdmin()
     @Get('dicData')

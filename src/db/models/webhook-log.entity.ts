@@ -95,10 +95,6 @@ export class WebhookLog extends AclBase {
 
     @SetAclCrudField({
         hide: true,
-        addDisplay: false,
-        editDisabled: true,
-        editDisplay: false,
-        readonly: true,
     })
     @ApiProperty({ title: '订阅源', type: () => Feed })
     @ManyToOne(() => Feed)
@@ -118,10 +114,6 @@ export class WebhookLog extends AclBase {
 
     @SetAclCrudField({
         hide: true,
-        addDisplay: false,
-        editDisabled: true,
-        editDisplay: false,
-        readonly: true,
     })
     @ApiProperty({ title: 'Hook', type: () => Hook })
     @ManyToOne(() => Hook)

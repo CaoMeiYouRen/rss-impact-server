@@ -67,7 +67,7 @@ export class AclCrudController {
 
     private readonly logger: Logger
 
-    __AVUE_CRUD_CONFIG__
+    __AVUE_CRUD_CONFIG__: AvueCrudConfig
 
     __OPTIONS__: AclOptions
 
@@ -79,8 +79,31 @@ export class AclCrudController {
     @ApiResponse({ status: 200, type: AvueCrudConfigImpl })
     @ApiOperation({ summary: '获取 config' })
     @Get('config')
-    async config(): Promise<AvueCrudConfig> {
-        return this.__AVUE_CRUD_CONFIG__ || {}
+    async config(@CurrentUser() user: User): Promise<AvueCrudConfig> {
+        if (user?.roles?.includes(Role.admin)) {
+            return this.__AVUE_CRUD_CONFIG__ || {}
+        }
+        const { option } = this.__AVUE_CRUD_CONFIG__
+
+        return {
+            option: {
+                ...option,
+                column: option.column.map((col) => {
+                    if (col.prop === 'useId') { // 非 admin 用户不显示 useId
+                        return {
+                            ...col,
+                            hide: true,
+                            addDisplay: false,
+                            editDisabled: true,
+                            editDisplay: false,
+                            viewDisplay: false,
+                            readonly: true,
+                        }
+                    }
+                    return col
+                }),
+            },
+        }
     }
 
     @ApiResponse({ status: 200, type: [DicData] })

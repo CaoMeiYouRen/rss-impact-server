@@ -177,6 +177,16 @@ function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
         if (setAclCrudFieldOption?.dicUrl || Array.isArray(setAclCrudFieldOption?.dicData)) { // 如果有 dicData 或 dicUrl，就设置为 select
             extra.type = 'select'
         }
+        if (extra?.hide || setAclCrudFieldOption?.hide) {
+            extra = {
+                addDisplay: false,
+                editDisabled: true,
+                editDisplay: false,
+                viewDisplay: false,
+                readonly: true,
+                ...extra,
+            }
+        }
         return {
             label,
             prop,
