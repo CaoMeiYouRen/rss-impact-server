@@ -10,8 +10,8 @@ overrides:
 
 dependencies:
   '@cao-mei-you-ren/qbittorrent':
-    specifier: ^1.0.1
-    version: 1.0.1
+    specifier: ^1.0.2
+    version: 1.0.2
   '@ctrl/qbittorrent':
     specifier: ^8.0.0
     version: 8.0.0
@@ -718,8 +718,8 @@ packages:
       tslib: 2.6.2
     dev: true
 
-  /@cao-mei-you-ren/qbittorrent@1.0.1:
-    resolution: {integrity: sha512-Q4HkSIvLlhnm8CrGA/9hdPt5yAFsqb4j7FyIMWyCN8H/UKXF+a/QAlFT1yMmVt2/dRcaKeDH9pbAiuRReFz5wg==}
+  /@cao-mei-you-ren/qbittorrent@1.0.2:
+    resolution: {integrity: sha512-uOiNPvbNDpWdL+UpzVh2Vd1IPA9oQrOIMM+jnX082Xg4JO8jeXJ+iRWeirZ12MHt3F0Hrky6ltstU4o9NIGOHw==}
     engines: {node: '>=18'}
     dependencies:
       '@ctrl/magnet-link': 4.0.2
@@ -850,7 +850,7 @@ packages:
     resolution: {integrity: sha512-FmecYRCzpuPqAQhe/M1hHU81j+HjSzagEJJSQcJfdqc0cHVqNt7emo7YiJP3oOoVjq256vH4+ZimGErwFNvRpQ==}
     engines: {node: '>=18'}
     dependencies:
-      crypto-hash: github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
+      crypto-hash: git/github.com+CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
       uint8array-extras: 1.1.0
     dev: false
 
@@ -10885,9 +10885,6 @@ packages:
   /sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       bindings: 1.5.0
       node-addon-api: 7.1.0
@@ -12552,8 +12549,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
 
-  github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
-    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118}
+  git/github.com+CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
+    resolution: {commit: cbe97d052b7da4eaf3fa774ac2fae4ad225aa118, repo: git@github.com:CaoMeiYouRen/crypto-hash.git, type: git}
     name: crypto-hash
     version: 3.0.0
     engines: {node: '>=18'}
