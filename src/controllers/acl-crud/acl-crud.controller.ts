@@ -26,12 +26,13 @@ import { AclOptions } from '@/decorators/acl-crud.decorator'
 import { isId } from '@/decorators/is-id.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { AvueCrudConfigImpl, DicData } from '@/models/avue.dto'
+import { transformQueryOperator } from '@/utils/helper'
 
 export class ICrudQuery implements CrudRouteForFind {
     /**
      * 查询条件
      */
-    where?: any
+    where?: Record<string, any>
     /**
      * 数量限制
      */
@@ -44,8 +45,10 @@ export class ICrudQuery implements CrudRouteForFind {
      * 跳过多少页
      */
     skip?: number
-    sort?: string | any
-    populate?: string | any
+    /**
+     * 排序
+     */
+    sort?: any
     select?: string | any
     collation?: any
     /**
@@ -148,7 +151,7 @@ export class AclCrudController {
         this.logger.debug(query)
         const [data, total] = await this.repository.findAndCount({
             where: {
-                ...where,
+                ...transformQueryOperator(where),
                 ...conditions,
             },
             skip,

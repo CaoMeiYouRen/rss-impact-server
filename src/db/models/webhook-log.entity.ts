@@ -9,7 +9,7 @@ import { IsId } from '@/decorators/is-id.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
-import { HookList, StatusList } from '@/constant/hook'
+import { LogStatusList, LogStatusType, LogType, LogTypeList } from '@/constant/hook'
 
 /**
  * webhook 执行结果
@@ -41,7 +41,9 @@ export class WebhookLog extends AclBase {
     statusCode: number
 
     @SetAclCrudField({
-        dicData: HookList,
+        type: 'select',
+        dicData: LogTypeList,
+        search: true,
     })
     @ApiProperty({ title: '类型', description: 'webhook 或 notification', example: 'webhook' })
     @IsNotEmpty()
@@ -49,10 +51,12 @@ export class WebhookLog extends AclBase {
     @Column({
         length: 16,
     })
-    type: 'webhook' | 'notification'
+    type: LogType
 
     @SetAclCrudField({
-        dicData: StatusList,
+        type: 'select',
+        dicData: LogStatusList,
+        search: true,
     })
     @ApiProperty({ title: '状态', example: 'success' })
     @IsNotEmpty()
@@ -60,7 +64,7 @@ export class WebhookLog extends AclBase {
     @Column({
         length: 16,
     })
-    status: 'success' | 'fail' | 'unknown'
+    status: LogStatusType
 
     @ApiProperty({ title: '状态码名称', example: 'OK' })
     @IsNotEmpty()
@@ -82,6 +86,7 @@ export class WebhookLog extends AclBase {
     headers?: RawAxiosResponseHeaders | AxiosResponseHeaders
 
     @SetAclCrudField({
+        search: true,
         dicUrl: '/feed/dicData',
         props: {
             label: 'title',
@@ -101,6 +106,7 @@ export class WebhookLog extends AclBase {
     feed: Feed
 
     @SetAclCrudField({
+        search: true,
         dicUrl: '/hook/dicData',
         props: {
             label: 'name',
@@ -118,6 +124,12 @@ export class WebhookLog extends AclBase {
     @ApiProperty({ title: 'Hook', type: () => Hook })
     @ManyToOne(() => Hook)
     hook: Hook
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare createdAt: Date
 }
 
 export class FindWebhookLog extends FindPlaceholderDto<WebhookLog> {

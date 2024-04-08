@@ -70,7 +70,7 @@ export class TasksService implements OnApplicationBootstrap {
                 // this.getRssContent(feed)
             })
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message, error?.stack)
         }
     }
 
@@ -112,7 +112,7 @@ export class TasksService implements OnApplicationBootstrap {
                 }
             }
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message, error?.stack)
             await this.reverseTriggerHooks(feed, error)
         }
     }
@@ -200,7 +200,7 @@ export class TasksService implements OnApplicationBootstrap {
             }))
             this.logger.log(`执行推送渠道 ${config.type} 成功`)
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message, error?.stack)
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
                 ...webhookLog,
                 data: error?.response?.data || error?.response || error,
@@ -288,7 +288,7 @@ export class TasksService implements OnApplicationBootstrap {
             }),
         )
         // } catch (error) {
-        //     this.logger.error(error)
+        //     this.logger.error(error?.message, error?.stack)
         // }
     }
 
@@ -344,7 +344,7 @@ export class TasksService implements OnApplicationBootstrap {
             }))
             this.logger.log(`触发 Webhook: ${config?.url} 成功`)
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message, error?.stack)
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
                 ...webhookLog,
                 data: error?.response?.data || error?.response || error,
@@ -449,7 +449,7 @@ export class TasksService implements OnApplicationBootstrap {
                 }
             } catch (error) {
                 newResource.status = 'fail'
-                this.logger.error(error)
+                this.logger.error(error?.message, error?.stack)
             } finally {
                 await this.resourceRepository.save(newResource)
             }
@@ -571,6 +571,7 @@ export class TasksService implements OnApplicationBootstrap {
                         newResource.status = status ? 'success' : 'fail'
                         await this.resourceRepository.save(newResource)
                     }
+                    this.logger.error(`不支持的 资源类型：${url}`)
                 }))
                 return
             }
@@ -608,7 +609,7 @@ export class TasksService implements OnApplicationBootstrap {
                         this.logger.log(`rss ${feed.url} 正在检测更新中……`)
                         await this.getRssContent(feed)
                     } catch (error) {
-                        this.logger.error(error)
+                        this.logger.error(error?.message, error?.stack)
                         // 如果出现异常就停止 该 rss
                         // await this.disableFeedTask(feed)
                     }
@@ -617,7 +618,7 @@ export class TasksService implements OnApplicationBootstrap {
             this.addCronJob(name, job)
             this.logger.log(`定时任务 ${name}(${cronTime}) 已启动`)
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message, error?.stack)
         }
     }
 
@@ -627,7 +628,7 @@ export class TasksService implements OnApplicationBootstrap {
             await this.feedRepository.update({ id: feed.id }, { isEnabled: false })
             this.deleteCronJob(name)
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message, error?.stack)
         }
     }
 
@@ -635,7 +636,7 @@ export class TasksService implements OnApplicationBootstrap {
         try {
             return this.scheduler.getCronJob(name)
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message)
             return null
         }
     }
@@ -646,7 +647,7 @@ export class TasksService implements OnApplicationBootstrap {
             this.logger.debug(`定时任务 ${name} 已删除`)
             return true
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message, error?.stack)
             return false
         }
     }
@@ -657,7 +658,7 @@ export class TasksService implements OnApplicationBootstrap {
             this.logger.debug(`定时任务 ${name} 已新增`)
             return true
         } catch (error) {
-            this.logger.error(error)
+            this.logger.error(error?.message, error?.stack)
             return false
         }
     }

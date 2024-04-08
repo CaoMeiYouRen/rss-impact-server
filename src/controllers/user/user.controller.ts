@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common'
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -13,6 +13,7 @@ import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { AvueCrudConfig } from '@/interfaces/avue'
 import { PAGE_LIMIT_MAX } from '@/app.config'
 import { AvueCrudConfigImpl, DicData } from '@/models/avue.dto'
+import { transformQueryOperator } from '@/utils/helper'
 
 @UseSession()
 @AclCrud({
@@ -24,13 +25,14 @@ import { AvueCrudConfigImpl, DicData } from '@/models/avue.dto'
         },
     },
     routes: {
-        dicData: false,
     },
     relations: [],
 })
 @ApiTags('user')
 @Controller('user')
 export class UserController {
+
+    private readonly logger: Logger = new Logger(UserController.name)
 
     __AVUE_CRUD_CONFIG__: AvueCrudConfig
 
@@ -65,9 +67,10 @@ export class UserController {
         let { limit = 10, skip = 0 } = query
         limit = Math.min(limit, PAGE_LIMIT_MAX)
         skip = skip || (page - 1) * limit
+        this.logger.debug(query)
         const [data, total] = await this.repository.findAndCount({
             where: {
-                ...where,
+                ...transformQueryOperator(where),
             },
             skip,
             take: limit,

@@ -19,6 +19,9 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 @Entity()
 export class Resource extends AclBase {
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/images/favicon-16x16-next.png' })
     @IsNotEmpty()
     @IsUrl({})
@@ -29,6 +32,9 @@ export class Resource extends AclBase {
     })
     url: string
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '文件名称', example: 'favicon-16x16-next.png' })
     @IsNotEmpty()
     @Length(0, 1024)
@@ -46,6 +52,9 @@ export class Resource extends AclBase {
     })
     path: string
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '文件类型', example: 'image/png' })
     @IsNotEmpty()
     @Length(0, 128)
@@ -59,6 +68,9 @@ export class Resource extends AclBase {
     @Column({})
     size: number
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '文件哈希', example: md5('') })
     @IsNotEmpty()
     @Length(0, 128)
@@ -69,7 +81,9 @@ export class Resource extends AclBase {
     hash: string
 
     @SetAclCrudField({
+        type: 'select',
         dicData: StatusList,
+        search: true,
     })
     @ApiProperty({ title: '文件状态', example: 'success' })
     @IsNotEmpty()
@@ -78,6 +92,12 @@ export class Resource extends AclBase {
         length: 16,
     })
     status: StatusType
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare createdAt: Date
 
 }
 

@@ -22,6 +22,9 @@ import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 @Entity()
 export class Feed extends AclBase {
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/atom.xml' })
     @IsNotEmpty({ message: '$property 不能为空' })
     @IsUrl({}, { message: '$property 必须为标准URL格式' })
@@ -35,6 +38,9 @@ export class Feed extends AclBase {
     })
     url: string
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '标题', example: '这是一个标题' })
     @IsNotEmpty({ message: '标题不能为空' })
     @Length(0, 256, { message: '标题最大不能超过 $constraint2 个字符' })
@@ -43,6 +49,9 @@ export class Feed extends AclBase {
     })
     title: string
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '简介', example: '这是一段简介' })
     @IsNotEmpty({ message: '简介不能为空' })
     @Length(0, 4096, { message: '简介最大不能超过 $constraint2 个字符' })
@@ -62,7 +71,9 @@ export class Feed extends AclBase {
     imageUrl?: string
 
     @SetAclCrudField({
+        type: 'select',
         dicData: RssLabelList,
+        search: true,
     })
     @ApiProperty({ title: 'Cron', example: 'EVERY_10_MINUTES' })
     @Length(0, 256, { message: 'Cron最大不能超过256个字符' })
@@ -87,13 +98,14 @@ export class Feed extends AclBase {
     isEnabled: boolean
 
     @SetAclCrudField({
+        search: true,
         dicUrl: '/category/dicData',
         props: {
             label: 'name',
             value: 'id',
         },
     })
-    @ApiProperty({ title: '分组ID', example: 1 })
+    @ApiProperty({ title: '分组', example: 1 })
     @IsId()
     @Column({ nullable: true })
     categoryId: number
@@ -115,7 +127,6 @@ export class Feed extends AclBase {
     articles: Article[]
 
     @SetAclCrudField({
-
     })
     @ApiProperty({ title: 'Hook列表', example: [], type: () => [Hook] })
     @Type(() => Hook)
@@ -123,6 +134,18 @@ export class Feed extends AclBase {
     @ManyToMany(() => Hook, (hook) => hook.feeds)
     @JoinTable()
     hooks: Hook[]
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare createdAt: Date
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare updatedAt: Date
 }
 
 export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] as const) { }

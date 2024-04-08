@@ -19,6 +19,9 @@ export class User extends Base {
     //     }
     // }
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '用户名', example: 'admin' })
     @IsNotEmpty()
     @Length(0, 128)
@@ -31,6 +34,7 @@ export class User extends Base {
 
     @SetAclCrudField({
         type: 'password',
+        hide: true,
     })
     @ApiProperty({ title: '密码', example: '123456' })
     @IsNotEmpty()
@@ -49,6 +53,9 @@ export class User extends Base {
         }
     }
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '邮箱', example: 'admin@example.com' })
     @IsNotEmpty()
     @IsEmail({})
@@ -60,6 +67,9 @@ export class User extends Base {
     })
     email: string
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '角色', example: [Role.admin] })
     @IsNotEmpty()
     @Length(0, 256, { each: true })
@@ -92,6 +102,18 @@ export class User extends Base {
             this.accessToken = getAccessToken()
         }
     }
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare createdAt: Date
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare updatedAt: Date
 
 }
 

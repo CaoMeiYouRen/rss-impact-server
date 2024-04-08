@@ -4,7 +4,7 @@ import { IsBoolean, IsObject, Length, ValidateIf, ValidateNested } from 'class-v
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
-import { HookConfig, HookType } from '@/constant/hook'
+import { HookConfig, HookList, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
@@ -80,6 +80,11 @@ export class Hook extends AclBase {
     })
     name: string
 
+    @SetAclCrudField({
+        type: 'select',
+        search: true,
+        dicData: HookList,
+    })
     @ApiProperty({ title: '类型', example: 'webhook', type: () => String })
     @Length(0, 128)
     @Column({
@@ -124,6 +129,19 @@ export class Hook extends AclBase {
     })
     filterout: FilterOut
 
+    @SetAclCrudField({
+        search: true,
+        dicData: [
+            {
+                label: 'true',
+                value: true,
+            },
+            {
+                label: 'false',
+                value: false,
+            },
+        ],
+    })
     @ApiProperty({ title: '反转模式', description: '如果服务可访问，则认为是故障', example: false })
     @IsBoolean()
     @Column({
@@ -137,6 +155,18 @@ export class Hook extends AclBase {
     @ApiProperty({ title: '订阅源列表', example: [], type: () => [Feed] })
     @ManyToMany(() => Feed, (feed) => feed.hooks)
     feeds: Feed[]
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare createdAt: Date
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare updatedAt: Date
 }
 
 export class CreateHook extends OmitType(Hook, ['id', 'createdAt', 'updatedAt'] as const) { }

@@ -7,6 +7,7 @@ import _ from 'lodash'
 import fs, { ReadStream } from 'fs-extra'
 import FileType from 'file-type'
 import Turndown from 'turndown'
+import { Equal, Like, ILike, Between, In } from 'typeorm'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 
@@ -224,4 +225,34 @@ export function getMagnetUri(hash: string, tracker?: string) {
         return `magnet:?urn:btih:${hash}&${search.toString()}`
     }
     return `magnet:?urn:btih:${hash}`
+}
+
+// 支持 传入的操作符
+const QUERY_MAP = {
+    Equal, Like, ILike, Between, In,
+}
+
+/**
+ * 转换 query 为真实的操作符
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-04-08
+ * @export
+ * @param [where]
+ */
+export function transformQueryOperator(where?: Record<string, any>) {
+    return Object.fromEntries(Object.entries(where)
+        .map(([key, value]) => {
+            if (['string', 'number', 'boolean'].includes(typeof value)) { // 如果是基础类型，则原样返回
+                return [key, value]
+            }
+            if (value?.$op && QUERY_MAP[value.$op]) { // 转换为真实的操作符
+                if (value.$op === 'Between') {
+                    return [key, QUERY_MAP[value.$op](value.value?.[0], value.value?.[1])]
+                }
+                return [key, QUERY_MAP[value.$op](value.value)]
+            }
+            return [key, value]
+        }),
+    )
 }

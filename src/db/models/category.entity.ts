@@ -17,6 +17,9 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 @Entity()
 export class Category extends AclBase {
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '分组名称', example: '分组A' })
     @IsNotEmpty({ message: '名称不能为空' })
     @Length(0, 256, { message: '名称的长度必须在 $constraint1 到 $constraint2 个字符！' })
@@ -26,6 +29,9 @@ export class Category extends AclBase {
     })
     name: string
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '分组简介', example: '分组A' })
     @Length(0, 2048, { message: '简介的长度必须在 $constraint1 到 $constraint2 个字符！' })
     @ValidateIf((o) => ['string'].includes(typeof o.description))
@@ -41,6 +47,18 @@ export class Category extends AclBase {
     @ApiProperty({ title: '订阅链接', example: [], type: () => [Feed] })
     @OneToMany(() => Feed, (feed) => feed.category)
     feeds: Feed[]
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare createdAt: Date
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare updatedAt: Date
 
 }
 

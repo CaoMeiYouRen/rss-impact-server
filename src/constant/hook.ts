@@ -5,7 +5,7 @@ export const HookMap = {
     notification: '推送通知',
     webhook: 'Webhook',
     download: '下载',
-    bitTorrent: 'BitTorrent/磁力链接',
+    bitTorrent: 'BitTorrent', // /磁力链接
 } as const
 
 export const HookList = Object.entries(HookMap).map(([value, label]) => ({
@@ -28,6 +28,31 @@ export const StatusList = Object.entries(StatusMap).map(([value, label]) => ({
 }))
 
 export type StatusType = keyof typeof StatusMap
+
+export const LogTypeMap = {
+    notification: '推送通知',
+    webhook: 'Webhook',
+} as const
+
+export const LogTypeList = Object.entries(LogTypeMap).map(([value, label]) => ({
+    label,
+    value,
+}))
+
+export type LogType = keyof typeof LogTypeMap
+
+export const LogStatusMap = {
+    success: '成功',
+    fail: '失败',
+    unknown: '未知',
+}
+
+export const LogStatusList = Object.entries(LogStatusMap).map(([value, label]) => ({
+    label,
+    value,
+}))
+
+export type LogStatusType = keyof typeof LogStatusMap
 
 export type NotificationConfig = PushAllInOneConfig & {
     /**

@@ -43,6 +43,9 @@ class EnclosureImpl implements Enclosure {
 export class Article extends AclBase implements Item {
 
     /** guid/id */
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '全局索引', example: '499d4cee' })
     @IsNotEmpty()
     @Index({
@@ -64,6 +67,9 @@ export class Article extends AclBase implements Item {
     })
     link?: string
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '标题', example: '这是一个标题' })
     @Length(0, 256)
     @ValidateIf((o) => typeof o.title !== 'undefined')
@@ -87,6 +93,10 @@ export class Article extends AclBase implements Item {
     /**
      *发布日期 pubDate/isoDate
      */
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
     @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     @IsDateString()
     @ValidateIf((o) => typeof o.publishDate !== 'undefined')
@@ -96,6 +106,9 @@ export class Article extends AclBase implements Item {
     publishDate?: Date
 
     /** 作者 creator/author/dc:creator */
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '作者', example: 'CaoMeiYouRen' })
     @Length(0, 128)
     @ValidateIf((o) => typeof o.author !== 'undefined')
@@ -119,6 +132,9 @@ export class Article extends AclBase implements Item {
     /**
      * 总结 summary
      */
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '总结', example: '这是一段总结' })
     @Length(0, 1024)
     @ValidateIf((o) => typeof o.summary !== 'undefined')
@@ -133,6 +149,7 @@ export class Article extends AclBase implements Item {
      */
     @SetAclCrudField({
         type: 'array',
+        search: true,
     })
     @ApiProperty({ title: '分类列表', description: 'RSS 源定义的分类，和 本地RSS 的分组不是同一个', example: ['tag1', 'tag2'] })
     @JsonStringLength(0, 512)
@@ -161,13 +178,14 @@ export class Article extends AclBase implements Item {
     enclosure?: EnclosureImpl
 
     @SetAclCrudField({
+        search: true,
         dicUrl: '/feed/dicData',
         props: {
             label: 'title',
             value: 'id',
         },
     })
-    @ApiProperty({ title: '订阅源ID', example: 1 })
+    @ApiProperty({ title: '订阅源', example: 1 })
     @IsId()
     @Column({ nullable: true })
     feedId: number
@@ -178,6 +196,12 @@ export class Article extends AclBase implements Item {
     @ApiProperty({ title: '订阅源', type: () => Feed })
     @ManyToOne(() => Feed, (feed) => feed.articles)
     feed: Feed
+
+    @SetAclCrudField({
+        search: true,
+        searchRange: true,
+    })
+    declare createdAt: Date
 }
 
 export class CreateArticle extends OmitType(Article, ['id', 'createdAt', 'updatedAt'] as const) { }
