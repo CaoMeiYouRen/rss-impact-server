@@ -89,7 +89,7 @@ export type DownloadConfig = {
     /**
      * 下载到的路径
      */
-    dirPath: string
+    // dirPath: string
 
     /**
      * 超时时间(秒)

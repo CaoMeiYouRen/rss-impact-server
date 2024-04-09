@@ -41,50 +41,48 @@ function clonePropDecorators(from: unknown, to: unknown, name: string | symbol) 
         Reflect.defineMetadata(key, value, to, name)
     })
 }
+// eslint-disable-next-line @typescript-eslint/ban-types
+interface TFunction extends Function { }
 
-function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
-    const instance = aclOptions?.model?.prototype
-    const clazz = aclOptions?.model
-    const config = aclOptions?.config as AvueCrudConfig
-    const obj = instance
+function initAvueCrudColumn(clazz: TFunction): Field[] {
+    const prototype = clazz.prototype
     const metadata = getMetadataArgsStorage()
     const metadataStorage = getMetadataStorage()
-    // console.log(clazz.name, clazz)
-    // console.log(metadataStorage)
     const validatorProperties = metadataStorage.getTargetValidationMetadatas(clazz, clazz.name, true, false)
     const typeormProperties = metadata.filterColumns(clazz)
-    const swaggerProperties = Reflect.getMetadata('swagger/apiModelPropertiesArray', obj) as string[]
+    const swaggerProperties = Reflect.getMetadata('swagger/apiModelPropertiesArray', prototype) as string[]
     if (!typeormProperties) {
-        return config
+        return []
     }
     if (!swaggerProperties) {
-        return config
+        return []
     }
     const protectFields = ['id', 'createdAt', 'updatedAt'] // 保护字段，由系统自动生成，无法修改
     const properties = union(swaggerProperties.map((e) => e.replace(':', '')), typeormProperties.map((e) => e.propertyName), validatorProperties.map((e) => e.propertyName))
-    // console.log('properties', properties)
-
+    if (!properties?.length) {
+        return []
+    }
     const dbColumn: Field[] = properties.map((prop) => {
         const options = typeormProperties.find((e) => e.propertyName === prop)?.options
         const validatorOptions = validatorProperties.filter((e) => e.propertyName === prop)
-        // console.log(validatorOptions)
-        const setAclCrudFieldOption: Field = Reflect.getMetadata(SET_ACL_CRUD_FIELD_OPTION, obj, prop)
-        const swaggerOption = Reflect.getMetadata('swagger/apiModelProperties', obj, prop)
-        const propType = Reflect.getMetadata('design:type', obj, prop)?.name
+
+        const setAclCrudFieldOption: Field = Reflect.getMetadata(SET_ACL_CRUD_FIELD_OPTION, prototype, prop)
+        const swaggerOption = Reflect.getMetadata('swagger/apiModelProperties', prototype, prop)
+        const Clazz = Reflect.getMetadata('design:type', prototype, prop)
+        const propType = Clazz?.name
         let type = 'input'
         let format: string
         let value: any = options?.default
         let extra: any = {}
-        const label = swaggerOption?.title || swaggerOption?.description || upperFirst(prop)
+        const label = swaggerOption?.title || upperFirst(prop)
         const tip = swaggerOption?.description
         if (tip) {
             extra.tip = tip
         }
-        // console.log(swaggerOption)
         switch (propType) {
             case 'String': {
                 const lengthOption = validatorOptions.find((e) => ['isLength', 'jsonStringLength'].includes(e.name))
-                type = options.type === 'text' ? 'textarea' : 'input'
+                type = options?.type === 'text' ? 'textarea' : 'input'
                 value = typeof value === 'undefined' ? '' : value
                 extra = {
                     maxlength: options?.length ?? lengthOption?.constraints?.[1] ?? 2048,
@@ -108,6 +106,19 @@ function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
             case 'Boolean':
                 type = 'switch'
                 value = typeof value === 'undefined' ? false : value
+                extra = {
+                    dicData: [
+                        {
+                            label: 'false',
+                            value: false,
+                        },
+                        {
+                            label: 'true',
+                            value: true,
+                        },
+                    ],
+                    ...extra,
+                }
                 break
             case 'Date':
                 type = 'datetime'
@@ -120,6 +131,23 @@ function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
                 break
             case 'Object':
                 type = 'textarea'
+                value = typeof value === 'undefined' ? {} : value
+                break
+            case 'Filter':
+            case 'FilterOut':
+                extra = {
+                    span: 24,
+                    type: '',
+                    component: 'CrudForm',
+                    params: {
+                        option: {
+                            submitBtn: false,
+                            emptyBtn: false,
+                            column: initAvueCrudColumn(Clazz),
+                        },
+                    },
+                    ...extra,
+                }
                 value = typeof value === 'undefined' ? {} : value
                 break
             default:
@@ -144,15 +172,6 @@ function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
                 ...extra,
             }
         }
-        // if (prop === 'user') {
-        //     extra = {
-        //         label: '所属用户',
-        //         type: 'select',
-        //         dicUrl: '/user/dicData',
-        //         value: '',
-        //         ...extra,
-        //     }
-        // }
         let rules: any[]
         // 如果有 isNotEmpty 则为必填
         if (validatorOptions.find((e) => e.name === 'isNotEmpty')) {
@@ -177,6 +196,7 @@ function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
         if (setAclCrudFieldOption?.dicUrl || Array.isArray(setAclCrudFieldOption?.dicData)) { // 如果有 dicData 或 dicUrl，就设置为 select
             extra.type = 'select'
         }
+
         if (extra?.hide || setAclCrudFieldOption?.hide) {
             extra = {
                 addDisplay: false,
@@ -199,6 +219,25 @@ function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
             ...setAclCrudFieldOption,
         }
     })
+    return dbColumn.filter((e) => !e.hide) // 过滤 hide 字段
+}
+
+function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
+    const clazz = aclOptions?.model
+    const config = aclOptions?.config as AvueCrudConfig
+    const prototype = aclOptions?.model?.prototype
+    const metadata = getMetadataArgsStorage()
+
+    const typeormProperties = metadata.filterColumns(clazz)
+    const swaggerProperties = Reflect.getMetadata('swagger/apiModelPropertiesArray', prototype) as string[]
+    if (!typeormProperties) {
+        return config
+    }
+    if (!swaggerProperties) {
+        return config
+    }
+
+    const dbColumn: Field[] = initAvueCrudColumn(clazz)
     let column: Field[] = merge([], dbColumn, config?.option?.column)
 
     // 找到 updatedAt 和 createdAt 对应的列对象

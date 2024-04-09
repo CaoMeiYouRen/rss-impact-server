@@ -196,10 +196,9 @@ export class AclCrudController {
     @Post('')
     async create(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
         this.logger.debug(JSON.stringify(body, null, 4))
-        body.user = user
-        if (body.userId) { // 以 user 字段为准
-            delete body.userId
-        }
+
+        delete body.user  // 以 userId 字段为准
+        body.userId = user.id  // 以 userId 字段为准
         if (body.id) {
             delete body.id
         }
@@ -219,6 +218,10 @@ export class AclCrudController {
     async update(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
         this.logger.debug(JSON.stringify(body, null, 4))
         const id = body.id
+        delete body.user  // 以 userId 字段为准
+        if (!body.userId) {
+            body.userId = user.id
+        }
         if (body.createdAt) {
             delete body.createdAt
         }

@@ -48,7 +48,12 @@ async function bootstrap() {
     app.use(consoleLogger)
     app.useGlobalFilters(new AllExceptionsFilter())
     app.useGlobalInterceptors(new TimeoutInterceptor())
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }))
+    app.useGlobalPipes(new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        // forbidNonWhitelisted: true,
+        enableDebugMessages: __DEV__,
+    }))
     app.use(sessionMiddleware)
 
     app.use(history({})) // 解决单页应用程序(SPA)重定向问题

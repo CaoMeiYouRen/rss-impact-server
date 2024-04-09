@@ -11,10 +11,10 @@ import { RESOURCE_DOWNLOAD_PATH } from '@/app.config'
         PassportModule,
         ScheduleModule.forRoot(),
         ServeStaticModule.forRoot(
-            {
-                rootPath: path.resolve(RESOURCE_DOWNLOAD_PATH),
-                serveRoot: '/download',
-            },
+            // {
+            //     rootPath: path.resolve(RESOURCE_DOWNLOAD_PATH),
+            //     serveRoot: '/download',
+            // },
             {
                 rootPath: path.join(__dirname, '../../public/'),
                 serveRoot: '/',

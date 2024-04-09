@@ -39,6 +39,9 @@ export class Filter {
     @ValidateIf((o) => typeof o.categories !== 'undefined')
     categories?: string
 
+    @SetAclCrudField({
+        width: 100,
+    })
     @ApiProperty({ title: '过滤时间(秒)', example: 3600 })
     @IsSafePositiveInteger()
     @ValidateIf((o) => typeof o.length !== 'undefined')
@@ -93,6 +96,17 @@ export class Hook extends AclBase {
     })
     type: HookType
 
+    @SetAclCrudField({
+        type: 'textarea',
+        span: 24,
+        params: {
+            option: {
+                submitBtn: false,
+                emptyBtn: false,
+                column: [],
+            },
+        },
+    })
     @ApiProperty({ title: '配置', example: {}, type: () => Object })
     @JsonStringLength(0, 2048)
     @IsObject()
@@ -103,7 +117,10 @@ export class Hook extends AclBase {
     })
     config: HookConfig
 
-    @ApiProperty({ title: '过滤条件', description: '保留想要的内容', type: () => Filter })
+    @SetAclCrudField({
+        type: 'textarea',
+    })
+    @ApiProperty({ title: '过滤条件', description: '保留想要的内容', type: Filter })
     @Type(() => Filter)
     @ValidateNested()
     @JsonStringLength(0, 2048)
@@ -116,7 +133,10 @@ export class Hook extends AclBase {
     })
     filter: Filter
 
-    @ApiProperty({ title: '过滤出条件', description: '去掉不要的内容', type: () => FilterOut })
+    @SetAclCrudField({
+        type: 'textarea',
+    })
+    @ApiProperty({ title: '过滤出条件', description: '去掉不要的内容', type: FilterOut })
     @Type(() => FilterOut)
     @ValidateNested()
     @JsonStringLength(0, 2048)
@@ -131,16 +151,6 @@ export class Hook extends AclBase {
 
     @SetAclCrudField({
         search: true,
-        dicData: [
-            {
-                label: 'true',
-                value: true,
-            },
-            {
-                label: 'false',
-                value: false,
-            },
-        ],
     })
     @ApiProperty({ title: '反转模式', description: '如果服务可访问，则认为是故障', example: false })
     @IsBoolean()
