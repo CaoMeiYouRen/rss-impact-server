@@ -7,7 +7,7 @@ WORKDIR /frontend
 
 RUN git clone https://github.com/CaoMeiYouRen/rss-impact-web.git /frontend --depth=1
 
-RUN pnpm i --frozen-lockfile
+RUN npm -g pnpm@latest && pnpm i --frozen-lockfile
 
 RUN pnpm run build
 # 构建阶段
@@ -17,7 +17,7 @@ WORKDIR /app
 
 COPY package.json .npmrc pnpm-lock.yaml /app/
 
-RUN pnpm i --frozen-lockfile
+RUN npm -g pnpm@latest && pnpm i --frozen-lockfile
 
 COPY . /app
 
