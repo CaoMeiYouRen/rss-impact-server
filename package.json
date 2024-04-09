@@ -114,7 +114,7 @@
     "@types/supertest": "^6.0.2",
     "@types/turndown": "^5.0.4",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/parser": "^7.6.0",
     "commitizen": "^4.2.3",
     "conventional-changelog-cmyr-config": "^2.1.1",
     "cross-env": "^7.0.3",
