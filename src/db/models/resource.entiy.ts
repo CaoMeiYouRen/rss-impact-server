@@ -21,6 +21,7 @@ export class Resource extends AclBase {
 
     @SetAclCrudField({
         search: true,
+        span: 24,
     })
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/images/favicon-16x16-next.png' })
     @IsNotEmpty()
@@ -65,6 +66,11 @@ export class Resource extends AclBase {
     })
     type: string
 
+    @SetAclCrudField({
+        width: 100,
+        labelWidth: 105,
+        type: 'input',
+    })
     @ApiProperty({ title: '文件大小(B)', description: '单位为 B', example: 114514 })
     @IsSafePositiveInteger()
     @Column({})
