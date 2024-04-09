@@ -6,7 +6,7 @@ settings:
 
 overrides:
   '@types/superagent': 4.1.14
-  crypto-hash: CaoMeiYouRen/crypto-hash
+  crypto-hash: git+https://github.com/CaoMeiYouRen/crypto-hash.git
 
 dependencies:
   '@cao-mei-you-ren/qbittorrent':
