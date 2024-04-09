@@ -110,7 +110,7 @@ export class AclCrudController {
     }
 
     @ApiResponse({ status: 200, type: [DicData] })
-    @Get('/dicData')
+    @Get('dicData')
     async dicData(@CurrentUser() user: User) {
         if (!this?.__OPTIONS__?.props) {
             throw new HttpError(400, '该路由未定义字典数据')

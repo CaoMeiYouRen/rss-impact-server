@@ -54,6 +54,8 @@ export class Resource extends AclBase {
 
     @SetAclCrudField({
         search: true,
+        type: 'select',
+        dicUrl: 'resource/typeDicData',
     })
     @ApiProperty({ title: '文件类型', example: 'image/png' })
     @IsNotEmpty()

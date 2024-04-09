@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
+import { IsArray, IsBoolean, IsIn, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
@@ -76,7 +76,9 @@ export class Feed extends AclBase {
         search: true,
     })
     @ApiProperty({ title: 'Cron', example: 'EVERY_10_MINUTES' })
-    @Length(0, 256, { message: 'Cron最大不能超过256个字符' })
+    // @Length(0, 256, { message: 'Cron最大不能超过256个字符' })
+    @IsNotEmpty()
+    @IsIn(RssLabelList.map((e) => e.value))
     @Column({
         length: 256,
         default: 'EVERY_10_MINUTES',
@@ -107,6 +109,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '分组', example: 1 })
     @IsId()
+    @IsNotEmpty()
     @Column({ nullable: true })
     categoryId: number
 

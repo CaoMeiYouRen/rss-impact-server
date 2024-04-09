@@ -298,6 +298,9 @@ export const AclCrud = (options: AclOptions): ClassDecorator => (target) => { //
         if (controller[method]) {
             continue
         }
+        if (method === 'dicData' && !options?.props) {
+            continue
+        }
         controller[method] = function test(...args: any[]) {
             return crudController[method].apply(this, args)
         }

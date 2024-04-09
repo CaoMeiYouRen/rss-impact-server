@@ -75,7 +75,7 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     }  // 如果没有 pubDate/isoDate 则留空
     article.author = item.author || item.creator || item['dc:creator']
     article.contentSnippet = item['content:encodedSnippet'] || item.contentSnippet
-    article.summary = item.summary
+    article.summary = item.summary || article.contentSnippet?.slice(0, 128) // 如果没有总结，则使用 contentSnippet 填充
     article.categories = item.categories
     article.enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
     return article
