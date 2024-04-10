@@ -130,6 +130,13 @@ export class Feed extends AclBase {
     articles: Article[]
 
     @SetAclCrudField({
+        type: 'select',
+        multiple: true,
+        dicUrl: '/hook/dicData',
+        props: {
+            label: 'name',
+            value: 'id',
+        },
     })
     @ApiProperty({ title: 'Hook列表', example: [], type: () => [Hook] })
     @Type(() => Hook)

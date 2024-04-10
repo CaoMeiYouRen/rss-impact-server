@@ -12,20 +12,20 @@ import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
-class EnclosureImpl implements Enclosure {
+export class EnclosureImpl implements Enclosure {
 
-    @ApiProperty({ title: '附件URL', example: 'http://v2.uploadbt.com' })
+    @ApiProperty({ title: 'URL', example: 'http://v2.uploadbt.com' })
     @IsUrl()
     @Length(0, 1024)
     @ValidateIf((o) => typeof o.url !== 'undefined')
     url: string
 
-    @ApiProperty({ title: '附件长度', example: 114514 })
+    @ApiProperty({ title: '长度', example: 114514 })
     @IsSafePositiveInteger()
     @ValidateIf((o) => typeof o.length !== 'undefined')
     length?: number
 
-    @ApiProperty({ title: '附件媒体类型', example: 'application/x-bittorrent' })
+    @ApiProperty({ title: '媒体类型', example: 'application/x-bittorrent' })
     @Length(0, 128)
     @ValidateIf((o) => typeof o.type !== 'undefined')
     type?: string
@@ -174,6 +174,7 @@ export class Article extends AclBase implements Item {
         type: 'simple-json',
         length: 2048,
         nullable: true,
+        default: '{}',
     })
     enclosure?: EnclosureImpl
 

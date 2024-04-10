@@ -151,7 +151,7 @@ export async function download(url: string, filepath: string, timeout = 60 * 100
     return new Promise<DownloadFileType>((resolve, reject) => {
         writer.on('finish', async () => {
             const stat = await fs.stat(filepath)
-            const { mime } = await FileType.fromFile(filepath)
+            const mime = (await FileType.fromFile(filepath))?.mime
             const hash = await getMd5ByStream(filepath)
             resolve({
                 size: stat.size,

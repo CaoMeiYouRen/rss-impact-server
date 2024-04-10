@@ -135,6 +135,7 @@ function initAvueCrudColumn(clazz: TFunction): Field[] {
                 break
             case 'Filter':
             case 'FilterOut':
+            case 'EnclosureImpl':
                 extra = {
                     span: 24,
                     type: '',

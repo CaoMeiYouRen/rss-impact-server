@@ -42,7 +42,13 @@ export class Category extends AclBase {
     description?: string
 
     @SetAclCrudField({
-        hide: true,
+        type: 'select',
+        multiple: true,
+        dicUrl: '/feed/dicData',
+        props: {
+            label: 'title',
+            value: 'id',
+        },
     })
     @ApiProperty({ title: '订阅链接', example: [], type: () => [Feed] })
     @OneToMany(() => Feed, (feed) => feed.category)

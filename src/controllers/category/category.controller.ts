@@ -30,7 +30,7 @@ import { Category, CreateCategory, FindCategory, UpdateCategory } from '@/db/mod
         label: 'name',
         value: 'id',
     },
-    // relations: ['feeds'],
+    relations: ['feeds'],
 })
 @ApiTags('category')
 @Controller('category')

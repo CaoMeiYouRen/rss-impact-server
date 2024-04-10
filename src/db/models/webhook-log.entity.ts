@@ -22,16 +22,6 @@ import { LogStatusList, LogStatusType, LogType, LogTypeList } from '@/constant/h
 @Entity()
 export class WebhookLog extends AclBase {
 
-    @ApiProperty({ title: '响应体', example: { message: 'OK' } })
-    @JsonStringLength(0, 2048)
-    @ValidateIf((o) => typeof o.data !== 'undefined')
-    @Column({
-        type: 'simple-json',
-        length: 2048,
-        nullable: true,
-    })
-    data?: any
-
     @ApiProperty({ title: '状态码', example: 200 })
     @IsNotEmpty()
     @IsInt()
@@ -73,6 +63,16 @@ export class WebhookLog extends AclBase {
         length: 128,
     })
     statusText: string
+
+    @ApiProperty({ title: '响应体', example: { message: 'OK' } })
+    @JsonStringLength(0, 2048)
+    @ValidateIf((o) => typeof o.data !== 'undefined')
+    @Column({
+        type: 'simple-json',
+        length: 2048,
+        nullable: true,
+    })
+    data?: any
 
     @ApiProperty({ title: '响应头', example: {} })
     @JsonStringLength(0, 2048)
