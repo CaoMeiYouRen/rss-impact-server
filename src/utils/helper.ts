@@ -8,6 +8,7 @@ import fs, { ReadStream } from 'fs-extra'
 import FileType from 'file-type'
 import Turndown from 'turndown'
 import { Equal, Like, ILike, Between, In } from 'typeorm'
+import { ValidationError } from 'class-validator'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 
@@ -285,5 +286,56 @@ export function getDateTransformer() {
     return {
         type: 'text',
         transformer,
+    }
+}
+
+export function flattenValidationErrors(
+    validationErrors: ValidationError[],
+): string[] {
+    return _.flattenDeep(
+        _.flattenDeep(validationErrors
+            .map((error) => mapChildrenToValidationErrors(error)),
+        )
+            .filter((item) => !!item.constraints)
+            .map((item) => Object.values(item.constraints)),
+    )
+
+}
+
+function mapChildrenToValidationErrors(
+    error: ValidationError,
+    parentPath?: string,
+): ValidationError[] {
+    if (!(error.children && error.children.length)) {
+        return [error]
+    }
+    const validationErrors = []
+    parentPath = parentPath
+        ? `${parentPath}.${error.property}`
+        : error.property
+    for (const item of error.children) {
+        if (item.children && item.children.length) {
+            validationErrors.push(
+                ...mapChildrenToValidationErrors(item, parentPath),
+            )
+        }
+        validationErrors.push(
+            prependConstraintsWithParentProp(parentPath, item),
+        )
+    }
+    return validationErrors
+}
+
+function prependConstraintsWithParentProp(
+    parentPath: string,
+    error: ValidationError,
+): ValidationError {
+    const constraints = {}
+    for (const key in error.constraints) {
+        constraints[key] = `${parentPath}.${error.constraints[key]}`
+    }
+    return {
+        ...error,
+        constraints,
     }
 }

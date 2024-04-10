@@ -1,7 +1,7 @@
 import { Entity, Column, Index, ManyToOne } from 'typeorm'
 import { Item, Enclosure } from 'rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsDateString, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
+import { IsArray, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
 import dayjs from 'dayjs'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
@@ -11,6 +11,7 @@ import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { IsDateOrDateString } from '@/decorators/is-date-or-date-string.decorator'
 
 export class EnclosureImpl implements Enclosure {
 
@@ -98,7 +99,7 @@ export class Article extends AclBase implements Item {
         searchRange: true,
     })
     @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
-    @IsDateString()
+    @IsDateOrDateString()
     @ValidateIf((o) => typeof o.publishDate !== 'undefined')
     @Column({
         nullable: true,
