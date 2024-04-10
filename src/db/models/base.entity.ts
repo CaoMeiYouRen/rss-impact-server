@@ -3,7 +3,6 @@ import { ApiProperty } from '@nestjs/swagger'
 import dayjs from 'dayjs'
 import { ValidateIf } from 'class-validator'
 import { IsId } from '@/decorators/is-id.decorator'
-import { getDateTransformer } from '@/utils/helper'
 
 export abstract class Base {
 
@@ -17,7 +16,6 @@ export abstract class Base {
     @Index()
     @CreateDateColumn({
         nullable: true,
-        transformer: getDateTransformer(),
     })
     createdAt: Date
 
@@ -25,7 +23,6 @@ export abstract class Base {
     @Index()
     @UpdateDateColumn({
         nullable: true,
-        transformer: getDateTransformer(),
     })
     updatedAt: Date
 

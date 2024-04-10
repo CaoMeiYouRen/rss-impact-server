@@ -11,7 +11,6 @@ import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
-import { getDateTransformer } from '@/utils/helper'
 
 class EnclosureImpl implements Enclosure {
 
@@ -103,7 +102,6 @@ export class Article extends AclBase implements Item {
     @ValidateIf((o) => typeof o.publishDate !== 'undefined')
     @Column({
         nullable: true,
-        transformer: getDateTransformer(),
     })
     publishDate?: Date
 

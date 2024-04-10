@@ -282,5 +282,8 @@ export function getDateTransformer() {
             return value.toISOString()
         },
     }
-    return transformer
+    return {
+        type: 'text',
+        transformer,
+    }
 }
