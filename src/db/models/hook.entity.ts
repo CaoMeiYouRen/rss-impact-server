@@ -6,7 +6,7 @@ import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { HookConfig, HookList, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
-import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
+import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 /**
@@ -15,16 +15,16 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 export class Filter {
 
     @ApiProperty({ title: '条数限制', description: '限制最大条数，主要用于排行榜类 RSS。默认值 20。', example: 20 })
-    @IsSafePositiveInteger(10000)
-    @ValidateIf((o) => typeof o.length !== 'undefined')
+    @IsSafeNaturalNumber(10000)
+    @ValidateIf((o) => typeof o.limit !== 'undefined')
     limit?: number
 
     @SetAclCrudField({
         labelWidth: 105,
     })
     @ApiProperty({ title: '过滤时间(秒)', description: '过滤时间，返回指定时间范围内的内容。设置为 0 禁用', example: 3600 })
-    @IsSafePositiveInteger()
-    @ValidateIf((o) => typeof o.length !== 'undefined')
+    @IsSafeNaturalNumber()
+    @ValidateIf((o) => typeof o.time !== 'undefined')
     time?: number
 
     @ApiProperty({ title: '过滤标题', example: '标题1|标题2' })
@@ -34,7 +34,7 @@ export class Filter {
 
     @ApiProperty({ title: '过滤总结', example: '总结1|总结2' })
     @Length(0, 1024)
-    @ValidateIf((o) => typeof o.title !== 'undefined')
+    @ValidateIf((o) => typeof o.summary !== 'undefined')
     summary?: string
 
     @ApiProperty({ title: '过滤作者', example: 'CaoMeiYouRen' })
@@ -59,7 +59,7 @@ export class FilterOut {
 
     @ApiProperty({ title: '排除总结', example: '总结1|总结2' })
     @Length(0, 1024)
-    @ValidateIf((o) => typeof o.title !== 'undefined')
+    @ValidateIf((o) => typeof o.summary !== 'undefined')
     summary?: string
 
     @ApiProperty({ title: '排除作者', example: 'CaoMeiYouRen' })

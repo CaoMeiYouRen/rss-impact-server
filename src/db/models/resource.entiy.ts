@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsUrl, Length } from 'class-validator'
 import md5 from 'md5'
 import { AclBase } from './acl-base.entity'
-import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
+import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { StatusList, StatusType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
@@ -72,7 +72,7 @@ export class Resource extends AclBase {
         type: 'input',
     })
     @ApiProperty({ title: '文件大小(B)', description: '单位为 B', example: 114514 })
-    @IsSafePositiveInteger()
+    @IsSafeNaturalNumber()
     @Column({})
     size: number
 

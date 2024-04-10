@@ -22,7 +22,7 @@ import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri, timeFo
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
-import { BitTorrentConfig, DownloadConfig, NotificationConfig, WebhookConfig } from '@/constant/hook'
+import { NotificationConfig } from '@/constant/hook'
 import { ajax } from '@/utils/ajax'
 import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
@@ -30,6 +30,9 @@ import { runPushAllInOne } from '@/utils/notification'
 import { isSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { User } from '@/db/models/user.entity'
 import { Role } from '@/constant/role'
+import { BitTorrentConfig } from '@/models/bit-torrent-config'
+import { DownloadConfig } from '@/models/download-config'
+import { WebhookConfig } from '@/models/webhook-config'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
 
@@ -334,6 +337,7 @@ export class TasksService implements OnApplicationBootstrap {
             this.logger.log(`正在触发 Webhook: ${config?.url}`)
             const resp = await ajax({
                 ...config,
+                timeout: (config?.timeout || 60) * 1000,
                 data: data as any,
             })
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
@@ -433,7 +437,7 @@ export class TasksService implements OnApplicationBootstrap {
             try {
                 // 由于 hash 只能在下载后计算得出，所以第一次下载依旧会下载整个文件
                 this.logger.debug(`正在下载文件: ${filename}`)
-                const fileInfo = await download(url, filepath, timeout * 1000)
+                const fileInfo = await download(url, filepath, (timeout || 60) * 1000)
                 newResource.type = fileInfo.type
                 newResource.size = fileInfo.size
                 newResource.hash = fileInfo.hash

@@ -66,6 +66,7 @@ export class WebhookLog extends AclBase {
 
     @ApiProperty({ title: '响应体', example: { message: 'OK' } })
     @JsonStringLength(0, 2048)
+    @IsObject()
     @ValidateIf((o) => typeof o.data !== 'undefined')
     @Column({
         type: 'simple-json',
