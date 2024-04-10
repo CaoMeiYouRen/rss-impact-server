@@ -103,18 +103,6 @@ export class User extends Base {
         }
     }
 
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare createdAt: Date
-
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare updatedAt: Date
-
 }
 
 export class CreateUser extends OmitType(User, ['id', 'createdAt', 'updatedAt', 'accessToken'] as const) { }

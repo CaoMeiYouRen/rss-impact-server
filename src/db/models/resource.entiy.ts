@@ -101,12 +101,6 @@ export class Resource extends AclBase {
     })
     status: StatusType
 
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare createdAt: Date
-
 }
 
 export class FindResource extends FindPlaceholderDto<Resource> {

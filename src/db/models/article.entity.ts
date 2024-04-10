@@ -11,6 +11,7 @@ import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafePositiveInteger } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { getDateTransformer } from '@/utils/helper'
 
 class EnclosureImpl implements Enclosure {
 
@@ -102,6 +103,7 @@ export class Article extends AclBase implements Item {
     @ValidateIf((o) => typeof o.publishDate !== 'undefined')
     @Column({
         nullable: true,
+        transformer: getDateTransformer(),
     })
     publishDate?: Date
 
@@ -197,11 +199,6 @@ export class Article extends AclBase implements Item {
     @ManyToOne(() => Feed, (feed) => feed.articles)
     feed: Feed
 
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare createdAt: Date
 }
 
 export class CreateArticle extends OmitType(Article, ['id', 'createdAt', 'updatedAt'] as const) { }

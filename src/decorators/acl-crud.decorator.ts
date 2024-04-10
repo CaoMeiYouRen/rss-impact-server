@@ -242,7 +242,15 @@ function initAvueCrudConfig(aclOptions: AclOptions): AvueCrudConfig {
 
     // 找到 updatedAt 和 createdAt 对应的列对象
     const updatedAtColumn = column.find((col) => col.prop === 'updatedAt')
+    if (updatedAtColumn && aclOptions?.routes?.update) { // 如果允许 update 则 updatedAt 也可以查询
+        updatedAtColumn.search = true
+        updatedAtColumn.searchRange = true
+    }
     const createdAtColumn = column.find((col) => col.prop === 'createdAt')
+    if (createdAtColumn) {
+        createdAtColumn.search = true
+        createdAtColumn.searchRange = true
+    }
 
     // 从原数组中移除这两个列对象
     column = column.filter((col) => col.prop !== 'updatedAt' && col.prop !== 'createdAt')

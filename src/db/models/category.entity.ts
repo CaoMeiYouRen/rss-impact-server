@@ -48,18 +48,6 @@ export class Category extends AclBase {
     @OneToMany(() => Feed, (feed) => feed.category)
     feeds: Feed[]
 
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare createdAt: Date
-
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare updatedAt: Date
-
 }
 
 export class CreateCategory extends OmitType(Category, ['id', 'createdAt', 'updatedAt'] as const) { }

@@ -256,3 +256,31 @@ export function transformQueryOperator(where?: Record<string, any>) {
         }),
     )
 }
+
+export function getDateTransformer() {
+    const transformer = {
+        from(value: string): Date { // 数据库到实体类
+            if (!value) {
+                return null
+            }
+            if (/^\d\d\d\d-\d\d-\d\d \d\d:\d\d/.test(value)) { // 非 ISO 格式的改为 ISO
+                value = value.replace(' ', 'T')
+            }
+            if (
+                /^\d\d\d\d-\d\d-\d\dT\d\d:\d\d(:\d\d(\.\d\d\d)?)?$/.test(
+                    value,
+                )
+            ) {
+                value += 'Z'
+            }
+            return new Date(value)
+        },
+        to(value: Date): string { // 实体类到数据库
+            if (!value) {
+                return null
+            }
+            return value.toISOString()
+        },
+    }
+    return transformer
+}

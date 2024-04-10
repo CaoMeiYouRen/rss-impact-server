@@ -138,17 +138,6 @@ export class Feed extends AclBase {
     @JoinTable()
     hooks: Hook[]
 
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare createdAt: Date
-
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare updatedAt: Date
 }
 
 export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] as const) { }

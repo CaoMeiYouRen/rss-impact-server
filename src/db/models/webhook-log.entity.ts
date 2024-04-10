@@ -125,11 +125,6 @@ export class WebhookLog extends AclBase {
     @ManyToOne(() => Hook)
     hook: Hook
 
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare createdAt: Date
 }
 
 export class FindWebhookLog extends FindPlaceholderDto<WebhookLog> {

@@ -168,17 +168,6 @@ export class Hook extends AclBase {
     @ManyToMany(() => Feed, (feed) => feed.hooks)
     feeds: Feed[]
 
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare createdAt: Date
-
-    @SetAclCrudField({
-        search: true,
-        searchRange: true,
-    })
-    declare updatedAt: Date
 }
 
 export class CreateHook extends OmitType(Hook, ['id', 'createdAt', 'updatedAt'] as const) { }
