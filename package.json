@@ -60,7 +60,7 @@
     "express-rate-limit": "^7.2.0",
     "express-session": "^1.18.0",
     "file-stream-rotator": "^1.0.0",
-    "file-type": "16.5.4",
+    "file-type": "19.0.0",
     "fs-extra": "^11.2.0",
     "go-cqwebsocket": "^6.3.2",
     "helmet": "^7.1.0",

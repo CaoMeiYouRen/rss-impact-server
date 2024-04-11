@@ -89,8 +89,8 @@ dependencies:
     specifier: ^1.0.0
     version: 1.0.0
   file-type:
-    specifier: 16.5.4
-    version: 16.5.4
+    specifier: 19.0.0
+    version: 19.0.0
   fs-extra:
     specifier: ^11.2.0
     version: 11.2.0
@@ -5047,13 +5047,13 @@ packages:
     resolution: {integrity: sha512-qg5mQO7o+vhS7NPqkrkfJS8qqhz0d17Tnewmb5sUTUKwYe27LKaDtbTuRAtQWkBn6jROuFPVIDF5DtckzokFTQ==}
     dev: false
 
-  /file-type@16.5.4:
-    resolution: {integrity: sha512-/yFHK0aGjFEgDJjEKP0pWCplsPFPhwyfwevf/pVxiN0tmE4L9LmwWxWukdJSHdoCli4VgQLehjJtwQBnqmsKcw==}
-    engines: {node: '>=10'}
+  /file-type@19.0.0:
+    resolution: {integrity: sha512-s7cxa7/leUWLiXO78DVVfBVse+milos9FitauDLG1pI7lNaJ2+5lzPnr2N24ym+84HVwJL6hVuGfgVE+ALvU8Q==}
+    engines: {node: '>=18'}
     dependencies:
       readable-web-to-node-stream: 3.0.2
-      strtok3: 6.3.0
-      token-types: 4.2.1
+      strtok3: 7.0.0
+      token-types: 5.0.1
     dev: false
 
   /file-uri-to-path@1.0.0:
@@ -8748,9 +8748,9 @@ packages:
     resolution: {integrity: sha1-HUCLP9t2kjuVQ9lvtMnf1TXZy10=, tarball: https://registry.npmmirror.com/pause/download/pause-0.0.1.tgz}
     dev: false
 
-  /peek-readable@4.1.0:
-    resolution: {integrity: sha512-ZI3LnwUv5nOGbQzD9c2iDG6toheuXSZP5esSHBjopsXH4dg19soufvpUGA3uohi5anFtGb2lhAVdHzH6R/Evvg==}
-    engines: {node: '>=8'}
+  /peek-readable@5.0.0:
+    resolution: {integrity: sha512-YtCKvLUOvwtMGmrniQPdO7MwPjgkFBtFIrmfSbYmYuq3tKDV/mcfAhBth1+C3ru7uXIZasc/pHnb+YDYNkkj4A==}
+    engines: {node: '>=14.16'}
     dev: false
 
   /picocolors@1.0.0:
@@ -9768,9 +9768,6 @@ packages:
   /sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       bindings: 1.5.0
       node-addon-api: 7.1.0
@@ -9972,12 +9969,12 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /strtok3@6.3.0:
-    resolution: {integrity: sha512-fZtbhtvI9I48xDSywd/somNqgUHl2L2cstmXCCif0itOf96jeW18MBSyrLuNicYQVkvpOxkZtkzujiTJ9LW5Jw==}
-    engines: {node: '>=10'}
+  /strtok3@7.0.0:
+    resolution: {integrity: sha512-pQ+V+nYQdC5H3Q7qBZAz/MO6lwGhoC2gOAjuouGf/VO0m7vQRh8QNMl2Uf6SwAtzZ9bOw3UIeBukEGNJl5dtXQ==}
+    engines: {node: '>=14.16'}
     dependencies:
       '@tokenizer/token': 0.3.0
-      peek-readable: 4.1.0
+      peek-readable: 5.0.0
     dev: false
 
   /superagent@8.1.2:
@@ -10270,9 +10267,9 @@ packages:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==, tarball: https://registry.npmmirror.com/toidentifier/download/toidentifier-1.0.1.tgz}
     engines: {node: '>=0.6'}
 
-  /token-types@4.2.1:
-    resolution: {integrity: sha512-6udB24Q737UD/SDsKAHI9FCRP7Bqc9D/MQUV02ORQg5iskjtLJlZJNdN4kKtcdtwCeWIwIHDGaUsTsCCAa8sFQ==}
-    engines: {node: '>=10'}
+  /token-types@5.0.1:
+    resolution: {integrity: sha512-Y2fmSnZjQdDb9W4w4r1tswlMHylzWIeOKpx0aZH9BgGtACHhrk3OkT52AzwcuqTRBZtvvnTjDBh8eynMulu8Vg==}
+    engines: {node: '>=14.16'}
     dependencies:
       '@tokenizer/token': 0.3.0
       ieee754: 1.2.1
