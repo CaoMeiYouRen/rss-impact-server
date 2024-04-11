@@ -35,6 +35,7 @@ jobs:
       - run: pnpm i --frozen-lockfile
       - run: pnpm run lint
       - run: pnpm run build
+      - run: pnpm run test
       - run: pnpm run test:e2e
       # - env:
       #     GH_TOKEN: ${{ secrets.GH_TOKEN }}

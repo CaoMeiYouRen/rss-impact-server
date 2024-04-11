@@ -94,6 +94,9 @@ dependencies:
   fs-extra:
     specifier: ^11.2.0
     version: 11.2.0
+  go-cqwebsocket:
+    specifier: ^6.3.2
+    version: 6.3.2
   helmet:
     specifier: ^7.1.0
     version: 7.1.0
@@ -5597,6 +5600,16 @@ packages:
       sparkles: 2.1.0
     dev: true
 
+  /go-cqwebsocket@6.3.2:
+    resolution: {integrity: sha512-+ki1VoMNOyqr4A2zglrepDCUpOuhZsHnxZCRhDNJaR6uMX79C2rQM55BFUGOWq3flekMZGiNaoPmd9Ptj34gDg==}
+    engines: {node: '>=14'}
+    dependencies:
+      ws: 8.16.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -6093,6 +6106,7 @@ packages:
 
   /is-arrayish@0.2.1:
     resolution: {integrity: sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg==}
+    requiresBuild: true
     dev: true
 
   /is-bigint@1.0.4:
@@ -7046,6 +7060,7 @@ packages:
 
   /lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
+    requiresBuild: true
     dev: true
 
   /lines-and-columns@2.0.4:
@@ -9753,6 +9768,9 @@ packages:
   /sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
     requiresBuild: true
+    peerDependenciesMeta:
+      node-gyp:
+        optional: true
     dependencies:
       bindings: 1.5.0
       node-addon-api: 7.1.0
@@ -11175,6 +11193,19 @@ packages:
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
     dev: true
+
+  /ws@8.16.0:
+    resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
 
   /xml2js@0.5.0:
     resolution: {integrity: sha512-drPFnkQJik/O+uPKpqSgr22mpuFHqKdbS835iAQrUC73L2F5WkboIRd63ai/2Yg6I1jzifPFKH2NTK+cfglkIA==}
