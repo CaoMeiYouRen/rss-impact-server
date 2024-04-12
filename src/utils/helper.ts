@@ -9,6 +9,8 @@ import FileType from 'file-type'
 import Turndown from 'turndown'
 import { Equal, Like, ILike, Between, In } from 'typeorm'
 import { ValidationError } from 'class-validator'
+import { CQTag } from 'go-cqwebsocket'
+import { CQText, CQImage } from 'go-cqwebsocket/out/tags'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 
@@ -338,4 +340,43 @@ function prependConstraintsWithParentProp(
         ...error,
         constraints,
     }
+}
+
+const imageRegex = /!\[(.*?)\]\((.*?)\)/g
+
+export function mdToCqcode(md: string) {
+    const result = md.replace(imageRegex, (match, altText, imageUrl) => new CQImage('image', { file: imageUrl }).toString())
+    return result
+}
+
+/**
+ * 格式化流量数据
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-04-12
+ * @export
+ * @param data 单位B
+ */
+export function dataFormat(data: number | bigint): string {
+    const arr = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+    let i = 0
+    let value: number | bigint
+
+    if (typeof data === 'bigint' || data > Number.MAX_SAFE_INTEGER) {
+        value = BigInt(data)
+        while (value >= 1024n && i < arr.length - 1) {
+            value /= 1024n
+            i++
+        }
+        return `${value} ${arr[i]}`
+    }
+    value = data
+    while (value >= 1024 && i < arr.length - 1) {
+        value /= 1024
+        i++
+    }
+    if (i === 0) {
+        return `${value} ${arr[i]}`
+    }
+    return `${value.toFixed(2)} ${arr[i]}`
 }

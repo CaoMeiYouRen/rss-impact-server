@@ -40,7 +40,7 @@ export abstract class Base {
     protected async updateValidate() { // 更新前校验
         const validationErrors = await validate(this, {
             whitelist: true,
-            skipMissingProperties: true,
+            skipUndefinedProperties: true, // 只忽略 undefined ，如果是 null 的话就会将字段设置为空
         })
         // console.log('更新前校验', validationErrors)
         const errors = flattenValidationErrors(validationErrors)

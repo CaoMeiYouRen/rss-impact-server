@@ -469,7 +469,6 @@ export class TasksService implements OnApplicationBootstrap {
         if (!btArticles?.length) {
             return
         }
-        const urls = btArticles.map((article) => article.enclosure.url)
         switch (type) {
             case 'qBittorrent': {
                 const { baseUrl, username, password, downloadPath, maxSize } = config
@@ -479,7 +478,8 @@ export class TasksService implements OnApplicationBootstrap {
                     password,
                     timeout: 60 * 1000,
                 })
-                await Promise.allSettled(urls.map(async (url) => {
+                await Promise.allSettled(btArticles.map(async (article) => {
+                    const url = article.enclosure.url
                     // 如果是 magnet，则直接添加 磁力链接
                     if (url.startsWith('magnet:')) {
                         await qBittorrent.addMagnet(url, { savepath: downloadPath })
@@ -506,7 +506,11 @@ export class TasksService implements OnApplicationBootstrap {
                             newResource.url = newMagnetUri
                             newResource.name = torrentInfo.name
                             newResource.size = torrentInfo.totalSize // 总大小
-                            if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= torrentInfo.totalSize) {
+                            if (newResource.size && !article.enclosure.length) {
+                                article.enclosure.length = newResource.size // 更新附件大小
+                                await this.articleRepository.save(article)
+                            }
+                            if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= newResource.size) {
                                 this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
                                 await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
                                 newResource.status = 'skip'
@@ -564,8 +568,12 @@ export class TasksService implements OnApplicationBootstrap {
                             hash,
                             userId,
                         })
+                        if (newResource.size && !article.enclosure.length) {
+                            article.enclosure.length = newResource.size // 更新附件大小
+                            await this.articleRepository.save(article)
+                        }
                         // TODO 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
-                        if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= magnet.xl) {
+                        if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= newResource.size) {
                             this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
                             newResource.status = 'skip'
                             await this.resourceRepository.save(newResource)

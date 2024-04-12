@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { timeFormat, isImageUrl, deepOmit, deepTrim } from './helper';
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat } from './helper';
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {
@@ -162,3 +162,71 @@ describe('deepTrim', () => {
         expect(result).toEqual(expected);
     });
 });
+
+describe('mdToCqcode', () => {
+    it('should convert Markdown image syntax to CQImage', () => {
+        const markdown = '![Alt Text](https://example.com/image.jpg)';
+        const expected = '[CQ:image,file=https://example.com/image.jpg]';
+        expect(mdToCqcode(markdown)).toBe(expected);
+    });
+
+    // it('should convert HTML <img> tag to CQImage', () => {
+    //     const markdown = '<img src="https://example.com/image.png" alt="Alt Text">';
+    //     const expected = '[CQ:image,file=https://example.com/image.png]';
+    //     expect(mdToCqcode(markdown)).toBe(expected);
+    // });
+
+    it('should handle multiple images', () => {
+        const markdown = '![Alt Text 1](https://example.com/image1.jpg)\n\n![Alt Text 2](https://example.com/image2.png)';
+        const expected = '[CQ:image,file=https://example.com/image1.jpg]\n\n[CQ:image,file=https://example.com/image2.png]';
+        expect(mdToCqcode(markdown)).toBe(expected);
+    });
+
+    it('should preserve non-image text', () => {
+        const markdown = 'This is some text.\n\n![Alt Text](https://example.com/image.jpg)\n\nMore text.';
+        const expected = 'This is some text.\n\n[CQ:image,file=https://example.com/image.jpg]\n\nMore text.';
+        expect(mdToCqcode(markdown)).toBe(expected);
+    });
+});
+
+describe('dataFormat', () => {
+    it('should format bytes correctly for numbers', () => {
+        expect(dataFormat(0)).toBe('0 B')
+        expect(dataFormat(1023)).toBe('1023 B')
+        expect(dataFormat(1024)).toBe('1.00 KiB')
+        expect(dataFormat(1048576)).toBe('1.00 MiB')
+        expect(dataFormat(1073741824)).toBe('1.00 GiB')
+        expect(dataFormat(1099511627776)).toBe('1.00 TiB')
+        expect(dataFormat(1125899906842624)).toBe('1.00 PiB')
+        expect(dataFormat(1152921504606846976)).toBe('1 EiB')
+        expect(dataFormat(1180591620717411303424)).toBe('1 ZiB')
+        expect(dataFormat(1208925819614629174706176)).toBe('1 YiB')
+    })
+
+    it('should format bytes correctly for bigints', () => {
+        expect(dataFormat(0n)).toBe('0 B')
+        expect(dataFormat(1023n)).toBe('1023 B')
+        expect(dataFormat(1024n)).toBe('1 KiB')
+        expect(dataFormat(1048576n)).toBe('1 MiB')
+        expect(dataFormat(1073741824n)).toBe('1 GiB')
+        expect(dataFormat(1099511627776n)).toBe('1 TiB')
+        expect(dataFormat(1125899906842624n)).toBe('1 PiB')
+        expect(dataFormat(1152921504606846976n)).toBe('1 EiB')
+        expect(dataFormat(1180591620717411303424n)).toBe('1 ZiB')
+        expect(dataFormat(1208925819614629174706176n)).toBe('1 YiB')
+    })
+
+    it('should handle decimal values for numbers', () => {
+        expect(dataFormat(512)).toBe('512 B')
+        expect(dataFormat(2048)).toBe('2.00 KiB')
+        expect(dataFormat(3072)).toBe('3.00 KiB')
+        expect(dataFormat(1572864)).toBe('1.50 MiB')
+    })
+
+    it('should handle large values', () => {
+        expect(dataFormat(9223372036854775807)).toBe('8 EiB')
+        expect(dataFormat(18446744073709551615)).toBe('16 EiB')
+        expect(dataFormat(18446744073709551616n)).toBe('16 EiB')
+        expect(dataFormat(36893488147419103232n)).toBe('32 EiB')
+    })
+})

@@ -112,6 +112,7 @@ export class Hook extends AclBase {
     @ApiProperty({ title: '配置', example: {}, type: () => Object })
     @JsonStringLength(0, 2048)
     @IsObject()
+    @IsNotEmpty()
     @Column({
         type: 'simple-json',
         length: 2048,
@@ -127,7 +128,7 @@ export class Hook extends AclBase {
     @ValidateNested()
     @JsonStringLength(0, 2048)
     @IsObject()
-    // @ValidateIf((o) => typeof o.filter !== 'undefined')
+    @IsNotEmpty()
     @Column({
         type: 'simple-json',
         length: 2048,
@@ -143,7 +144,7 @@ export class Hook extends AclBase {
     @ValidateNested()
     @JsonStringLength(0, 2048)
     @IsObject()
-    // @ValidateIf((o) => typeof o.filter !== 'undefined')
+    @IsNotEmpty()
     @Column({
         type: 'simple-json',
         length: 2048,
