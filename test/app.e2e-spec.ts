@@ -19,14 +19,14 @@ describe('AppController (e2e)', () => {
         await app.init()
     })
 
-    // afterEach(async () => {
-    //     await app.close()
-    // })
+    afterEach(async () => {
+        await app.close()
+    })
 
-    it('/ (GET)', () => {
+    it('/ (GET)', (done) => {
         request(app.getHttpServer())
             .get('/')
-            .expect(200)
+            .expect(200, done)
     })
 
     // it('/error (GET)', () => request(app.getHttpServer())
