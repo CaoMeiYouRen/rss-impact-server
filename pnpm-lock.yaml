@@ -143,8 +143,8 @@ dependencies:
     specifier: ^5.0.5
     version: 5.0.5
   rss-parser:
-    specifier: https://github.com/CaoMeiYouRen/rss-parser.git
-    version: git/github.com+CaoMeiYouRen/rss-parser/5a6601402d88976127f8b74e21775e6950de2be9
+    specifier: git+https://github.com/CaoMeiYouRen/rss-parser.git
+    version: github.com/CaoMeiYouRen/rss-parser/5a6601402d88976127f8b74e21775e6950de2be9
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -155,7 +155,7 @@ dependencies:
     specifier: ^5.0.0
     version: 5.0.0
   torrent2magnet-js:
-    specifier: https://github.com/CaoMeiYouRen/torrent2magnet-js.git
+    specifier: git+https://github.com/CaoMeiYouRen/torrent2magnet-js.git
     version: github.com/CaoMeiYouRen/torrent2magnet-js/da37f8a3db79613f804ebe4068521d48b4024ba8
   tslib:
     specifier: ^2.6.2
@@ -11315,8 +11315,15 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
     dev: true
 
-  git/github.com+CaoMeiYouRen/rss-parser/5a6601402d88976127f8b74e21775e6950de2be9:
-    resolution: {commit: 5a6601402d88976127f8b74e21775e6950de2be9, repo: git@github.com:CaoMeiYouRen/rss-parser.git, type: git}
+  github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
+    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118}
+    name: crypto-hash
+    version: 3.0.0
+    engines: {node: '>=18'}
+    dev: false
+
+  github.com/CaoMeiYouRen/rss-parser/5a6601402d88976127f8b74e21775e6950de2be9:
+    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/rss-parser/tar.gz/5a6601402d88976127f8b74e21775e6950de2be9}
     name: rss-parser
     version: 3.13.0
     dependencies:
@@ -11331,13 +11338,6 @@ packages:
       - uglify-js
       - webpack-bundle-analyzer
       - webpack-dev-server
-    dev: false
-
-  github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
-    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118}
-    name: crypto-hash
-    version: 3.0.0
-    engines: {node: '>=18'}
     dev: false
 
   github.com/CaoMeiYouRen/torrent2magnet-js/da37f8a3db79613f804ebe4068521d48b4024ba8:
