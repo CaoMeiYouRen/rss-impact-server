@@ -1,4 +1,4 @@
-import { registerDecorator, ValidationOptions, ValidationArguments, isDate, isDateString } from 'class-validator'
+import { registerDecorator, ValidationOptions, isDate, isDateString } from 'class-validator'
 
 export function IsDateOrDateString(validationOptions?: ValidationOptions) {
     return function (object: unknown, propertyName: string) {
@@ -8,10 +8,10 @@ export function IsDateOrDateString(validationOptions?: ValidationOptions) {
             propertyName,
             options: validationOptions,
             validator: {
-                validate(value: any, _args: ValidationArguments) {
+                validate(value: any) {
                     return isDate(value) || isDateString(value)
                 },
-                defaultMessage(_validationArguments?: ValidationArguments): string {
+                defaultMessage(): string {
                     return 'Value must be a valid date or date string'
                 },
             },

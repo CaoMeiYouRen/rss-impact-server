@@ -19,15 +19,6 @@ const methodOptions: { label: string, value: Method }[] = [
     { label: 'UNLINK', value: 'UNLINK' },
 ]
 
-const responseTypeOptions: { label: string, value: ResponseType }[] = [
-    { label: 'Text', value: 'text' },
-    { label: 'ArrayBuffer', value: 'arraybuffer' },
-    { label: 'Blob', value: 'blob' },
-    { label: 'Document', value: 'document' },
-    { label: 'JSON', value: 'json' },
-    { label: 'Stream', value: 'stream' },
-]
-
 export class WebhookConfig implements AjaxConfig {
 
     @ApiProperty({ title: '请求链接', example: 'http://127.0.0.1:3000' })
@@ -69,14 +60,4 @@ export class WebhookConfig implements AjaxConfig {
     @IsSafeNaturalNumber()
     @ValidateIf((o) => typeof o.timeout !== 'undefined')
     timeout?: number
-
-    // baseURL?: string
-
-    // @SetAclCrudField({
-    //     dicData: responseTypeOptions,
-    //     value: 'json',
-    // })
-    // @IsIn(responseTypeOptions.map((e) => e.value))
-    // @ValidateIf((o) => typeof o.responseType !== 'undefined')
-    // responseType?: ResponseType
 }

@@ -1,6 +1,8 @@
 import { AxiosResponse } from 'axios'
 import { ServerChanTurbo, CustomEmail, Dingtalk, WechatRobot, WechatApp, PushPlus, IGot, Qmsg, XiZhi, PushDeer, Discord, OneBot, Telegram } from 'push-all-in-one'
+import { mdToCqcode } from './helper'
 import { PushAllInOneConfig, PushType } from '@/interfaces/push-type'
+import { NotificationConfig } from '@/constant/hook'
 
 /**
  * 从传入变量中读取配置，并选择一个渠道推送
@@ -12,7 +14,9 @@ import { PushAllInOneConfig, PushType } from '@/interfaces/push-type'
  * @param desp
  * @param pushConfig
  */
-export async function runPushAllInOne(title: string, desp: string, pushConfig: PushAllInOneConfig<PushType>): Promise<AxiosResponse<any, any>> {
+export async function runPushAllInOne(title: string, desp: string, pushConfig: NotificationConfig): Promise<AxiosResponse<any, any>> {
+    const { isMarkdown } = pushConfig
+    const sep = isMarkdown ? '\n\n' : '\n'
     switch (pushConfig.type) {
         case 'ServerChanTurbo': {
             const { SCTKEY } = pushConfig.config
@@ -34,7 +38,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: P
         case 'WechatRobot': {
             const { WX_ROBOT_KEY, MSG_TYPE } = pushConfig.config
             const wechatRobot = new WechatRobot(WX_ROBOT_KEY)
-            const response = await wechatRobot.send(`${title}\n${desp}`, MSG_TYPE)
+            const response = await wechatRobot.send(`${title}${sep}${desp}`, MSG_TYPE)
             return response
         }
         case 'WechatApp': {
@@ -45,7 +49,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: P
                 WX_APP_SECRET,
                 WX_APP_USERID,
             })
-            const response = await wechatApp.send(`${title}\n${desp}`)
+            const response = await wechatApp.send(`${title}${sep}${desp}`)
             return response
         }
         case 'PushPlus': {
@@ -63,7 +67,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: P
         case 'Qmsg': {
             const { QMSG_KEY, QMSG_QQ, QMSG_PUSH_TYPE } = pushConfig.config
             const qmsg = new Qmsg(QMSG_KEY)
-            const response = await qmsg.send(`${title}\n${desp}`, QMSG_QQ, QMSG_PUSH_TYPE)
+            const response = await qmsg.send(`${title}${sep}${desp}`, QMSG_QQ, QMSG_PUSH_TYPE)
             return response
         }
         case 'XiZhi': {
@@ -81,7 +85,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: P
         case 'Discord': {
             const { DISCORD_WEBHOOK, DISCORD_USERNAME } = pushConfig.config
             const discord = new Discord(DISCORD_WEBHOOK, DISCORD_USERNAME)
-            const response = await discord.send(`${title}\n${desp}`)
+            const response = await discord.send(`${title}${sep}${desp}`)
             return response
         }
         case 'Telegram': {
@@ -90,13 +94,16 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: P
                 TELEGRAM_BOT_TOKEN,
                 TELEGRAM_CHAT_ID: Number(TELEGRAM_CHAT_ID),
             })
-            const response = await telegram.send(`${title}\n${desp}`)
+            const response = await telegram.send(`${title}${sep}${desp}`)
             return response
         }
         case 'OneBot': {
             const { ONE_BOT_BASE_URL, ONE_BOT_ACCESS_TOKEN, ONE_BOT_MSG_TYPE, ONE_BOT_RECIEVER_ID } = pushConfig.config
             const oneBot = new OneBot(ONE_BOT_BASE_URL, ONE_BOT_ACCESS_TOKEN)
-            const response = await oneBot.send(`${title}\n${desp}`, ONE_BOT_MSG_TYPE, Number(ONE_BOT_RECIEVER_ID))
+            if (isMarkdown) {
+                desp = mdToCqcode(desp)
+            }
+            const response = await oneBot.send(`${title}${sep}${desp}`, ONE_BOT_MSG_TYPE, Number(ONE_BOT_RECIEVER_ID))
             return response
         }
         default:
