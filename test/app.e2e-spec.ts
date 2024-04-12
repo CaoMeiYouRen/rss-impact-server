@@ -23,9 +23,11 @@ describe('AppController (e2e)', () => {
         await app.close()
     })
 
-    it('/ (GET)', () => request(app.getHttpServer())
-        .get('/')
-        .expect(200))
+    it('/ (GET)', () => {
+        request(app.getHttpServer())
+            .get('/')
+            .expect(200)
+    })
 
     // it('/error (GET)', () => request(app.getHttpServer())
     //     .get('/error')
