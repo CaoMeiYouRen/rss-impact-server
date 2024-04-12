@@ -6,14 +6,19 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { AppModule } from '../src/app.module'
+import { TasksService } from '../src/services/tasks/tasks.service'
 
 describe('AppController (e2e)', () => {
     let app: INestApplication
-
+    const tasksService = {
+        onApplicationBootstrap: () => { },
+    }
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
             imports: [AppModule],
-        }).compile()
+        }).overrideProvider(TasksService) // 覆盖掉 tasksService
+            .useValue(tasksService)
+            .compile()
 
         app = moduleFixture.createNestApplication()
         await app.init()
