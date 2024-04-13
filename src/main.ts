@@ -9,14 +9,20 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import helmet from 'helmet'
 import { ValidationPipe } from '@nestjs/common'
 import history from 'connect-history-api-fallback'
-import { sessionMiddleware } from './middlewares/session.middleware'
-import { consoleLogger, fileLogger } from './middlewares/logger.middleware'
-import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
-import { limiter } from './middlewares/limit.middleware'
-import { AllExceptionsFilter } from './filters/all-exceptions.filter'
+import fs from 'fs-extra'
+import { DATABASE_DIR } from './db/database.module'
 import { AppModule } from './app.module'
+import { AllExceptionsFilter } from './filters/all-exceptions.filter'
+import { limiter } from './middlewares/limit.middleware'
+import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
+import { consoleLogger, fileLogger } from './middlewares/logger.middleware'
+import { sessionMiddleware } from './middlewares/session.middleware'
 
 async function bootstrap() {
+    const dir = DATABASE_DIR
+    if (!await fs.pathExists(dir)) {
+        await fs.mkdir(dir)
+    }
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: __DEV__ ? ['error', 'warn', 'log', 'debug', 'verbose'] : ['error', 'warn', 'log'],
     })

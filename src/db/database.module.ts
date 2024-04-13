@@ -12,6 +12,7 @@ import { WebhookLog } from './models/webhook-log.entity'
 import { __DEV__ } from '@/app.config'
 
 export const DATABASE_PATH = path.join(__dirname, '../../data/database.sqlite')
+export const DATABASE_DIR = path.dirname(DATABASE_PATH)
 
 const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog]
 
@@ -19,7 +20,7 @@ const repositories = TypeOrmModule.forFeature(entities)
 
 // 判断是否同步了
 async function isSynchronized() {
-    const dir = path.dirname(DATABASE_PATH)
+    const dir = DATABASE_DIR
     if (!await fs.pathExists(dir)) {
         await fs.mkdir(dir)
     }

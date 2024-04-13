@@ -1,16 +1,23 @@
 import { Body, Controller, Logger, Post, Session, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { LoginDto } from '@/models/login.dto'
 import { ResponseDto } from '@/models/response.dto'
 import { ISession } from '@/interfaces/session'
+import { RegisterDto } from '@/models/register.dto'
+import { Role } from '@/constant/role'
+import { getAccessToken } from '@/utils/helper'
 
-// TODO 考虑增加注册逻辑
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
+
+    constructor(@InjectRepository(User) private readonly repository: Repository<User>,
+    ) { }
 
     private readonly logger: Logger = new Logger(AuthController.name)
 
@@ -32,7 +39,7 @@ export class AuthController {
     @Post('logout')
     async logout(@CurrentUser() user: User, @Session() session: ISession) {
         return new Promise((resolve, reject) => {
-            session.destroy((err) => {
+            session?.destroy((err) => {
                 if (err) {
                     reject(err)
                     return
@@ -44,4 +51,21 @@ export class AuthController {
             })
         })
     }
+
+    @ApiResponse({ status: 201, type: User })
+    @ApiOperation({ summary: '注册' })
+    @Post('register')
+    async register(@Body() dto: RegisterDto) {
+        const { username, password, email } = dto
+        const user = await this.repository.save(this.repository.create({
+            username,
+            password,
+            email,
+            roles: [Role.user],
+            accessToken: getAccessToken(),
+        }))
+        delete user.password
+        return user
+    }
+
 }
