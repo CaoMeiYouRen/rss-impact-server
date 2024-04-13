@@ -20,6 +20,9 @@ const repositories = TypeOrmModule.forFeature(entities)
 // 判断是否同步了
 async function isSynchronized() {
     const dir = path.dirname(DATABASE_PATH)
+    if (!await fs.pathExists(dir)) {
+        await fs.mkdir(dir)
+    }
     const lockfile = path.join(dir, '.database-lockfile')
     if (await fs.pathExists(lockfile)) {
         return true
