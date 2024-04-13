@@ -44,3 +44,5 @@ export const ADMIN_EMAIL = env.ADMIN_EMAIL
 export const RESOURCE_DOWNLOAD_PATH = env.RESOURCE_DOWNLOAD_PATH
 // 最大下载并发数
 export const DOWNLOAD_LIMIT_MAX = Number(env.DOWNLOAD_LIMIT_MAX || 5)
+// 启用注册
+export const ENABLE_REGISTER = env.ENABLE_REGISTER === 'true'

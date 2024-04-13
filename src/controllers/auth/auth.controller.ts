@@ -12,6 +12,7 @@ import { RegisterDto } from '@/models/register.dto'
 import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
+import { ENABLE_REGISTER } from '@/app.config'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -57,6 +58,9 @@ export class AuthController {
     @ApiOperation({ summary: '注册' })
     @Post('register')
     async register(@Body() dto: RegisterDto) {
+        if (!ENABLE_REGISTER) {
+            throw new HttpError(400, '当前不允许注册新用户！')
+        }
         const { username, password, email } = dto
         if (await this.repository.findOne({ where: [{ username }, { email }] })) {
             throw new HttpError(400, '已存在相同用户名或邮箱')

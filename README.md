@@ -23,6 +23,16 @@
 
 [https://github.com/CaoMeiYouRen/rss-impact-server#readme](https://github.com/CaoMeiYouRen/rss-impact-server#readme)
 
+## Demo
+
+https://rss-demo.cmyr.ltd/
+
+> Demo 站开放注册，可以随意体验。
+>
+> Demo 站不保证可用性，仅供演示使用。
+>
+> 注意：Demo 站每次部署都会重置数据，因此仅供体验，请勿存放重要数据！
+
 
 ## 📦 依赖要求
 
