@@ -27,4 +27,5 @@ app.json
 #git but keep the git commit hash
 .git
 # src
-logs
+/logs
+/data

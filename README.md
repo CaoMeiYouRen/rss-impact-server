@@ -23,7 +23,7 @@
 
 [https://github.com/CaoMeiYouRen/rss-impact-server#readme](https://github.com/CaoMeiYouRen/rss-impact-server#readme)
 
-## Demo
+## ✨ Demo
 
 https://rss-demo.cmyr.ltd/
 
