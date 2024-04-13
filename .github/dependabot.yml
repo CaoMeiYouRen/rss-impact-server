@@ -12,3 +12,12 @@ updates:
       - dependency-name: "@commitlint/config-conventional"
         versions:
           - ">= 19.0.0"
+      - dependency-name: "file-type"
+        versions:
+          - ">= 17.0.0"
+      - dependency-name: "query-string"
+        versions:
+          - ">= 8.0.0"
+      - dependency-name: "p-limit"
+        versions:
+          - ">= 4.0.0"

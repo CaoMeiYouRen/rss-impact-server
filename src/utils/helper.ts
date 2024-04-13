@@ -2,7 +2,6 @@ import crypto from 'crypto'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
-import chalk from 'chalk'
 import _ from 'lodash'
 import fs, { ReadStream } from 'fs-extra'
 import FileType from 'file-type'
@@ -60,13 +59,6 @@ export function timeFormat(date: number | string | Date = Date.now(), pattern: s
         }
     }
     return dayjs(date).tz().format(pattern)
-}
-/**
- *
- * @param {*} str 打印当前时间，可以附加文字
- */
-export function printTime(str: any) {
-    console.log(`${chalk.yellow(timeFormat(Date.now(), 'YYYY-MM-DD HH:mm:ss.SSS'))} : ${chalk.green(JSON.stringify(str))}`)
 }
 
 export function uuid() {
