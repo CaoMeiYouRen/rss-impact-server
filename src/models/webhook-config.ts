@@ -1,6 +1,6 @@
-import { Method, AxiosRequestHeaders, ResponseType } from 'axios'
+import { Method, AxiosRequestHeaders } from 'axios'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsIn, IsObject, IsUrl, Length, ValidateIf } from 'class-validator'
+import { IsIn, IsNotEmpty, IsObject, IsUrl, Length, ValidateIf } from 'class-validator'
 import { AjaxConfig } from '@/utils/ajax'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
@@ -22,9 +22,19 @@ const methodOptions: { label: string, value: Method }[] = [
 export class WebhookConfig implements AjaxConfig {
 
     @ApiProperty({ title: '请求链接', example: 'http://127.0.0.1:3000' })
+    @IsNotEmpty()
     @IsUrl()
     @Length(0, 1024)
     url: string
+
+    @SetAclCrudField({
+        dicData: methodOptions,
+        value: 'GET',
+    })
+    @ApiProperty({ title: '请求方法', example: {} })
+    @IsIn(methodOptions.map((e) => e.value))
+    @ValidateIf((o) => typeof o.method !== 'undefined')
+    method?: Method
 
     @ApiProperty({ title: '查询字符串', example: { key: '114514' } })
     @IsObject()
@@ -38,15 +48,6 @@ export class WebhookConfig implements AjaxConfig {
     @ValidateIf((o) => typeof o.data !== 'undefined')
     data?: Record<string | number | symbol, unknown> | Record<string | number | symbol, unknown>[]
 
-    @SetAclCrudField({
-        dicData: methodOptions,
-        value: 'GET',
-    })
-    @ApiProperty({ title: '请求方法', example: {} })
-    @IsIn(methodOptions.map((e) => e.value))
-    @ValidateIf((o) => typeof o.method !== 'undefined')
-    method?: Method
-
     @ApiProperty({ title: '请求头', example: {} })
     @JsonStringLength(0, 2048)
     @IsObject()
@@ -57,7 +58,7 @@ export class WebhookConfig implements AjaxConfig {
         labelWidth: 105,
     })
     @ApiProperty({ title: '超时时间(秒)', description: '默认 60 秒。', example: 60 })
-    @IsSafeNaturalNumber()
+    @IsSafeNaturalNumber(86400)
     @ValidateIf((o) => typeof o.timeout !== 'undefined')
     timeout?: number
 }

@@ -11,6 +11,7 @@ import { TasksService } from '../src/services/tasks/tasks.service'
 describe('AppController (e2e)', () => {
     let app: INestApplication
     const tasksService = {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         onApplicationBootstrap: () => { },
     }
     beforeEach(async () => {

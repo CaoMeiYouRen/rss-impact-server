@@ -44,7 +44,7 @@ function clonePropDecorators(from: unknown, to: unknown, name: string | symbol) 
 // eslint-disable-next-line @typescript-eslint/ban-types
 interface TFunction extends Function { }
 
-function initAvueCrudColumn(clazz: TFunction): Field[] {
+export function initAvueCrudColumn(clazz: TFunction): Field[] {
     const prototype = clazz.prototype
     const metadata = getMetadataArgsStorage()
     const metadataStorage = getMetadataStorage()
@@ -186,7 +186,7 @@ function initAvueCrudColumn(clazz: TFunction): Field[] {
         }
         // 如果有 isUrl 则为 url
         if (validatorOptions.find((e) => e.name === 'isUrl')) {
-            extra.type = 'url'
+            extra.type = 'input' // url 默认为数组，因此改为 input
             if (isImageUrl(Array.isArray(swaggerOption.example) ? swaggerOption.example[0] : swaggerOption.example)) { // 如果 example 是图片，则设置为 img
                 extra.type = 'img'
             }

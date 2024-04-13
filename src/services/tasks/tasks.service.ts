@@ -22,7 +22,6 @@ import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri, timeFo
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
-import { NotificationConfig } from '@/constant/hook'
 import { ajax } from '@/utils/ajax'
 import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
@@ -33,6 +32,7 @@ import { Role } from '@/constant/role'
 import { BitTorrentConfig } from '@/models/bit-torrent-config'
 import { DownloadConfig } from '@/models/download-config'
 import { WebhookConfig } from '@/models/webhook-config'
+import { NotificationConfig } from '@/models/notification-config'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
 
@@ -194,7 +194,7 @@ export class TasksService implements OnApplicationBootstrap {
         })
         try {
             this.logger.log(`正在执行推送渠道 ${config.type}`)
-            const resp = await runPushAllInOne(title.slice(0, 256), desp.slice(0, maxLength), config)
+            const resp = await runPushAllInOne(title.slice(0, 256), desp.slice(0, maxLength || 4096), config)
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
                 ...webhookLog,
                 ...pick(resp, ['data', 'statusText', 'headers']),

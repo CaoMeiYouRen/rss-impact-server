@@ -22,10 +22,12 @@ export class Resource extends AclBase {
     @SetAclCrudField({
         search: true,
         span: 24,
+        type: 'img',
+        alone: true,
     })
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/images/favicon-16x16-next.png' })
     @IsNotEmpty()
-    @IsUrl({})
+    @IsUrl()
     @Length(0, 2048)
     @Index({})
     @Column({

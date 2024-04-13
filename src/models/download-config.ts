@@ -1,12 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Length, ValidateIf } from 'class-validator'
+import { IsNotEmpty, Length, ValidateIf } from 'class-validator'
 import md5 from 'md5'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 export class DownloadConfig {
 
+    @SetAclCrudField({
+        labelWidth: 110,
+    })
     @ApiProperty({ title: '匹配后缀名', description: '要下载的文件的后缀名，支持正则。例如：.(jpe?g|png|gif|webp|bmp)$', example: '.(jpe?g|png|gif|webp|bmp)$' })
+    @IsNotEmpty()
     @Length(0, 256)
     suffixes: string
 

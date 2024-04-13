@@ -2,26 +2,28 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Length, IsIn, IsNotEmpty, IsUrl, ValidateIf } from 'class-validator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { BitTorrentList, BitTorrentType } from '@/constant/hook'
 
 export class BitTorrentConfig {
 
     @SetAclCrudField({
         type: 'select',
-        dicData: ['qBittorrent'].map((e) => ({
-            label: e,
-            value: e,
-        })),
+        dicData: BitTorrentList,
         search: true,
         value: 'qBittorrent',
     })
     @ApiProperty({ title: '类型', description: 'BT下载器类型。目前仅支持 qBittorrent', example: 'qBittorrent' })
     @Length(0, 16)
-    @IsIn(['qBittorrent'])
+    @IsIn(BitTorrentList.map((e) => e.value))
     @IsNotEmpty()
-    type: 'qBittorrent'
+    type: BitTorrentType
 
+    @SetAclCrudField({
+        labelWidth: 110,
+    })
     @ApiProperty({ title: '服务器地址', description: 'BT服务器地址，例如 http://localhost:8080/', example: 'http://localhost:8080/' })
     @IsUrl()
+    @IsNotEmpty()
     @Length(0, 1024)
     baseUrl: string
 
@@ -30,6 +32,9 @@ export class BitTorrentConfig {
     @Length(0, 128)
     username: string
 
+    @SetAclCrudField({
+        type: 'password',
+    })
     @ApiProperty({ title: '密码', example: 'adminadmin' })
     @IsNotEmpty()
     @Length(0, 128)

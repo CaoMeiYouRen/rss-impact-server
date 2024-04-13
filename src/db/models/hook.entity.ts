@@ -1,14 +1,28 @@
 import { Column, Entity, ManyToMany } from 'typeorm'
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
+import { ApiExtraModels, ApiProperty, getSchemaPath, OmitType, PartialType } from '@nestjs/swagger'
 import { IsBoolean, IsObject, Length, ValidateIf, ValidateNested, IsIn, IsNotEmpty } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
-import { HookConfig, HookList, HookType } from '@/constant/hook'
+import { HookList, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { HookConfig } from '@/interfaces/hook'
+import { NotificationConfig } from '@/models/notification-config'
+import { WebhookConfig } from '@/models/webhook-config'
+import { DownloadConfig } from '@/models/download-config'
+import { BitTorrentConfig } from '@/models/bit-torrent-config'
+import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
+
+const hookConfig = {
+    notification: NotificationConfig,
+    webhook: WebhookConfig,
+    download: DownloadConfig,
+    bitTorrent: BitTorrentConfig,
+}
+
 /**
  * 仅保留想要的，必须全部符合
  */
@@ -73,6 +87,7 @@ export class FilterOut {
     categories?: string
 }
 
+@ApiExtraModels(NotificationConfig, WebhookConfig, DownloadConfig, BitTorrentConfig)
 @Entity()
 export class Hook extends AclBase {
 
@@ -99,17 +114,29 @@ export class Hook extends AclBase {
     type: HookType
 
     @SetAclCrudField({
-        type: 'textarea',
+        // type: 'textarea',
+        component: 'CrudForm',
         span: 24,
         params: {
-            option: {
-                submitBtn: false,
-                emptyBtn: false,
-                column: [],
-            },
+            dynamicOption: Object.entries(hookConfig).map(([key, value]) => ({
+                    optionId: key,
+                    submitBtn: false,
+                    emptyBtn: false,
+                    column: initAvueCrudColumn(value),
+                })),
         },
     })
-    @ApiProperty({ title: '配置', example: {}, type: () => Object })
+    @ApiProperty({
+        title: '配置',
+        example: {},
+        // type: () => Object,
+        oneOf: [
+            { $ref: getSchemaPath(NotificationConfig) },
+            { $ref: getSchemaPath(WebhookConfig) },
+            { $ref: getSchemaPath(DownloadConfig) },
+            { $ref: getSchemaPath(BitTorrentConfig) },
+        ],
+    })
     @JsonStringLength(0, 2048)
     @IsObject()
     @IsNotEmpty()
