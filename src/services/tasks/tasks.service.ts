@@ -593,7 +593,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
     }
 
-    async enableFeedTask(feed: Feed) {
+    async enableFeedTask(feed: Feed, throwError = false) {
         const name = `feed_${feed.id}`
         try {
             if (!feed.isEnabled) {
@@ -631,16 +631,22 @@ export class TasksService implements OnApplicationBootstrap {
             this.logger.log(`定时任务 ${name}(${cronTime}) 已启动`)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
+            if (throwError) {
+                throw new Error('定时任务启用失败', { cause: error })
+            }
         }
     }
 
-    async disableFeedTask(feed: Feed) {
+    async disableFeedTask(feed: Feed, throwError = false) {
         const name = `feed_${feed.id}`
         try {
             await this.feedRepository.update({ id: feed.id }, { isEnabled: false })
             this.deleteCronJob(name)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
+            if (throwError) {
+                throw new Error('定时任务禁用失败', { cause: error })
+            }
         }
     }
 

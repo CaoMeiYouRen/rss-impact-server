@@ -30,6 +30,7 @@ import { WebhookLogController } from './controllers/webhook-log/webhook-log.cont
         UserService,
         AuthService,
         ResourceService,
+        TasksService,
     ],
     controllers: [
         AppController,

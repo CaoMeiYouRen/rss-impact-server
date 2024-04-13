@@ -1,4 +1,4 @@
-import { HttpException } from '@nestjs/common'
+import { HttpException, HttpExceptionOptions } from '@nestjs/common'
 import { HttpStatusCode } from '@/constant/http-status-code'
 /**
  * 自定义HttpError
@@ -16,8 +16,8 @@ export class HttpError extends HttpException {
      */
     error: string
     // statusCode: HttpStatusCode
-    constructor(statusCode: HttpStatusCode, message: string) {
-        super(message, statusCode)
+    constructor(statusCode: HttpStatusCode, message: string, options?: HttpExceptionOptions) {
+        super(message, statusCode, options)
         this.error = HttpStatusCode[statusCode]
     }
 }
