@@ -17,6 +17,17 @@ const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog]
 
 const repositories = TypeOrmModule.forFeature(entities)
 
+// 判断是否同步了
+async function isSynchronized() {
+    const dir = path.dirname(DATABASE_PATH)
+    const lockfile = path.join(dir, '.database-lockfile')
+    if (await fs.pathExists(lockfile)) {
+        return true
+    }
+    await fs.writeJSON(lockfile, { isSynchronized: true })
+    return false
+}
+
 @Global()
 @Module({
     imports: [
@@ -28,7 +39,8 @@ const repositories = TypeOrmModule.forFeature(entities)
                     database: DATABASE_PATH,
                     entities,
                     // eslint-disable-next-line no-sync
-                    synchronize: __DEV__ || !await fs.pathExists(DATABASE_PATH), // 开发环境固定同步；如果数据库文件不存在，则同步
+                    // TODO 优化数据库初始化
+                    synchronize: __DEV__ || !await isSynchronized(), // 开发环境固定同步；如果数据库文件不存在，则同步
                     autoLoadEntities: true,
                 }
             },
