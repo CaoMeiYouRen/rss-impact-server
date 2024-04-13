@@ -3,6 +3,7 @@ version: "3"
 services:
   server:
     # build: .
+    container_name: 'rss-impact-server'
     image: ${DOCKER_IMAGE:-caomeiyouren/rss-impact-server}
     restart: always
     ports:
