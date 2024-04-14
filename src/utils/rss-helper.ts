@@ -1,8 +1,9 @@
 import Parser, { Output, Item } from 'rss-parser'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
+import { plainToInstance } from 'class-transformer'
 import { deepTrim, htmlToMarkdown, timeFormat, uuid } from './helper'
-import { Article } from '@/db/models/article.entity'
+import { Article, EnclosureImpl } from '@/db/models/article.entity'
 
 export const rssParser = new Parser()
 
@@ -78,6 +79,9 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     article.summary = item.summary || article.contentSnippet?.slice(0, 128) // 如果没有总结，则使用 contentSnippet 填充
     article.categories = item.categories
     article.enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
+    if (article.enclosure) {
+        article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
+    }
     return article
 }
 

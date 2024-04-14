@@ -16,6 +16,7 @@ import { NotificationConfig } from '@/models/notification-config'
 export async function runPushAllInOne(title: string, desp: string, pushConfig: NotificationConfig): Promise<AxiosResponse<any, any>> {
     const { isMarkdown, type, config } = pushConfig
     const sep = isMarkdown ? '\n\n' : '\n'
+    const content = desp?.startsWith(title) ? desp : `${title}${sep}${desp}`
     switch (type) {
         case 'ServerChanTurbo': {
             const { SCTKEY } = config as NotificationConfig<typeof type>['config']
@@ -48,7 +49,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
                 WX_APP_SECRET,
                 WX_APP_USERID,
             })
-            const response = await wechatApp.send(`${title}${sep}${desp}`, isMarkdown ? 'markdown' : 'text')
+            const response = await wechatApp.send(content, isMarkdown ? 'markdown' : 'text')
             return response
         }
         case 'PushPlus': {
@@ -66,7 +67,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
         case 'Qmsg': {
             const { QMSG_KEY, QMSG_QQ, QMSG_PUSH_TYPE } = config as NotificationConfig<typeof type>['config']
             const qmsg = new Qmsg(QMSG_KEY)
-            const response = await qmsg.send(`${title}${sep}${desp}`, QMSG_QQ, QMSG_PUSH_TYPE)
+            const response = await qmsg.send(content, QMSG_QQ, QMSG_PUSH_TYPE)
             return response
         }
         case 'XiZhi': {
@@ -84,7 +85,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
         case 'Discord': {
             const { DISCORD_WEBHOOK, DISCORD_USERNAME } = config as NotificationConfig<typeof type>['config']
             const discord = new Discord(DISCORD_WEBHOOK, DISCORD_USERNAME)
-            const response = await discord.send(`${title}${sep}${desp}`)
+            const response = await discord.send(content)
             return response
         }
         case 'Telegram': {
@@ -93,7 +94,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
                 TELEGRAM_BOT_TOKEN,
                 TELEGRAM_CHAT_ID: Number(TELEGRAM_CHAT_ID),
             })
-            const response = await telegram.send(`${title}${sep}${desp}`)
+            const response = await telegram.send(content)
             return response
         }
         case 'OneBot': {
@@ -102,7 +103,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
             if (isMarkdown) {
                 desp = mdToCqcode(desp)
             }
-            const response = await oneBot.send(`${title}${sep}${desp}`, ONE_BOT_MSG_TYPE, Number(ONE_BOT_RECIEVER_ID))
+            const response = await oneBot.send(content, ONE_BOT_MSG_TYPE, Number(ONE_BOT_RECIEVER_ID))
             return response
         }
         default:

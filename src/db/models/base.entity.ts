@@ -29,9 +29,10 @@ export abstract class Base {
         const validationErrors = await validate(this, {
             whitelist: true,
         })
-        // console.log('插入前校验', validationErrors)
+
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
+            // console.log('插入前校验', validationErrors)
             throw new HttpError(400, errors.join(', '))
         }
     }
@@ -43,9 +44,9 @@ export abstract class Base {
             skipMissingProperties: true, // 忽略 null 和 undefined
             // skipUndefinedProperties: true, // 只忽略 undefined ，如果是 null 的话就会将字段设置为空
         })
-        // console.log('更新前校验', validationErrors)
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
+            // console.log('更新前校验', validationErrors)
             throw new HttpError(400, errors.join(', '))
         }
     }

@@ -9,8 +9,8 @@ import { __DEV__ } from '@/app.config'
 const logDir = path.resolve('logs')
 morgan.token('time', () => timeFormat(Date.now(), 'YYYY-MM-DD HH:mm:ss.SSSZ'))
 morgan.token('time-short', () => timeFormat(Date.now(), 'HH:mm:ss.SSS'))
-
-morgan.format('app-combined', '[HttpHandle] :remote-addr - ":method :url HTTP/:http-version" :status - :response-time ms')
+//  [HttpHandle] ::ffff:127.0.0.1 - "GET /api/user/dicData" "HTTP/1.1" [304] - 10.974 ms
+morgan.format('app-combined', '[HttpHandle] :remote-addr - ":method :url" "HTTP/:http-version" [:status] - :response-time ms')
 morgan.format('console-combined', '[:time-short] :remote-addr - ":method :url HTTP/:http-version" :status - :response-time ms')
 
 // const accessLogStream = getStream({
@@ -23,9 +23,21 @@ morgan.format('console-combined', '[:time-short] :remote-addr - ":method :url HT
 //     size: '1g',
 //     max_logs: '30d',
 // })
+const statusCodeRegex = /\[(\d+)\]/ // 正则表达式匹配 [xxx]
 const stream: StreamOptions = {
     // Use the http severity
-    write: (message) => winstonLogger.log(message), // winston.http(message),
+    write: (message) => {
+        // 使用正则从日志消息中提取状态码
+        const match = message.match(statusCodeRegex)
+        const status = match ? parseInt(match[1]) : 0
+        const logLevel = status >= 400 ? 'error' : 'info'
+
+        if (logLevel === 'error') {
+            winstonLogger.error(message)
+        } else {
+            winstonLogger.log(message)
+        }
+    },
 }
 
 // export const consoleLogger = morgan('console-combined', {})
@@ -39,6 +51,16 @@ const format = winston.format.combine(
         prettyPrint: true,
     }),
 )
+
+const dailyRotateFileOption = {
+    dirname: logDir,
+    datePattern: 'YYYY-MM-DD',
+    zippedArchive: true,
+    maxSize: '20m',
+    maxFiles: '31d',
+    format,
+    auditFile: path.join(logDir, '.audit.json'),
+}
 
 export const winstonLogger = WinstonModule.createLogger({
     level: __DEV__ ? 'silly' : 'http',
@@ -54,70 +76,31 @@ export const winstonLogger = WinstonModule.createLogger({
                 }),
             ),
         }),
-        new winston.transports.Http({
-            level: 'info',
-            // host: 'localhost',
-            // port: 3000,
-            // path: '/',
-        }),
-        new DailyRotateFile({
-            dirname: logDir,
-            filename: '%DATE%.log',
-            datePattern: 'YYYY-MM-DD',
-            zippedArchive: true,
-            maxSize: '20m',
-            maxFiles: '31d',
-            format,
-        }),
-        new DailyRotateFile({
-            level: 'error',
-            dirname: logDir,
-            filename: '%DATE%.errors.log',
-            datePattern: 'YYYY-MM-DD',
-            zippedArchive: true,
-            maxSize: '20m',
-            maxFiles: '31d',
-            format,
-        }),
-        // new winston.transports.File({
-        //     dirname: logDir,
-        //     filename: 'errors.log',
-        //     level: 'error',
-        //     format,
+        // new winston.transports.Http({
+        //     level: 'info',
         // }),
+        new DailyRotateFile({
+            ...dailyRotateFileOption,
+            filename: '%DATE%.log',
+        }),
+        new DailyRotateFile({
+            ...dailyRotateFileOption,
+            level: 'error',
+            filename: '%DATE%.errors.log',
+        }),
     ],
     exceptionHandlers: [
-        // new winston.transports.File({
-        //     dirname: logDir,
-        //     filename: 'exceptions.log',
-        //     format,
-        // }),
         new DailyRotateFile({
+            ...dailyRotateFileOption,
             level: 'error',
-            dirname: logDir,
             filename: '%DATE%.exceptions.log',
-            datePattern: 'YYYY-MM-DD',
-            zippedArchive: true,
-            maxSize: '20m',
-            maxFiles: '31d',
-            format,
         }),
     ],
     rejectionHandlers: [
-        // new winston.transports.File({
-        //     dirname: logDir,
-        //     filename: 'rejections.log',
-        //     format,
-        // }),
         new DailyRotateFile({
+            ...dailyRotateFileOption,
             level: 'error',
-            dirname: logDir,
             filename: '%DATE%.rejections.log',
-            datePattern: 'YYYY-MM-DD',
-            zippedArchive: true,
-            maxSize: '20m',
-            maxFiles: '31d',
-            format,
         }),
     ],
 })
