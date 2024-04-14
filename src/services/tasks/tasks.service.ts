@@ -14,13 +14,14 @@ import md5 from 'md5'
 import FileType from 'file-type'
 import { QBittorrent } from '@cao-mei-you-ren/qbittorrent'
 import torrent2magnet from 'torrent2magnet-js'
+import { plainToInstance } from 'class-transformer'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, DOWNLOAD_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri, timeFormat, sleep } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
-import { Article } from '@/db/models/article.entity'
+import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
 import { ajax } from '@/utils/ajax'
 import { Resource } from '@/db/models/resource.entiy'
@@ -535,6 +536,7 @@ export class TasksService implements OnApplicationBootstrap {
                         const newResource = await this.resourceRepository.save(resource)
                         if (newResource.size && !article.enclosure.length) {
                             article.enclosure.length = newResource.size // 更新附件大小
+                            article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                             await this.articleRepository.save(article)
                         }
                         if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
@@ -588,6 +590,7 @@ export class TasksService implements OnApplicationBootstrap {
         resource.size = torrentInfo.totalSize // 总大小
         if (resource.size && !article.enclosure.length) {
             article.enclosure.length = resource.size // 更新附件大小
+            article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
             await this.articleRepository.save(article)
         }
         if (isSafePositiveInteger(maxSize) && maxSize > 0 && resource.size > 0 && maxSize <= resource.size) {
@@ -608,6 +611,15 @@ export class TasksService implements OnApplicationBootstrap {
                 resource.status = 'success'
                 break
             case 'seeding': // 如果是做种后完成的话，也是 seeding 状态
+                resource.status = 'success'
+                break
+            case 'paused':
+                resource.status = 'success'
+                break
+            case 'queued':
+                resource.status = 'success'
+                break
+            case 'checking':
                 resource.status = 'success'
                 break
             default: // paused/queued/checking/unknown
