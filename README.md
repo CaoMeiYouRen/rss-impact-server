@@ -15,8 +15,8 @@
     <img alt="License: AGPL--3.0" src="https://img.shields.io/github/license/CaoMeiYouRen/rss-impact-server?color=yellow" />
   </a>
 </p>
-
-
+> RSS + Hook = RSS Impact
+>
 > 一个基于 RSS 的 Hook 系统。本项目为后端部分。
 
 ## 🏠 主页
