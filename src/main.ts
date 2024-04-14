@@ -15,7 +15,7 @@ import { AppModule } from './app.module'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { limiter } from './middlewares/limit.middleware'
 import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
-import { consoleLogger, fileLogger } from './middlewares/logger.middleware'
+import { fileLogger, winstonLogger } from './middlewares/logger.middleware'
 import { sessionMiddleware } from './middlewares/session.middleware'
 
 async function bootstrap() {
@@ -24,7 +24,8 @@ async function bootstrap() {
         await fs.mkdir(dir)
     }
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-        logger: __DEV__ ? ['error', 'warn', 'log', 'debug', 'verbose'] : ['error', 'warn', 'log'],
+        // logger: __DEV__ ? ['error', 'warn', 'log', 'debug', 'verbose'] : ['error', 'warn', 'log'],
+        logger: winstonLogger,
     })
 
     app.set('trust proxy', true)
@@ -53,7 +54,7 @@ async function bootstrap() {
     app.use(limiter)
     app.use(helmet({}))
     app.use(fileLogger)
-    app.use(consoleLogger)
+    // app.use(consoleLogger)
     app.useGlobalFilters(new AllExceptionsFilter())
     app.useGlobalInterceptors(new TimeoutInterceptor())
     app.useGlobalPipes(new ValidationPipe({

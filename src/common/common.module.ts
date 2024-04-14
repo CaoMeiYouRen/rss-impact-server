@@ -3,7 +3,9 @@ import { Module, Global } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { ScheduleModule } from '@nestjs/schedule'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { RESOURCE_DOWNLOAD_PATH } from '@/app.config'
+// import { WinstonModule } from 'nest-winston'
+// import * as winston from 'winston'
+// import { RESOURCE_DOWNLOAD_PATH } from '@/app.config'
 
 @Global()
 @Module({
@@ -20,10 +22,14 @@ import { RESOURCE_DOWNLOAD_PATH } from '@/app.config'
                 serveRoot: '/',
             },
         ),
+        // WinstonModule.forRoot({
+        //     // options
+        // }),
     ],
     exports: [
         PassportModule,
         ScheduleModule,
+        ServeStaticModule,
     ],
 })
 export class CommonModule { }

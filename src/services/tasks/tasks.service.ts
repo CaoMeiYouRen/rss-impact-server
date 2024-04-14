@@ -642,7 +642,7 @@ export class TasksService implements OnApplicationBootstrap {
     async disableFeedTask(feed: Feed, throwError = false) {
         const name = `feed_${feed.id}`
         try {
-            await this.feedRepository.update({ id: feed.id }, { isEnabled: false })
+            // await this.feedRepository.update({ id: feed.id }, { isEnabled: false })
             this.deleteCronJob(name)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
