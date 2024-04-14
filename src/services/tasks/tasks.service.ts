@@ -225,7 +225,9 @@ export class TasksService implements OnApplicationBootstrap {
      * @param articles
      */
     private async triggerHooks(feed: Feed, articles: Article[]) {
-        const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['hooks'], select: ['hooks'] }))?.hooks // 拉取最新的 hook 配置
+        const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['hooks'], select: ['hooks'] }))// 拉取最新的 hook 配置
+            ?.hooks
+            ?.filter((hook) => !hook.isReversed) // 排除反转触发的
         if (!hooks?.length || !articles?.length) {
             return
         }
