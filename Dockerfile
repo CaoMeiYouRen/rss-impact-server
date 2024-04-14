@@ -1,7 +1,7 @@
 # 前端构建阶段
 FROM caomeiyouren/alpine-nodejs:1.1.0 as frontend-builder
 # 如果前端更新了，但后端没有更新，需要发版时，修改该变量
-ENV FRONTEND_VERSION='0.0.2'
+ENV FRONTEND_VERSION='0.0.3'
 
 WORKDIR /frontend
 
