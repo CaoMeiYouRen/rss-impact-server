@@ -18,7 +18,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, DOWNLOAD_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri, timeFormat } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri, timeFormat, sleep } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -482,64 +482,20 @@ export class TasksService implements OnApplicationBootstrap {
                 })
                 await Promise.allSettled(btArticles.map(async (article) => {
                     const url = article.enclosure.url
+                    let hash = ''
+                    let magnetUri = ''
+                    let name = ''
+                    let size = 0
                     // 如果是 magnet，则直接添加 磁力链接
-                    if (url.startsWith('magnet:')) {
+                    if (/^magnet:/.test(url)) {
                         await qBittorrent.addMagnet(url, { savepath: downloadPath })
                         const reg = /urn:btih:(.{40})/
-                        const hash = reg.exec(url)?.[1]?.toLowerCase()
-                        const magnetUri = getMagnetUri(hash) // 磁力链接
+                        hash = reg.exec(url)?.[1]?.toLowerCase()
+                        magnetUri = getMagnetUri(hash) // 磁力链接
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
                             this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
                             return
                         }
-                        const resource = this.resourceRepository.create({
-                            url: magnetUri,
-                            path: '',
-                            status: 'unknown',
-                            hash,
-                            userId,
-                        })
-                        const newResource = await this.resourceRepository.save(resource)
-                        // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
-                        setTimeout(async () => {
-                            const torrentInfo = await qBittorrent.getTorrent(hash)
-                            const tracker = torrentInfo.raw?.tracker
-                            const newMagnetUri = getMagnetUri(hash, tracker) // 磁力链接
-                            newResource.url = newMagnetUri
-                            newResource.name = torrentInfo.name
-                            newResource.size = torrentInfo.totalSize // 总大小
-                            if (newResource.size && !article.enclosure.length) {
-                                article.enclosure.length = newResource.size // 更新附件大小
-                                await this.articleRepository.save(article)
-                            }
-                            if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= newResource.size) {
-                                this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
-                                await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
-                                newResource.status = 'skip'
-                                await this.resourceRepository.save(newResource)
-                                return
-                            }
-                            switch (torrentInfo.state) {
-                                case 'error':
-                                    newResource.status = 'fail'
-                                    break
-                                case 'warning':
-                                    newResource.status = 'fail'
-                                    break
-                                case 'downloading':
-                                    newResource.status = 'success'
-                                    break
-                                case 'seeding': // 如果是做种后完成的话，也是 seeding 状态
-                                    newResource.status = 'success'
-                                    break
-                                default: // paused/queued/checking/unknown
-                                    newResource.status = 'unknown'
-                                    break
-                            }
-                            await this.resourceRepository.save(resource) // 更新状态
-                        }, 60 * 1000) // 等待 60 秒后更新 元数据
-                        // TODO 优化更新元数据逻辑
-                        return
                     }
                     // 如果是 http，则下载 bt 种子
                     if (/^(https?:\/\/)/.test(url)) {
@@ -554,36 +510,54 @@ export class TasksService implements OnApplicationBootstrap {
                         })
                         const torrent = new Uint8Array(resp.data)
                         const magnet = torrent2magnet(torrent)
-                        const hash = magnet.infohash.toLowerCase() // hash
-                        const magnetUri = getMagnetUri(hash, magnet.main_tracker)
+                        hash = magnet.infohash.toLowerCase() // hash
+                        magnetUri = getMagnetUri(hash, magnet.main_tracker)
+                        name = magnet.dn
+                        size = magnet.xl
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
                             this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
                             return
                         }
-                        const newResource = this.resourceRepository.create({
-                            url, // 保存 bt 种子链接，避免每次都要下载种子
-                            name: magnet.dn, // 名称
+                        await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
+                    }
+
+                    if (/^(https?:\/\/|magnet:)/.test(url)) {
+                        const resource = this.resourceRepository.create({
+                            url,
+                            name, // 名称
                             path: '', // 文件在服务器上的地址，没有必要，故统一留空
                             status: 'unknown',
-                            size: magnet.xl,  // 体积大小
+                            size,  // 体积大小
                             type: 'application/x-bittorrent',
                             hash,
                             userId,
                         })
+                        const newResource = await this.resourceRepository.save(resource)
                         if (newResource.size && !article.enclosure.length) {
                             article.enclosure.length = newResource.size // 更新附件大小
                             await this.articleRepository.save(article)
                         }
-                        // TODO 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
-                        if (isSafePositiveInteger(maxSize) && maxSize > 0 && maxSize <= newResource.size) {
+                        if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
                             this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
+                            await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
                             newResource.status = 'skip'
                             await this.resourceRepository.save(newResource)
                             return
                         }
-                        const status = await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
-                        newResource.status = status ? 'success' : 'fail'
-                        await this.resourceRepository.save(newResource)
+                        // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
+                        // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
+                        if (!newResource.size) {
+                            setTimeout(async () => {
+                                for (let index = 0; index < 5; index++) {
+                                    await sleep(60 * 1000) // 等待 60 秒后更新 元数据，至多重试 5 次
+                                    size = await this.updateTorrentInfo(qBittorrent, config, newResource, article)
+                                    if (size > 0 || size === -1) {
+                                        break
+                                    }
+                                }
+                            }, 0)
+                        }
+                        return
                     }
                     this.logger.error(`不支持的 资源类型：${url}`)
                 }))
@@ -593,6 +567,55 @@ export class TasksService implements OnApplicationBootstrap {
             default:
                 throw new Error(`不支持的BT下载器类型: ${type}`)
         }
+    }
+
+    /**
+     * 更新 BT 资源信息
+     *
+     * @author CaoMeiYouRen
+     * @date 2024-04-14
+     */
+    private async updateTorrentInfo(qBittorrent: QBittorrent, config: BitTorrentConfig, resource: Resource, article: Article) {
+        const { url } = article.enclosure
+        const { maxSize } = config
+        const { hash } = resource
+        const magnetUri = getMagnetUri(hash) // 磁力链接
+        const torrentInfo = await qBittorrent.getTorrent(hash)
+        const tracker = torrentInfo.raw?.tracker
+        const newMagnetUri = getMagnetUri(hash, tracker) // 磁力链接
+        resource.url = /^(https?:\/\/)/.test(url) ? url : newMagnetUri // 保存 http url，避免每次都下载
+        resource.name = torrentInfo.name
+        resource.size = torrentInfo.totalSize // 总大小
+        if (resource.size && !article.enclosure.length) {
+            article.enclosure.length = resource.size // 更新附件大小
+            await this.articleRepository.save(article)
+        }
+        if (isSafePositiveInteger(maxSize) && maxSize > 0 && resource.size > 0 && maxSize <= resource.size) {
+            this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
+            await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
+            resource.status = 'skip'
+            await this.resourceRepository.save(resource)
+            return -1
+        }
+        switch (torrentInfo.state) {
+            case 'error':
+                resource.status = 'fail'
+                break
+            case 'warning':
+                resource.status = 'fail'
+                break
+            case 'downloading':
+                resource.status = 'success'
+                break
+            case 'seeding': // 如果是做种后完成的话，也是 seeding 状态
+                resource.status = 'success'
+                break
+            default: // paused/queued/checking/unknown
+                resource.status = 'unknown'
+                break
+        }
+        await this.resourceRepository.save(resource) // 更新状态
+        return resource.size
     }
 
     async enableFeedTask(feed: Feed, throwError = false) {

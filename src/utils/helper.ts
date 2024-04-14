@@ -371,3 +371,57 @@ export function dataFormat(data: number | bigint): string {
     }
     return `${value.toFixed(2)} ${arr[i]}`
 }
+
+type RetryBackoffConfig = {
+    /**
+     * 最大重试次数
+     */
+    maxRetries?: number
+
+    /**
+     * 初始重试间隔
+     */
+    initialInterval?: number
+    /**
+     * 最大重试间隔
+     */
+    maxInterval?: number
+
+    /**
+     * 是否继续重试，返回 true 继续
+     */
+    shouldRetry?: (error: Error) => (boolean | Promise<boolean>)
+}
+/**
+ * 指数退避 重试，每次重试会指数级延后时间
+ *
+ * @author CaoMeiYouRen
+ * @date 2022-11-14
+ * @export
+ * @template T
+ * @param cb
+ * @param [config={}]
+ */
+export async function retryBackoff<T = void>(cb: () => T | Promise<T>, config: RetryBackoffConfig = {}) {
+    const { maxRetries = 3, initialInterval = 1000, maxInterval = 60 * 1000, shouldRetry = () => true } = config
+    let currentRetries = 0 // 当前重试次数
+    do {
+        try {
+            return await cb() // 如果没有抛出异常直接 return
+        } catch (err: any) { // 如果异常则重试
+            if (!await shouldRetry(err)) { // 如果不继续重试，直接结束
+                throw err
+            }
+            currentRetries++
+            if (currentRetries >= maxRetries) {
+                throw new Error(`函数 ${cb.name} 重试次数已达到最大重试次数 ${maxRetries} 次！`, { cause: err })
+            }
+            const interval = Math.max(100, initialInterval) // 不小于 100 毫秒
+            const delayed = interval * 2 ** currentRetries // 2 的 currentRetries 次方
+            if (delayed >= maxInterval) {
+                throw new Error(`函数 ${cb.name} 重试次数已达到重试间隔 ${maxInterval} 次！`, { cause: err })
+            }
+            await sleep(delayed) // 等待重试
+        }
+    } while (currentRetries < maxRetries)
+}
