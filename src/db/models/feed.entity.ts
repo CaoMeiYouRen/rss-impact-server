@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
+import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
 import { IsArray, IsBoolean, IsIn, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
@@ -63,7 +63,7 @@ export class Feed extends AclBase {
     @ApiProperty({ title: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
     @IsUrl({}, { message: '封面Url必须为标准URL格式' })
     @Length(0, 2048, { message: '封面Url最大不能超过 $constraint2 个字符！' })
-    @ValidateIf((o) => ['string'].includes(typeof o.imageUrl))
+    @ValidateIf((o) => Boolean(o.imageUrl))
     @Column({
         length: 2048,
         nullable: true,
@@ -155,3 +155,5 @@ export class FindFeed extends FindPlaceholderDto<Feed> {
     @ApiProperty({ type: () => [Feed] })
     declare data: Feed[]
 }
+
+export class QuickCreateFeed extends PickType(Feed, ['url', 'cron', 'isEnabled', 'categoryId', 'hooks'] as const) { }

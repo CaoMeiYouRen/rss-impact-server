@@ -83,28 +83,24 @@ export class AclCrudController {
     @ApiOperation({ summary: '获取 config' })
     @Get('config')
     async config(@CurrentUser() user: User): Promise<AvueCrudConfig> {
-        if (user?.roles?.includes(Role.admin)) {
-            return this.__AVUE_CRUD_CONFIG__ || {}
-        }
         const { option } = this.__AVUE_CRUD_CONFIG__
-
+        if (user?.roles?.includes(Role.admin)) {
+            return {
+                option: {
+                    ...option,
+                    column: option.column.map((col) => {
+                        if (col.prop === 'userId') {
+                            col.value = user.id
+                        }
+                        return col
+                    }),
+                },
+            }
+        }
         return {
             option: {
-                ...option,
-                column: option.column.map((col) => {
-                    if (col.prop === 'useId') { // 非 admin 用户不显示 useId
-                        return {
-                            ...col,
-                            hide: true,
-                            addDisplay: false,
-                            editDisabled: true,
-                            editDisplay: false,
-                            viewDisplay: false,
-                            readonly: true,
-                        }
-                    }
-                    return col
-                }),
+                ...option,  // 非 admin 用户不显示 useId
+                column: option.column.filter((col) => col.prop !== 'userId'),
             },
         }
     }

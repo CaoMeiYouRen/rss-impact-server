@@ -114,17 +114,18 @@ export class Hook extends AclBase {
     type: HookType
 
     @SetAclCrudField({
-        // type: 'textarea',
         component: 'CrudForm',
         span: 24,
         params: {
             dynamicOption: Object.entries(hookConfig).map(([key, value]) => ({
-                    optionId: key,
-                    submitBtn: false,
-                    emptyBtn: false,
-                    column: initAvueCrudColumn(value),
-                })),
+                optionId: key,
+                submitBtn: false,
+                emptyBtn: false,
+                column: initAvueCrudColumn(value),
+            })),
+            // defaultValue: {},
         },
+        // value: '{}',
     })
     @ApiProperty({
         title: '配置',
@@ -148,7 +149,7 @@ export class Hook extends AclBase {
     config: HookConfig
 
     @SetAclCrudField({
-        type: 'textarea',
+        // type: 'textarea',
     })
     @ApiProperty({ title: '过滤条件', description: '保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。', type: Filter })
     @Type(() => Filter)
@@ -164,7 +165,7 @@ export class Hook extends AclBase {
     filter: Filter
 
     @SetAclCrudField({
-        type: 'textarea',
+        // type: 'textarea',
     })
     @ApiProperty({ title: '排除条件', description: '去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。', type: FilterOut })
     @Type(() => FilterOut)

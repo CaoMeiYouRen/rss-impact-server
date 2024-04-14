@@ -73,7 +73,9 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
         let type = 'input'
         let format: string
         let value: any = options?.default
-        let extra: any = {}
+        let extra: any = {
+            ...setAclCrudFieldOption,
+        }
         const label = swaggerOption?.title || upperFirst(prop)
         const tip = swaggerOption?.description
         if (tip) {
@@ -138,7 +140,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
             case 'EnclosureImpl':
                 extra = {
                     span: 24,
-                    type: '',
+                    // type: 'textarea',
                     component: 'CrudForm',
                     params: {
                         option: {
@@ -146,6 +148,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
                             emptyBtn: false,
                             column: initAvueCrudColumn(Clazz),
                         },
+                        // defaultValue: '{}',
                     },
                     ...extra,
                 }
@@ -156,9 +159,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
                 value = typeof value === 'undefined' ? '' : value
                 break
         }
-        if (typeof value !== 'undefined' && ['Array', 'Object'].includes(propType) && (Array.isArray(value) || typeof value === 'object')) {
-            value = JSON.stringify(value)
-        }
+        extra.type = type
         if (protectFields.includes(prop)) {
             extra = {
                 addDisplay: false,
@@ -207,6 +208,10 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
                 readonly: true,
                 ...extra,
             }
+        }
+        // 如果为 select/CrudForm 则不转换
+        if (['textarea', 'input'].includes(extra.type) && extra?.component !== 'CrudForm' && typeof value !== 'undefined' && (Array.isArray(value) || typeof value === 'object')) {
+            value = JSON.stringify(value)
         }
         return {
             label,

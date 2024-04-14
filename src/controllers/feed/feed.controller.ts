@@ -1,16 +1,18 @@
-import { Body, Controller, Delete, Logger, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UseSession } from '@/decorators/use-session.decorator'
-import { CreateFeed, Feed, FindFeed, UpdateFeed } from '@/db/models/feed.entity'
-import { AclCrud } from '@/decorators/acl-crud.decorator'
+import { CreateFeed, Feed, FindFeed, QuickCreateFeed, UpdateFeed } from '@/db/models/feed.entity'
+import { AclCrud, initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { HttpError } from '@/models/http-error'
 import { checkAuth } from '@/utils/check'
 import { TasksService } from '@/services/tasks/tasks.service'
 import { isId } from '@/decorators/is-id.decorator'
+import { rssParserURL } from '@/utils/rss-helper'
+import { AvueFormOption } from '@/interfaces/avue'
 
 @UseSession()
 @AclCrud({
@@ -49,7 +51,41 @@ export class FeedController {
     ) {
     }
 
-    @ApiResponse({ status: 201, type: CreateFeed })
+    @ApiResponse({ status: 200, type: Feed })
+    @ApiOperation({ summary: '快速添加订阅的配置项' })
+    @Get('quickCreate/option')
+    async quickCreateOption(): Promise<AvueFormOption> {
+        return {
+            // title: '快速添加订阅',
+            submitText: '添加', // 直接用 QuickCreateFeed 会获取不到 SetAclCrudField
+            column: initAvueCrudColumn(Feed).filter((col) => ['url', 'cron', 'isEnabled', 'categoryId', 'hooks'].includes(col.prop),
+            ),
+        }
+    }
+
+    @ApiResponse({ status: 201, type: Feed })
+    @ApiOperation({ summary: '快速添加订阅' })
+    @Post('quickCreate')
+    async quickCreate(@Body() body: QuickCreateFeed, @CurrentUser() user: User) {
+        this.logger.debug(JSON.stringify(body, null, 4))
+
+        const { url } = body
+        const rss = await rssParserURL(url)
+        const { title, description, image } = rss || {}
+        const feed = await this.repository.save(this.repository.create({
+            title,
+            description,
+            imageUrl: image?.url,
+            ...body,
+            userId: user.id,
+        }))
+        if (feed.isEnabled) {
+            await this.tasksService.enableFeedTask(feed, true)
+        }
+        return feed
+    }
+
+    @ApiResponse({ status: 201, type: Feed })
     @ApiOperation({ summary: '创建记录' })
     @Post('')
     async create(@Body() body: CreateFeed, @CurrentUser() user: User) {
@@ -65,7 +101,7 @@ export class FeedController {
         return newDocument
     }
 
-    @ApiResponse({ status: 200, type: UpdateFeed })
+    @ApiResponse({ status: 200, type: Feed })
     @ApiOperation({ summary: '更新记录' })
     @Put('')
     async update(@Body() body: UpdateFeed, @CurrentUser() user: User) {
