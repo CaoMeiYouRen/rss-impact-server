@@ -43,7 +43,7 @@ async function isSynchronized() {
                     database: DATABASE_PATH,
                     entities,
                     // eslint-disable-next-line no-sync
-                    synchronize: __DEV__ || !await isSynchronized(), // 开发环境固定同步；如果数据库文件不存在，则同步
+                    synchronize: true, // __DEV__ || !await isSynchronized(), // 开发环境固定同步；如果数据库文件不存在，则同步
                     autoLoadEntities: true,
                 }
             },
