@@ -527,13 +527,14 @@ export class TasksService implements OnApplicationBootstrap {
                             url,
                             name, // 名称
                             path: '', // 文件在服务器上的地址，没有必要，故统一留空
-                            status: 'unknown',
+                            status: size ? 'success' : 'unknown',
                             size,  // 体积大小
                             type: 'application/x-bittorrent',
                             hash,
                             userId,
                         })
                         const newResource = await this.resourceRepository.save(resource)
+
                         if (newResource.size && !article.enclosure.length) {
                             article.enclosure.length = newResource.size // 更新附件大小
                             article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
@@ -613,15 +614,15 @@ export class TasksService implements OnApplicationBootstrap {
             case 'seeding': // 如果是做种后完成的话，也是 seeding 状态
                 resource.status = 'success'
                 break
-            case 'paused':
-                resource.status = 'success'
-                break
-            case 'queued':
-                resource.status = 'success'
-                break
-            case 'checking':
-                resource.status = 'success'
-                break
+            // case 'paused':
+            //     resource.status = 'success'
+            //     break
+            // case 'queued':
+            //     resource.status = 'success'
+            //     break
+            // case 'checking':
+            //     resource.status = 'success'
+            //     break
             default: // paused/queued/checking/unknown
                 resource.status = 'unknown'
                 break
