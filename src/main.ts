@@ -29,7 +29,7 @@ async function bootstrap() {
     })
 
     app.set('trust proxy', true)
-
+    app.enableCors({})
     app.setGlobalPrefix('/api')
     if (__DEV__) {
         const config = new DocumentBuilder()
@@ -49,8 +49,8 @@ async function bootstrap() {
         const document = SwaggerModule.createDocument(app, config, options)
         SwaggerModule.setup('docs', app, document)
     }
+    app.use(history({})) // 解决单页应用程序(SPA)重定向问题
 
-    app.enableCors({})
     app.use(limiter)
     app.use(helmet({}))
     app.use(fileLogger)
@@ -64,8 +64,6 @@ async function bootstrap() {
         enableDebugMessages: __DEV__,
     }))
     app.use(sessionMiddleware)
-
-    app.use(history({})) // 解决单页应用程序(SPA)重定向问题
 
     await app.listen(PORT)
     console.log(`Docs http://127.0.0.1:${PORT}/docs`)

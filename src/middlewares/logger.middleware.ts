@@ -8,21 +8,11 @@ import { __DEV__ } from '@/app.config'
 
 const logDir = path.resolve('logs')
 morgan.token('time', () => timeFormat(Date.now(), 'YYYY-MM-DD HH:mm:ss.SSSZ'))
-morgan.token('time-short', () => timeFormat(Date.now(), 'HH:mm:ss.SSS'))
-//  [HttpHandle] ::ffff:127.0.0.1 - "GET /api/user/dicData" "HTTP/1.1" [304] - 10.974 ms
-morgan.format('app-combined', '[HttpHandle] :remote-addr - ":method :url" "HTTP/:http-version" [:status] - :response-time ms')
-morgan.format('console-combined', '[:time-short] :remote-addr - ":method :url HTTP/:http-version" :status - :response-time ms')
+// morgan.token('time-short', () => timeFormat(Date.now(), 'HH:mm:ss.SSS'))
 
-// const accessLogStream = getStream({
-//     date_format: 'YYYY-MM-DD',
-//     filename: path.join(logDir, '%DATE%'),
-//     extension: '.log',
-//     audit_file: path.join(logDir, '.audit.json'),
-//     frequency: 'daily',
-//     verbose: false,
-//     size: '1g',
-//     max_logs: '30d',
-// })
+morgan.format('app-combined', '[HttpHandle] :remote-addr - ":method :url" "HTTP/:http-version" [:status] - :response-time ms')
+// morgan.format('console-combined', '[:time-short] :remote-addr - ":method :url HTTP/:http-version" :status - :response-time ms')
+
 const statusCodeRegex = /\[(\d+)\]/ // 正则表达式匹配 [xxx]
 const stream: StreamOptions = {
     // Use the http severity
@@ -40,7 +30,6 @@ const stream: StreamOptions = {
     },
 }
 
-// export const consoleLogger = morgan('console-combined', {})
 export const fileLogger = morgan('app-combined', { stream })
 
 const format = winston.format.combine(
@@ -76,9 +65,6 @@ export const winstonLogger = WinstonModule.createLogger({
                 }),
             ),
         }),
-        // new winston.transports.Http({
-        //     level: 'info',
-        // }),
         new DailyRotateFile({
             ...dailyRotateFileOption,
             filename: '%DATE%.log',
