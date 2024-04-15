@@ -497,9 +497,7 @@ export class TasksService implements OnApplicationBootstrap {
                             this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
                             return
                         }
-                    }
-                    // 如果是 http，则下载 bt 种子
-                    if (/^(https?:\/\/)/.test(url)) {
+                    } else if (/^(https?:\/\/)/.test(url)) {  // 如果是 http，则下载 bt 种子
                         if (await this.resourceRepository.findOne({ where: { url, userId } })) {
                             this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
                             return
