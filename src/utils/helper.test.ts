@@ -229,4 +229,13 @@ describe('dataFormat', () => {
         expect(dataFormat(18446744073709551616n)).toBe('16 EiB')
         expect(dataFormat(36893488147419103232n)).toBe('32 EiB')
     })
+
+    it('should throw an error when data is negative', () => {
+        expect(() => dataFormat(-1)).toThrow('Data must be greater than or equal to 0');
+        expect(() => dataFormat(-100)).toThrow('Data must be greater than or equal to 0');
+        expect(() => dataFormat(-1024)).toThrow('Data must be greater than or equal to 0');
+        expect(() => dataFormat(-1n)).toThrow('Data must be greater than or equal to 0');
+        expect(() => dataFormat(-100n)).toThrow('Data must be greater than or equal to 0');
+        expect(() => dataFormat(-1024n)).toThrow('Data must be greater than or equal to 0');
+    });
 })

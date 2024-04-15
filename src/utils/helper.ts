@@ -349,27 +349,29 @@ export function mdToCqcode(md: string) {
  * @param data 单位B
  */
 export function dataFormat(data: number | bigint): string {
-    const arr = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+    if (data < 0) {
+        throw new Error('Data must be greater than or equal to 0')
+    }
+    const units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
     let i = 0
     let value: number | bigint
-
     if (typeof data === 'bigint' || data > Number.MAX_SAFE_INTEGER) {
         value = BigInt(data)
-        while (value >= 1024n && i < arr.length - 1) {
+        while (value >= 1024n && i < units.length - 1) {
             value /= 1024n
             i++
         }
-        return `${value} ${arr[i]}`
+        return `${value} ${units[i]}`
     }
     value = data
-    while (value >= 1024 && i < arr.length - 1) {
+    while (value >= 1024 && i < units.length - 1) {
         value /= 1024
         i++
     }
     if (i === 0) {
-        return `${value} ${arr[i]}`
+        return `${value} ${units[i]}`
     }
-    return `${value.toFixed(2)} ${arr[i]}`
+    return `${value.toFixed(2)} ${units[i]}`
 }
 
 type RetryBackoffConfig = {
