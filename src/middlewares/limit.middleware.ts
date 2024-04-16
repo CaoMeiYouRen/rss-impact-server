@@ -1,4 +1,4 @@
-import RateLimit from 'express-rate-limit'
+import RateLimit, { LegacyStore, Store } from 'express-rate-limit'
 import { RedisStore } from 'rate-limit-redis'
 import ms from 'ms'
 import { ErrorMessageList } from '@/constant/error-message-list'
@@ -6,11 +6,15 @@ import { ResponseDto } from '@/models/response.dto'
 import { __DEV__, REDIS_URL } from '@/app.config'
 import { getRedisClient } from '@/utils/redis'
 
-const store = REDIS_URL ? new RedisStore({
-    prefix: 'rss-impact:',
-    // @ts-expect-error - Known issue: the `call` function is not present in @types/ioredis
-    sendCommand: (...args: string[]) => getRedisClient().call(...args),
-}) : undefined
+let store: Store | LegacyStore
+if (REDIS_URL) {
+    const client = getRedisClient()
+    store = new RedisStore({
+        prefix: 'rss-impact:',
+        // @ts-expect-error - Known issue: the `call` function is not present in @types/ioredis
+        sendCommand: (...args: string[]) => client.call(...args),
+    })
+}
 /**
  * 限流器
  */

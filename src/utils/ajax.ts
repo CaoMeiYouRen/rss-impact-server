@@ -11,6 +11,7 @@ export interface AjaxConfig {
     responseType?: ResponseType
 }
 
+// TODO 考虑添加代理配置功能
 /**
  * axios 接口封装
  *
