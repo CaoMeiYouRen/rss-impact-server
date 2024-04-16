@@ -2,6 +2,7 @@ import Parser, { Output, Item } from 'rss-parser'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
 import { plainToInstance } from 'class-transformer'
+import { isURL } from 'class-validator'
 import { deepTrim, htmlToMarkdown, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 
@@ -35,10 +36,16 @@ export async function rssParserString(xml: string) {
     return rssNormalize(rss)
 }
 
-function formatGuid(e: any) {
+function formatGuid(e: any): string {
     // link 基本上是全局唯一的，guid 在部分情况下不唯一（freshrss 的 guid 为时间戳）
-    e.guid = e.link || e.guid || e.id || uuid()
-    return e
+    // 如果 guid 是 Url，则用 guid ；否则用 link
+    if (isURL(e.guid)) {
+        return e.guid
+    }
+    if (isURL(e.id)) {
+        return e.id
+    }
+    return e.link || uuid()
 }
 
 /**
@@ -52,7 +59,10 @@ function formatGuid(e: any) {
 export function rssNormalize(rss: Record<string, any>) {
     const _rss = deepTrim(rss) as (Record<string, any> & Output<Record<string, any>>)
     if (_rss?.items?.length) {
-        _rss.items = _rss.items.map((e) => formatGuid(e))
+        _rss.items = _rss.items.map((e) => ({
+                ...e,
+                guid: formatGuid(e),
+            }))
     }
     return _rss
 }
@@ -67,7 +77,7 @@ export function rssNormalize(rss: Record<string, any>) {
  */
 export function rssItemToArticle(item: Record<string, any> & Item) {
     const article = new Article()
-    article.guid = formatGuid(item).guid
+    article.guid = formatGuid(item)
     article.link = item.link
     article.title = item.title
     article.content = item['content:encoded'] || item.content
@@ -79,6 +89,12 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     article.summary = item.summary || article.contentSnippet?.slice(0, 128) // 如果没有总结，则使用 contentSnippet 填充
     article.categories = item.categories
     article.enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
+    if (!article.enclosure && /^(https?:\/\/).*\.torrent$/.test(article.link)) {  // 检测 link 后缀是否为 .torrent。例如 nyaa.si
+        article.enclosure = {
+            url: article.link,
+            type: 'application/x-bittorrent',
+        }
+    }
     if (article.enclosure) {
         if (article.enclosure.length) { // 解析出来的 length 是 string ，需要转换成 number
             article.enclosure.length = Number(article.enclosure.length)

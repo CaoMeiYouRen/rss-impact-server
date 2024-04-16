@@ -67,7 +67,7 @@
     ```sh
     git add .
     git cz # 使用 commitizen 提交！
-    git pull # 请合并最新代码并解决冲突后提交！
+    git push # 请合并最新代码并解决冲突后提交！
     #请勿直接提交git commit
     #若觉得修改太多也可分开提交。先 git add 一部分，执行 git cz 提交后再提交另外一部分
     ```
