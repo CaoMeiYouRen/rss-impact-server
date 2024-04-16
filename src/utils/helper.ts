@@ -203,24 +203,6 @@ export function htmlToMarkdown(html: string): string {
     return markdown
 }
 
-/**
- * 获取磁力链接
- *
- * @author CaoMeiYouRen
- * @date 2024-04-03
- * @export
- * @param hash
- * @param [tracker]
- */
-export function getMagnetUri(hash: string, tracker?: string) {
-    if (tracker) {
-        const search = new URLSearchParams({})
-        search.append('tr', tracker)
-        return `magnet:?urn:btih:${hash}&${search.toString()}`
-    }
-    return `magnet:?urn:btih:${hash}`
-}
-
 // 支持 传入的操作符
 const QUERY_MAP = {
     Equal, Like, ILike, Between, In,

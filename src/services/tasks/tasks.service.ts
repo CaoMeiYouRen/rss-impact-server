@@ -13,13 +13,13 @@ import pLimit from 'p-limit'
 import md5 from 'md5'
 import FileType from 'file-type'
 import { QBittorrent } from '@cao-mei-you-ren/qbittorrent'
-import torrent2magnet from 'torrent2magnet-js'
 import { plainToInstance } from 'class-transformer'
+import parseTorrent, { Instance, toMagnetURI } from 'parse-torrent'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, DOWNLOAD_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, getMagnetUri, timeFormat, sleep } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -487,16 +487,16 @@ export class TasksService implements OnApplicationBootstrap {
                     let magnetUri = ''
                     let name = ''
                     let size = 0
+                    let magnet: Instance & { xl?: number }
                     // 如果是 magnet，则直接添加 磁力链接
                     if (/^magnet:/.test(url)) {
-                        await qBittorrent.addMagnet(url, { savepath: downloadPath })
-                        const reg = /urn:btih:(.{40})/
-                        hash = reg.exec(url)?.[1]?.toLowerCase()
-                        magnetUri = getMagnetUri(hash) // 磁力链接
+                        magnet = parseTorrent(url) as Instance
+                        hash = magnet.infoHash?.toLowerCase()
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
-                            this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
+                            this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
                             return
                         }
+                        await qBittorrent.addMagnet(url, { savepath: downloadPath })
                     } else if (/^(https?:\/\/)/.test(url)) {  // 如果是 http，则下载 bt 种子
                         if (await this.resourceRepository.findOne({ where: { url, userId } })) {
                             this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
@@ -507,12 +507,9 @@ export class TasksService implements OnApplicationBootstrap {
                             responseType: 'arraybuffer',
                             timeout: 60 * 1000,
                         })
-                        const torrent = new Uint8Array(resp.data)
-                        const magnet = torrent2magnet(torrent)
-                        hash = magnet.infohash.toLowerCase() // hash
-                        magnetUri = getMagnetUri(hash, magnet.main_tracker)
-                        name = magnet.dn
-                        size = magnet.xl
+                        const torrent = Buffer.from(resp.data)
+                        magnet = parseTorrent(torrent) as Instance
+                        hash = magnet.infoHash?.toLowerCase() // hash
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
                             this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
                             return
@@ -521,8 +518,24 @@ export class TasksService implements OnApplicationBootstrap {
                     }
 
                     if (/^(https?:\/\/|magnet:)/.test(url)) {
+                        name = magnet.name || magnet.dn as string
+                        if (magnet.length) {
+                            size = magnet.length
+                        } else if (magnet.xl) {
+                            size = Number(magnet.xl)
+                        }
+                        if (size === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
+                            size = 0
+                        }
+                        const tracker = magnet.announce?.[0] // 仅保留第一个 tracker
+                        magnetUri = toMagnetURI({
+                            infoHash: hash,
+                            dn: name || '',
+                            xl: size,
+                            tr: tracker,
+                        } as Instance)
                         const resource = this.resourceRepository.create({
-                            url,
+                            url: /^(https?:\/\/)/.test(url) ? url : magnetUri,
                             name, // 名称
                             path: '', // 文件在服务器上的地址，没有必要，故统一留空
                             status: size ? 'success' : 'unknown',
@@ -580,11 +593,14 @@ export class TasksService implements OnApplicationBootstrap {
         const { url } = article.enclosure
         const { maxSize } = config
         const { hash } = resource
-        const magnetUri = getMagnetUri(hash) // 磁力链接
         const torrentInfo = await qBittorrent.getTorrent(hash)
-        const tracker = torrentInfo.raw?.tracker
-        const newMagnetUri = getMagnetUri(hash, tracker) // 磁力链接
-        resource.url = /^(https?:\/\/)/.test(url) ? url : newMagnetUri // 保存 http url，避免每次都下载
+        const magnetUri = toMagnetURI({
+            infoHash: hash,
+            dn: torrentInfo.name || '',
+            xl: torrentInfo.totalSize,
+            tr: torrentInfo.raw?.tracker,
+        } as Instance)
+        resource.url = /^(https?:\/\/)/.test(url) ? url : magnetUri // 保存 http url，避免每次都下载
         resource.name = torrentInfo.name
         resource.size = torrentInfo.totalSize // 总大小
         if (resource.size && !article.enclosure.length) {

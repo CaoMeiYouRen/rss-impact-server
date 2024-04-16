@@ -21,3 +21,6 @@ updates:
       - dependency-name: "p-limit"
         versions:
           - ">= 4.0.0"
+      - dependency-name: "parse-torrent"
+        versions:
+          - ">= 10.0.0"

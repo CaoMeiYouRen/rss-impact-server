@@ -80,6 +80,9 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     article.categories = item.categories
     article.enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
     if (article.enclosure) {
+        if (article.enclosure.length) { // 解析出来的 length 是 string ，需要转换成 number
+            article.enclosure.length = Number(article.enclosure.length)
+        }
         article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
     }
     return article
