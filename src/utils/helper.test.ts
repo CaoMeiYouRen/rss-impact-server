@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat } from './helper';
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString } from './helper';
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {
@@ -239,3 +239,64 @@ describe('dataFormat', () => {
         expect(() => dataFormat(-1024n)).toThrow('Data must be greater than or equal to 0');
     });
 })
+
+describe('splitString', () => {
+    it('should split a string into chunks of specified length', () => {
+        const str = 'This is a long string that needs to be split into smaller chunks.';
+        const maxLength = 10;
+        const expected = [
+            'This is a ',
+            'long strin',
+            'g that nee',
+            'ds to be s',
+            'plit into ',
+            'smaller ch',
+            'unks.',
+        ];
+
+        const result = splitString(str, maxLength);
+
+        expect(result).toEqual(expected);
+    });
+
+    it('should handle empty strings', () => {
+        const str = '';
+        const maxLength = 5;
+        const expected = [''];
+
+        const result = splitString(str, maxLength);
+
+        expect(result).toEqual(expected);
+    });
+
+    it('should handle strings shorter than maxLength', () => {
+        const str = 'short';
+        const maxLength = 10;
+        const expected = ['short'];
+
+        const result = splitString(str, maxLength);
+
+        expect(result).toEqual(expected);
+    });
+
+
+    it('should return an array with the original string when maxLength is 0', () => {
+        const str = 'This is a long string';
+        const maxLength = 0;
+        const expected = [str];
+
+        const result = splitString(str, maxLength);
+
+        expect(result).toEqual(expected);
+    });
+
+    it('should return an array with the original string when maxLength is negative', () => {
+        const str = 'This is a long string';
+        const maxLength = -5;
+        const expected = [str];
+
+        const result = splitString(str, maxLength);
+
+        expect(result).toEqual(expected);
+    });
+});

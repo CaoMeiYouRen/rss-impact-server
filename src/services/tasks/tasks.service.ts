@@ -19,7 +19,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, DOWNLOAD_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -300,27 +300,35 @@ export class TasksService implements OnApplicationBootstrap {
 
     private async notificationHook(hook: Hook, feed: Feed, articles: Article[]) {
         const config = hook.config as NotificationConfig
-        const { isMergePush = false, isMarkdown = false, isSnippet = false } = config
+        const { isMergePush = false, isMarkdown = false, isSnippet = false, maxLength = 4096 } = config
         const title = `检测到【 ${feed.title} 】有更新`
         const notifications: { title: string, desp: string }[] = []
         if (isMergePush) {
             // 合并推送
-            notifications.push({
-                title,
-                desp: articlesFormat(articles, { isMarkdown, isSnippet }),
+            const desp = articlesFormat(articles, { isMarkdown, isSnippet })
+            // 如果过长，则考虑分割推送，但至多不超过 5 条
+            const chunks = splitString(desp, maxLength).slice(0, 5) // 分割字符串
+            chunks.forEach((chunk) => {
+                notifications.push({
+                    title,
+                    desp: chunk,
+                })
             })
         } else {
             // 逐条推送
-            notifications.push(
-                ...articles.map((article) => {
-                    const { text: desp, title: itemTitle } = articleItemFormat(article, { isMarkdown, isSnippet })
-                    return {
+            articles.forEach((article) => {
+                const { text: desp, title: itemTitle } = articleItemFormat(article, { isMarkdown, isSnippet })
+                // 如果过长，则考虑分割推送，但至多不超过 3 条
+                const chunks = splitString(desp, maxLength).slice(0, 3) // 分割字符串
+                chunks.forEach((chunk) => {
+                    notifications.push({
                         title: itemTitle,
-                        desp,
-                    }
-                }))
+                        desp: chunk,
+                    })
+                })
+            })
         }
-        // TODO 如果过长，则考虑分割推送
+
         await Promise.allSettled(notifications.map(async (notification) => {
             await this.notification(hook, feed, notification.title, notification.desp)
         }))

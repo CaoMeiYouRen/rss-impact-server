@@ -410,3 +410,25 @@ export async function retryBackoff<T = void>(cb: () => T | Promise<T>, config: R
         }
     } while (currentRetries < maxRetries)
 }
+
+/**
+ * 辅助函数，将字符串分割为指定长度的块
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-04-16
+ * @export
+ * @param str
+ * @param maxLength
+ */
+export function splitString(str: string, maxLength: number): string[] {
+    if (maxLength <= 0 || !str?.length) {
+        return [str] // 如果 maxLength 为 0 或负数,或者输入字符串为空,返回包含原始字符串的数组
+    }
+    const chunks = []
+    let start = 0
+    while (start < str.length) {
+        chunks.push(str.slice(start, start + maxLength))
+        start += maxLength
+    }
+    return chunks
+}
