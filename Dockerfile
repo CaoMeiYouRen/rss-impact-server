@@ -7,7 +7,9 @@ WORKDIR /frontend
 
 RUN git clone https://github.com/CaoMeiYouRen/rss-impact-web.git /frontend --depth=1
 
-RUN npm i -g pnpm@8.11 && pnpm i --frozen-lockfile
+RUN npm config set registry https://registry.npmjs.org/ && \
+    pnpm config set registry https://registry.npmjs.org/ && \
+    npm i -g pnpm@8.11 && pnpm i --frozen-lockfile
 
 RUN pnpm run build
 # 构建阶段
@@ -17,7 +19,9 @@ WORKDIR /app
 
 COPY package.json .npmrc pnpm-lock.yaml /app/
 
-RUN npm i -g pnpm@8.11 && pnpm i --frozen-lockfile
+RUN npm config set registry https://registry.npmjs.org/ && \
+    pnpm config set registry https://registry.npmjs.org/ && \
+    npm i -g pnpm@8.11 && pnpm i --frozen-lockfile
 
 COPY . /app
 
@@ -28,7 +32,8 @@ FROM caomeiyouren/alpine-nodejs:1.1.0 as docker-minifier
 
 WORKDIR /app
 
-RUN pnpm add @vercel/nft@0.24.4 fs-extra@11.2.0 --save-prod
+RUN pnpm config set registry https://registry.npmjs.org/ && \
+    pnpm add @vercel/nft@0.24.4 fs-extra@11.2.0 --save-prod
 
 COPY --from=builder /app /app
 
