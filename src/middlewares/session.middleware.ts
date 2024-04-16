@@ -6,7 +6,7 @@ import { SESSION_SECRET, __DEV__ } from '@/app.config'
 import { DATABASE_PATH } from '@/db/database.module'
 
 const SQLiteStore = ConnectSqlite3(session)
-
+// TODO 考虑增加 session 管理
 const sessionOptions: SessionOptions = {
     secret: SESSION_SECRET,
     resave: false,
