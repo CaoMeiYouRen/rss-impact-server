@@ -48,7 +48,9 @@ export class ResourceService {
             throw new HttpError(404, '该 Id 对应的资源不存在！')
         }
         await this.repository.delete(id) // 移除数据库记录
-        await this.removeFile(document) // 尝试移除真实文件
+        if (document.path) { // 如果存在本地的路径
+            await this.removeFile(document)
+        } // 尝试移除真实文件
         return document
     }
 }
