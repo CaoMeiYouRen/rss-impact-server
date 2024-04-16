@@ -18,13 +18,14 @@ export class ResourceService {
     // 但不会删除数据库记录
     async removeFile(resource: Resource) {
         const { url, path: filepath } = resource
-        const resources = await this.repository.find({
+        const count = await this.repository.count({
             where: {
                 url,
+                status: 'success',
             },
         })
         // 如果有一个为 success，则不移除该文件
-        if (resources.some((res) => res.status === 'success')) {
+        if (count > 0) {
             return false
         }
         await fs.remove(filepath)
