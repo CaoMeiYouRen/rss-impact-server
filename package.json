@@ -75,6 +75,7 @@
     "passport-strategy": "^1.0.0",
     "push-all-in-one": "^3.4.5",
     "query-string": "^7.1.3",
+    "rate-limit-redis": "^4.2.0",
     "reflect-metadata": "^0.2.1",
     "rimraf": "^5.0.5",
     "rss-parser": "git+https://github.com/CaoMeiYouRen/rss-parser.git",

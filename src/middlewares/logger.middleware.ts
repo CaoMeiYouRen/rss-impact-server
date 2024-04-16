@@ -90,3 +90,5 @@ export const winstonLogger = WinstonModule.createLogger({
         }),
     ],
 })
+
+export const logger = winstonLogger
