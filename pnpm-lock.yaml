@@ -58,6 +58,9 @@ dependencies:
   connect-history-api-fallback:
     specifier: ^2.0.0
     version: 2.0.0
+  connect-redis:
+    specifier: ^7.1.1
+    version: 7.1.1(express-session@1.18.0)
   connect-sqlite3:
     specifier: ^0.9.13
     version: 0.9.15
@@ -3728,6 +3731,15 @@ packages:
   /connect-history-api-fallback@2.0.0:
     resolution: {integrity: sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA==}
     engines: {node: '>=0.8'}
+    dev: false
+
+  /connect-redis@7.1.1(express-session@1.18.0):
+    resolution: {integrity: sha512-M+z7alnCJiuzKa8/1qAYdGUXHYfDnLolOGAUjOioB07pP39qxjG+X9ibsud7qUBc4jMV5Mcy3ugGv8eFcgamJQ==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      express-session: '>=1'
+    dependencies:
+      express-session: 1.18.0
     dev: false
 
   /connect-sqlite3@0.9.15:

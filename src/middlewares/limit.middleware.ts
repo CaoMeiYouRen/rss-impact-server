@@ -1,5 +1,6 @@
 import RateLimit from 'express-rate-limit'
 import { RedisStore } from 'rate-limit-redis'
+import ms from 'ms'
 import { ErrorMessageList } from '@/constant/error-message-list'
 import { ResponseDto } from '@/models/response.dto'
 import { __DEV__, REDIS_URL } from '@/app.config'
@@ -16,7 +17,7 @@ const store = REDIS_URL ? new RedisStore({
 export const limiter = RateLimit({
     store,
     max: __DEV__ ? 10000 : 1000,
-    windowMs: 1000 * 60, // 1 分钟时间
+    windowMs: ms('1m'), // 1 分钟时间
     validate: {
         trustProxy: false, // 解决 ERR_ERL_PERMISSIVE_TRUST_PROXY 代理不可信问题
     },
