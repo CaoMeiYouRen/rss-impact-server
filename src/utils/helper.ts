@@ -131,11 +131,12 @@ type DownloadFileType = {
 }
 
 export async function download(url: string, filepath: string, timeout = 60 * 1000): Promise<DownloadFileType> {
-    // TODO 处理跨域/防盗链问题
     const resp = await ajax({
         url,
         timeout,
-        headers: {} as any,
+        headers: {
+            Referer: url,
+        } as any,
         responseType: 'stream',
     })
     const stream = resp.data as ReadStream
