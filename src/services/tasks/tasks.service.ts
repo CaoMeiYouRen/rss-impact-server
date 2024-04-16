@@ -120,6 +120,7 @@ export class TasksService implements OnApplicationBootstrap {
             await this.reverseTriggerHooks(feed, error)
         }
     }
+    // TODO 反转触发应该增加频率限制，避免短时间触发过多
     /**
      * 处理反转触发的 Hook
      *
