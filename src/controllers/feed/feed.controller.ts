@@ -68,8 +68,11 @@ export class FeedController {
     @Post('quickCreate')
     async quickCreate(@Body() body: QuickCreateFeed, @CurrentUser() user: User) {
         this.logger.debug(JSON.stringify(body, null, 4))
-
+        const userId = user.id
         const { url } = body
+        if (await this.repository.count({ where: { url, userId } })) {
+            throw new HttpError(400, '已存在相同 URL 的订阅！')
+        }
         const rss = await rssParserURL(url)
         const { title, description, image } = rss || {}
         const feed = await this.repository.save(this.repository.create({
@@ -90,15 +93,19 @@ export class FeedController {
     @Post('')
     async create(@Body() body: CreateFeed, @CurrentUser() user: User) {
         this.logger.debug(JSON.stringify(body, null, 4))
-
+        const userId = user.id
+        const { url } = body
+        if (await this.repository.count({ where: { url, userId } })) {
+            throw new HttpError(400, '已存在相同 URL 的订阅！')
+        }
         delete body.user  // 以 userId 字段为准
         body.userId = user.id  // 以 userId 字段为准
 
-        const newDocument = await this.repository.save(this.repository.create(body))
-        if (newDocument.isEnabled) {
-            await this.tasksService.enableFeedTask(newDocument, true)
+        const feed = await this.repository.save(this.repository.create(body))
+        if (feed.isEnabled) {
+            await this.tasksService.enableFeedTask(feed, true)
         }
-        return newDocument
+        return feed
     }
 
     @ApiResponse({ status: 200, type: Feed })
@@ -122,6 +129,17 @@ export class FeedController {
         }
         if (!document) {
             throw new HttpError(404, '该 Id 对应的资源不存在！')
+        }
+        const userId = user.id
+        const { url } = body
+        const oldFeed = await this.repository.findOne({
+            where: {
+                url,
+                userId,
+            },
+        })
+        if (oldFeed.id !== id) {
+            throw new HttpError(400, '已存在相同 URL 的订阅！')
         }
         const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
         if (updatedDocument.isEnabled) {
