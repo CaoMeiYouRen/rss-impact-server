@@ -1,7 +1,7 @@
 import { Entity, Column, Index, ManyToOne } from 'typeorm'
 import { Item, Enclosure } from 'rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsDate, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
+import { IsArray, IsDate, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested, isMagnetURI } from 'class-validator'
 import dayjs from 'dayjs'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
@@ -11,11 +11,12 @@ import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
 
 export class EnclosureImpl implements Enclosure {
 
-    @ApiProperty({ title: 'URL', example: 'http://v2.uploadbt.com' })
-    @IsUrl()
+    @ApiProperty({ title: 'URL', examples: ['http://bt.example.co', 'magnet:?xt=urn:btih:xxxxx'] })
+    @IsUrlOrMagnetUri()
     @Length(0, 1024)
     @ValidateIf((o) => typeof o.url !== 'undefined')
     url: string
