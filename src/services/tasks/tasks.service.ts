@@ -94,6 +94,7 @@ export class TasksService implements OnApplicationBootstrap {
 
         try {
             if (!rss) {
+                // TODO 在请求 RSS URL 时添加请求代理
                 rss = await rssParserURL(url)
             }
             if (Array.isArray(rss?.items)) {
@@ -515,6 +516,7 @@ export class TasksService implements OnApplicationBootstrap {
                             this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
                             return
                         }
+                        // TODO 在下载种子时添加代理
                         const resp = await ajax<ArrayBuffer>({
                             url,
                             responseType: 'arraybuffer',
