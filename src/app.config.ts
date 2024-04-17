@@ -18,7 +18,7 @@ export const NODE_ENV = env.NODE_ENV
 export const __DEV__ = NODE_ENV === 'development'
 
 if (__DEV__) {
-    console.log(envObj)
+    console.log('envObj', envObj)
 }
 
 export const PORT = Number(env.PORT || 3000)

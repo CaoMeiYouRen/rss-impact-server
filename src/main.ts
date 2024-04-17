@@ -15,7 +15,7 @@ import { AppModule } from './app.module'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { limiter } from './middlewares/limit.middleware'
 import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
-import { fileLogger, winstonLogger } from './middlewares/logger.middleware'
+import { fileLogger, logger } from './middlewares/logger.middleware'
 import { sessionMiddleware } from './middlewares/session.middleware'
 
 async function bootstrap() {
@@ -25,7 +25,7 @@ async function bootstrap() {
     }
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         // logger: __DEV__ ? ['error', 'warn', 'log', 'debug', 'verbose'] : ['error', 'warn', 'log'],
-        logger: winstonLogger,
+        logger,
     })
 
     app.set('trust proxy', true)
@@ -48,6 +48,7 @@ async function bootstrap() {
         }
         const document = SwaggerModule.createDocument(app, config, options)
         SwaggerModule.setup('docs', app, document)
+
     }
     app.use(history({})) // 解决单页应用程序(SPA)重定向问题
 
@@ -66,7 +67,12 @@ async function bootstrap() {
     app.use(sessionMiddleware)
 
     await app.listen(PORT)
-    console.log(`Docs http://127.0.0.1:${PORT}/docs`)
+
+    logger.log(`应用访问地址为 http://127.0.0.1:${PORT}`)
+    if (__DEV__) {
+        logger.debug(`Docs http://127.0.0.1:${PORT}/docs`)
+    }
+
 }
 
 bootstrap()

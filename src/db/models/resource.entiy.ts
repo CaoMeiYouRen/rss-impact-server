@@ -1,12 +1,14 @@
 import { Column, Entity, Index } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
+import { IsNotEmpty, Length, ValidateIf } from 'class-validator'
 import md5 from 'md5'
 import { AclBase } from './acl-base.entity'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { StatusList, StatusType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { __DEV__ } from '@/app.config'
+import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
 
 /**
  * 文件资源。
@@ -27,11 +29,13 @@ export class Resource extends AclBase {
     })
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/images/favicon-16x16-next.png' })
     @IsNotEmpty()
-    @IsUrl()
-    @Length(0, 2048)
+    @IsUrlOrMagnetUri({}, {
+        require_tld: !__DEV__,   // 是否要顶级域名
+    })
+    @Length(0, 65000)
     @Index({})
     @Column({
-        length: 2048,
+        length: 65000,
     })
     url: string
 
@@ -39,13 +43,13 @@ export class Resource extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '文件名称', example: 'favicon-16x16-next.png' })
-    @IsNotEmpty()
+    // @IsNotEmpty()
     @Length(0, 1024)
     @Column({
         length: 1024,
         nullable: true,
     })
-    name: string
+    name?: string
 
     @ApiProperty({ title: '文件路径', example: '/data/download/favicon-16x16-next.png' })
     @Length(0, 2048)

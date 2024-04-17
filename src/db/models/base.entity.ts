@@ -5,6 +5,7 @@ import { ValidateIf, validate } from 'class-validator'
 import { IsId } from '@/decorators/is-id.decorator'
 import { flattenValidationErrors } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
+import { winstonLogger } from '@/middlewares/logger.middleware'
 
 export abstract class Base {
 
@@ -32,7 +33,7 @@ export abstract class Base {
 
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
-            // console.log('插入前校验', validationErrors)
+            winstonLogger.debug('插入前校验', validationErrors)
             throw new HttpError(400, errors.join(', '))
         }
     }
@@ -46,7 +47,7 @@ export abstract class Base {
         })
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
-            // console.log('更新前校验', validationErrors)
+            winstonLogger.debug('更新前校验', validationErrors)
             throw new HttpError(400, errors.join(', '))
         }
     }

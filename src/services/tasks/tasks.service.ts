@@ -541,6 +541,7 @@ export class TasksService implements OnApplicationBootstrap {
                         }
                         if (size === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
                             size = 0
+                            article.enclosure.length = 0
                         }
                         const tracker = magnet.announce?.[0] // 仅保留第一个 tracker
                         magnetUri = toMagnetURI({
@@ -560,7 +561,6 @@ export class TasksService implements OnApplicationBootstrap {
                             userId,
                         })
                         const newResource = await this.resourceRepository.save(resource)
-
                         if (newResource.size && !article.enclosure.length) {
                             article.enclosure.length = newResource.size // 更新附件大小
                             article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
@@ -577,13 +577,15 @@ export class TasksService implements OnApplicationBootstrap {
                         // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
                         if (!newResource.size) {
                             setTimeout(async () => {
-                                for (let index = 0; index < 5; index++) {
-                                    await sleep(60 * 1000) // 等待 60 秒后更新 元数据，至多重试 5 次
+                                let i = 0
+                                do {
                                     size = await this.updateTorrentInfo(qBittorrent, config, newResource, article)
                                     if (size > 0 || size === -1) {
                                         break
                                     }
-                                }
+                                    i++
+                                    await sleep(60 * 1000) // 等待 60 秒后更新 元数据，至多重试 5 次
+                                } while (i > 5)
                             }, 0)
                         }
                         return

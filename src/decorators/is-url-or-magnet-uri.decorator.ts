@@ -1,6 +1,7 @@
-import { registerDecorator, ValidationOptions, isURL, isMagnetURI } from 'class-validator'
+import { registerDecorator, ValidationOptions, isURL, isMagnetURI, ValidationArguments } from 'class-validator'
+import { IsURLOptions } from 'validator'
 
-export function IsUrlOrMagnetUri(validationOptions?: ValidationOptions) {
+export function IsUrlOrMagnetUri(validationOptions?: ValidationOptions, isUrlOptions?: IsURLOptions) {
     return function (object: unknown, propertyName: string) {
         registerDecorator({
             name: 'isUrlOrMagnetUri',
@@ -8,8 +9,8 @@ export function IsUrlOrMagnetUri(validationOptions?: ValidationOptions) {
             propertyName,
             options: validationOptions,
             validator: {
-                validate(value: any) {
-                    return isURL(value) || isMagnetURI(value)
+                validate(value: any, _validationArguments?: ValidationArguments) {
+                    return isURL(value, isUrlOptions) || isMagnetURI(value)
                 },
                 defaultMessage(): string {
                     return 'Value must be a valid URL or Magnet URI'

@@ -1,7 +1,7 @@
 import { Entity, Column, Index, ManyToOne } from 'typeorm'
 import { Item, Enclosure } from 'rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsDate, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested, isMagnetURI } from 'class-validator'
+import { IsArray, IsDate, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
 import dayjs from 'dayjs'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
@@ -12,11 +12,14 @@ import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
+import { __DEV__ } from '@/app.config'
 
 export class EnclosureImpl implements Enclosure {
 
     @ApiProperty({ title: 'URL', examples: ['http://bt.example.co', 'magnet:?xt=urn:btih:xxxxx'] })
-    @IsUrlOrMagnetUri()
+    @IsUrlOrMagnetUri({}, {
+        require_tld: !__DEV__,   // 是否要顶级域名
+    })
     @Length(0, 65000)
     @ValidateIf((o) => typeof o.url !== 'undefined')
     url: string
@@ -59,7 +62,9 @@ export class Article extends AclBase implements Item {
     guid: string
 
     @ApiProperty({ title: '链接', example: 'https://blog.cmyr.ltd/archives/499d4cee.html' })
-    @IsUrl()
+    @IsUrl({
+        require_tld: !__DEV__, // 是否要顶级域名
+    })
     @Length(0, 2048)
     @ValidateIf((o) => typeof o.link !== 'undefined')
     @Column({
