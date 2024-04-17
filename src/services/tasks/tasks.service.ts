@@ -15,6 +15,7 @@ import FileType from 'file-type'
 import { QBittorrent } from '@cao-mei-you-ren/qbittorrent'
 import { plainToInstance } from 'class-transformer'
 import parseTorrent, { Instance, toMagnetURI } from 'parse-torrent'
+import Parser from 'rss-parser'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
@@ -84,14 +85,17 @@ export class TasksService implements OnApplicationBootstrap {
      * @author CaoMeiYouRen
      * @date 2024-03-21
      * @param feed
+     * @param [rss]
      */
-    private async getRssContent(feed: Feed) {
+    async getRssContent(feed: Feed, rss?: Record<string, any> & Parser.Output<Record<string, any>>) {
         const fid = feed.id
         const uid = feed.userId
         const url = feed.url
 
         try {
-            const rss = await rssParserURL(url)
+            if (!rss) {
+                rss = await rssParserURL(url)
+            }
             if (Array.isArray(rss?.items)) {
                 // 根据 guid 去重复 | 每个 user 的 不重复
                 const guids = rss.items.map((e) => e.guid)
