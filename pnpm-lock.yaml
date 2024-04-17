@@ -8,6 +8,7 @@ overrides:
   '@types/superagent': 4.1.14
   crypto-hash: git+https://github.com/CaoMeiYouRen/crypto-hash.git
   compare-func: 2.0.0
+  cron: 3.1.7
 
 dependencies:
   '@cao-mei-you-ren/qbittorrent':
@@ -29,8 +30,8 @@ dependencies:
     specifier: ^10.3.3
     version: 10.3.7(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)
   '@nestjs/schedule':
-    specifier: ^4.0.1
-    version: 4.0.1(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)
+    specifier: ^4.0.2
+    version: 4.0.2(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)
   '@nestjs/serve-static':
     specifier: ^4.0.2
     version: 4.0.2(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)
@@ -65,8 +66,8 @@ dependencies:
     specifier: ^0.9.13
     version: 0.9.15
   cron:
-    specifier: 3.1.6
-    version: 3.1.6
+    specifier: 3.1.7
+    version: 3.1.7
   crypto-hash:
     specifier: git+https://github.com/CaoMeiYouRen/crypto-hash.git
     version: github.com/CaoMeiYouRen/crypto-hash/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
@@ -1606,15 +1607,15 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@nestjs/schedule@4.0.1(@nestjs/common@10.3.7)(@nestjs/core@10.3.7):
-    resolution: {integrity: sha512-cz2FNjsuoma+aGsG0cMmG6Dqg/BezbBWet1UTHtAuu6d2mXNTVcmoEQM2DIVG5Lfwb2hfSE2yZt8Moww+7y+mA==}
+  /@nestjs/schedule@4.0.2(@nestjs/common@10.3.7)(@nestjs/core@10.3.7):
+    resolution: {integrity: sha512-po9oauE7fO0CjhDKvVC2tzEgjOUwhxYoIsXIVkgfu+xaDMmzzpmXY2s1LT4oP90Z+PaTtPoAHmhslnYmo4mSZg==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0
     dependencies:
       '@nestjs/common': 10.3.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.7(@nestjs/common@10.3.7)(@nestjs/platform-express@10.3.7)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      cron: 3.1.6
+      cron: 3.1.7
       uuid: 9.0.1
     dev: false
 
@@ -2276,8 +2277,8 @@ packages:
     resolution: {integrity: sha512-t7dhREVv6dbNj0q17X12j7yDG4bD/DHYX7o5/DbDxobP0HnGPgpRz2Ej77aL7TZT3DSw13fqUTj8J4mMnqa7WA==}
     dev: true
 
-  /@types/luxon@3.3.8:
-    resolution: {integrity: sha512-jYvz8UMLDgy3a5SkGJne8H7VA7zPV2Lwohjx0V8V31+SqAjNmurWMkk9cQhfvlcnXWudBpK9xPM1n4rljOcHYQ==}
+  /@types/luxon@3.4.2:
+    resolution: {integrity: sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA==}
     dev: false
 
   /@types/magnet-uri@5.1.5:
@@ -3960,10 +3961,10 @@ packages:
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
-  /cron@3.1.6:
-    resolution: {integrity: sha512-cvFiQCeVzsA+QPM6fhjBtlKGij7tLLISnTSvFxVdnFGLdz+ZdXN37kNe0i2gefmdD17XuZA6n2uPVwzl4FxW/w==}
+  /cron@3.1.7:
+    resolution: {integrity: sha512-tlBg7ARsAMQLzgwqVxy8AZl/qlTc5nibqYwtNGoCrd+cV+ugI+tvZC1oT/8dFH8W455YrywGykx/KMmAqOr7Jw==}
     dependencies:
-      '@types/luxon': 3.3.8
+      '@types/luxon': 3.4.2
       luxon: 3.4.4
     dev: false
 
@@ -9578,6 +9579,9 @@ packages:
   /sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
     requiresBuild: true
+    peerDependenciesMeta:
+      node-gyp:
+        optional: true
     dependencies:
       bindings: 1.5.0
       node-addon-api: 7.1.0
