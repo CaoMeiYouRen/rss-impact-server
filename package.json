@@ -62,7 +62,7 @@
     "fs-extra": "^11.2.0",
     "go-cqwebsocket": "^6.3.2",
     "helmet": "^7.1.0",
-    "ioredis": "^5.4.0",
+    "ioredis": "^5.4.1",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
     "module-alias": "^2.2.3",
