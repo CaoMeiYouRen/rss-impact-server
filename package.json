@@ -122,7 +122,7 @@
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
     "commitizen": "^4.2.3",
-    "conventional-changelog-cmyr-config": "^2.1.1",
+    "conventional-changelog-cmyr-config": "^2.1.2",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog-cmyr": "^1.1.0",
     "debug": "^4.3.4",
