@@ -1,0 +1,4986 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/api": {
+            "get": {
+                "operationId": "App_getHello",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "App_postHello",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/config": {
+            "get": {
+                "operationId": "User_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            }
+        },
+        "/api/user": {
+            "get": {
+                "operationId": "User_find",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindUser"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "post": {
+                "operationId": "User_create",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "put": {
+                "operationId": "User_update",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            }
+        },
+        "/api/user/me": {
+            "get": {
+                "operationId": "User_me",
+                "summary": "获取个人信息",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            }
+        },
+        "/api/user/dicData": {
+            "get": {
+                "operationId": "User_dicData",
+                "summary": "获取 dicData",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DicData"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            }
+        },
+        "/api/user/{id}": {
+            "get": {
+                "operationId": "User_findOne",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            },
+            "delete": {
+                "operationId": "User_delete",
+                "summary": "删除用户。仅返回 id 字段",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "operationId": "Auth_login",
+                "summary": "登录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "operationId": "Auth_logout",
+                "summary": "登出",
+                "parameters": [],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "operationId": "Auth_register",
+                "summary": "注册",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/feed/quickCreate/option": {
+            "get": {
+                "operationId": "Feed_quickCreateOption",
+                "summary": "快速添加订阅的配置项",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Feed"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            }
+        },
+        "/api/feed/quickCreate": {
+            "post": {
+                "operationId": "Feed_quickCreate",
+                "summary": "快速添加订阅",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QuickCreateFeed"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Feed"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            }
+        },
+        "/api/feed": {
+            "post": {
+                "operationId": "Feed_create",
+                "summary": "创建记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateFeed"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Feed"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            },
+            "put": {
+                "operationId": "Feed_update",
+                "summary": "更新记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateFeed"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Feed"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            },
+            "get": {
+                "operationId": "Feed_find",
+                "summary": "查找所有记录",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindFeed"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            }
+        },
+        "/api/feed/{id}": {
+            "delete": {
+                "operationId": "Feed_delete",
+                "summary": "删除记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Feed"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            },
+            "get": {
+                "operationId": "Feed_findOne",
+                "summary": "查找记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Feed"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            }
+        },
+        "/api/feed/dicData": {
+            "get": {
+                "operationId": "Feed_dicData",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DicData"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            }
+        },
+        "/api/feed/config": {
+            "get": {
+                "operationId": "Feed_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            }
+        },
+        "/api/category/dicData": {
+            "get": {
+                "operationId": "Category_dicData",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DicData"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "category"
+                ]
+            }
+        },
+        "/api/category/config": {
+            "get": {
+                "operationId": "Category_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "category"
+                ]
+            }
+        },
+        "/api/category": {
+            "get": {
+                "operationId": "Category_find",
+                "summary": "查找所有记录",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindCategory"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "category"
+                ]
+            },
+            "post": {
+                "operationId": "Category_create",
+                "summary": "创建记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCategory"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "category"
+                ]
+            },
+            "put": {
+                "operationId": "Category_update",
+                "summary": "更新记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCategory"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "category"
+                ]
+            }
+        },
+        "/api/category/{id}": {
+            "get": {
+                "operationId": "Category_findOne",
+                "summary": "查找记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "category"
+                ]
+            },
+            "delete": {
+                "operationId": "Category_delete",
+                "summary": "删除记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "category"
+                ]
+            }
+        },
+        "/api/article/config": {
+            "get": {
+                "operationId": "Article_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "article"
+                ]
+            }
+        },
+        "/api/article": {
+            "get": {
+                "operationId": "Article_find",
+                "summary": "查找所有记录",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindArticle"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "article"
+                ]
+            }
+        },
+        "/api/article/{id}": {
+            "get": {
+                "operationId": "Article_findOne",
+                "summary": "查找记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "article"
+                ]
+            },
+            "delete": {
+                "operationId": "Article_delete",
+                "summary": "删除记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Article"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "article"
+                ]
+            }
+        },
+        "/api/hook/dicData": {
+            "get": {
+                "operationId": "Hook_dicData",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DicData"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "hook"
+                ]
+            }
+        },
+        "/api/hook/config": {
+            "get": {
+                "operationId": "Hook_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "hook"
+                ]
+            }
+        },
+        "/api/hook": {
+            "get": {
+                "operationId": "Hook_find",
+                "summary": "查找所有记录",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindHook"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "hook"
+                ]
+            },
+            "post": {
+                "operationId": "Hook_create",
+                "summary": "创建记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateHook"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hook"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "hook"
+                ]
+            },
+            "put": {
+                "operationId": "Hook_update",
+                "summary": "更新记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateHook"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hook"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "hook"
+                ]
+            }
+        },
+        "/api/hook/{id}": {
+            "get": {
+                "operationId": "Hook_findOne",
+                "summary": "查找记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hook"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "hook"
+                ]
+            },
+            "delete": {
+                "operationId": "Hook_delete",
+                "summary": "删除记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Hook"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "hook"
+                ]
+            }
+        },
+        "/api/resource/typeDicData": {
+            "get": {
+                "operationId": "Resource_typeDicData",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DicData"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "resource"
+                ]
+            }
+        },
+        "/api/resource/{id}": {
+            "delete": {
+                "operationId": "Resource_delete",
+                "summary": "删除记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "resource"
+                ]
+            },
+            "get": {
+                "operationId": "Resource_findOne",
+                "summary": "查找记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Resource"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "resource"
+                ]
+            }
+        },
+        "/api/resource/config": {
+            "get": {
+                "operationId": "Resource_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "resource"
+                ]
+            }
+        },
+        "/api/resource": {
+            "get": {
+                "operationId": "Resource_find",
+                "summary": "查找所有记录",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindResource"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "resource"
+                ]
+            }
+        },
+        "/api/webhook-log/config": {
+            "get": {
+                "operationId": "WebhookLog_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "webhook-log"
+                ]
+            }
+        },
+        "/api/webhook-log": {
+            "get": {
+                "operationId": "WebhookLog_find",
+                "summary": "查找所有记录",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindWebhookLog"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "webhook-log"
+                ]
+            }
+        },
+        "/api/webhook-log/{id}": {
+            "get": {
+                "operationId": "WebhookLog_findOne",
+                "summary": "查找记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WebhookLog"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "webhook-log"
+                ]
+            },
+            "delete": {
+                "operationId": "WebhookLog_delete",
+                "summary": "删除记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WebhookLog"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "webhook-log"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "RSS Impact server docs",
+        "description": "RSS Impact server docs",
+        "version": "0.1.0",
+        "contact": {}
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+        "schemas": {
+            "ResponseDto": {
+                "type": "object",
+                "properties": {
+                    "statusCode": {
+                        "type": "number"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "error": {
+                        "type": "string"
+                    },
+                    "stack": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Rule": {
+                "type": "object",
+                "properties": {
+                    "required": {
+                        "type": "boolean"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "trigger": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "required",
+                    "message",
+                    "trigger"
+                ]
+            },
+            "DicData": {
+                "type": "object",
+                "properties": {
+                    "label": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "label",
+                    "value"
+                ]
+            },
+            "Column": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "rules": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Rule"
+                        }
+                    },
+                    "dicData": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DicData"
+                        }
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "prop": {
+                        "type": "string"
+                    },
+                    "overHidden": {
+                        "type": "boolean"
+                    },
+                    "value": {
+                        "type": "object"
+                    },
+                    "addDisplay": {
+                        "type": "boolean"
+                    },
+                    "editDisabled": {
+                        "type": "boolean"
+                    },
+                    "readonly": {
+                        "type": "boolean"
+                    },
+                    "max": {
+                        "type": "number"
+                    },
+                    "min": {
+                        "type": "number"
+                    },
+                    "format": {
+                        "type": "string"
+                    },
+                    "maxlength": {
+                        "type": "number"
+                    },
+                    "minlength": {
+                        "type": "number"
+                    },
+                    "alone": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "type",
+                    "label",
+                    "prop"
+                ]
+            },
+            "Option": {
+                "type": "object",
+                "properties": {
+                    "column": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Column"
+                        }
+                    },
+                    "index": {
+                        "type": "boolean"
+                    },
+                    "align": {
+                        "type": "string"
+                    },
+                    "border": {
+                        "type": "boolean"
+                    },
+                    "stripe": {
+                        "type": "boolean"
+                    },
+                    "columnBtn": {
+                        "type": "boolean"
+                    },
+                    "refreshBtn": {
+                        "type": "boolean"
+                    },
+                    "addBtn": {
+                        "type": "boolean"
+                    },
+                    "editBtn": {
+                        "type": "boolean"
+                    },
+                    "delBtn": {
+                        "type": "boolean"
+                    },
+                    "viewBtn": {
+                        "type": "boolean"
+                    },
+                    "excelBtn": {
+                        "type": "boolean"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "addRowBtn": {
+                        "type": "boolean"
+                    },
+                    "calcHeight": {
+                        "type": "number"
+                    },
+                    "cancelBtnTitle": {
+                        "type": "string"
+                    },
+                    "dataType": {
+                        "type": "string"
+                    },
+                    "cellBtn": {
+                        "type": "boolean"
+                    },
+                    "dateBtn": {
+                        "type": "boolean"
+                    },
+                    "cancelBtn": {
+                        "type": "boolean"
+                    },
+                    "dateDefault": {
+                        "type": "boolean"
+                    },
+                    "dicData": {
+                        "type": "object"
+                    },
+                    "dicMethod": {
+                        "type": "string"
+                    },
+                    "dicQuery": {
+                        "type": "object"
+                    },
+                    "dicUrl": {
+                        "type": "string"
+                    },
+                    "defaultSort": {
+                        "type": "object"
+                    },
+                    "dialogFullscreen": {
+                        "type": "boolean"
+                    },
+                    "dialogEscape": {
+                        "type": "boolean"
+                    },
+                    "dialogClickModal": {
+                        "type": "boolean"
+                    },
+                    "dialogCloseBtn": {
+                        "type": "boolean"
+                    },
+                    "dialogModal": {
+                        "type": "boolean"
+                    },
+                    "dialogTop": {
+                        "type": "object"
+                    },
+                    "dialogType": {
+                        "type": "string"
+                    },
+                    "dialogWidth": {
+                        "type": "object"
+                    },
+                    "dialogHeight": {
+                        "type": "object"
+                    },
+                    "defaultExpandAll": {
+                        "type": "boolean"
+                    },
+                    "expandRowKeys": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "emptyText": {
+                        "type": "string"
+                    },
+                    "expand": {
+                        "type": "boolean"
+                    },
+                    "expandWidth": {
+                        "type": "number"
+                    },
+                    "expandFixed": {
+                        "type": "boolean"
+                    },
+                    "filterBtn": {
+                        "type": "boolean"
+                    },
+                    "formWidth": {
+                        "type": "object"
+                    },
+                    "height": {
+                        "type": "number"
+                    },
+                    "header": {
+                        "type": "boolean"
+                    },
+                    "indexLabel": {
+                        "type": "string"
+                    },
+                    "indexWidth": {
+                        "type": "number"
+                    },
+                    "indexFixed": {
+                        "type": "boolean"
+                    },
+                    "rowKey": {
+                        "type": "string"
+                    },
+                    "indeterminate": {
+                        "type": "boolean"
+                    },
+                    "labelWidth": {
+                        "type": "number"
+                    },
+                    "maxHeight": {
+                        "type": "number"
+                    },
+                    "menu": {
+                        "type": "boolean"
+                    },
+                    "menuWidth": {
+                        "type": "number"
+                    },
+                    "menuXsWidth": {
+                        "type": "number"
+                    },
+                    "menuAlign": {
+                        "type": "string"
+                    },
+                    "menuType": {
+                        "type": "string"
+                    },
+                    "menuBtnTitle": {
+                        "type": "string"
+                    },
+                    "pageSize": {
+                        "type": "string"
+                    },
+                    "pageSizes": {
+                        "type": "array",
+                        "items": {
+                            "type": "number"
+                        }
+                    },
+                    "printBtn": {
+                        "type": "boolean"
+                    },
+                    "saveBtn": {
+                        "type": "boolean"
+                    },
+                    "updateBtn": {
+                        "type": "boolean"
+                    },
+                    "cancalBtn": {
+                        "type": "boolean"
+                    },
+                    "saveBtnTitle": {
+                        "type": "string"
+                    },
+                    "selection": {
+                        "type": "boolean"
+                    },
+                    "selectionWidth": {
+                        "type": "number"
+                    },
+                    "selectionFixed": {
+                        "type": "boolean"
+                    },
+                    "searchBtn": {
+                        "type": "boolean"
+                    },
+                    "selectable": {
+                        "type": "boolean"
+                    },
+                    "selectClearBtn": {
+                        "type": "boolean"
+                    },
+                    "showHeader": {
+                        "type": "boolean"
+                    },
+                    "showSummary": {
+                        "type": "boolean"
+                    },
+                    "sumColumnList": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "tip": {
+                        "type": "string"
+                    },
+                    "tipPlacement": {
+                        "type": "string"
+                    },
+                    "checkStrictly": {
+                        "type": "boolean"
+                    },
+                    "updateBtnTitle": {
+                        "type": "string"
+                    },
+                    "width": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "column"
+                ]
+            },
+            "AvueCrudConfigImpl": {
+                "type": "object",
+                "properties": {
+                    "option": {
+                        "$ref": "#/components/schemas/Option"
+                    }
+                },
+                "required": [
+                    "option"
+                ]
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "username": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "用户名",
+                        "example": "admin"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "密码",
+                        "example": "123456"
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "邮箱",
+                        "example": "admin@example.com"
+                    },
+                    "roles": {
+                        "title": "角色",
+                        "example": [
+                            "admin"
+                        ],
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 256,
+                            "minLength": 0
+                        }
+                    },
+                    "accessToken": {
+                        "type": "string",
+                        "title": "接口访问令牌",
+                        "description": "接口访问令牌，部分情况可替代账号密码",
+                        "example": "rss-impact:fef26d6e-040f-4a7b-8d6a-4e4f12e107b6"
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "username",
+                    "password",
+                    "email",
+                    "roles",
+                    "accessToken"
+                ]
+            },
+            "FindUser": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/User"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            },
+            "CreateUser": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "用户名",
+                        "example": "admin"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "密码",
+                        "example": "123456"
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "邮箱",
+                        "example": "admin@example.com"
+                    },
+                    "roles": {
+                        "title": "角色",
+                        "example": [
+                            "admin"
+                        ],
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 256,
+                            "minLength": 0
+                        }
+                    }
+                },
+                "required": [
+                    "username",
+                    "password",
+                    "email",
+                    "roles"
+                ]
+            },
+            "UpdateUser": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "username": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "用户名",
+                        "example": "admin"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "密码",
+                        "example": "123456"
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "邮箱",
+                        "example": "admin@example.com"
+                    },
+                    "roles": {
+                        "title": "角色",
+                        "example": [
+                            "admin"
+                        ],
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "maxLength": 256,
+                            "minLength": 0
+                        }
+                    }
+                }
+            },
+            "LoginDto": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "description": "用户名",
+                        "example": "admin"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6,
+                        "description": "密码",
+                        "example": "123456"
+                    }
+                },
+                "required": [
+                    "username",
+                    "password"
+                ]
+            },
+            "RegisterDto": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "description": "用户名",
+                        "example": "user"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 128,
+                        "description": "密码",
+                        "example": "123456"
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "description": "邮箱",
+                        "example": "user@example.com"
+                    }
+                },
+                "required": [
+                    "username",
+                    "password",
+                    "email"
+                ]
+            },
+            "EnclosureImpl": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 65000,
+                        "title": "URL",
+                        "examples": [
+                            "http://bt.example.co",
+                            "magnet:?xt=urn:btih:xxxxx"
+                        ]
+                    },
+                    "length": {
+                        "type": "number",
+                        "title": "长度",
+                        "example": 114514
+                    },
+                    "type": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "媒体类型",
+                        "example": "application/x-bittorrent"
+                    }
+                },
+                "required": [
+                    "url"
+                ]
+            },
+            "Article": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "guid": {
+                        "type": "string",
+                        "title": "全局索引",
+                        "example": "499d4cee"
+                    },
+                    "link": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "链接",
+                        "example": "https://blog.cmyr.ltd/archives/499d4cee.html"
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "标题",
+                        "example": "这是一个标题"
+                    },
+                    "content": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1048576,
+                        "title": "正文",
+                        "example": "这是一段正文"
+                    },
+                    "publishDate": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "发布日期",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "author": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "作者",
+                        "example": "CaoMeiYouRen"
+                    },
+                    "contentSnippet": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 65536,
+                        "title": "摘要",
+                        "description": "纯文本格式，无 HTML",
+                        "example": "这是一段内容摘要"
+                    },
+                    "summary": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "总结",
+                        "example": "这是一段总结"
+                    },
+                    "categories": {
+                        "title": "分类列表",
+                        "description": "RSS 源定义的分类，和 本地RSS 的分组不是同一个",
+                        "example": [
+                            "tag1",
+                            "tag2"
+                        ],
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "enclosure": {
+                        "title": "附件",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/EnclosureImpl"
+                            }
+                        ]
+                    },
+                    "feedId": {
+                        "type": "number",
+                        "title": "订阅源",
+                        "example": 1
+                    },
+                    "feed": {
+                        "title": "订阅源",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Feed"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "guid",
+                    "feedId",
+                    "feed"
+                ]
+            },
+            "NotificationConfig": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "enum": [
+                            "ServerChanTurbo",
+                            "Dingtalk",
+                            "CustomEmail",
+                            "WechatRobot",
+                            "WechatApp",
+                            "PushDeer",
+                            "PushPlus",
+                            "IGot",
+                            "Qmsg",
+                            "XiZhi",
+                            "CoolPush",
+                            "Email",
+                            "UniPush",
+                            "Telegram",
+                            "Discord",
+                            "OneBot"
+                        ],
+                        "type": "string",
+                        "title": "推送类型",
+                        "description": "push-all-in-one 支持的推送类型",
+                        "example": "ServerChanTurbo"
+                    },
+                    "config": {
+                        "type": "object",
+                        "title": "推送配置",
+                        "description": "具体配置请参考 push-all-in-one 文档",
+                        "example": {
+                            "SCTKEY": ""
+                        }
+                    },
+                    "isMergePush": {
+                        "type": "boolean",
+                        "title": "合并推送",
+                        "description": "在一次轮询中检测到多条 RSS 更新，将合并为一条推送",
+                        "example": true
+                    },
+                    "isMarkdown": {
+                        "type": "boolean",
+                        "title": "Markdown",
+                        "description": "对于支持 markdown 格式的渠道，将使用 markdown 格式推送",
+                        "example": true
+                    },
+                    "isSnippet": {
+                        "type": "boolean",
+                        "title": "纯文本",
+                        "description": "去除 HTML，仅保留纯文本部分",
+                        "example": false
+                    },
+                    "maxLength": {
+                        "type": "number",
+                        "title": "最大长度",
+                        "description": "一次推送文本的最大长度。默认值为 4096",
+                        "example": 4096
+                    }
+                },
+                "required": [
+                    "type",
+                    "config",
+                    "isMergePush",
+                    "isMarkdown",
+                    "isSnippet",
+                    "maxLength"
+                ]
+            },
+            "WebhookConfig": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "请求链接",
+                        "example": "http://127.0.0.1:3000"
+                    },
+                    "method": {
+                        "type": "object",
+                        "enum": [
+                            "GET",
+                            "DELETE",
+                            "HEAD",
+                            "OPTIONS",
+                            "POST",
+                            "PUT",
+                            "PATCH",
+                            "PURGE",
+                            "LINK",
+                            "UNLINK"
+                        ],
+                        "title": "请求方法",
+                        "example": {}
+                    },
+                    "query": {
+                        "type": "object",
+                        "title": "查询字符串",
+                        "example": {
+                            "key": "114514"
+                        }
+                    },
+                    "data": {
+                        "type": "object",
+                        "title": "请求体",
+                        "example": {}
+                    },
+                    "headers": {
+                        "type": "object",
+                        "title": "请求头",
+                        "example": {}
+                    },
+                    "timeout": {
+                        "type": "number",
+                        "title": "超时时间(秒)",
+                        "description": "默认 60 秒。",
+                        "example": 60
+                    }
+                },
+                "required": [
+                    "url"
+                ]
+            },
+            "DownloadConfig": {
+                "type": "object",
+                "properties": {
+                    "suffixes": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "匹配后缀名",
+                        "description": "要下载的文件的后缀名，支持正则。例如：.(jpe?g|png|gif|webp|bmp)$",
+                        "example": ".(jpe?g|png|gif|webp|bmp)$"
+                    },
+                    "skipHashes": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "跳过文件",
+                        "description": "要跳过的文件 md5，逗号分割。例如：4cf24fe8401f7ab2eba2c6cb82dffb0e",
+                        "example": "d41d8cd98f00b204e9800998ecf8427e"
+                    },
+                    "timeout": {
+                        "type": "number",
+                        "title": "超时时间(秒)",
+                        "description": "默认 60 秒。",
+                        "example": 60
+                    }
+                },
+                "required": [
+                    "suffixes",
+                    "skipHashes"
+                ]
+            },
+            "BitTorrentConfig": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "qBittorrent"
+                        ],
+                        "minLength": 0,
+                        "maxLength": 16,
+                        "title": "类型",
+                        "description": "BT下载器类型。目前仅支持 qBittorrent",
+                        "example": "qBittorrent"
+                    },
+                    "baseUrl": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "服务器地址",
+                        "description": "BT服务器地址，例如 http://localhost:8080/",
+                        "example": "http://localhost:8080/"
+                    },
+                    "username": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "用户名",
+                        "example": "admin"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "密码",
+                        "example": "adminadmin"
+                    },
+                    "downloadPath": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "下载路径",
+                        "example": "服务器上的地址，要保存到的路径。留空则为 BT 下载器的默认设置"
+                    },
+                    "maxSize": {
+                        "type": "number",
+                        "title": "最大体积(B)",
+                        "description": "过滤资源体积，超过体积的资源不会下载。单位为 B (字节)。设置为 0 禁用",
+                        "example": 114514
+                    }
+                },
+                "required": [
+                    "type",
+                    "baseUrl",
+                    "username",
+                    "password"
+                ]
+            },
+            "Filter": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "number",
+                        "title": "条数限制",
+                        "description": "限制最大条数，主要用于排行榜类 RSS。默认值 20。",
+                        "example": 20
+                    },
+                    "time": {
+                        "type": "number",
+                        "title": "过滤时间(秒)",
+                        "description": "过滤时间，返回指定时间范围内的内容。设置为 0 禁用",
+                        "example": 3600
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "过滤标题",
+                        "example": "标题1|标题2"
+                    },
+                    "summary": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "过滤总结",
+                        "example": "总结1|总结2"
+                    },
+                    "author": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "过滤作者",
+                        "example": "CaoMeiYouRen"
+                    },
+                    "categories": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "过滤分类",
+                        "description": "分类正则中有一个对得上就保留",
+                        "example": "tag1|tag2"
+                    }
+                }
+            },
+            "FilterOut": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "排除标题",
+                        "example": "标题1|标题2"
+                    },
+                    "summary": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "排除总结",
+                        "example": "总结1|总结2"
+                    },
+                    "author": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "排除作者",
+                        "example": "CaoMeiYouRen"
+                    },
+                    "categories": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "排除分类",
+                        "description": "分类正则中有一个对得上就排除",
+                        "example": "tag1|tag2"
+                    }
+                }
+            },
+            "Hook": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "名称",
+                        "example": "Hook1"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "notification",
+                            "webhook",
+                            "download",
+                            "bitTorrent"
+                        ],
+                        "title": "类型",
+                        "example": "webhook"
+                    },
+                    "config": {
+                        "title": "配置",
+                        "example": {},
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/NotificationConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/WebhookConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/DownloadConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BitTorrentConfig"
+                            }
+                        ]
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
+                    },
+                    "isReversed": {
+                        "type": "boolean",
+                        "title": "反转模式",
+                        "description": "如果服务可访问，则认为是故障",
+                        "example": false
+                    },
+                    "feeds": {
+                        "title": "订阅源列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "name",
+                    "type",
+                    "config",
+                    "filter",
+                    "filterout",
+                    "isReversed",
+                    "feeds"
+                ]
+            },
+            "Feed": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "URL",
+                        "example": "https://blog.cmyr.ltd/atom.xml"
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "标题",
+                        "example": "这是一个标题"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 4096,
+                        "title": "简介",
+                        "example": "这是一段简介"
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "封面 URL",
+                        "example": "https://blog.cmyr.ltd/images/logo.svg"
+                    },
+                    "cron": {
+                        "type": "string",
+                        "enum": [
+                            "EVERY_10_MINUTES",
+                            "EVERY_20_MINUTES",
+                            "EVERY_30_MINUTES",
+                            "EVERY_1_HOUR",
+                            "EVERY_2_HOURS",
+                            "EVERY_3_HOURS",
+                            "EVERY_4_HOURS",
+                            "EVERY_6_HOURS",
+                            "EVERY_8_HOURS",
+                            "EVERY_12_HOURS",
+                            "EVERY_DAY"
+                        ],
+                        "title": "Cron",
+                        "example": "EVERY_10_MINUTES"
+                    },
+                    "isEnabled": {
+                        "type": "boolean",
+                        "title": "是否启用",
+                        "example": true
+                    },
+                    "categoryId": {
+                        "type": "number",
+                        "title": "分组",
+                        "example": 1
+                    },
+                    "category": {
+                        "title": "分组",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        ]
+                    },
+                    "articles": {
+                        "title": "文章列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Article"
+                        }
+                    },
+                    "hooks": {
+                        "title": "Hook列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Hook"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "url",
+                    "title",
+                    "description",
+                    "cron",
+                    "isEnabled",
+                    "categoryId",
+                    "category",
+                    "articles",
+                    "hooks"
+                ]
+            },
+            "Category": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "分类名称",
+                        "example": "分类A"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "分类简介",
+                        "example": "分类A"
+                    },
+                    "feeds": {
+                        "title": "订阅链接",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "name",
+                    "feeds"
+                ]
+            },
+            "QuickCreateFeed": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "URL",
+                        "example": "https://blog.cmyr.ltd/atom.xml"
+                    },
+                    "cron": {
+                        "type": "string",
+                        "enum": [
+                            "EVERY_10_MINUTES",
+                            "EVERY_20_MINUTES",
+                            "EVERY_30_MINUTES",
+                            "EVERY_1_HOUR",
+                            "EVERY_2_HOURS",
+                            "EVERY_3_HOURS",
+                            "EVERY_4_HOURS",
+                            "EVERY_6_HOURS",
+                            "EVERY_8_HOURS",
+                            "EVERY_12_HOURS",
+                            "EVERY_DAY"
+                        ],
+                        "title": "Cron",
+                        "example": "EVERY_10_MINUTES"
+                    },
+                    "isEnabled": {
+                        "type": "boolean",
+                        "title": "是否启用",
+                        "example": true
+                    },
+                    "categoryId": {
+                        "type": "number",
+                        "title": "分组",
+                        "example": 1
+                    },
+                    "hooks": {
+                        "title": "Hook列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Hook"
+                        }
+                    }
+                },
+                "required": [
+                    "url",
+                    "cron",
+                    "isEnabled",
+                    "categoryId",
+                    "hooks"
+                ]
+            },
+            "CreateFeed": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "URL",
+                        "example": "https://blog.cmyr.ltd/atom.xml"
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "标题",
+                        "example": "这是一个标题"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 4096,
+                        "title": "简介",
+                        "example": "这是一段简介"
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "封面 URL",
+                        "example": "https://blog.cmyr.ltd/images/logo.svg"
+                    },
+                    "cron": {
+                        "type": "string",
+                        "enum": [
+                            "EVERY_10_MINUTES",
+                            "EVERY_20_MINUTES",
+                            "EVERY_30_MINUTES",
+                            "EVERY_1_HOUR",
+                            "EVERY_2_HOURS",
+                            "EVERY_3_HOURS",
+                            "EVERY_4_HOURS",
+                            "EVERY_6_HOURS",
+                            "EVERY_8_HOURS",
+                            "EVERY_12_HOURS",
+                            "EVERY_DAY"
+                        ],
+                        "title": "Cron",
+                        "example": "EVERY_10_MINUTES"
+                    },
+                    "isEnabled": {
+                        "type": "boolean",
+                        "title": "是否启用",
+                        "example": true
+                    },
+                    "categoryId": {
+                        "type": "number",
+                        "title": "分组",
+                        "example": 1
+                    },
+                    "category": {
+                        "title": "分组",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        ]
+                    },
+                    "articles": {
+                        "title": "文章列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Article"
+                        }
+                    },
+                    "hooks": {
+                        "title": "Hook列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Hook"
+                        }
+                    }
+                },
+                "required": [
+                    "userId",
+                    "user",
+                    "url",
+                    "title",
+                    "description",
+                    "cron",
+                    "isEnabled",
+                    "categoryId",
+                    "category",
+                    "articles",
+                    "hooks"
+                ]
+            },
+            "UpdateFeed": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "URL",
+                        "example": "https://blog.cmyr.ltd/atom.xml"
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "标题",
+                        "example": "这是一个标题"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 4096,
+                        "title": "简介",
+                        "example": "这是一段简介"
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "封面 URL",
+                        "example": "https://blog.cmyr.ltd/images/logo.svg"
+                    },
+                    "cron": {
+                        "type": "string",
+                        "enum": [
+                            "EVERY_10_MINUTES",
+                            "EVERY_20_MINUTES",
+                            "EVERY_30_MINUTES",
+                            "EVERY_1_HOUR",
+                            "EVERY_2_HOURS",
+                            "EVERY_3_HOURS",
+                            "EVERY_4_HOURS",
+                            "EVERY_6_HOURS",
+                            "EVERY_8_HOURS",
+                            "EVERY_12_HOURS",
+                            "EVERY_DAY"
+                        ],
+                        "title": "Cron",
+                        "example": "EVERY_10_MINUTES"
+                    },
+                    "isEnabled": {
+                        "type": "boolean",
+                        "title": "是否启用",
+                        "example": true
+                    },
+                    "categoryId": {
+                        "type": "number",
+                        "title": "分组",
+                        "example": 1
+                    },
+                    "category": {
+                        "title": "分组",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        ]
+                    },
+                    "articles": {
+                        "title": "文章列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Article"
+                        }
+                    },
+                    "hooks": {
+                        "title": "Hook列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Hook"
+                        }
+                    }
+                }
+            },
+            "FindFeed": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            },
+            "FindCategory": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            },
+            "CreateCategory": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "分类名称",
+                        "example": "分类A"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "分类简介",
+                        "example": "分类A"
+                    },
+                    "feeds": {
+                        "title": "订阅链接",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    }
+                },
+                "required": [
+                    "userId",
+                    "user",
+                    "name",
+                    "feeds"
+                ]
+            },
+            "UpdateCategory": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "分类名称",
+                        "example": "分类A"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "分类简介",
+                        "example": "分类A"
+                    },
+                    "feeds": {
+                        "title": "订阅链接",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    }
+                }
+            },
+            "FindArticle": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Article"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            },
+            "FindHook": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Hook"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            },
+            "CreateHook": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "名称",
+                        "example": "Hook1"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "notification",
+                            "webhook",
+                            "download",
+                            "bitTorrent"
+                        ],
+                        "title": "类型",
+                        "example": "webhook"
+                    },
+                    "config": {
+                        "title": "配置",
+                        "example": {},
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/NotificationConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/WebhookConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/DownloadConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BitTorrentConfig"
+                            }
+                        ]
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
+                    },
+                    "isReversed": {
+                        "type": "boolean",
+                        "title": "反转模式",
+                        "description": "如果服务可访问，则认为是故障",
+                        "example": false
+                    },
+                    "feeds": {
+                        "title": "订阅源列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    }
+                },
+                "required": [
+                    "userId",
+                    "user",
+                    "name",
+                    "type",
+                    "config",
+                    "filter",
+                    "filterout",
+                    "isReversed",
+                    "feeds"
+                ]
+            },
+            "UpdateHook": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "名称",
+                        "example": "Hook1"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "notification",
+                            "webhook",
+                            "download",
+                            "bitTorrent"
+                        ],
+                        "title": "类型",
+                        "example": "webhook"
+                    },
+                    "config": {
+                        "title": "配置",
+                        "example": {},
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/NotificationConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/WebhookConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/DownloadConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BitTorrentConfig"
+                            }
+                        ]
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
+                    },
+                    "isReversed": {
+                        "type": "boolean",
+                        "title": "反转模式",
+                        "description": "如果服务可访问，则认为是故障",
+                        "example": false
+                    },
+                    "feeds": {
+                        "title": "订阅源列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    }
+                }
+            },
+            "Resource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 65000,
+                        "title": "URL",
+                        "example": "https://blog.cmyr.ltd/images/favicon-16x16-next.png"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "文件名称",
+                        "example": "favicon-16x16-next.png"
+                    },
+                    "path": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "文件路径",
+                        "example": "/data/download/favicon-16x16-next.png"
+                    },
+                    "type": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "文件类型",
+                        "example": "image/png"
+                    },
+                    "size": {
+                        "type": "number",
+                        "title": "文件大小(B)",
+                        "description": "单位为 B",
+                        "example": 114514
+                    },
+                    "hash": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "文件哈希",
+                        "example": "d41d8cd98f00b204e9800998ecf8427e"
+                    },
+                    "status": {
+                        "type": "object",
+                        "minLength": 0,
+                        "maxLength": 16,
+                        "title": "文件状态",
+                        "example": "success"
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "url",
+                    "type",
+                    "size",
+                    "hash",
+                    "status"
+                ]
+            },
+            "FindResource": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Resource"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            },
+            "WebhookLog": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "statusCode": {
+                        "type": "number",
+                        "minimum": 100,
+                        "maximum": 600,
+                        "title": "状态码",
+                        "example": 200
+                    },
+                    "type": {
+                        "type": "object",
+                        "minLength": 0,
+                        "maxLength": 16,
+                        "title": "类型",
+                        "description": "webhook 或 notification",
+                        "example": "webhook"
+                    },
+                    "status": {
+                        "type": "object",
+                        "minLength": 0,
+                        "maxLength": 16,
+                        "title": "状态",
+                        "example": "success"
+                    },
+                    "statusText": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "状态码名称",
+                        "example": "OK"
+                    },
+                    "data": {
+                        "type": "object",
+                        "title": "响应体",
+                        "example": {
+                            "message": "OK"
+                        }
+                    },
+                    "headers": {
+                        "type": "object",
+                        "title": "响应头",
+                        "example": {}
+                    },
+                    "feedId": {
+                        "type": "number",
+                        "title": "订阅源",
+                        "example": 1
+                    },
+                    "feed": {
+                        "title": "订阅源",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Feed"
+                            }
+                        ]
+                    },
+                    "hookId": {
+                        "type": "number",
+                        "title": "Hook",
+                        "example": 1
+                    },
+                    "hook": {
+                        "title": "Hook",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Hook"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "statusCode",
+                    "type",
+                    "status",
+                    "statusText",
+                    "feedId",
+                    "feed",
+                    "hookId",
+                    "hook"
+                ]
+            },
+            "FindWebhookLog": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WebhookLog"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            }
+        }
+    }
+}

@@ -5,11 +5,12 @@ moduleAlias.addAlias('@', path.join(__dirname, '../src'))
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
+import { Express } from 'express'
 import { AppModule } from '../src/app.module'
 import { TasksService } from '../src/services/tasks/tasks.service'
 
 describe('AppController (e2e)', () => {
-    let app: INestApplication
+    let app: INestApplication<Express>
     const tasksService = {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         onApplicationBootstrap: () => { },
