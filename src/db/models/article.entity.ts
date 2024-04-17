@@ -17,7 +17,7 @@ export class EnclosureImpl implements Enclosure {
 
     @ApiProperty({ title: 'URL', examples: ['http://bt.example.co', 'magnet:?xt=urn:btih:xxxxx'] })
     @IsUrlOrMagnetUri()
-    @Length(0, 1024)
+    @Length(0, 65000)
     @ValidateIf((o) => typeof o.url !== 'undefined')
     url: string
 
@@ -122,7 +122,7 @@ export class Article extends AclBase implements Item {
 
     // contentSnippet/content:encodedSnippet
     @ApiProperty({ title: '摘要', description: '纯文本格式，无 HTML', example: '这是一段内容摘要' })
-    @Length(0, 65536)
+    @Length(0, 65536) // 65536
     @ValidateIf((o) => typeof o.summary !== 'undefined')
     @Column({
         type: 'text',
@@ -169,12 +169,12 @@ export class Article extends AclBase implements Item {
     @ApiProperty({ title: '附件', type: () => EnclosureImpl })
     @Type(() => EnclosureImpl)
     @ValidateNested()
-    @JsonStringLength(0, 2048)
+    @JsonStringLength(0, 65536) // 2 ** 16
     @IsObject()
     @ValidateIf((o) => typeof o.enclosure !== 'undefined')
     @Column({
         type: 'simple-json',
-        length: 2048,
+        length: 65536,
         nullable: true,
         default: '{}',
     })
