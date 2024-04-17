@@ -272,8 +272,8 @@ devDependencies:
     specifier: ^4.2.3
     version: 4.3.0(@types/node@20.12.7)(typescript@5.4.5)
   conventional-changelog-cmyr-config:
-    specifier: ^2.1.1
-    version: 2.1.1
+    specifier: ^2.1.2
+    version: 2.1.2
   cross-env:
     specifier: ^7.0.3
     version: 7.0.3
@@ -3786,8 +3786,8 @@ packages:
       q: 1.5.1
     dev: true
 
-  /conventional-changelog-cmyr-config@2.1.1:
-    resolution: {integrity: sha512-ioqnPz4v6KqFDeIRh/RKcR6OYHB2gzXjhfUbyO1H4kMEcc8MNWWlIK8A+8n6L5Vnx8SgCOQJXsTHuRCg2O+fvg==}
+  /conventional-changelog-cmyr-config@2.1.2:
+    resolution: {integrity: sha512-JucNefNoVC1StkGTSKeFRZgOLOsXnmqd3CoaxoI1QPZ093slTdhQrt1doTARJKzvmL+4RL80LiSRneH1mdRSmw==}
     engines: {node: '>=12'}
     dependencies:
       compare-func: 2.0.0
@@ -9585,9 +9585,6 @@ packages:
   /sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       bindings: 1.5.0
       node-addon-api: 7.1.0
