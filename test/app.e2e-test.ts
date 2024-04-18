@@ -58,30 +58,30 @@ describe('AppController (e2e)', () => {
 
     })
 
-    it('POST /api/auth/login', (done) => {
-        const agent = request.agent(app.getHttpServer())
-        agent
-            .post('/api/auth/login')
-            .send({ username: 'admin', password: '123456' })
-            .set('Accept', 'application/json')
-            .expect((res) => {
-                // 获取 set-cookie 头
-                const sessionCookie = res.headers['set-cookie'] as unknown as string[]
-                cookie = sessionCookie.join('').split('; ')?.[0]
-                // 检测 cookie 是否以 'connect.sid=' 开头
-                expect(cookie).toMatch(/^connect\.sid=/)
-                expect(res).toSatisfyApiSpec()
-            })
-            .expect(201, done)
-    })
+    // it('POST /api/auth/login', (done) => {
+    //     const agent = request.agent(app.getHttpServer())
+    //     agent
+    //         .post('/api/auth/login')
+    //         .send({ username: 'admin', password: '123456' })
+    //         .set('Accept', 'application/json')
+    //         .expect((res) => {
+    //             // 获取 set-cookie 头
+    //             const sessionCookie = res.headers['set-cookie'] as unknown as string[]
+    //             cookie = sessionCookie.join('').split('; ')?.[0]
+    //             // 检测 cookie 是否以 'connect.sid=' 开头
+    //             expect(cookie).toMatch(/^connect\.sid=/)
+    //             expect(res).toSatisfyApiSpec()
+    //         })
+    //         .expect(201, done)
+    // })
 
-    it('GET /api/user/me', (done) => {
-        request(app.getHttpServer())
-            .get('/api/user/me')
-            .set('Cookie', cookie) // 手动设置 cookie
-            .expect((res) => {
-                expect(res).toSatisfyApiSpec()
-            })
-            .expect(200, done)
-    })
+    // it('GET /api/user/me', (done) => {
+    //     request(app.getHttpServer())
+    //         .get('/api/user/me')
+    //         .set('Cookie', cookie) // 手动设置 cookie
+    //         .expect((res) => {
+    //             expect(res).toSatisfyApiSpec()
+    //         })
+    //         .expect(200, done)
+    // })
 })

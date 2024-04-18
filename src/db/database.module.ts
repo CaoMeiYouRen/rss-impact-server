@@ -9,9 +9,11 @@ import { Article } from './models/article.entity'
 import { Hook } from './models/hook.entity'
 import { Resource } from './models/resource.entiy'
 import { WebhookLog } from './models/webhook-log.entity'
-import { __DEV__ } from '@/app.config'
+import { __DEV__, __TEST__ } from '@/app.config'
 
-export const DATABASE_PATH = path.join(__dirname, '../../data/database.sqlite')
+export const DATABASE_PATH = __TEST__ ?
+    path.join(__dirname, '../../data/database.test.sqlite') :
+    path.join(__dirname, '../../data/database.sqlite')
 export const DATABASE_DIR = path.dirname(DATABASE_PATH)
 
 const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog]
