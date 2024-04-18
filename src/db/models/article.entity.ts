@@ -96,6 +96,7 @@ export class Article extends AclBase implements Item {
     })
     content?: string
 
+    // TODO 考虑迁移到 pubDate
     /**
      *发布日期 pubDate/isoDate
      */

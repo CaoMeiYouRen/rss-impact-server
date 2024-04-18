@@ -34,7 +34,7 @@ describe('AppController (e2e)', () => {
         app = moduleFixture.createNestApplication()
         app.enableCors({})
         app.setGlobalPrefix('/api')
-        app.use(sessionMiddleware)
+        // app.use(sessionMiddleware) // 当 session 的 SQLiteStore 试图读取的时候，datebase 还没初始化
         await app.init()
     })
 
