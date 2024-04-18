@@ -2,21 +2,21 @@ import path from 'path'
 import type { Config } from 'jest'
 
 const config: Config = {
-    moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/$1',
-    },
     moduleFileExtensions: [
         'js',
         'json',
         'ts',
     ],
-    rootDir: 'src',
-    testRegex: '.test.ts$',
+    rootDir: '.',
+    testEnvironment: 'node',
+    testRegex: '.e2e-test.ts$',
     transform: {
         '^.+\\.(t|j)s$': 'ts-jest',
     },
-    coverageDirectory: path.resolve('./coverage'),
-    testEnvironment: 'node',
+    moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/../src/$1',
+    },
+    coverageDirectory: path.resolve('coverage'),
 }
 
 export default config
