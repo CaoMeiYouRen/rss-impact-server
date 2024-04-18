@@ -10,7 +10,7 @@ const logDir = path.resolve('logs')
 morgan.token('time', () => timeFormat(Date.now(), 'YYYY-MM-DD HH:mm:ss.SSSZ'))
 // morgan.token('time-short', () => timeFormat(Date.now(), 'HH:mm:ss.SSS'))
 
-morgan.format('app-combined', '[HttpHandle] :remote-addr - ":method :url" "HTTP/:http-version" [:status] - :response-time ms')
+morgan.format('app-combined', ':remote-addr - ":method :url" "HTTP/:http-version" [:status] - :response-time ms')
 // morgan.format('console-combined', '[:time-short] :remote-addr - ":method :url HTTP/:http-version" :status - :response-time ms')
 
 const statusCodeRegex = /\[(\d+)\]/ // 正则表达式匹配 [xxx]
@@ -23,9 +23,9 @@ const stream: StreamOptions = {
         const logLevel = status >= 400 ? 'error' : 'info'
 
         if (logLevel === 'error') {
-            winstonLogger.error(message)
+            winstonLogger.error(message, 'HttpHandle')
         } else {
-            winstonLogger.log(message)
+            winstonLogger.log(message, 'HttpHandle')
         }
     },
 }
