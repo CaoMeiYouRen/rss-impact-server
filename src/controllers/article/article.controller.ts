@@ -5,7 +5,7 @@ import { Repository } from 'typeorm'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { Article, FindArticle } from '@/db/models/article.entity'
-
+// TODO增加文章转 RSS 功能
 @UseSession()
 @AclCrud({
     model: Article,

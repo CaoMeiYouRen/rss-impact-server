@@ -37,7 +37,7 @@ import { WebhookConfig } from '@/models/webhook-config'
 import { NotificationConfig } from '@/models/notification-config'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
-
+// TODO 考虑增加文章、日志、资源等的定期清理
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
 
