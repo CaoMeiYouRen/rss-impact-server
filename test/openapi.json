@@ -2675,6 +2675,13 @@
     "tags": [],
     "servers": [],
     "components": {
+        "securitySchemes": {
+            "cookie": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "connect.sid"
+            }
+        },
         "schemas": {
             "ResponseDto": {
                 "type": "object",
@@ -3305,10 +3312,7 @@
                         "minLength": 0,
                         "maxLength": 65000,
                         "title": "URL",
-                        "examples": [
-                            "http://bt.example.co",
-                            "magnet:?xt=urn:btih:xxxxx"
-                        ]
+                        "example": "http://bt.example.com"
                     },
                     "length": {
                         "type": "number",

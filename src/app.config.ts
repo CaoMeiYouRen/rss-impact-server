@@ -17,6 +17,8 @@ export const NODE_ENV = env.NODE_ENV
 
 export const __DEV__ = NODE_ENV === 'development'
 
+export const __TEST__ = NODE_ENV === 'test'
+
 if (__DEV__) {
     console.log('envObj', envObj)
 }

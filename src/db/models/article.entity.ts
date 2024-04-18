@@ -16,7 +16,7 @@ import { __DEV__ } from '@/app.config'
 
 export class EnclosureImpl implements Enclosure {
 
-    @ApiProperty({ title: 'URL', examples: ['http://bt.example.co', 'magnet:?xt=urn:btih:xxxxx'] })
+    @ApiProperty({ title: 'URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
     @IsUrlOrMagnetUri({}, {
         require_tld: !__DEV__,   // 是否要顶级域名
     })

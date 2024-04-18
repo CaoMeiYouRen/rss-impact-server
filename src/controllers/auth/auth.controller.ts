@@ -28,7 +28,9 @@ export class AuthController {
     @Post('login')
     @UseGuards(AuthGuard('local'))
     async login(@Body() _dto: LoginDto, @CurrentUser() user: User, @Session() session: ISession) {
-        session.uid = user.id
+        if (session) {
+            session.uid = user.id
+        }
         return new ResponseDto({
             message: 'OK',
             statusCode: 201,
