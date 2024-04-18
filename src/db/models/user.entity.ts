@@ -36,7 +36,7 @@ export class User extends Base {
         type: 'password',
         hide: true,
     })
-    @ApiProperty({ title: '密码', example: '123456' })
+    @ApiProperty({ title: '密码', example: '123456', required: false })
     @IsNotEmpty()
     @Length(0, 128)
     @Column({

@@ -3134,7 +3134,6 @@
                     "createdAt",
                     "updatedAt",
                     "username",
-                    "password",
                     "email",
                     "roles",
                     "accessToken"
@@ -3205,7 +3204,6 @@
                 },
                 "required": [
                     "username",
-                    "password",
                     "email",
                     "roles"
                 ]
