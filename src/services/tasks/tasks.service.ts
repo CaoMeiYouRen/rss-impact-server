@@ -1,9 +1,9 @@
 import os from 'os'
 import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
-import { SchedulerRegistry } from '@nestjs/schedule'
+import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In } from 'typeorm'
+import { Repository, In, LessThan } from 'typeorm'
 import { CronJob } from 'cron'
 import { differenceWith, flattenDeep, pick } from 'lodash'
 import XRegExp from 'xregexp'
@@ -19,7 +19,7 @@ import Parser from 'rss-parser'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, DOWNLOAD_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, TZ } from '@/app.config'
+import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
@@ -37,7 +37,7 @@ import { WebhookConfig } from '@/models/webhook-config'
 import { NotificationConfig } from '@/models/notification-config'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
-// TODO 考虑增加文章、日志、资源等的定期清理
+
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
 
@@ -747,6 +747,73 @@ export class TasksService implements OnApplicationBootstrap {
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
             return false
+        }
+    }
+
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'removeArticles' }) // 每天删除一次
+    private async removeArticles() {
+        try {
+            this.logger.log('开始移除过时的文章')
+            const date = dayjs().add(-ARTICLE_SAVE_DAYS, 'day').toDate()
+            const removes = await this.articleRepository.delete({
+                // pubDate: LessThan(date),
+                createdAt: LessThan(date),
+            })
+            this.logger.log('成功移除过时的文章')
+            this.logger.log('removes', removes)
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        }
+    }
+
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'removeResources' }) // 每天删除一次
+    private async removeResources() {
+        try {
+            this.logger.log('开始移除过时的资源')
+            const date = dayjs().add(-RESOURCE_SAVE_DAYS, 'day').toDate()
+            const removes = await this.resourceRepository.delete({
+                createdAt: LessThan(date),
+            })
+            this.logger.log('成功移除过时的资源')
+            this.logger.log('removes', removes)
+            // 清理真实的文件
+            const dirPath = path.resolve(RESOURCE_DOWNLOAD_PATH) // 解析为绝对路径
+            const files = await fs.readdir(dirPath)
+            const removeLimit = pLimit(Math.min(os.cpus().length, 8)) // 删除 limit
+            await Promise.allSettled(files.map((file) => {
+                if (/\.(sqlite|db)$/.test(file)) { // 防止把 download 的 path 设置成跟 data 一样，把数据库删了
+                    return null
+                }
+                return removeLimit(async () => {
+                    const obj = await this.resourceRepository.findOne({
+                        where: {
+                            name: file,
+                            status: 'success',
+                        },
+                    })
+                    if (!obj) { // 如果数据库中不存在该文件的记录，则删除
+                        await fs.remove(path.join(dirPath, file))
+                    }
+                })
+            }))
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        }
+    }
+
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'removeLogs' }) // 每天删除一次
+    private async removeLogs() {
+        try {
+            this.logger.log('开始移除过时的日志')
+            const date = dayjs().add(-LOG_SAVE_DAYS, 'day').toDate()
+            const removes = await this.webhookLogRepository.delete({
+                // pubDate: LessThan(date),
+                createdAt: LessThan(date),
+            })
+            this.logger.log('成功移除过时的日志')
+            this.logger.log('removes', removes)
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
         }
     }
 }

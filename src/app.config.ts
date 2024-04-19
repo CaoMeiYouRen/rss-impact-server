@@ -1,3 +1,4 @@
+import path from 'path'
 import dotenv from 'dotenv'
 const modes = [
     '.env.local',
@@ -43,7 +44,10 @@ export const SESSION_SECRET = env.SESSION_SECRET
 export const ADMIN_PASSWORD = env.ADMIN_PASSWORD
 export const ADMIN_EMAIL = env.ADMIN_EMAIL
 
-export const RESOURCE_DOWNLOAD_PATH = env.RESOURCE_DOWNLOAD_PATH
+export const DATA_PATH = path.resolve(env.DATA_PATH || './data')
+export const RESOURCE_DOWNLOAD_PATH = path.resolve(env.RESOURCE_DOWNLOAD_PATH || './data/download')
+export const ENABLE_DOWNLOAD_HTTP = env.ENABLE_DOWNLOAD_HTTP === 'true'
+
 // 最大下载并发数
 export const DOWNLOAD_LIMIT_MAX = Number(env.DOWNLOAD_LIMIT_MAX || 5)
 // 启用注册
@@ -51,3 +55,7 @@ export const ENABLE_REGISTER = env.ENABLE_REGISTER === 'true'
 
 // Redis 连接地址
 export const REDIS_URL = env.REDIS_URL
+
+export const ARTICLE_SAVE_DAYS = Number(env.ARTICLE_SAVE_DAYS || 90)
+export const RESOURCE_SAVE_DAYS = Number(env.RESOURCE_SAVE_DAYS || 30)
+export const LOG_SAVE_DAYS = Number(env.LOG_SAVE_DAYS || 30)
