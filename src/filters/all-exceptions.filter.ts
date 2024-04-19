@@ -5,7 +5,7 @@ import {
     HttpException,
     Logger,
 } from '@nestjs/common'
-import { Response } from 'express'
+import { Response, Request } from 'express'
 import { HttpError } from '@/models/http-error'
 import { ErrorMessageList } from '@/constant/error-message-list'
 import { HttpStatusCode } from '@/constant/http-status-code'
@@ -30,6 +30,7 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
     catch(e: T, host: ArgumentsHost) {
         const ctx = host.switchToHttp()
         const response = ctx.getResponse<Response>()
+        const request = ctx.getRequest<Request>()
         let statusCode = HttpStatusCode.INTERNAL_SERVER_ERROR // 500
         let message = '服务器内部错误'
         let stack = undefined
@@ -41,6 +42,7 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
             const res = e.getResponse()
             if (statusCode === HttpStatusCode.NOT_FOUND) { // 404
                 message = e.message
+
             } else if (Array.isArray(res['message'])) {
                 message = res['message'].join(', ')
             } else {
@@ -52,6 +54,8 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
         if (__DEV__ && e instanceof Error) {
             stack = e.stack
             this.logger.error(message, e?.stack)
+            this.logger.error('headers', request.headers)
+            this.logger.error('body', request.body)
         } else if (statusCode >= HttpStatusCode.INTERNAL_SERVER_ERROR) { // 500
             this.logger.error(message, e?.stack)
         }

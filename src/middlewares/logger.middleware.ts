@@ -4,6 +4,7 @@ import { WinstonModule, utilities as nestWinstonModuleUtilities } from 'nest-win
 import * as winston from 'winston'
 import DailyRotateFile from 'winston-daily-rotate-file'
 import { Request } from 'express'
+import { isNumberString } from 'class-validator'
 import { timeFormat } from '@/utils/helper'
 import { __DEV__ } from '@/app.config'
 import { User } from '@/db/models/user.entity'
@@ -42,13 +43,15 @@ const stream: StreamOptions = {
     write: (line: string) => {
         try {
             const log = JSON.parse(line)
-            log.status = Number(log.status)
+            if (isNumberString(log.status)) {
+                log.status = Number(log.status)
+            }
             const { ip, method, url, httpVersion, status, responseTime, requestId } = log
             const message = `${ip} - "${requestId}" "${method} ${url}" "HTTP/${httpVersion}" ${status} - ${responseTime} ms`
-            if (log.status >= 400) {
-                winstonLogger.error(`[HttpHandle] ${message}`)
-            } else {
+            if (log.status < 400) {
                 winstonLogger.log(message, 'HttpHandle')
+            } else {
+                winstonLogger.error(`[HttpHandle] ${message}`)
             }
         } catch (error) {
             winstonLogger.error(error?.message, error?.stack)
