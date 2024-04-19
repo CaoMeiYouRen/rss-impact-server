@@ -82,7 +82,7 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     article.title = item.title
     article.content = item['content:encoded'] || item.content
     if (item.pubDate || item.isoDate) {
-        article.publishDate = dayjs(item.pubDate || item.isoDate).toDate()
+        article.pubDate = dayjs(item.pubDate || item.isoDate).toDate()
     }  // 如果没有 pubDate/isoDate 则留空
     article.author = item.author || item.creator || item['dc:creator']
     article.contentSnippet = item['content:encodedSnippet'] || item.contentSnippet
@@ -140,8 +140,8 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
     if (item.link) {
         text += `链接：${item.link}\n`
     }
-    if (item.publishDate) {
-        const date = timeFormat(item.publishDate, 'YYYY-MM-DD HH:mm:ss')
+    if (item.pubDate) {
+        const date = timeFormat(item.pubDate, 'YYYY-MM-DD HH:mm:ss')
         text += `时间：${date}`
     }
 
@@ -152,7 +152,7 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
     return {
         title,
         text,
-        date: item.publishDate || '',
+        date: item.pubDate || '',
     }
 }
 

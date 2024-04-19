@@ -37,7 +37,7 @@ async function bootstrap() {
             .setDescription('RSS Impact server docs')
             .setVersion('0.1.0')
             // .addBearerAuth()
-            .addCookieAuth()
+            // .addCookieAuth()
             // .setBasePath('/api')
             .build()
         const options: SwaggerDocumentOptions = {

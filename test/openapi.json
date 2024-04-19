@@ -2675,13 +2675,6 @@
     "tags": [],
     "servers": [],
     "components": {
-        "securitySchemes": {
-            "cookie": {
-                "type": "apiKey",
-                "in": "cookie",
-                "name": "connect.sid"
-            }
-        },
         "schemas": {
             "ResponseDto": {
                 "type": "object",
@@ -3388,7 +3381,7 @@
                         "title": "正文",
                         "example": "这是一段正文"
                     },
-                    "publishDate": {
+                    "pubDate": {
                         "format": "date-time",
                         "type": "string",
                         "title": "发布日期",
@@ -3448,6 +3441,10 @@
                                 "$ref": "#/components/schemas/Feed"
                             }
                         ]
+                    },
+                    "publishDate": {
+                        "format": "date-time",
+                        "type": "string"
                     }
                 },
                 "required": [

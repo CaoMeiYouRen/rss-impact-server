@@ -23,7 +23,7 @@ const stream: StreamOptions = {
         const logLevel = status >= 400 ? 'error' : 'info'
 
         if (logLevel === 'error') {
-            winstonLogger.error(message, 'HttpHandle')
+            winstonLogger.error(`[HttpHandle] ${message}`)
         } else {
             winstonLogger.log(message, 'HttpHandle')
         }

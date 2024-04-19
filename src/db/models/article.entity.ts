@@ -1,5 +1,5 @@
-import { Entity, Column, Index, ManyToOne } from 'typeorm'
-import { Item, Enclosure } from 'rss-parser'
+import { Entity, Column, Index, ManyToOne, AfterLoad } from 'typeorm'
+import { Enclosure } from 'rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsArray, IsDate, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
 import dayjs from 'dayjs'
@@ -44,7 +44,7 @@ export class EnclosureImpl implements Enclosure {
  * @class Article
  */
 @Entity()
-export class Article extends AclBase implements Item {
+export class Article extends AclBase {
 
     /** guid/id */
     @SetAclCrudField({
@@ -96,10 +96,25 @@ export class Article extends AclBase implements Item {
     })
     content?: string
 
-    // TODO 考虑迁移到 pubDate
     /**
      *发布日期 pubDate/isoDate
      */
+    // @SetAclCrudField({
+    //     search: true,
+    //     searchRange: true,
+    // })
+    // @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
+    // @Type(() => Date)
+    // @IsDate()
+    // @ValidateIf((o) => typeof o.publishDate !== 'undefined')
+    @Column({
+        nullable: true,
+    })
+    publishDate?: Date
+
+    /**
+   *发布日期 pubDate/isoDate
+   */
     @SetAclCrudField({
         search: true,
         searchRange: true,
@@ -107,11 +122,18 @@ export class Article extends AclBase implements Item {
     @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     @Type(() => Date)
     @IsDate()
-    @ValidateIf((o) => typeof o.publishDate !== 'undefined')
+    @ValidateIf((o) => typeof o.pubDate !== 'undefined')
     @Column({
         nullable: true,
     })
-    publishDate?: Date
+    pubDate?: Date
+
+    @AfterLoad()
+    private updatePubDate() {
+        if (!this.pubDate && this.publishDate) {
+            this.pubDate = this.publishDate
+        }
+    }
 
     /** 作者 creator/author/dc:creator */
     @SetAclCrudField({
@@ -185,6 +207,13 @@ export class Article extends AclBase implements Item {
         default: '{}',
     })
     enclosure?: EnclosureImpl
+
+    @AfterLoad()
+    private updateEnclosure() {
+        if (!this.enclosure) {
+            this.enclosure = {} as any
+        }
+    }
 
     @SetAclCrudField({
         search: true,

@@ -244,10 +244,10 @@ export class TasksService implements OnApplicationBootstrap {
             .map(async (hook) => {
                 const filteredArticles = articles
                     .filter((article) => {
-                        if (!article.publishDate || !hook.filter.time) { // 没有 publishDate/filter.time 不受过滤时间限制
+                        if (!article.pubDate || !hook.filter.time) { // 没有 pubDate/filter.time 不受过滤时间限制
                             return true
                         }
-                        return dayjs().diff(article.publishDate, 'second') <= hook.filter.time
+                        return dayjs().diff(article.pubDate, 'second') <= hook.filter.time
                     })
                     // 先判断 filterout
                     .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
