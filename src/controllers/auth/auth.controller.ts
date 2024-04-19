@@ -42,7 +42,13 @@ export class AuthController {
     @Post('logout')
     async logout(@CurrentUser() user: User, @Session() session: ISession) {
         return new Promise((resolve, reject) => {
-            session?.destroy((err) => {
+            if (!session) {
+                return resolve(new ResponseDto({
+                    message: 'OK',
+                    statusCode: 201,
+                }))
+            }
+            session.destroy((err) => {
                 if (err) {
                     reject(err)
                     return
