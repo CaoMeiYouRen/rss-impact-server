@@ -99,10 +99,9 @@ export class Article extends AclBase {
     /**
      *发布日期 pubDate/isoDate
      */
-    // @SetAclCrudField({
-    //     search: true,
-    //     searchRange: true,
-    // })
+    @SetAclCrudField({
+        hide: true,
+    })
     // @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     // @Type(() => Date)
     // @IsDate()
