@@ -3,7 +3,7 @@ import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In, LessThan } from 'typeorm'
+import { Repository, In, LessThan, MoreThanOrEqual } from 'typeorm'
 import { CronJob } from 'cron'
 import { differenceWith, flattenDeep, pick } from 'lodash'
 import XRegExp from 'xregexp'
@@ -19,7 +19,7 @@ import Parser from 'rss-parser'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, TZ } from '@/app.config'
+import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
@@ -125,7 +125,7 @@ export class TasksService implements OnApplicationBootstrap {
             await this.reverseTriggerHooks(feed, error)
         }
     }
-    // TODO 反转触发应该增加频率限制，避免短时间触发过多
+
     /**
      * 处理反转触发的 Hook
      *
@@ -136,6 +136,16 @@ export class TasksService implements OnApplicationBootstrap {
      * @param error
      */
     private async reverseTriggerHooks(feed: Feed, error: Error) {
+        const count = await this.webhookLogRepository.count({
+            where: {
+                feedId: feed.id,
+                createdAt: MoreThanOrEqual(dayjs().add(-1, 'hour').toDate()), // 最近 1 小时
+            },
+        })
+        if (count >= REVERSE_TRIGGER_LIMIT) {
+            this.logger.warn(`订阅 id: ${feed.id} 在一小时内触发超过 ${REVERSE_TRIGGER_LIMIT} 次！跳过触发。`)
+            return
+        }
         // 拉取最新的 hook 配置
         const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['hooks'], select: ['hooks'] }))
             ?.hooks

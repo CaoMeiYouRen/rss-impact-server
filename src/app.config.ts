@@ -59,3 +59,5 @@ export const REDIS_URL = env.REDIS_URL
 export const ARTICLE_SAVE_DAYS = Number(env.ARTICLE_SAVE_DAYS || 90)
 export const RESOURCE_SAVE_DAYS = Number(env.RESOURCE_SAVE_DAYS || 30)
 export const LOG_SAVE_DAYS = Number(env.LOG_SAVE_DAYS || 30)
+
+export const REVERSE_TRIGGER_LIMIT = Number(env.REVERSE_TRIGGER_LIMIT || 10)
