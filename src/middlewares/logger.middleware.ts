@@ -51,7 +51,7 @@ const stream: StreamOptions = {
                 winstonLogger.log(message, 'HttpHandle')
             }
         } catch (error) {
-            console.error(error)
+            winstonLogger.error(error?.message, error?.stack)
         }
     },
 }
@@ -105,14 +105,14 @@ export const winstonLogger = WinstonModule.createLogger({
         new DailyRotateFile({
             ...dailyRotateFileOption,
             level: 'error',
-            filename: '%DATE%.exceptions.log',
+            filename: '%DATE%.errors.log',
         }),
     ],
     rejectionHandlers: [
         new DailyRotateFile({
             ...dailyRotateFileOption,
             level: 'error',
-            filename: '%DATE%.rejections.log',
+            filename: '%DATE%.errors.log',
         }),
     ],
 })
