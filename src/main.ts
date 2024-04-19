@@ -17,6 +17,7 @@ import { limiter } from './middlewares/limit.middleware'
 import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
 import { fileLogger, logger } from './middlewares/logger.middleware'
 import { sessionMiddleware } from './middlewares/session.middleware'
+import { setRequestId } from './middlewares/request.middleware'
 
 async function bootstrap() {
     const dir = DATABASE_DIR
@@ -54,6 +55,7 @@ async function bootstrap() {
 
     app.use(limiter)
     app.use(helmet({}))
+    app.use(setRequestId)
     app.use(fileLogger)
     // app.use(consoleLogger)
     app.useGlobalFilters(new AllExceptionsFilter())

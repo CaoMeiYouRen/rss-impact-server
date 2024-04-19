@@ -16,7 +16,6 @@ export const DATABASE_DIR = DATA_PATH
 export const DATABASE_PATH = __TEST__ ?
     path.join(DATABASE_DIR, 'database.test.sqlite') :
     path.join(DATABASE_DIR, 'database.sqlite')
-
 const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog]
 
 const repositories = TypeOrmModule.forFeature(entities)
