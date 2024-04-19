@@ -36,7 +36,7 @@ export async function rssParserString(xml: string) {
     return rssNormalize(rss)
 }
 
-function formatGuid(e: any): string {
+export function formatGuid(e: any): string {
     // link 基本上是全局唯一的，guid 在部分情况下不唯一（freshrss 的 guid 为时间戳）
     // 如果 guid 是 Url，则用 guid ；否则用 link
     if (isURL(e.guid)) {
