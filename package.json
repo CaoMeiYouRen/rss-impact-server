@@ -145,6 +145,7 @@
     "overrides": {
       "@types/methods": "^1.1.4",
       "@types/superagent": "^8.1.0",
+      "axios": "$axios",
       "crypto-hash": "$crypto-hash",
       "compare-func": "$compare-func",
       "cron": "$cron"
