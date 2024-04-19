@@ -4783,6 +4783,12 @@
                         "description": "单位为 B",
                         "example": 114514
                     },
+                    "sizeFormat": {
+                        "type": "string",
+                        "title": "文件大小(B)",
+                        "description": "单位为 B",
+                        "example": "114.51 MiB"
+                    },
                     "hash": {
                         "type": "string",
                         "minLength": 0,

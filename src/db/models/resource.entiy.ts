@@ -1,4 +1,4 @@
-import { Column, Entity, Index } from 'typeorm'
+import { AfterLoad, Column, Entity, Index } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, Length, ValidateIf } from 'class-validator'
 import md5 from 'md5'
@@ -9,6 +9,7 @@ import { StatusList, StatusType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { __DEV__ } from '@/app.config'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
+import { dataFormat } from '@/utils/helper'
 
 /**
  * 文件资源。
@@ -76,11 +77,27 @@ export class Resource extends AclBase {
         width: 100,
         labelWidth: 105,
         type: 'input',
+        hide: true,
     })
     @ApiProperty({ title: '文件大小(B)', description: '单位为 B', example: 114514 })
     @IsSafeNaturalNumber()
     @Column({})
     size: number
+
+    @SetAclCrudField({
+        width: 100,
+        labelWidth: 105,
+        type: 'input',
+    })
+    @ApiProperty({ title: '文件大小(B)', description: '单位为 B', example: '114.51 MiB' })
+    sizeFormat?: string
+
+    @AfterLoad() // 格式化数据
+    private updateSize() {
+        if (typeof this.size === 'number') {
+            this.sizeFormat = dataFormat(this.size)
+        }
+    }
 
     @SetAclCrudField({
         search: true,
