@@ -432,3 +432,17 @@ export function splitString(str: string, maxLength: number): string[] {
     }
     return chunks
 }
+
+/**
+ * 检测是否为 http/https 开头的 url
+ * @param url
+ * @returns
+ */
+export const isHttpURL = (url: string) => /^(https?:\/\/)/.test(url)
+
+/**
+ * 检测是否为 socks/socks5 开头的 url
+ * @param url
+ * @returns
+ */
+export const isSocksUrl = (url: string) => /^(socks5?:\/\/)/.test(url)

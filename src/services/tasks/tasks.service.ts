@@ -20,7 +20,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -521,7 +521,7 @@ export class TasksService implements OnApplicationBootstrap {
                             return
                         }
                         await qBittorrent.addMagnet(url, { savepath: downloadPath })
-                    } else if (/^(https?:\/\/)/.test(url)) {  // 如果是 http，则下载 bt 种子
+                    } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
                         if (await this.resourceRepository.findOne({ where: { url, userId } })) {
                             this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
                             return
@@ -561,7 +561,7 @@ export class TasksService implements OnApplicationBootstrap {
                             tr: tracker,
                         } as Instance)
                         const resource = this.resourceRepository.create({
-                            url: /^(https?:\/\/)/.test(url) ? url : magnetUri,
+                            url: isHttpURL(url) ? url : magnetUri,
                             name, // 名称
                             path: '', // 文件在服务器上的地址，没有必要，故统一留空
                             status: size ? 'success' : 'unknown',
@@ -627,7 +627,7 @@ export class TasksService implements OnApplicationBootstrap {
             xl: torrentInfo.totalSize,
             tr: torrentInfo.raw?.tracker,
         } as Instance)
-        resource.url = /^(https?:\/\/)/.test(url) ? url : magnetUri // 保存 http url，避免每次都下载
+        resource.url = isHttpURL(url) ? url : magnetUri // 保存 http url，避免每次都下载
         resource.name = torrentInfo.name
         resource.size = torrentInfo.totalSize // 总大小
         if (resource.size && !article.enclosure.length) {

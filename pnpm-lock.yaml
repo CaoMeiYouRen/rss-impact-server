@@ -97,6 +97,9 @@ dependencies:
   helmet:
     specifier: ^7.1.0
     version: 7.1.0
+  https-proxy-agent:
+    specifier: ^7.0.4
+    version: 7.0.4
   ioredis:
     specifier: ^5.4.1
     version: 5.4.1
@@ -154,6 +157,9 @@ dependencies:
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
+  socks-proxy-agent:
+    specifier: ^8.0.3
+    version: 8.0.3
   sqlite3:
     specifier: ^5.1.7
     version: 5.1.7
@@ -2819,7 +2825,6 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /agentkeepalive@4.5.0:
     resolution: {integrity: sha512-5GG/5IbQQpC9FpkRGsSvZI5QYeSCzlJHdpBQntCsuTOxhKD8lqKhrleg2Yi7yvMIf82Ycmmqln9U8V9qwEiJew==}
@@ -5767,7 +5772,6 @@ packages:
       debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
@@ -9645,6 +9649,17 @@ packages:
       - supports-color
     dev: false
     optional: true
+
+  /socks-proxy-agent@8.0.3:
+    resolution: {integrity: sha512-VNegTZKhuGq5vSD6XNKlbqWhyt/40CgoEw8XxD6dhnm8Jq9IEa3nIa4HwnM8XOqU0CdB0BwWVXusqiFXfHB3+A==}
+    engines: {node: '>= 14'}
+    dependencies:
+      agent-base: 7.1.1
+      debug: 4.3.4
+      socks: 2.8.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /socks@2.8.3:
     resolution: {integrity: sha512-l5x7VUUWbjVFbafGLxPWkYsHIhEvmF85tbIeFZWc8ZPtoMyybuEhL7Jye/ooC4/d48FgOjSJXgsF/AJPYCW8Zw==}

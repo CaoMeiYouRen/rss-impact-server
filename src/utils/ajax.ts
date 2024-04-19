@@ -1,4 +1,7 @@
 import axios, { AxiosResponse, Method, AxiosRequestHeaders, ResponseType } from 'axios'
+import { HttpsProxyAgent } from 'https-proxy-agent'
+import { SocksProxyAgent } from 'socks-proxy-agent'
+import { isHttpURL, isSocksUrl } from './helper'
 
 export interface AjaxConfig {
     url: string
@@ -9,9 +12,9 @@ export interface AjaxConfig {
     timeout?: number
     baseURL?: string
     responseType?: ResponseType
+    proxyUrl?: string
 }
 
-// TODO 考虑添加代理配置功能
 /**
  * axios 接口封装
  *
@@ -22,7 +25,13 @@ export interface AjaxConfig {
  */
 export async function ajax<T = any>(config: AjaxConfig): Promise<AxiosResponse<T>> {
     try {
-        const { url, query = {}, data, method = 'GET', headers = {}, timeout = 10000, baseURL, responseType } = config
+        const { url, query = {}, data, method = 'GET', headers = {}, timeout = 10000, baseURL, responseType, proxyUrl } = config
+        let httpAgent = null
+        if (isHttpURL(proxyUrl)) {
+            httpAgent = new HttpsProxyAgent(proxyUrl)
+        } else if (isSocksUrl(proxyUrl)) {
+            httpAgent = new SocksProxyAgent(proxyUrl)
+        }
         const resp = await axios(url, {
             method,
             headers,
@@ -31,6 +40,8 @@ export async function ajax<T = any>(config: AjaxConfig): Promise<AxiosResponse<T
             timeout,
             baseURL,
             responseType,
+            httpAgent,
+            httpsAgent: httpAgent,
         })
         return resp
     } catch (error) {

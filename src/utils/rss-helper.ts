@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import dayjs from 'dayjs'
 import { plainToInstance } from 'class-transformer'
 import { isURL } from 'class-validator'
-import { deepTrim, htmlToMarkdown, timeFormat, uuid } from './helper'
+import { deepTrim, htmlToMarkdown, isHttpURL, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 
 export const rssParser = new Parser()
@@ -96,7 +96,7 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
         }
     }
     if (article.enclosure) {
-        if (/^(https?:\/\/)/.test(article.enclosure.url)) { // 如果以 http 开头，则尝试规范化 URL。例如 bangumi.moe
+        if (isHttpURL(article.enclosure.url)) { // 如果以 http 开头，则尝试规范化 URL。例如 bangumi.moe
             article.enclosure.url = new URL(article.enclosure.url).toString()
         }
         if (typeof article.enclosure.length === 'string') { // 如果解析出来的 length 是 string ，则需要转换成 number

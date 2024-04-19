@@ -9,7 +9,7 @@ export function IsUrlOrMagnetUri(validationOptions?: ValidationOptions, isUrlOpt
             propertyName,
             options: validationOptions,
             validator: {
-                validate(value: any, _validationArguments?: ValidationArguments) {
+                validate(value: any) {
                     return isURL(value, isUrlOptions) || isMagnetURI(value)
                 },
                 defaultMessage(): string {
