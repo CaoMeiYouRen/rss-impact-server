@@ -98,6 +98,7 @@ export class TasksService implements OnApplicationBootstrap {
                 const resp = (await ajax({
                     url,
                     proxyUrl,
+                    timeout: 60 * 1000,
                 })).data
                 rss = await rssParserString(resp)
             }
