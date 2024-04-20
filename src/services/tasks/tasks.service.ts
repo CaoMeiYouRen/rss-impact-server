@@ -202,10 +202,11 @@ export class TasksService implements OnApplicationBootstrap {
         }
         await this.notification(hook, feed, title, desp)
     }
-    // TODO 推送通知添加代理配置
+
     private async notification(hook: Hook, feed: Feed, title: string, desp: string) {
         const userId = hook.userId
         const config = hook.config as NotificationConfig
+        const proxyUrl = hook.proxyConfig?.url
         const { maxLength = 4096 } = config
         const webhookLog = this.webhookLogRepository.create({
             hookId: hook.id,
@@ -216,7 +217,7 @@ export class TasksService implements OnApplicationBootstrap {
         })
         try {
             this.logger.log(`正在执行推送渠道 ${config.type}`)
-            const resp = await runPushAllInOne(title.slice(0, 256), desp.slice(0, maxLength || 4096), config)
+            const resp = await runPushAllInOne(title.slice(0, 256), desp.slice(0, maxLength || 4096), config, proxyUrl)
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
                 ...webhookLog,
                 ...pick(resp, ['data', 'statusText', 'headers']),

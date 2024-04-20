@@ -13,7 +13,7 @@ import { NotificationConfig } from '@/models/notification-config'
  * @param desp
  * @param pushConfig
  */
-export async function runPushAllInOne(title: string, desp: string, pushConfig: NotificationConfig): Promise<AxiosResponse<any, any>> {
+export async function runPushAllInOne(title: string, desp: string, pushConfig: NotificationConfig, proxyUrl?: string): Promise<AxiosResponse<any, any>> {
     const { isMarkdown, type, config } = pushConfig
     const sep = isMarkdown ? '\n\n' : '\n'
     const content = desp?.startsWith(title) ? desp : `${title}${sep}${desp}`
@@ -85,6 +85,9 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
         case 'Discord': {
             const { DISCORD_WEBHOOK, DISCORD_USERNAME } = config as NotificationConfig<typeof type>['config']
             const discord = new Discord(DISCORD_WEBHOOK, DISCORD_USERNAME)
+            if (proxyUrl) {
+                discord.proxyUrl = proxyUrl
+            }
             const response = await discord.send(content)
             return response
         }
@@ -94,6 +97,9 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
                 TELEGRAM_BOT_TOKEN,
                 TELEGRAM_CHAT_ID: Number(TELEGRAM_CHAT_ID),
             })
+            if (proxyUrl) {
+                telegram.proxyUrl = proxyUrl
+            }
             const response = await telegram.send(content)
             return response
         }

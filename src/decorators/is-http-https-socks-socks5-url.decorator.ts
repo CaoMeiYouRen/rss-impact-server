@@ -1,4 +1,4 @@
-import { registerDecorator, ValidationOptions, isURL, ValidationArguments } from 'class-validator'
+import { registerDecorator, ValidationOptions, isURL } from 'class-validator'
 import { IsURLOptions } from 'validator'
 import { isSocksUrl } from '@/utils/helper'
 
