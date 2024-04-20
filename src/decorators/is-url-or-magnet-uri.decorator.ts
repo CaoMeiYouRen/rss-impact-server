@@ -1,4 +1,4 @@
-import { registerDecorator, ValidationOptions, isURL, isMagnetURI, ValidationArguments } from 'class-validator'
+import { registerDecorator, ValidationOptions, isURL, isMagnetURI } from 'class-validator'
 import { IsURLOptions } from 'validator'
 
 export function IsUrlOrMagnetUri(validationOptions?: ValidationOptions, isUrlOptions?: IsURLOptions) {

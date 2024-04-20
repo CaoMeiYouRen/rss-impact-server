@@ -18,6 +18,7 @@ import { HookController } from './controllers/hook/hook.controller'
 import { ResourceController } from './controllers/resource/resource.controller'
 import { ResourceService } from './services/resource/resource.service'
 import { WebhookLogController } from './controllers/webhook-log/webhook-log.controller'
+import { ProxyConfigController } from './controllers/proxy-config/proxy-config.controller'
 
 @Global()
 @Module({
@@ -42,6 +43,7 @@ import { WebhookLogController } from './controllers/webhook-log/webhook-log.cont
         HookController,
         ResourceController,
         WebhookLogController,
+        ProxyConfigController,
     ],
     providers: [
         AppService,

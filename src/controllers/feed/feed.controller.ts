@@ -58,7 +58,7 @@ export class FeedController {
         return {
             // title: '快速添加订阅',
             submitText: '添加', // 直接用 QuickCreateFeed 会获取不到 SetAclCrudField
-            column: initAvueCrudColumn(Feed).filter((col) => ['url', 'cron', 'isEnabled', 'categoryId', 'hooks'].includes(col.prop),
+            column: initAvueCrudColumn(Feed).filter((col) => ['url', 'cron', 'isEnabled', 'categoryId', 'hooks', 'isEnableProxy', 'proxyConfigId'].includes(col.prop),
             ),
         }
     }

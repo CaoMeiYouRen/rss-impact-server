@@ -9,6 +9,7 @@ import { Article } from './models/article.entity'
 import { Hook } from './models/hook.entity'
 import { Resource } from './models/resource.entiy'
 import { WebhookLog } from './models/webhook-log.entity'
+import { ProxyConfig } from './models/proxy-config.entity'
 import { __DEV__, __TEST__, DATA_PATH } from '@/app.config'
 
 export const DATABASE_DIR = DATA_PATH
@@ -16,7 +17,7 @@ export const DATABASE_DIR = DATA_PATH
 export const DATABASE_PATH = __TEST__ ?
     path.join(DATABASE_DIR, 'database.test.sqlite') :
     path.join(DATABASE_DIR, 'database.sqlite')
-const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog]
+const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig]
 
 const repositories = TypeOrmModule.forFeature(entities)
 

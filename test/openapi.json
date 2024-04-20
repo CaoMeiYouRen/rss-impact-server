@@ -2664,6 +2664,414 @@
                     "webhook-log"
                 ]
             }
+        },
+        "/api/proxy-config/dicData": {
+            "get": {
+                "operationId": "ProxyConfig_dicData",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DicData"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "proxy-config"
+                ]
+            }
+        },
+        "/api/proxy-config/config": {
+            "get": {
+                "operationId": "ProxyConfig_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "proxy-config"
+                ]
+            }
+        },
+        "/api/proxy-config": {
+            "get": {
+                "operationId": "ProxyConfig_find",
+                "summary": "查找所有记录",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindProxyConfig"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "proxy-config"
+                ]
+            },
+            "post": {
+                "operationId": "ProxyConfig_create",
+                "summary": "创建记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateProxyConfig"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProxyConfig"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "proxy-config"
+                ]
+            },
+            "put": {
+                "operationId": "ProxyConfig_update",
+                "summary": "更新记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProxyConfig"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProxyConfig"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "proxy-config"
+                ]
+            }
+        },
+        "/api/proxy-config/{id}": {
+            "get": {
+                "operationId": "ProxyConfig_findOne",
+                "summary": "查找记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProxyConfig"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "proxy-config"
+                ]
+            },
+            "delete": {
+                "operationId": "ProxyConfig_delete",
+                "summary": "删除记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProxyConfig"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "proxy-config"
+                ]
+            }
         }
     },
     "info": {
@@ -3295,6 +3703,65 @@
                     "email"
                 ]
             },
+            "ProxyConfig": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "代理名称",
+                        "example": "代理A"
+                    },
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "代理URL",
+                        "description": "支持 http/https/socks/socks5 协议。例如 http://127.0.0.1:8080",
+                        "example": "http://127.0.0.1:8080"
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "name",
+                    "url"
+                ]
+            },
             "EnclosureImpl": {
                 "type": "object",
                 "properties": {
@@ -3843,6 +4310,20 @@
                         "description": "如果服务可访问，则认为是故障",
                         "example": false
                     },
+                    "proxyConfigId": {
+                        "type": "number",
+                        "title": "代理配置",
+                        "description": "选择不代理后保存即可禁用代理",
+                        "example": 1
+                    },
+                    "proxyConfig": {
+                        "title": "代理配置",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ProxyConfig"
+                            }
+                        ]
+                    },
                     "feeds": {
                         "title": "订阅源列表",
                         "example": [],
@@ -3864,6 +4345,7 @@
                     "filter",
                     "filterout",
                     "isReversed",
+                    "proxyConfig",
                     "feeds"
                 ]
             },
@@ -3961,6 +4443,20 @@
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/Category"
+                            }
+                        ]
+                    },
+                    "proxyConfigId": {
+                        "type": "number",
+                        "title": "代理配置",
+                        "description": "选择不代理后保存即可禁用代理",
+                        "example": 1
+                    },
+                    "proxyConfig": {
+                        "title": "代理配置",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ProxyConfig"
                             }
                         ]
                     },
@@ -4199,6 +4695,20 @@
                             }
                         ]
                     },
+                    "proxyConfigId": {
+                        "type": "number",
+                        "title": "代理配置",
+                        "description": "选择不代理后保存即可禁用代理",
+                        "example": 1
+                    },
+                    "proxyConfig": {
+                        "title": "代理配置",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ProxyConfig"
+                            }
+                        ]
+                    },
                     "articles": {
                         "title": "文章列表",
                         "example": [],
@@ -4312,6 +4822,20 @@
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/Category"
+                            }
+                        ]
+                    },
+                    "proxyConfigId": {
+                        "type": "number",
+                        "title": "代理配置",
+                        "description": "选择不代理后保存即可禁用代理",
+                        "example": 1
+                    },
+                    "proxyConfig": {
+                        "title": "代理配置",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ProxyConfig"
                             }
                         ]
                     },
@@ -4604,6 +5128,20 @@
                         "description": "如果服务可访问，则认为是故障",
                         "example": false
                     },
+                    "proxyConfigId": {
+                        "type": "number",
+                        "title": "代理配置",
+                        "description": "选择不代理后保存即可禁用代理",
+                        "example": 1
+                    },
+                    "proxyConfig": {
+                        "title": "代理配置",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ProxyConfig"
+                            }
+                        ]
+                    },
                     "feeds": {
                         "title": "订阅源列表",
                         "example": [],
@@ -4622,6 +5160,7 @@
                     "filter",
                     "filterout",
                     "isReversed",
+                    "proxyConfig",
                     "feeds"
                 ]
             },
@@ -4705,6 +5244,20 @@
                         "title": "反转模式",
                         "description": "如果服务可访问，则认为是故障",
                         "example": false
+                    },
+                    "proxyConfigId": {
+                        "type": "number",
+                        "title": "代理配置",
+                        "description": "选择不代理后保存即可禁用代理",
+                        "example": 1
+                    },
+                    "proxyConfig": {
+                        "title": "代理配置",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ProxyConfig"
+                            }
+                        ]
                     },
                     "feeds": {
                         "title": "订阅源列表",
@@ -4985,6 +5538,109 @@
                     "lastPage",
                     "currentPage"
                 ]
+            },
+            "FindProxyConfig": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProxyConfig"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            },
+            "CreateProxyConfig": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "代理名称",
+                        "example": "代理A"
+                    },
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "代理URL",
+                        "description": "支持 http/https/socks/socks5 协议。例如 http://127.0.0.1:8080",
+                        "example": "http://127.0.0.1:8080"
+                    }
+                },
+                "required": [
+                    "userId",
+                    "user",
+                    "name",
+                    "url"
+                ]
+            },
+            "UpdateProxyConfig": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "代理名称",
+                        "example": "代理A"
+                    },
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "代理URL",
+                        "description": "支持 http/https/socks/socks5 协议。例如 http://127.0.0.1:8080",
+                        "example": "http://127.0.0.1:8080"
+                    }
+                }
             }
         }
     }

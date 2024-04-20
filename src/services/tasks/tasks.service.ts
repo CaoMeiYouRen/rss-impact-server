@@ -21,7 +21,7 @@ import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL } from '@/utils/helper'
-import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserURL } from '@/utils/rss-helper'
+import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
 import { ajax } from '@/utils/ajax'
@@ -63,7 +63,7 @@ export class TasksService implements OnApplicationBootstrap {
             where: {
                 isEnabled: true,
             },
-            // relations: ['hooks'],
+            relations: ['proxyConfig'],
         })
     }
 
@@ -91,11 +91,15 @@ export class TasksService implements OnApplicationBootstrap {
         const fid = feed.id
         const uid = feed.userId
         const url = feed.url
-
+        const proxyUrl = feed.proxyConfig?.url
         try {
             if (!rss) {
-                // TODO 在请求 RSS URL 时添加请求代理
-                rss = await rssParserURL(url)
+
+                const resp = (await ajax({
+                    url,
+                    proxyUrl,
+                })).data
+                rss = await rssParserString(resp)
             }
             if (Array.isArray(rss?.items)) {
                 // 根据 guid 去重复 | 每个 user 的 不重复
@@ -197,7 +201,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
         await this.notification(hook, feed, title, desp)
     }
-
+    // TODO 推送通知添加代理配置
     private async notification(hook: Hook, feed: Feed, title: string, desp: string) {
         const userId = hook.userId
         const config = hook.config as NotificationConfig
@@ -352,6 +356,7 @@ export class TasksService implements OnApplicationBootstrap {
 
     private async webhook(hook: Hook, feed: Feed, data: Article[] | any) {
         const userId = hook.userId
+        const proxyUrl = hook.proxyConfig?.url
         const webhookLog = this.webhookLogRepository.create({
             hookId: hook.id,
             userId,
@@ -364,6 +369,7 @@ export class TasksService implements OnApplicationBootstrap {
             this.logger.log(`正在触发 Webhook: ${config?.url}`)
             const resp = await ajax({
                 ...config,
+                proxyUrl,
                 timeout: (config?.timeout || 60) * 1000,
                 data: data as any,
             })
@@ -391,6 +397,7 @@ export class TasksService implements OnApplicationBootstrap {
     private async downloadHook(hook: Hook, feed: Feed, articles: Article[], downloadLimit: pLimit.Limit) {
         const userId = hook.userId
         const config = hook.config as DownloadConfig
+        const proxyUrl = hook.proxyConfig?.url
         const skipHashes = config.skipHashes.split(',').map((e) => e.trim())
         const { suffixes, timeout = 60 } = config
         const dirPath = path.resolve(RESOURCE_DOWNLOAD_PATH) // 解析为绝对路径
@@ -464,7 +471,7 @@ export class TasksService implements OnApplicationBootstrap {
             try {
                 // 由于 hash 只能在下载后计算得出，所以第一次下载依旧会下载整个文件
                 this.logger.debug(`正在下载文件: ${filename}`)
-                const fileInfo = await download(url, filepath, (timeout || 60) * 1000)
+                const fileInfo = await download(url, filepath, (timeout || 60) * 1000, proxyUrl)
                 newResource.type = fileInfo.type
                 newResource.size = fileInfo.size
                 newResource.hash = fileInfo.hash
@@ -491,6 +498,7 @@ export class TasksService implements OnApplicationBootstrap {
     private async bitTorrentHook(hook: Hook, feed: Feed, articles: Article[]) {
         const userId = hook.userId
         const config = hook.config as BitTorrentConfig
+        const proxyUrl = hook.proxyConfig?.url
         const { type } = config
         const btArticles = articles.filter((article) => article.enclosure?.type === 'application/x-bittorrent' && article.enclosure?.url) // 排除BT以外的
         if (!btArticles?.length) {
@@ -526,9 +534,9 @@ export class TasksService implements OnApplicationBootstrap {
                             this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
                             return
                         }
-                        // TODO 在下载种子时添加代理
                         const resp = await ajax<ArrayBuffer>({
                             url,
+                            proxyUrl,
                             responseType: 'arraybuffer',
                             timeout: 60 * 1000,
                         })

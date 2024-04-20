@@ -130,9 +130,10 @@ type DownloadFileType = {
     hash: string
 }
 
-export async function download(url: string, filepath: string, timeout = 60 * 1000): Promise<DownloadFileType> {
+export async function download(url: string, filepath: string, timeout = 60 * 1000, proxyUrl?: string): Promise<DownloadFileType> {
     const resp = await ajax({
         url,
+        proxyUrl,
         timeout,
         headers: {
             Referer: url,

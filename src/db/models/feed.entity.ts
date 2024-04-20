@@ -6,6 +6,7 @@ import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
 import { Article } from './article.entity'
 import { Hook } from './hook.entity'
+import { ProxyConfig } from './proxy-config.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
@@ -124,6 +125,37 @@ export class Feed extends AclBase {
     @ApiProperty({ title: '分组', type: () => Category })
     @ManyToOne(() => Category, (category) => category.feeds)
     category: Category
+
+    // @SetAclCrudField({
+    //     labelWidth: 120,
+    // })
+    // @ApiProperty({ title: '是否启用代理', example: false })
+    // @IsBoolean({ message: '是否启用代理必须为 Boolean' })
+    // @Column({
+    //     default: false,
+    // })
+    // isEnableProxy: boolean
+
+    @SetAclCrudField({
+        search: true,
+        dicUrl: '/proxy-config/dicData',
+        props: {
+            label: 'name',
+            value: 'id',
+        },
+    })
+    @ApiProperty({ title: '代理配置', description: '选择不代理后保存即可禁用代理', example: 1 })
+    @IsId()
+    @ValidateIf((o) => typeof o.proxyConfigId !== 'undefined')
+    @Column({ nullable: true })
+    proxyConfigId?: number
+
+    @SetAclCrudField({
+        hide: true,
+    })
+    @ApiProperty({ title: '代理配置', type: () => ProxyConfig })
+    @ManyToOne(() => ProxyConfig)
+    proxyConfig?: ProxyConfig
 
     @SetAclCrudField({
         hide: true,

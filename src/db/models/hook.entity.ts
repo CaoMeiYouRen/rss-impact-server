@@ -1,9 +1,10 @@
-import { Column, Entity, ManyToMany } from 'typeorm'
+import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
 import { ApiExtraModels, ApiProperty, getSchemaPath, OmitType, PartialType } from '@nestjs/swagger'
 import { IsBoolean, IsObject, Length, ValidateIf, ValidateNested, IsIn, IsNotEmpty } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
+import { ProxyConfig } from './proxy-config.entity'
 import { HookList, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
@@ -15,6 +16,7 @@ import { WebhookConfig } from '@/models/webhook-config'
 import { DownloadConfig } from '@/models/download-config'
 import { BitTorrentConfig } from '@/models/bit-torrent-config'
 import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
+import { IsId } from '@/decorators/is-id.decorator'
 
 const hookConfig = {
     notification: NotificationConfig,
@@ -189,6 +191,37 @@ export class Hook extends AclBase {
         default: false,
     })
     isReversed: boolean
+
+    // @SetAclCrudField({
+    //     labelWidth: 120,
+    // })
+    // @ApiProperty({ title: '是否启用代理', example: false })
+    // @IsBoolean({ message: '是否启用代理必须为 Boolean' })
+    // @Column({
+    //     default: false,
+    // })
+    // isEnableProxy: boolean
+
+    @SetAclCrudField({
+        search: true,
+        dicUrl: '/proxy-config/dicData',
+        props: {
+            label: 'name',
+            value: 'id',
+        },
+    })
+    @ApiProperty({ title: '代理配置', description: '选择不代理后保存即可禁用代理', example: 1 })
+    @IsId()
+    @ValidateIf((o) => typeof o.proxyConfigId !== 'undefined')
+    @Column({ nullable: true })
+    proxyConfigId?: number
+
+    @SetAclCrudField({
+        hide: true,
+    })
+    @ApiProperty({ title: '代理配置', type: () => ProxyConfig })
+    @ManyToOne(() => ProxyConfig)
+    proxyConfig: ProxyConfig
 
     @SetAclCrudField({
         hide: true,
