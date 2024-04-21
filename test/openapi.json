@@ -3072,6 +3072,360 @@
                     "proxy-config"
                 ]
             }
+        },
+        "/api/custom-query/config": {
+            "get": {
+                "operationId": "CustomQuery_config",
+                "summary": "获取 config",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "custom-query"
+                ]
+            }
+        },
+        "/api/custom-query": {
+            "get": {
+                "operationId": "CustomQuery_find",
+                "summary": "查找所有记录",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "required": false,
+                        "in": "query",
+                        "description": "Query options",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FindCustomQuery"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "custom-query"
+                ]
+            },
+            "post": {
+                "operationId": "CustomQuery_create",
+                "summary": "创建记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCustomQuery"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomQuery"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "custom-query"
+                ]
+            },
+            "put": {
+                "operationId": "CustomQuery_update",
+                "summary": "更新记录",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCustomQuery"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomQuery"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "custom-query"
+                ]
+            }
+        },
+        "/api/custom-query/{id}": {
+            "get": {
+                "operationId": "CustomQuery_findOne",
+                "summary": "查找记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomQuery"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "custom-query"
+                ]
+            },
+            "delete": {
+                "operationId": "CustomQuery_delete",
+                "summary": "删除记录",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomQuery"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "custom-query"
+                ]
+            }
         }
     },
     "info": {
@@ -5639,6 +5993,250 @@
                         "title": "代理URL",
                         "description": "支持 http/https/socks/socks5 协议。例如 http://127.0.0.1:8080",
                         "example": "http://127.0.0.1:8080"
+                    }
+                }
+            },
+            "CustomQuery": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "名称",
+                        "example": "查询A"
+                    },
+                    "format": {
+                        "type": "object",
+                        "enum": [
+                            "rss2.0",
+                            "atom",
+                            "json"
+                        ],
+                        "minLength": 0,
+                        "maxLength": 32,
+                        "title": "输出格式",
+                        "example": "rss2.0"
+                    },
+                    "url": {
+                        "type": "string",
+                        "title": "输出路径"
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "name",
+                    "format",
+                    "filter",
+                    "filterout"
+                ]
+            },
+            "FindCustomQuery": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CustomQuery"
+                        }
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "lastPage": {
+                        "type": "number"
+                    },
+                    "currentPage": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "data",
+                    "total",
+                    "lastPage",
+                    "currentPage"
+                ]
+            },
+            "CreateCustomQuery": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "名称",
+                        "example": "查询A"
+                    },
+                    "format": {
+                        "type": "object",
+                        "enum": [
+                            "rss2.0",
+                            "atom",
+                            "json"
+                        ],
+                        "minLength": 0,
+                        "maxLength": 32,
+                        "title": "输出格式",
+                        "example": "rss2.0"
+                    },
+                    "url": {
+                        "type": "string",
+                        "title": "输出路径"
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "userId",
+                    "user",
+                    "name",
+                    "format",
+                    "filter",
+                    "filterout"
+                ]
+            },
+            "UpdateCustomQuery": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "名称",
+                        "example": "查询A"
+                    },
+                    "format": {
+                        "type": "object",
+                        "enum": [
+                            "rss2.0",
+                            "atom",
+                            "json"
+                        ],
+                        "minLength": 0,
+                        "maxLength": 32,
+                        "title": "输出格式",
+                        "example": "rss2.0"
+                    },
+                    "url": {
+                        "type": "string",
+                        "title": "输出路径"
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
                     }
                 }
             }
