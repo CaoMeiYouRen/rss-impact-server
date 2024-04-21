@@ -53,7 +53,6 @@ async function bootstrap() {
         SwaggerModule.setup('docs', app, document)
         await fs.writeFile('test/openapi.json', JSON.stringify(document, null, 4))
     }
-    app.use(history({})) // 解决单页应用程序(SPA)重定向问题
 
     app.use(limiter)
     app.use(helmet({}))
@@ -69,6 +68,9 @@ async function bootstrap() {
         enableDebugMessages: __DEV__,
     }))
     app.use(sessionMiddleware)
+    if (!__DEV__) {
+        app.use(history({})) // 解决单页应用程序(SPA)重定向问题
+    }
 
     await app.listen(PORT)
 

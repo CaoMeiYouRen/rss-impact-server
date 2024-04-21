@@ -77,7 +77,7 @@ export class AuthController {
             password,
             email,
             roles: [Role.user],
-            accessToken: getAccessToken(),
+            accessToken: getAccessToken('rss-impact'),
         }))
         delete user.password
         return user

@@ -69,8 +69,10 @@ export function uuid() {
     })
 }
 
-export function getAccessToken() {
-    return `rss-impact:${uuid()}`
+type TokenType = 'rss-impact' | 'custom-query-key'
+
+export function getAccessToken(type: TokenType = 'rss-impact') {
+    return `${type}:${uuid()}`
 }
 
 export function isImageUrl(img: string) {

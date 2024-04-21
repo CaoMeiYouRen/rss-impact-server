@@ -3,8 +3,10 @@ import queryString from 'query-string'
 import dayjs from 'dayjs'
 import { plainToInstance } from 'class-transformer'
 import { isURL } from 'class-validator'
+import XRegExp from 'xregexp'
 import { deepTrim, htmlToMarkdown, isHttpURL, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
+import { Filter, FilterOut } from '@/db/models/hook.entity'
 
 export const rssParser = new Parser()
 
@@ -171,4 +173,53 @@ export function articlesFormat(articles: Article[], option: ArticleFormatoption 
         .map((e) => e.text)
         .join(option?.isMarkdown ? '\n\n' : '\n')
     return text
+}
+
+type Condition = {
+    filter: Filter
+    filterout: FilterOut
+}
+
+const filterFields = ['title', 'summary', 'author', 'categories']
+
+/**
+ * 按条件过滤文章
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-04-21
+ * @export
+ * @param articles 文章数组
+ * @param condition 条件
+ */
+export function filterArticles(articles: Article[], condition: Condition): Article[] {
+    return articles
+        .filter((article) => {
+            if (!article.pubDate || !condition.filter.time) { // 没有 pubDate/filter.time 不受过滤时间限制
+                return true
+            }
+            return dayjs().diff(article.pubDate, 'second') <= condition.filter.time
+        })
+        // 先判断 filterout
+        .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
+            if (!condition.filterout[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+                return true
+            }
+            if (field === 'categories') {
+                // 有一个 category 对的上就 排除
+                return !article[field].some((category) => XRegExp(condition.filterout[field], 'ig').test(category))
+            }
+            return !XRegExp(condition.filterout[field], 'ig').test(article[field])
+        }))
+        // 再判断 filter
+        .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
+            if (!condition.filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+                return true
+            }
+            if (field === 'categories') {
+                // 有一个 category 对的上就为 true
+                return article[field].some((category) => XRegExp(condition.filter[field], 'ig').test(category))
+            }
+            return XRegExp(condition.filter[field], 'ig').test(article[field])
+        }))
+        .slice(0, condition.filter.limit || 20) // 默认最多 20 条
 }

@@ -1,4 +1,4 @@
-import { AfterLoad, Column, Entity } from 'typeorm'
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn } from 'class-validator'
 import { Type } from 'class-transformer'
@@ -8,6 +8,8 @@ import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { OutputType, OutputTypeList } from '@/constant/custom-query'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { getAccessToken } from '@/utils/helper'
+import { BASE_URL } from '@/app.config'
 
 /**
  * 自定义 RSS 查询
@@ -50,14 +52,33 @@ export class CustomQuery extends AclBase {
         addDisplay: false,
         editDisabled: true,
     })
+    @ApiProperty({ title: '访问秘钥', example: 'custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200' })
+    @Length(0, 256)
+    @IsNotEmpty()
+    @Column({
+        length: 256,
+    })
+    key: string
+
+    @BeforeInsert()
+    private createAccessToken() { // 初始化 key
+        if (!this.key) {
+            this.key = getAccessToken('custom-query-key')
+        }
+    }
+
+    @SetAclCrudField({
+        type: 'url',
+        alone: true,
+        addDisplay: false,
+        editDisabled: true,
+    })
     @ApiProperty({ title: '输出路径' })
     url?: string
 
     @AfterLoad() // 生成输出 url
     private updateUrl() {
-        if (this.format) {
-            // this.outputUrl = ''
-        }
+        this.url = new URL(`${BASE_URL}/api/article/custom-query/${this.id}?key=${this.key}`, BASE_URL).toString()
     }
 
     @SetAclCrudField({
@@ -91,9 +112,9 @@ export class CustomQuery extends AclBase {
     filterout: FilterOut
 }
 
-export class CreateCustomQuery extends OmitType(CustomQuery, ['id', 'createdAt', 'updatedAt'] as const) { }
+export class CreateCustomQuery extends OmitType(CustomQuery, ['id', 'createdAt', 'updatedAt', 'key'] as const) { }
 
-export class UpdateCustomQuery extends PartialType(OmitType(CustomQuery, ['createdAt', 'updatedAt'] as const)) { }
+export class UpdateCustomQuery extends PartialType(OmitType(CustomQuery, ['createdAt', 'updatedAt', 'key'] as const)) { }
 
 export class FindCustomQuery extends FindPlaceholderDto<CustomQuery> {
     @ApiProperty({ type: () => [CustomQuery] })

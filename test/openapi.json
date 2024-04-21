@@ -1508,6 +1508,44 @@
                 ]
             }
         },
+        "/api/article/custom-query/{id}": {
+            "get": {
+                "operationId": "Article_customQuery",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "key",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "article"
+                ]
+            }
+        },
         "/api/article/config": {
             "get": {
                 "operationId": "Article_config",
@@ -1523,36 +1561,6 @@
                                 }
                             }
                         }
-                    },
-                    "201": {
-                        "description": "创建成功"
-                    },
-                    "400": {
-                        "description": "数据格式有误"
-                    },
-                    "401": {
-                        "description": "没有权限访问"
-                    },
-                    "403": {
-                        "description": "该用户没有权限访问"
-                    },
-                    "404": {
-                        "description": "找不到要访问的接口"
-                    },
-                    "408": {
-                        "description": "请求超时"
-                    },
-                    "409": {
-                        "description": "请求时发生了冲突"
-                    },
-                    "429": {
-                        "description": "请求次数超限"
-                    },
-                    "500": {
-                        "description": "服务器内部错误"
-                    },
-                    "502": {
-                        "description": "代理服务器错误"
                     }
                 },
                 "tags": [
@@ -1585,36 +1593,6 @@
                                 }
                             }
                         }
-                    },
-                    "201": {
-                        "description": "创建成功"
-                    },
-                    "400": {
-                        "description": "数据格式有误"
-                    },
-                    "401": {
-                        "description": "没有权限访问"
-                    },
-                    "403": {
-                        "description": "该用户没有权限访问"
-                    },
-                    "404": {
-                        "description": "找不到要访问的接口"
-                    },
-                    "408": {
-                        "description": "请求超时"
-                    },
-                    "409": {
-                        "description": "请求时发生了冲突"
-                    },
-                    "429": {
-                        "description": "请求次数超限"
-                    },
-                    "500": {
-                        "description": "服务器内部错误"
-                    },
-                    "502": {
-                        "description": "代理服务器错误"
                     }
                 },
                 "tags": [
@@ -1646,36 +1624,6 @@
                                 }
                             }
                         }
-                    },
-                    "201": {
-                        "description": "创建成功"
-                    },
-                    "400": {
-                        "description": "数据格式有误"
-                    },
-                    "401": {
-                        "description": "没有权限访问"
-                    },
-                    "403": {
-                        "description": "该用户没有权限访问"
-                    },
-                    "404": {
-                        "description": "找不到要访问的接口"
-                    },
-                    "408": {
-                        "description": "请求超时"
-                    },
-                    "409": {
-                        "description": "请求时发生了冲突"
-                    },
-                    "429": {
-                        "description": "请求次数超限"
-                    },
-                    "500": {
-                        "description": "服务器内部错误"
-                    },
-                    "502": {
-                        "description": "代理服务器错误"
                     }
                 },
                 "tags": [
@@ -1705,36 +1653,6 @@
                                 }
                             }
                         }
-                    },
-                    "201": {
-                        "description": "创建成功"
-                    },
-                    "400": {
-                        "description": "数据格式有误"
-                    },
-                    "401": {
-                        "description": "没有权限访问"
-                    },
-                    "403": {
-                        "description": "该用户没有权限访问"
-                    },
-                    "404": {
-                        "description": "找不到要访问的接口"
-                    },
-                    "408": {
-                        "description": "请求超时"
-                    },
-                    "409": {
-                        "description": "请求时发生了冲突"
-                    },
-                    "429": {
-                        "description": "请求次数超限"
-                    },
-                    "500": {
-                        "description": "服务器内部错误"
-                    },
-                    "502": {
-                        "description": "代理服务器错误"
                     }
                 },
                 "tags": [
@@ -6048,6 +5966,13 @@
                         "title": "输出格式",
                         "example": "rss2.0"
                     },
+                    "key": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "访问秘钥",
+                        "example": "custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200"
+                    },
                     "url": {
                         "type": "string",
                         "title": "输出路径"
@@ -6079,6 +6004,7 @@
                     "user",
                     "name",
                     "format",
+                    "key",
                     "filter",
                     "filterout"
                 ]

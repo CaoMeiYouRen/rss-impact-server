@@ -25,6 +25,8 @@ if (__DEV__) {
 }
 
 export const PORT = Number(env.PORT || 3000)
+
+export const BASE_URL = env.BASE_URL || `http://localhost:${PORT}`
 // 时区
 export const TZ = env.TZ || 'Asia/Shanghai'
 

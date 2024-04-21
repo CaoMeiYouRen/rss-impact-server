@@ -21,7 +21,7 @@ import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL } from '@/utils/helper'
-import { articleItemFormat, articlesFormat, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
+import { articleItemFormat, articlesFormat, filterArticles, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
 import { ajax } from '@/utils/ajax'
@@ -254,40 +254,10 @@ export class TasksService implements OnApplicationBootstrap {
         if (!hooks?.length || !articles?.length) {
             return
         }
-        const filterFields = ['title', 'summary', 'author', 'categories']
         // try {
         await Promise.allSettled(hooks
             .map(async (hook) => {
-                const filteredArticles = articles
-                    .filter((article) => {
-                        if (!article.pubDate || !hook.filter.time) { // 没有 pubDate/filter.time 不受过滤时间限制
-                            return true
-                        }
-                        return dayjs().diff(article.pubDate, 'second') <= hook.filter.time
-                    })
-                    // 先判断 filterout
-                    .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
-                        if (!hook.filterout[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
-                            return true
-                        }
-                        if (field === 'categories') {
-                            // 有一个 category 对的上就 排除
-                            return !article[field].some((category) => XRegExp(hook.filterout[field], 'ig').test(category))
-                        }
-                        return !XRegExp(hook.filterout[field], 'ig').test(article[field])
-                    }))
-                    // 再判断 filter
-                    .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
-                        if (!hook.filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
-                            return true
-                        }
-                        if (field === 'categories') {
-                            // 有一个 category 对的上就为 true
-                            return article[field].some((category) => XRegExp(hook.filter[field], 'ig').test(category))
-                        }
-                        return XRegExp(hook.filter[field], 'ig').test(article[field])
-                    }))
-                    .slice(0, hook.filter.limit || 20) // 默认最多 20 条
+                const filteredArticles = filterArticles(articles, hook)
                 if (!filteredArticles?.length) {
                     return
                 }

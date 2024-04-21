@@ -99,7 +99,7 @@ export class User extends Base {
     @BeforeUpdate()
     private createAccessToken() { // 初始化 accessToken
         if (!this.accessToken) {
-            this.accessToken = getAccessToken()
+            this.accessToken = getAccessToken('rss-impact')
         }
     }
 
