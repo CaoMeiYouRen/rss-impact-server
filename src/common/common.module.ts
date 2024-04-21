@@ -17,7 +17,7 @@ import { ENABLE_DOWNLOAD_HTTP, RESOURCE_DOWNLOAD_PATH } from '@/app.config'
             async useFactory() {
                 return [
                     ENABLE_DOWNLOAD_HTTP && {
-                        rootPath: path.resolve(RESOURCE_DOWNLOAD_PATH),
+                        rootPath: RESOURCE_DOWNLOAD_PATH,
                         serveRoot: '/download',
                     },
                     {

@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/order
-import { PORT, __DEV__ } from './app.config'
+import { PORT, RESOURCE_DOWNLOAD_PATH, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias from 'module-alias'
 moduleAlias.addAlias('@', path.join(__dirname, './'))
@@ -20,9 +20,11 @@ import { sessionMiddleware } from './middlewares/session.middleware'
 import { setRequestId } from './middlewares/request.middleware'
 
 async function bootstrap() {
-    const dir = DATABASE_DIR
-    if (!await fs.pathExists(dir)) {
-        await fs.mkdir(dir)
+    if (!await fs.pathExists(DATABASE_DIR)) {
+        await fs.mkdir(DATABASE_DIR)
+    }
+    if (!await fs.pathExists(RESOURCE_DOWNLOAD_PATH)) {
+        await fs.mkdir(RESOURCE_DOWNLOAD_PATH)
     }
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         // logger: __DEV__ ? ['error', 'warn', 'log', 'debug', 'verbose'] : ['error', 'warn', 'log'],

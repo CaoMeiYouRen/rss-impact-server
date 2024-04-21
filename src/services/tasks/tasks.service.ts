@@ -780,7 +780,7 @@ export class TasksService implements OnApplicationBootstrap {
                 createdAt: LessThan(date),
             })
             this.logger.log('成功移除过时的文章')
-            this.logger.log('removes', removes)
+            this.logger.log(removes)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
@@ -795,7 +795,7 @@ export class TasksService implements OnApplicationBootstrap {
                 createdAt: LessThan(date),
             })
             this.logger.log('成功移除过时的资源')
-            this.logger.log('removes', removes)
+            this.logger.log(removes)
             // 清理真实的文件
             const dirPath = path.resolve(RESOURCE_DOWNLOAD_PATH) // 解析为绝对路径
             const files = await fs.readdir(dirPath)
@@ -831,7 +831,7 @@ export class TasksService implements OnApplicationBootstrap {
                 createdAt: LessThan(date),
             })
             this.logger.log('成功移除过时的日志')
-            this.logger.log('removes', removes)
+            this.logger.log(removes)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
