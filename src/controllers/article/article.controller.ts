@@ -98,10 +98,12 @@ export class ArticleController {
                 res.header('Content-Type', 'application/feed+json; charset=UTF-8').status(200).json(json(data))
                 return
             case 'rss2.0':
-                res.header('Content-Type', 'application/rss+xml; charset=UTF-8').status(200).send(rss(data))
+                // application/rss+xml
+                res.header('Content-Type', 'application/xml; charset=UTF-8').status(200).send(rss(data))
                 return
             case 'atom':
-                res.header('Content-Type', 'application/atom+xml; charset=UTF-8').status(200).send(atom(data))
+                // application/atom+xml
+                res.header('Content-Type', 'application/xml; charset=UTF-8').status(200).send(atom(data))
                 return
             default:
                 throw new HttpError(400, '未知的输出格式！')

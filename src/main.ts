@@ -75,9 +75,19 @@ async function bootstrap() {
         enableDebugMessages: __DEV__,
     }))
     app.use(sessionMiddleware)
-    if (!__DEV__) {
-        app.use(history({})) // 解决单页应用程序(SPA)重定向问题
-    }
+
+    app.use(history({
+        rewrites: [
+            // 匹配 /api 开头的路由,不进行回退
+            {
+                from: /^\/api\/.*$/,
+                to(context) {
+                    return context.parsedUrl.pathname
+                },
+            },
+        ],
+        htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
+    })) // 解决单页应用程序(SPA)重定向问题
 
     await app.listen(PORT)
 

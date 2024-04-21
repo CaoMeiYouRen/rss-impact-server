@@ -1,4 +1,4 @@
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm'
+import { AfterLoad, BeforeInsert, Column, Entity } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn, ValidateIf } from 'class-validator'
 import { Type } from 'class-transformer'
