@@ -449,3 +449,31 @@ export const isHttpURL = (url: string) => /^(https?:\/\/)/.test(url)
  * @returns
  */
 export const isSocksUrl = (url: string) => /^(socks5?:\/\/)/.test(url)
+
+/**
+ *
+ * @author CaoMeiYouRen
+ * @date 2023-01-09
+ * @export
+ * @template T
+ * @template U
+ * @param promise
+ * @param [errorExt] 可以传递给err对象的其他信息
+ */
+export async function to<T = any, U = Error>(
+    promise: Promise<T>,
+    errorExt?: Record<string, unknown>,
+): Promise<[U, undefined] | [null, T]> {
+    try {
+        const data = await promise
+        const result: [null, T] = [null, data]
+        return result
+    } catch (err) {
+        if (errorExt) {
+            const parsedError = Object.assign({}, err, errorExt)
+            return [parsedError, undefined]
+        }
+        const result_1: [U, undefined] = [err, undefined]
+        return result_1
+    }
+}

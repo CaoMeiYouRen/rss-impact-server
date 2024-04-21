@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:rsshub="http://rsshub.app/xml/schemas">
+    <generator>RssImpact</generator>
+    <webMaster>CaoMeiYouRen</webMaster>
+    <language>{{ language || 'zh-cn' }}</language>
+    <id>{{ id || link }}</id>
+    <title><![CDATA[{{@ title || 'RssImpact' }}]]></title>
+
+    {{ if subtitle }}
+    <subtitle><![CDATA[{{@ subtitle }} - Power by RssImpact(https://github.com/CaoMeiYouRen/rss-impact-server)]]></subtitle>
+    {{ /if }}
+
+    <updated>{{ updated }}</updated>
+    <link href="{{ link }}" />
+    <author>
+        <name><![CDATA[{{@ author || 'RssImpact' }}]]></name>
+    </author>
+
+    {{if contributor }}
+    {{ each contributor }}
+    <contributor>
+        <name><![CDATA[{{@ $value }}]]></name>
+    </contributor>
+    {{ /each }}
+    {{ /if }}
+
+    {{ if icon }}
+    <icon>{{ icon }}</icon>
+    {{ /if }}
+
+    {{ if logo }}
+    <logo>{{ logo }}</logo>
+    {{ /if }}
+
+    {{ each item $e }}
+    <entry>
+        <id>{{ $e.guid || $e.id || $e.link }}</id>
+        <title><![CDATA[{{@ $e.title }}]]></title>
+
+        {{ if ($e.pubDate && $e.updated) }}
+        <published>{{ $e.pubDate }}</published>
+        {{ /if }}
+        <updated>{{ $e.updated || $e.pubDate }}</updated>
+
+        {{ if $e.author }}
+        <author>
+            <name><![CDATA[{{@ $e.author || 'RssImpact' }}]]></name>
+        </author>
+        {{ /if }}
+
+        <link href="{{ $e.link }}" />
+
+        {{ if $e.upvotes }}
+        <rssimpact:upvotes>{{ $e.upvotes }}</rssimpact:upvotes>
+        {{ /if }}
+
+        {{ if $e.downvotes }}
+        <rssimpact:downvotes>{{ $e.downvotes }}</rssimpact:downvotes>
+        {{ /if }}
+
+        {{ if $e.comments }}
+        <rssimpact:comments>{{ $e.comments }}</rssimpact:comments>
+        {{ /if }}
+
+        {{ if $e.summary }}
+        <summary type="html"><![CDATA[{{@ $e.summary }}]]></summary>
+        {{ /if }}
+
+        {{ if $e.content }}
+        <content type="html" src="{{ $e.link }}">{{ $e.content.html || $e.content.text }}</content>
+        {{ else if $e.description }}
+        <content type="html" src="{{ $e.link }}">{{ $e.description }}</content>
+        {{ /if }}
+
+        {{ if typeof $e.category === 'string' }}
+        <category term="{{ $e.category }}"></category>
+        {{ else }}
+                {{ each $e.category $c }}
+                <category term="{{ $c }}"></category>
+                {{ /each }}
+        {{ /if }}
+
+    </entry>
+    {{ /each }}
+
+</feed>

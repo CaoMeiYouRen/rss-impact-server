@@ -20,7 +20,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, filterArticles, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -600,7 +600,11 @@ export class TasksService implements OnApplicationBootstrap {
         const { url } = article.enclosure
         const { maxSize } = config
         const { hash } = resource
-        const torrentInfo = await qBittorrent.getTorrent(hash)
+        const [error, torrentInfo] = await to(qBittorrent.getTorrent(hash))
+        if (error) {
+            this.logger.error(error?.message, error?.stack)
+            return 0
+        }
         const magnetUri = toMagnetURI({
             infoHash: hash,
             dn: torrentInfo.name || '',

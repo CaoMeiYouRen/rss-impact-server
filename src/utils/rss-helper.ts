@@ -7,6 +7,7 @@ import XRegExp from 'xregexp'
 import { deepTrim, htmlToMarkdown, isHttpURL, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Filter, FilterOut } from '@/db/models/hook.entity'
+import { DataItem } from '@/interfaces/data'
 
 export const rssParser = new Parser()
 
@@ -222,4 +223,24 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
             return XRegExp(condition.filter[field], 'ig').test(article[field])
         }))
         .slice(0, condition.filter.limit || 20) // 默认最多 20 条
+}
+
+export function articleToDataItem(article: Article): DataItem {
+    const dataItem = {
+        ...article,
+        title: article.title || '',
+        id: article.guid,
+        content: {
+            html: article.content,
+            text: article.contentSnippet,
+        },
+        description: article.content,
+        pubDate: article.pubDate.toUTCString(),
+        updated: article.pubDate.toUTCString(),
+        enclosure_url: article.enclosure?.url,
+        enclosure_type: article.enclosure?.type,
+        enclosure_length: article.enclosure?.length,
+
+    }
+    return dataItem
 }

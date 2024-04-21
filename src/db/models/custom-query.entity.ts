@@ -1,6 +1,6 @@
 import { AfterLoad, BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn } from 'class-validator'
+import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn, ValidateIf } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Filter, FilterOut } from './hook.entity'
@@ -53,6 +53,7 @@ export class CustomQuery extends AclBase {
         editDisabled: true,
     })
     @ApiProperty({ title: '访问秘钥', example: 'custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200' })
+    @ValidateIf((o) => typeof o.key !== 'undefined')
     @Length(0, 256)
     @IsNotEmpty()
     @Column({

@@ -139,7 +139,7 @@ export class FeedController {
                 userId,
             },
         })
-        if (oldFeed.id !== id) {
+        if (oldFeed && oldFeed.id !== id) {
             throw new HttpError(400, '已存在相同 URL 的订阅！')
         }
         const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题

@@ -10,14 +10,21 @@ import helmet from 'helmet'
 import { ValidationPipe } from '@nestjs/common'
 import history from 'connect-history-api-fallback'
 import fs from 'fs-extra'
-import { DATABASE_DIR } from './db/database.module'
-import { AppModule } from './app.module'
-import { AllExceptionsFilter } from './filters/all-exceptions.filter'
-import { limiter } from './middlewares/limit.middleware'
-import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
-import { fileLogger, logger } from './middlewares/logger.middleware'
-import { sessionMiddleware } from './middlewares/session.middleware'
+import artTemplate from 'art-template'
 import { setRequestId } from './middlewares/request.middleware'
+import { sessionMiddleware } from './middlewares/session.middleware'
+import { fileLogger, logger } from './middlewares/logger.middleware'
+import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
+import { limiter } from './middlewares/limit.middleware'
+import { AllExceptionsFilter } from './filters/all-exceptions.filter'
+import { AppModule } from './app.module'
+import { DATABASE_DIR } from './db/database.module'
+
+artTemplate.defaults.excape = true
+artTemplate.defaults.minimize = true
+artTemplate.defaults.htmlMinifierOptions.collapseWhitespace = true
+artTemplate.defaults.onerror = (error) => logger.error(error)
+artTemplate.defaults.debug = false
 
 async function bootstrap() {
     if (!await fs.pathExists(DATABASE_DIR)) {

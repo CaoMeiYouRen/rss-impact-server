@@ -1,20 +1,20 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Controller, Get, Param, Query, Res } from '@nestjs/common'
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MoreThanOrEqual, Repository } from 'typeorm'
 import dayjs from 'dayjs'
+import { Response } from 'express'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { Article, FindArticle } from '@/db/models/article.entity'
-import { User } from '@/db/models/user.entity'
-import { CurrentUser } from '@/decorators/current-user.decorator'
 import { CustomQuery } from '@/db/models/custom-query.entity'
-import { UseAccessToken } from '@/decorators/use-access-token.decorator'
-import { getConditions } from '@/utils/check'
 import { HttpError } from '@/models/http-error'
 import { isId } from '@/decorators/is-id.decorator'
-import { filterArticles } from '@/utils/rss-helper'
-// TODO 增加文章转 RSS 功能
+import { articleToDataItem, filterArticles } from '@/utils/rss-helper'
+import json from '@/views/json'
+import rss from '@/views/rss'
+import atom from '@/views/atom'
+import { Data } from '@/interfaces/data'
 
 @AclCrud({
     model: Article,
@@ -40,6 +40,9 @@ import { filterArticles } from '@/utils/rss-helper'
         },
         create: false,
         update: false,
+        delete: {
+            decorators: [UseSession()],
+        },
     },
     relations: [],
     order: {
@@ -57,7 +60,7 @@ export class ArticleController {
     @ApiResponse({ status: 200, type: Object })
     // @UseAccessToken() , @CurrentUser() user: User
     @Get('custom-query/:id')
-    async customQuery(@Param('id') id: number, @Query('key') key: string) {
+    async customQuery(@Param('id') id: number, @Query('key') key: string, @Res() res: Response) {
         if (!isId(id)) {
             throw new HttpError(400, '无效的 Id！')
         }
@@ -68,7 +71,7 @@ export class ArticleController {
         if (key !== custom.key) {
             throw new HttpError(403, '错误的 key，没有权限访问！')
         }
-        const { format, filter = {} } = custom
+        const { name, format, filter = {}, url } = custom
         const { limit, time } = filter
 
         const articles = await this.repository.find({
@@ -81,7 +84,28 @@ export class ArticleController {
             },
         })
         const filteredArticles = filterArticles(articles, custom)
-        return filteredArticles
+        const data: Data = {
+            title: name,
+            link: url,
+            feedLink: url,
+            description: `自定义查询：${name}`,
+            author: 'CaoMeiYouRen',
+            item: filteredArticles.map((e) => articleToDataItem(e)),
+        }
+
+        switch (format) {
+            case 'json':
+                res.header('Content-Type', 'application/feed+json; charset=UTF-8').status(200).json(json(data))
+                return
+            case 'rss2.0':
+                res.header('Content-Type', 'application/rss+xml; charset=UTF-8').status(200).send(rss(data))
+                return
+            case 'atom':
+                res.header('Content-Type', 'application/atom+xml; charset=UTF-8').status(200).send(atom(data))
+                return
+            default:
+                throw new HttpError(400, '未知的输出格式！')
+        }
     }
 
 }
