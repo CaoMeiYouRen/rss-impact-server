@@ -99,7 +99,7 @@
     "@commitlint/config-conventional": "^18.6.3",
     "@nestjs/cli": "^10.3.2",
     "@nestjs/schematics": "^10.1.1",
-    "@nestjs/testing": "^10.3.3",
+    "@nestjs/testing": "^10.3.8",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/bcryptjs": "^2.4.6",
