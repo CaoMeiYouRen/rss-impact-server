@@ -62,7 +62,7 @@ const stream: StreamOptions = {
 export const fileLogger = morgan('json', { stream })
 
 const format = winston.format.combine(
-    winston.format.timestamp({ format: 'YYYY-MM-DD hh:mm:ss.SSSZ' }),
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSSZ' }),
     // winston.format.ms(),
     nestWinstonModuleUtilities.format.nestLike('rss-impact-server', {
         colors: false,
@@ -86,7 +86,7 @@ export const winstonLogger = WinstonModule.createLogger({
     transports: [
         new winston.transports.Console({
             format: winston.format.combine(
-                winston.format.timestamp({ format: 'YYYY-MM-DD hh:mm:ss.SSS' }),
+                winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSS' }),
                 winston.format.ms(),
                 nestWinstonModuleUtilities.format.nestLike('rss-impact-server', {
                     colors: true,
