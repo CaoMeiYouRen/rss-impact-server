@@ -20,11 +20,7 @@ import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { AppModule } from './app.module'
 import { DATABASE_DIR } from './db/database.module'
 
-artTemplate.defaults.excape = true
-artTemplate.defaults.minimize = true
-artTemplate.defaults.htmlMinifierOptions.collapseWhitespace = true
 artTemplate.defaults.onerror = (error) => logger.error(error)
-artTemplate.defaults.debug = false
 
 async function bootstrap() {
     if (!await fs.pathExists(DATABASE_DIR)) {
