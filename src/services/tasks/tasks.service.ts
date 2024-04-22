@@ -565,7 +565,7 @@ export class TasksService implements OnApplicationBootstrap {
                         }
                         // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
                         // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
-                        if (!newResource.size) {
+                        if (!newResource.size || newResource.size <= 0) {
                             setTimeout(async () => {
                                 let i = 0
                                 do {
@@ -603,6 +603,9 @@ export class TasksService implements OnApplicationBootstrap {
         const [error, torrentInfo] = await to(qBittorrent.getTorrent(hash))
         if (error) {
             this.logger.error(error?.message, error?.stack)
+            return 0
+        }
+        if (torrentInfo.totalSize <= 0) { // 还没解析出来
             return 0
         }
         const magnetUri = toMagnetURI({

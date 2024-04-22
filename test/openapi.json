@@ -4184,6 +4184,9 @@
                     "publishDate": {
                         "format": "date-time",
                         "type": "string"
+                    },
+                    "aiSummary": {
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -4803,15 +4806,15 @@
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 256,
-                        "title": "分类名称",
-                        "example": "分类A"
+                        "title": "名称",
+                        "example": "分组A"
                     },
                     "description": {
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 2048,
-                        "title": "分类简介",
-                        "example": "分类A"
+                        "title": "简介",
+                        "example": "分组A"
                     },
                     "feeds": {
                         "title": "订阅链接",
@@ -5201,15 +5204,15 @@
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 256,
-                        "title": "分类名称",
-                        "example": "分类A"
+                        "title": "名称",
+                        "example": "分组A"
                     },
                     "description": {
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 2048,
-                        "title": "分类简介",
-                        "example": "分类A"
+                        "title": "简介",
+                        "example": "分组A"
                     },
                     "feeds": {
                         "title": "订阅链接",
@@ -5252,15 +5255,15 @@
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 256,
-                        "title": "分类名称",
-                        "example": "分类A"
+                        "title": "名称",
+                        "example": "分组A"
                     },
                     "description": {
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 2048,
-                        "title": "分类简介",
-                        "example": "分类A"
+                        "title": "简介",
+                        "example": "分组A"
                     },
                     "feeds": {
                         "title": "订阅链接",

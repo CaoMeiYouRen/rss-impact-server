@@ -84,7 +84,7 @@ export class FeedController {
         }))
         if (feed.isEnabled) {
             await this.tasksService.enableFeedTask(feed, true)
-            await this.tasksService.getRssContent(feed, rss) // 同步 RSS 内容
+            this.tasksService.getRssContent(feed, rss) // 同步 RSS 内容
         }
         return feed
     }

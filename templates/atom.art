@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xmlns:rsshub="http://rsshub.app/xml/schemas">
+<feed xmlns="http://www.w3.org/2005/Atom">
     <generator>RssImpact</generator>
     <webMaster>CaoMeiYouRen</webMaster>
     <language>{{ language || 'zh-cn' }}</language>
@@ -49,6 +49,10 @@
         {{ /if }}
 
         <link href="{{ $e.link }}" />
+
+        {{ if $e.enclosure_url }}
+        <link rel="enclosure" href="{{ $e.enclosure_url }}" {{ if $e.enclosure_length }}length="{{ $e.enclosure_length }}"{{ /if }} {{ if $e.enclosure_type }}type="{{ $e.enclosure_type }}"{{ /if }} />
+        {{ /if }}
 
         {{ if $e.upvotes }}
         <rssimpact:upvotes>{{ $e.upvotes }}</rssimpact:upvotes>

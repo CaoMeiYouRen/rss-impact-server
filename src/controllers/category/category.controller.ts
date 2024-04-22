@@ -11,7 +11,7 @@ import { Category, CreateCategory, FindCategory, UpdateCategory } from '@/db/mod
     model: Category,
     config: {
         option: {
-            title: '分类管理',
+            title: '分组管理',
             column: [],
         },
     },
