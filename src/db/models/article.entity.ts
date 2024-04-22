@@ -8,7 +8,7 @@ import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
-import { IsSafeInteger } from '@/decorators/is-safe-integer.decorator'
+import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
@@ -25,7 +25,7 @@ export class EnclosureImpl implements Enclosure {
     url: string
 
     @ApiProperty({ title: '长度', example: 114514 })
-    @IsSafeInteger(-1)
+    @IsSafeNaturalNumber()
     @ValidateIf((o) => typeof o.length !== 'undefined')
     length?: number
 

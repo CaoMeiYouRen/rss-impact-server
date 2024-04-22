@@ -551,7 +551,7 @@ export class TasksService implements OnApplicationBootstrap {
                             userId,
                         })
                         const newResource = await this.resourceRepository.save(resource)
-                        if (newResource.size && !article.enclosure.length) {
+                        if (newResource.size > 0 && !article.enclosure.length) {
                             article.enclosure.length = newResource.size // 更新附件大小
                             article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                             await this.articleRepository.save(article)
@@ -617,7 +617,7 @@ export class TasksService implements OnApplicationBootstrap {
         resource.url = isHttpURL(url) ? url : magnetUri // 保存 http url，避免每次都下载
         resource.name = torrentInfo.name
         resource.size = torrentInfo.totalSize // 总大小
-        if (resource.size && !article.enclosure.length) {
+        if (resource.size > 0 && !article.enclosure.length) {
             article.enclosure.length = resource.size // 更新附件大小
             article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
             await this.articleRepository.save(article)
