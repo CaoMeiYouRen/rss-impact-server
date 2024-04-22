@@ -94,7 +94,6 @@ export class TasksService implements OnApplicationBootstrap {
         const proxyUrl = feed.proxyConfig?.url
         try {
             if (!rss) {
-
                 const resp = (await ajax({
                     url,
                     proxyUrl,
@@ -119,7 +118,6 @@ export class TasksService implements OnApplicationBootstrap {
                     article.author = article.author || rss.author
                     return this.articleRepository.create(article)
                 })
-
                 if (diffArticles?.length) {
                     const newArticles = await this.articleRepository.save(diffArticles)
                     await this.triggerHooks(feed, newArticles)
@@ -524,15 +522,16 @@ export class TasksService implements OnApplicationBootstrap {
 
                     if (/^(https?:\/\/|magnet:)/.test(url)) {
                         name = magnet.name || magnet.dn as string
+
                         if (magnet.length) {
                             size = magnet.length
                         } else if (magnet.xl) {
                             size = Number(magnet.xl)
-                        }
-                        if (size === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
+                        } else if (article.enclosure.length === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
                             size = 0
                             article.enclosure.length = 0
                         }
+
                         const tracker = magnet.announce?.[0] // 仅保留第一个 tracker
                         magnetUri = toMagnetURI({
                             infoHash: hash,
@@ -566,6 +565,7 @@ export class TasksService implements OnApplicationBootstrap {
                         // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
                         // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
                         if (!newResource.size || newResource.size <= 0) {
+                            const n = 20
                             setTimeout(async () => {
                                 let i = 0
                                 do {
@@ -574,8 +574,8 @@ export class TasksService implements OnApplicationBootstrap {
                                         break
                                     }
                                     i++
-                                    await sleep(60 * 1000) // 等待 60 秒后更新 元数据，至多重试 5 次
-                                } while (i > 5)
+                                    await sleep(10 * 1000) // 等待 10 秒后更新 元数据，至多重试 20 次
+                                } while (n > i)
                             }, 0)
                         }
                         return
