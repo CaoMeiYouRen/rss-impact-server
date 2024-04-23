@@ -65,6 +65,10 @@ export class Feed extends AclBase {
     })
     description?: string
 
+    @SetAclCrudField({
+        type: 'input',
+        value: '',
+    })
     @ApiProperty({ title: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
     @IsUrl({
         require_tld: !__DEV__, // 是否要顶级域名
@@ -99,6 +103,9 @@ export class Feed extends AclBase {
     // })
     // isActive: boolean
 
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '是否启用', example: true })
     @IsBoolean({ message: '是否启用必须为 Boolean' })
     @Column({

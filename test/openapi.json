@@ -4489,6 +4489,11 @@
                         "title": "总结为空",
                         "description": "仅在总结为空时启用 AI 总结"
                     },
+                    "isSplit": {
+                        "type": "boolean",
+                        "title": "分段总结",
+                        "description": "如果正文的长度超过 最大 token 数，是否分段进行总结"
+                    },
                     "isIncludeTitle": {
                         "type": "boolean",
                         "title": "包含标题",
@@ -4509,6 +4514,7 @@
                     "type",
                     "apiKey",
                     "isOnlySummaryEmpty",
+                    "isSplit",
                     "isIncludeTitle",
                     "contentType"
                 ]
@@ -4865,7 +4871,6 @@
                     "user",
                     "url",
                     "title",
-                    "description",
                     "cron",
                     "isEnabled",
                     "categoryId",
@@ -5111,7 +5116,6 @@
                     "user",
                     "url",
                     "title",
-                    "description",
                     "cron",
                     "isEnabled",
                     "categoryId",
