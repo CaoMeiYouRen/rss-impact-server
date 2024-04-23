@@ -57,12 +57,13 @@ export class Feed extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '简介', example: '这是一段简介' })
-    @IsNotEmpty({ message: '简介不能为空' })
     @Length(0, 4096, { message: '简介最大不能超过 $constraint2 个字符' })
+    @ValidateIf((o) => typeof o.description !== 'undefined')
     @Column({
         length: 4096,
+        nullable: true,
     })
-    description: string
+    description?: string
 
     @ApiProperty({ title: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
     @IsUrl({

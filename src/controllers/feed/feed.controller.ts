@@ -77,7 +77,7 @@ export class FeedController {
         const { title, description, image } = rss || {}
         const feed = await this.repository.save(this.repository.create({
             title,
-            description,
+            description: description || '',
             imageUrl: image?.url,
             ...body,
             userId: user.id,
