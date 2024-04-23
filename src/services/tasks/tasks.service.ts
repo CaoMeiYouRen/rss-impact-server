@@ -506,7 +506,7 @@ export class TasksService implements OnApplicationBootstrap {
                             this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
                             return
                         }
-                        this.logger.log(`正在下载资源：${url.slice(128)}`)
+                        this.logger.log(`正在下载资源：${url.slice(0, 128)}`)
                         await qBittorrent.addMagnet(url, { savepath: downloadPath })
                     } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
                         if (await this.resourceRepository.findOne({ where: { url, userId } })) {
@@ -526,7 +526,7 @@ export class TasksService implements OnApplicationBootstrap {
                             this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
                             return
                         }
-                        this.logger.log(`正在下载资源：${url.slice(128)}`)
+                        this.logger.log(`正在下载资源：${url.slice(0, 128)}`)
                         await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
                     }
 
@@ -725,11 +725,9 @@ The content to be summarized is:`
                     throw new HttpError(400, '最大 token 数过小！请修改配置！')
                 }
                 await Promise.allSettled(aiArticles.map(async (article) => {
-
                     const articleContent = getArticleContent(article, isSnippet, isIncludeTitle)
                     const articleContentLiat = isSplit ? splitStringByToken(articleContent, reservedTokens) : [limitToken(articleContent, reservedTokens)]
                     this.logger.log(`正在总结文章：${article.title}`)
-
                     const aiSummaries = await Promise.all(articleContentLiat.map(async (content) => {
                         const [error, chatCompletion] = await to(openai.chat.completions.create({
                             messages: [system, { role: 'user', content }],
