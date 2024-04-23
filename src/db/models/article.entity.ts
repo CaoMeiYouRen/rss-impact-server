@@ -91,7 +91,7 @@ export class Article extends AclBase {
     @ValidateIf((o) => typeof o.content !== 'undefined')
     @Column({
         type: 'text',
-        length: 2 ** 20, // 1048576
+        length: 2 ** 20, // 1048576   varchar 上限 2147483647
         nullable: true,
     })
     content?: string
@@ -148,11 +148,15 @@ export class Article extends AclBase {
     author?: string
 
     // contentSnippet/content:encodedSnippet
+    @SetAclCrudField({
+        type: 'textarea',
+        search: true,
+    })
     @ApiProperty({ title: '摘要', description: '纯文本格式，无 HTML', example: '这是一段内容摘要' })
     @Length(0, 65536) // 65536
     @ValidateIf((o) => typeof o.summary !== 'undefined')
     @Column({
-        type: 'text',
+        // type: 'text',
         length: 65536,
         nullable: true,
     })
@@ -173,11 +177,11 @@ export class Article extends AclBase {
     })
     summary?: string
 
-    // TODO 考虑添加 AI 总结功能
     /**
      * AI 总结
      */
     @SetAclCrudField({
+        type: 'textarea',
         search: true,
     })
     @ApiProperty({ title: 'AI 总结', example: '这是一段 AI 总结' })

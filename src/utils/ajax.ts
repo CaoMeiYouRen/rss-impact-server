@@ -18,6 +18,9 @@ export interface AjaxConfig {
 const axiosInstance = axios.create({}) // 创建 axios 实例，防止全局污染
 
 export function getHttpAgent(proxyUrl: string) {
+    if (!proxyUrl) {
+        return null
+    }
     if (isHttpURL(proxyUrl)) {
         return new HttpsProxyAgent(proxyUrl)
     }

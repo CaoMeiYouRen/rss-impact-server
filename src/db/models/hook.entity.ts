@@ -214,7 +214,7 @@ export class Hook extends AclBase {
     })
     @ApiProperty({ title: '代理配置', description: '选择不代理后保存即可禁用代理', example: 1 })
     @IsId()
-    @ValidateIf((o) => Boolean(o.proxyConfigId))
+    @ValidateIf((o) => typeof o.proxyConfigId !== 'undefined')
     @Column({ nullable: true })
     proxyConfigId?: number
 

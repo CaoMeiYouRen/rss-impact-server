@@ -4148,6 +4148,13 @@
                         "title": "总结",
                         "example": "这是一段总结"
                     },
+                    "aiSummary": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 65536,
+                        "title": "AI 总结",
+                        "example": "这是一段 AI 总结"
+                    },
                     "categories": {
                         "title": "分类列表",
                         "description": "RSS 源定义的分类，和 本地RSS 的分组不是同一个",
@@ -4183,9 +4190,6 @@
                     },
                     "publishDate": {
                         "format": "date-time",
-                        "type": "string"
-                    },
-                    "aiSummary": {
                         "type": "string"
                     }
                 },
@@ -4412,6 +4416,103 @@
                     "password"
                 ]
             },
+            "AIConfig": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "openAI"
+                        ],
+                        "title": "类型",
+                        "description": "AI 大模型。目前仅支持 OpenAI",
+                        "example": "openAI"
+                    },
+                    "apiKey": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "API Key",
+                        "description": "OpenAI API Key"
+                    },
+                    "model": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "模型名称",
+                        "description": "OpenAI 模型名称。默认 gpt-3.5-turbo",
+                        "example": "gpt-3.5-turbo"
+                    },
+                    "endpoint": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "API 地址",
+                        "description": "OpenAI API 地址",
+                        "example": "https://api.openai.com/v1"
+                    },
+                    "prompt": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "提示语",
+                        "description": "OpenAI 提示语。通过修改提示语也可以实现翻译等功能"
+                    },
+                    "timeout": {
+                        "type": "number",
+                        "title": "超时时间(秒)",
+                        "description": "默认值 120 秒",
+                        "example": 120
+                    },
+                    "temperature": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1,
+                        "title": "温度参数",
+                        "description": "OpenAI 温度参数，越高越随机，反之越稳定。默认值 0",
+                        "example": 0.1
+                    },
+                    "maxTokens": {
+                        "type": "number",
+                        "title": "最大 token 数",
+                        "description": "OpenAI 最大 token 数。注意一定要比模型的 最大上下文 小，否则可能会总结失败。默认值 2048",
+                        "example": 2048
+                    },
+                    "minContentLength": {
+                        "type": "number",
+                        "title": "最小正文长度",
+                        "description": "当 RSS 的正文超过这个数字时，才启用 AI 总结。默认值 1024。设置为 0 则不限制。",
+                        "example": 1024
+                    },
+                    "isOnlySummaryEmpty": {
+                        "type": "boolean",
+                        "title": "总结为空",
+                        "description": "仅在总结为空时启用 AI 总结"
+                    },
+                    "isIncludeTitle": {
+                        "type": "boolean",
+                        "title": "包含标题",
+                        "description": "提交给 ChatGPT 的内容是否包含标题。如果启用，标题长度也将计算在正文长度中"
+                    },
+                    "contentType": {
+                        "type": "object",
+                        "enum": [
+                            "text",
+                            "html"
+                        ],
+                        "title": "总结格式",
+                        "description": "如果为 纯文本，则使用 摘要 输出 纯文本总结；如果为 HTML，则使用正文输出 HTML 总结。正文长度也将分别计算。",
+                        "example": "text"
+                    }
+                },
+                "required": [
+                    "type",
+                    "apiKey",
+                    "isOnlySummaryEmpty",
+                    "isIncludeTitle",
+                    "contentType"
+                ]
+            },
             "Filter": {
                 "type": "object",
                 "properties": {
@@ -4538,7 +4639,8 @@
                             "notification",
                             "webhook",
                             "download",
-                            "bitTorrent"
+                            "bitTorrent",
+                            "aiSummary"
                         ],
                         "title": "类型",
                         "example": "webhook"
@@ -4558,6 +4660,9 @@
                             },
                             {
                                 "$ref": "#/components/schemas/BitTorrentConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AIConfig"
                             }
                         ]
                     },
@@ -5356,7 +5461,8 @@
                             "notification",
                             "webhook",
                             "download",
-                            "bitTorrent"
+                            "bitTorrent",
+                            "aiSummary"
                         ],
                         "title": "类型",
                         "example": "webhook"
@@ -5376,6 +5482,9 @@
                             },
                             {
                                 "$ref": "#/components/schemas/BitTorrentConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AIConfig"
                             }
                         ]
                     },
@@ -5473,7 +5582,8 @@
                             "notification",
                             "webhook",
                             "download",
-                            "bitTorrent"
+                            "bitTorrent",
+                            "aiSummary"
                         ],
                         "title": "类型",
                         "example": "webhook"
@@ -5493,6 +5603,9 @@
                             },
                             {
                                 "$ref": "#/components/schemas/BitTorrentConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AIConfig"
                             }
                         ]
                     },

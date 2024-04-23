@@ -59,11 +59,13 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
         } else if (statusCode >= HttpStatusCode.INTERNAL_SERVER_ERROR) { // 500
             this.logger.error(message, e?.stack)
         }
-        response.status(statusCode)
-            .json(new ResponseDto({
-                statusCode,
-                message,
-                stack,
-            }))
+        if (!response.headersSent) {
+            response.status(statusCode)
+                .json(new ResponseDto({
+                    statusCode,
+                    message,
+                    stack,
+                }))
+        }
     }
 }

@@ -683,9 +683,8 @@ export class TasksService implements OnApplicationBootstrap {
             // 计算正文长度
             const content = getArticleContent(article, isSnippet, isIncludeTitle)
             const contentLength = content.length
-            return minContentLength >= contentLength
+            return contentLength >= minContentLength
         })
-
         if (!aiArticles.length) {
             return
         }
@@ -702,6 +701,7 @@ export class TasksService implements OnApplicationBootstrap {
                 你是一名文本摘要助理。您的任务是为给定的内容提供不超过1024个单词或汉字的简明摘要。摘要应：
                 1.涵盖原文的核心内容和要点，同时保持客观中立的语气。
                 2.不包含任何原始文本中没有的新内容或个人意见。
+                3.优先使用和原文相同的语言进行总结。
                 需要总结的内容是：
                  */
                 const systemPrompt = `You are a text summarization assistant.
@@ -709,6 +709,7 @@ Your task is to provide a concise summary of no more than 1024 words or Chinese 
 The summary should:
 1.Cover the core content and main points of the original text, while maintaining an objective and neutral tone.
 2.Not contain any new content or personal opinions that are not present in the original text.
+3.Prioritize summarizing in the same language as the original text.
 The content to be summarized is:`
                 const system = {
                     role: 'system',
@@ -722,15 +723,21 @@ The content to be summarized is:`
                 }
                 await Promise.allSettled(aiArticles.map(async (article) => {
                     const content = limitToken(getArticleContent(article, isSnippet, isIncludeTitle), reservedTokens)
-                    const chatCompletion = await openai.chat.completions.create({
+                    this.logger.debug(`正在总结文章：${article.title}`)
+                    const [error, chatCompletion] = await to(openai.chat.completions.create({
                         messages: [system, { role: 'user', content }],
                         model: model || 'gpt-3.5-turbo',
                         n: 1,
                         temperature,
                         max_tokens: reservedTokens,
-                    })
+                    }))
+                    if (error) {
+                        this.logger.error(error?.message, error?.stack)
+                        return
+                    }
                     const aiSummary = chatCompletion?.choices?.[0]?.message?.content?.trim()
                     this.logger.debug(`AI 总结为：${aiSummary}`)
+                    article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                     article.aiSummary = aiSummary
                     await this.articleRepository.save(article)
                 }))

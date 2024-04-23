@@ -106,6 +106,8 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
             article.enclosure.length = Number(article.enclosure.length)
         }
         article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
+    } else {
+        article.enclosure = plainToInstance(EnclosureImpl, {})
     }
     return article
 }

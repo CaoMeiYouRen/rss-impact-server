@@ -36,11 +36,17 @@ export class AIConfig {
     @ValidateIf((o) => typeof o.endpoint !== 'undefined')
     endpoint?: string
 
+    @SetAclCrudField({
+        type: 'textarea',
+    })
     @ApiProperty({ title: '提示语', description: 'OpenAI 提示语。通过修改提示语也可以实现翻译等功能' })
     @Length(0, 2048)
     @ValidateIf((o) => typeof o.prompt !== 'undefined')
     prompt?: string
 
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
     @ApiProperty({ title: '超时时间(秒)', description: '默认值 120 秒', example: 120 })
     @IsSafeNaturalNumber()
     @ValidateIf((o) => typeof o.maxTokens !== 'undefined')
@@ -56,11 +62,17 @@ export class AIConfig {
     @ValidateIf((o) => typeof o.temperature !== 'undefined')
     temperature?: number
 
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
     @ApiProperty({ title: '最大 token 数', description: 'OpenAI 最大 token 数。注意一定要比模型的 最大上下文 小，否则可能会总结失败。默认值 2048', example: 2048 })
     @IsSafeNaturalNumber()
     @ValidateIf((o) => typeof o.maxTokens !== 'undefined')
     maxTokens?: number
 
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
     @ApiProperty({ title: '最小正文长度', description: '当 RSS 的正文超过这个数字时，才启用 AI 总结。默认值 1024。设置为 0 则不限制。', example: 1024 })
     @IsSafeNaturalNumber()
     @ValidateIf((o) => typeof o.minContentLength !== 'undefined')
@@ -74,12 +86,12 @@ export class AIConfig {
     @SetAclCrudField({
         value: true,
     })
-    @ApiProperty({ title: '仅总结为空时', description: '仅在总结为空时启用 AI 总结' })
+    @ApiProperty({ title: '总结为空', description: '仅在总结为空时启用 AI 总结' })
     @IsBoolean()
     isOnlySummaryEmpty: boolean
 
     @SetAclCrudField({
-        value: false,
+        value: true,
     })
     @ApiProperty({ title: '包含标题', description: '提交给 ChatGPT 的内容是否包含标题。如果启用，标题长度也将计算在正文长度中' })
     @IsBoolean()
