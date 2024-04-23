@@ -20,7 +20,7 @@ import OpenAI from 'openai'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
+import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
@@ -40,6 +40,8 @@ import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
+
+const aiLimit = pLimit(AI_LIMIT_MAX) // AI 总结并发数
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -724,11 +726,12 @@ The content to be summarized is:`
                 if (reservedTokens <= 0) {
                     throw new HttpError(400, '最大 token 数过小！请修改配置！')
                 }
-                await Promise.allSettled(aiArticles.map(async (article) => {
+                await Promise.allSettled(aiArticles.map((article) => aiLimit(async () => {
                     const articleContent = getArticleContent(article, isSnippet, isIncludeTitle)
                     const articleContentLiat = isSplit ? splitStringByToken(articleContent, reservedTokens) : [limitToken(articleContent, reservedTokens)]
                     this.logger.log(`正在总结文章：${article.title}`)
-                    const aiSummaries = await Promise.all(articleContentLiat.map(async (content) => {
+                    const aiSummaries: string[] = []
+                    for await (const content of articleContentLiat) { // 串行请求
                         const [error, chatCompletion] = await to(openai.chat.completions.create({
                             messages: [system, { role: 'user', content }],
                             model: model || 'gpt-3.5-turbo',
@@ -738,18 +741,17 @@ The content to be summarized is:`
                         }))
                         if (error) {
                             this.logger.error(error?.message, error?.stack)
-                            return ''
+                        } else {
+                            aiSummaries.push(chatCompletion?.choices?.[0]?.message?.content?.trim())
                         }
-                        return chatCompletion?.choices?.[0]?.message?.content?.trim()
-                    }))
-
+                    }
                     const aiSummary = aiSummaries.join('')
                     this.logger.log(`文章 ${article.title} 总结完成`)
                     // this.logger.debug(`AI 总结为：${aiSummary}`)
                     article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                     article.aiSummary = aiSummary
                     await this.articleRepository.save(article)
-                }))
+                })))
                 return
             }
             default:

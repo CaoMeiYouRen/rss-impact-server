@@ -63,3 +63,5 @@ export const RESOURCE_SAVE_DAYS = Number(env.RESOURCE_SAVE_DAYS || 30)
 export const LOG_SAVE_DAYS = Number(env.LOG_SAVE_DAYS || 30)
 
 export const REVERSE_TRIGGER_LIMIT = Number(env.REVERSE_TRIGGER_LIMIT || 10)
+
+export const AI_LIMIT_MAX = Number(env.AI_LIMIT_MAX || 3)
