@@ -21,7 +21,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -506,6 +506,7 @@ export class TasksService implements OnApplicationBootstrap {
                             this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
                             return
                         }
+                        this.logger.log(`正在下载资源：${url.slice(128)}`)
                         await qBittorrent.addMagnet(url, { savepath: downloadPath })
                     } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
                         if (await this.resourceRepository.findOne({ where: { url, userId } })) {
@@ -525,6 +526,7 @@ export class TasksService implements OnApplicationBootstrap {
                             this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
                             return
                         }
+                        this.logger.log(`正在下载资源：${url.slice(128)}`)
                         await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
                     }
 
@@ -668,7 +670,7 @@ export class TasksService implements OnApplicationBootstrap {
     private async aiHook(hook: Hook, feed: Feed, articles: Article[]) {
         const config = hook.config as AIConfig
         const proxyUrl = hook.proxyConfig?.url
-        const { type, isOnlySummaryEmpty, contentType, isIncludeTitle, apiKey, model, prompt, endpoint, timeout } = config
+        const { type, isOnlySummaryEmpty, contentType, isIncludeTitle, apiKey, model, prompt, endpoint, timeout, isSplit } = config
         const isSnippet = contentType === 'text'
         let { minContentLength, maxTokens, temperature } = config
         maxTokens = maxTokens || 2048
@@ -723,21 +725,29 @@ The content to be summarized is:`
                     throw new HttpError(400, '最大 token 数过小！请修改配置！')
                 }
                 await Promise.allSettled(aiArticles.map(async (article) => {
-                    const content = limitToken(getArticleContent(article, isSnippet, isIncludeTitle), reservedTokens)
-                    this.logger.debug(`正在总结文章：${article.title}`)
-                    const [error, chatCompletion] = await to(openai.chat.completions.create({
-                        messages: [system, { role: 'user', content }],
-                        model: model || 'gpt-3.5-turbo',
-                        n: 1,
-                        temperature,
-                        max_tokens: reservedTokens,
+
+                    const articleContent = getArticleContent(article, isSnippet, isIncludeTitle)
+                    const articleContentLiat = isSplit ? splitStringByToken(articleContent, reservedTokens) : [limitToken(articleContent, reservedTokens)]
+                    this.logger.log(`正在总结文章：${article.title}`)
+
+                    const aiSummaries = await Promise.all(articleContentLiat.map(async (content) => {
+                        const [error, chatCompletion] = await to(openai.chat.completions.create({
+                            messages: [system, { role: 'user', content }],
+                            model: model || 'gpt-3.5-turbo',
+                            n: 1,
+                            temperature,
+                            max_tokens: reservedTokens,
+                        }))
+                        if (error) {
+                            this.logger.error(error?.message, error?.stack)
+                            return ''
+                        }
+                        return chatCompletion?.choices?.[0]?.message?.content?.trim()
                     }))
-                    if (error) {
-                        this.logger.error(error?.message, error?.stack)
-                        return
-                    }
-                    const aiSummary = chatCompletion?.choices?.[0]?.message?.content?.trim()
-                    this.logger.debug(`AI 总结为：${aiSummary}`)
+
+                    const aiSummary = aiSummaries.join('')
+                    this.logger.log(`文章 ${article.title} 总结完成`)
+                    // this.logger.debug(`AI 总结为：${aiSummary}`)
                     article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                     article.aiSummary = aiSummary
                     await this.articleRepository.save(article)

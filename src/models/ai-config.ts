@@ -91,6 +91,13 @@ export class AIConfig {
     isOnlySummaryEmpty: boolean
 
     @SetAclCrudField({
+        value: false,
+    })
+    @ApiProperty({ title: '分段总结', description: '如果正文的长度超过 最大 token 数，是否分段进行总结' })
+    @IsBoolean()
+    isSplit: boolean
+
+    @SetAclCrudField({
         value: true,
     })
     @ApiProperty({ title: '包含标题', description: '提交给 ChatGPT 的内容是否包含标题。如果启用，标题长度也将计算在正文长度中' })
