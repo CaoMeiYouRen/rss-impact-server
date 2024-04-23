@@ -102,6 +102,7 @@ export class TasksService implements OnApplicationBootstrap {
                     proxyUrl,
                     timeout: 60 * 1000,
                 })).data
+                // TODO 增加抓取全文功能，例如 少数派
                 rss = await rssParserString(resp)
             }
             if (Array.isArray(rss?.items)) {

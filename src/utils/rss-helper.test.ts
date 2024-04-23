@@ -85,7 +85,7 @@ describe('rssItemToArticle', () => {
         expectedArticle.title = 'Article Title';
         expectedArticle.content = 'Article content';
         expectedArticle.contentSnippet = 'Article content';
-        expectedArticle.summary = expectedArticle.contentSnippet.slice(0, 128);
+        expectedArticle.enclosure = plainToInstance(EnclosureImpl, {})
 
         const article = rssItemToArticle(rssItem);
         expect(article).toEqual(expectedArticle);

@@ -11,6 +11,7 @@ overrides:
   crypto-hash: git+https://github.com/CaoMeiYouRen/crypto-hash.git
   compare-func: 2.0.0
   cron: 3.1.7
+  formidable: ^3.2.4
 
 dependencies:
   '@cao-mei-you-ren/qbittorrent':
@@ -5384,13 +5385,12 @@ packages:
       web-streams-polyfill: 4.0.0-beta.3
     dev: false
 
-  /formidable@2.1.2:
-    resolution: {integrity: sha512-CM3GuJ57US06mlpQ47YcunuUZ9jpm8Vx+P2CGt2j7HpgkKZO/DJYQ0Bobim8G6PFQmK5lOqOOdUXboU+h73A4g==}
+  /formidable@3.5.1:
+    resolution: {integrity: sha512-WJWKelbRHN41m5dumb0/k8TeAx7Id/y3a+Z7QfhxP/htI9Js5zYaEDtG8uMgG0vM0lOlqnmjE99/kfpOYi/0Og==}
     dependencies:
       dezalgo: 1.0.4
       hexoid: 1.0.0
       once: 1.4.0
-      qs: 6.12.0
     dev: true
 
   /forwarded@0.2.0:
@@ -10189,7 +10189,7 @@ packages:
       debug: 4.3.4
       fast-safe-stringify: 2.1.1
       form-data: 4.0.0
-      formidable: 2.1.2
+      formidable: 3.5.1
       methods: 1.1.2
       mime: 2.6.0
       qs: 6.12.0

@@ -155,7 +155,8 @@
       "axios": "$axios",
       "crypto-hash": "$crypto-hash",
       "compare-func": "$compare-func",
-      "cron": "$cron"
+      "cron": "$cron",
+      "formidable": "^3.2.4"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
