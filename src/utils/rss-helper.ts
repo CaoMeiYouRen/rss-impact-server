@@ -89,7 +89,7 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     }  // 如果没有 pubDate/isoDate 则留空
     article.author = item.author || item.creator || item['dc:creator']
     article.contentSnippet = item['content:encodedSnippet'] || item.contentSnippet
-    article.summary = item.summary || article.contentSnippet?.slice(0, 128) // 如果没有总结，则使用 contentSnippet 填充
+    article.summary = item.summary
     article.categories = item.categories
     article.enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
     if (!article.enclosure && /^(https?:\/\/).*(\.torrent$)/.test(article.link)) {  // 检测 link 后缀是否为 .torrent。例如 nyaa.si
@@ -157,6 +157,30 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
         text,
         date: item.pubDate || '',
     }
+}
+
+/**
+ * 获取正文
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-04-23
+ * @export
+ * @param item
+ * @param [isSnippet=true] 是否为 纯文本（去除 HTML）
+ * @param [hasTitle=true] 是否包括标题
+ */
+export function getArticleContent(item: Article, isSnippet: boolean = true, hasTitle: boolean = true) {
+    const title: string = item.title?.replace(/\.\.\.$/, '') // 移除句末省略号
+    let text = ''
+    const content = isSnippet ? item.contentSnippet : item.content
+    // 排除内容和标题重复
+    if (hasTitle && title && !content?.startsWith(title)) {
+        text += `${title}\n`
+    }
+    text += `${content}`
+    text = text.replace(/(\n[\s|\t]*\r*\n)/g, '\n') // 去除多余换行符
+    text = text.trim() // 去除多余空白符
+    return text
 }
 
 /**
@@ -235,6 +259,7 @@ export function articleToDataItem(article: Article): DataItem {
             text: article.contentSnippet,
         },
         description: article.content,
+        summary: article.summary || article.contentSnippet?.slice(0, 256), // 如果没有总结，则使用 contentSnippet 填充
         pubDate: article.pubDate.toUTCString(),
         updated: article.pubDate.toUTCString(),
         enclosure_url: article.enclosure?.url,

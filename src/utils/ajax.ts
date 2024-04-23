@@ -15,6 +15,18 @@ export interface AjaxConfig {
     proxyUrl?: string
 }
 
+const axiosInstance = axios.create({}) // 创建 axios 实例，防止全局污染
+
+export function getHttpAgent(proxyUrl: string) {
+    if (isHttpURL(proxyUrl)) {
+        return new HttpsProxyAgent(proxyUrl)
+    }
+    if (isSocksUrl(proxyUrl)) {
+        return new SocksProxyAgent(proxyUrl)
+    }
+    return null
+}
+
 /**
  * axios 接口封装
  *
@@ -26,13 +38,8 @@ export interface AjaxConfig {
 export async function ajax<T = any>(config: AjaxConfig): Promise<AxiosResponse<T>> {
     try {
         const { url, query = {}, data, method = 'GET', headers = {}, timeout = 10000, baseURL, responseType, proxyUrl } = config
-        let httpAgent = null
-        if (isHttpURL(proxyUrl)) {
-            httpAgent = new HttpsProxyAgent(proxyUrl)
-        } else if (isSocksUrl(proxyUrl)) {
-            httpAgent = new SocksProxyAgent(proxyUrl)
-        }
-        const resp = await axios(url, {
+        const httpAgent = getHttpAgent(proxyUrl)
+        const resp = await axiosInstance(url, {
             method,
             headers,
             params: query,
@@ -42,6 +49,7 @@ export async function ajax<T = any>(config: AjaxConfig): Promise<AxiosResponse<T
             responseType,
             httpAgent,
             httpsAgent: httpAgent,
+            proxy: false,
         })
         return resp
     } catch (error) {

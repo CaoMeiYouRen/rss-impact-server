@@ -17,12 +17,15 @@ import { DownloadConfig } from '@/models/download-config'
 import { BitTorrentConfig } from '@/models/bit-torrent-config'
 import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { IsId } from '@/decorators/is-id.decorator'
+import { AIConfig } from '@/models/ai-config'
 
-const hookConfig = {
+// eslint-disable-next-line @typescript-eslint/ban-types
+const hookConfig: Record<HookType, Function> = {
     notification: NotificationConfig,
     webhook: WebhookConfig,
     download: DownloadConfig,
     bitTorrent: BitTorrentConfig,
+    aiSummary: AIConfig,
 }
 
 /**
@@ -89,7 +92,7 @@ export class FilterOut {
     categories?: string
 }
 
-@ApiExtraModels(NotificationConfig, WebhookConfig, DownloadConfig, BitTorrentConfig)
+@ApiExtraModels(NotificationConfig, WebhookConfig, DownloadConfig, BitTorrentConfig, AIConfig)
 @Entity()
 export class Hook extends AclBase {
 
@@ -125,19 +128,17 @@ export class Hook extends AclBase {
                 emptyBtn: false,
                 column: initAvueCrudColumn(value),
             })),
-            // defaultValue: {},
         },
-        // value: '{}',
     })
     @ApiProperty({
         title: '配置',
         example: {},
-        // type: () => Object,
         oneOf: [
             { $ref: getSchemaPath(NotificationConfig) },
             { $ref: getSchemaPath(WebhookConfig) },
             { $ref: getSchemaPath(DownloadConfig) },
             { $ref: getSchemaPath(BitTorrentConfig) },
+            { $ref: getSchemaPath(AIConfig) },
         ],
     })
     @JsonStringLength(0, 2048)

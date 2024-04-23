@@ -178,7 +178,14 @@ export class Article extends AclBase {
      * AI 总结
      */
     @SetAclCrudField({
-        hide: true,
+        search: true,
+    })
+    @ApiProperty({ title: 'AI 总结', example: '这是一段 AI 总结' })
+    @Length(0, 65536)
+    @ValidateIf((o) => typeof o.aiSummary !== 'undefined')
+    @Column({
+        length: 65536,
+        nullable: true,
     })
     aiSummary?: string
 

@@ -30,6 +30,7 @@ import { CustomQuery, FindCustomQuery, CreateCustomQuery, UpdateCustomQuery } fr
 @ApiTags('custom-query')
 @Controller('custom-query')
 export class CustomQueryController {
+    // TODO 添加 按 订阅、分组 输出 RSS 的功能
     constructor(@InjectRepository(CustomQuery) private readonly repository: Repository<CustomQuery>) {
     }
 }

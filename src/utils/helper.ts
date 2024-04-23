@@ -9,6 +9,7 @@ import Turndown from 'turndown'
 import { Equal, Like, ILike, Between, In } from 'typeorm'
 import { ValidationError } from 'class-validator'
 import { CQImage } from 'go-cqwebsocket/out/tags'
+import { encode, decode } from 'gpt-3-encoder'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 
@@ -476,4 +477,21 @@ export async function to<T = any, U = Error>(
         const result_1: [U, undefined] = [err, undefined]
         return result_1
     }
+}
+
+export function getTokenLength(text: string) {
+    return encode(text).length
+}
+
+/**
+ * 按 maxTokens 限制 text 长度
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-04-23
+ * @export
+ * @param text
+ * @param maxTokens
+ */
+export function limitToken(text: string, maxTokens: number): string {
+    return decode(encode(text).slice(0, maxTokens))
 }

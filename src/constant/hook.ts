@@ -3,6 +3,7 @@ export const HookMap = {
     webhook: 'Webhook',
     download: '下载',
     bitTorrent: 'BitTorrent', // /磁力链接
+    aiSummary: 'AI 总结',
 } as const
 
 export const HookList = Object.entries(HookMap).map(([value, label]) => ({
@@ -62,3 +63,25 @@ export const BitTorrentList = Object.entries(BitTorrentMap).map(([value, label])
 
 export type BitTorrentType = keyof typeof BitTorrentMap
 
+export const AIMap = {
+    openAI: 'OpenAI',
+} as const
+
+export const AIList = Object.entries(AIMap).map(([value, label]) => ({
+    label,
+    value,
+}))
+
+export type AIType = keyof typeof AIMap
+
+export const ContentMap = {
+    text: '纯文本',
+    html: 'HTML',
+} as const
+
+export const ContentList = Object.entries(ContentMap).map(([value, label]) => ({
+    label,
+    value,
+}))
+
+export type ContentType = keyof typeof ContentMap

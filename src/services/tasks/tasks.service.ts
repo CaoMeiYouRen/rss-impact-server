@@ -16,15 +16,16 @@ import { QBittorrent } from '@cao-mei-you-ren/qbittorrent'
 import { plainToInstance } from 'class-transformer'
 import parseTorrent, { Instance, toMagnetURI } from 'parse-torrent'
 import Parser from 'rss-parser'
+import OpenAI from 'openai'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to } from '@/utils/helper'
-import { articleItemFormat, articlesFormat, filterArticles, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength } from '@/utils/helper'
+import { articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
-import { ajax } from '@/utils/ajax'
+import { ajax, getHttpAgent } from '@/utils/ajax'
 import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
 import { runPushAllInOne } from '@/utils/notification'
@@ -35,6 +36,8 @@ import { BitTorrentConfig } from '@/models/bit-torrent-config'
 import { DownloadConfig } from '@/models/download-config'
 import { WebhookConfig } from '@/models/webhook-config'
 import { NotificationConfig } from '@/models/notification-config'
+import { AIConfig } from '@/models/ai-config'
+import { HttpError } from '@/models/http-error'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
 
@@ -275,6 +278,10 @@ export class TasksService implements OnApplicationBootstrap {
                     }
                     case 'bitTorrent': {
                         await this.bitTorrentHook(hook, feed, filteredArticles)
+                        return
+                    }
+                    case 'aiSummary': {
+                        await this.aiHook(hook, feed, filteredArticles)
                         return
                     }
                     default:
@@ -584,12 +591,10 @@ export class TasksService implements OnApplicationBootstrap {
                 }))
                 return
             }
-
             default:
                 throw new Error(`不支持的BT下载器类型: ${type}`)
         }
     }
-
     /**
      * 更新 BT 资源信息
      *
@@ -657,6 +662,83 @@ export class TasksService implements OnApplicationBootstrap {
         }
         await this.resourceRepository.save(resource) // 更新状态
         return resource.size
+    }
+
+    private async aiHook(hook: Hook, feed: Feed, articles: Article[]) {
+        const config = hook.config as AIConfig
+        const proxyUrl = hook.proxyConfig?.url
+        const { type, isOnlySummaryEmpty, contentType, isIncludeTitle, apiKey, model, prompt, endpoint, timeout } = config
+        const isSnippet = contentType === 'text'
+        let { minContentLength, maxTokens, temperature } = config
+        maxTokens = maxTokens || 2048
+        minContentLength = minContentLength ?? 1024
+        temperature = temperature ?? 0
+        const aiArticles = articles.filter((article) => {
+            if (isOnlySummaryEmpty && article.summary) { // 如果已经有 summary 了，则不再生成 AI summary
+                return false
+            }
+            if (minContentLength === 0) { // 如果设置为 0 ，则不限制最小正文长度
+                return true
+            }
+            // 计算正文长度
+            const content = getArticleContent(article, isSnippet, isIncludeTitle)
+            const contentLength = content.length
+            return minContentLength >= contentLength
+        })
+
+        if (!aiArticles.length) {
+            return
+        }
+
+        switch (type) {
+            case 'openAI': {
+                const openai = new OpenAI({
+                    apiKey,
+                    timeout: (timeout || 2 * 60) * 1000,
+                    baseURL: endpoint,
+                    httpAgent: getHttpAgent(proxyUrl),
+                })
+                /**
+                你是一名文本摘要助理。您的任务是为给定的内容提供不超过1024个单词或汉字的简明摘要。摘要应：
+                1.涵盖原文的核心内容和要点，同时保持客观中立的语气。
+                2.不包含任何原始文本中没有的新内容或个人意见。
+                需要总结的内容是：
+                 */
+                const systemPrompt = `You are a text summarization assistant.
+Your task is to provide a concise summary of no more than 1024 words or Chinese characters for the given content.
+The summary should:
+1.Cover the core content and main points of the original text, while maintaining an objective and neutral tone.
+2.Not contain any new content or personal opinions that are not present in the original text.
+The content to be summarized is:`
+                const system = {
+                    role: 'system',
+                    content: prompt || systemPrompt,
+                } as const
+                const systemPromptLength = getTokenLength(system.content)
+                // 保留给回复的 token
+                const reservedTokens = maxTokens - systemPromptLength
+                if (reservedTokens <= 0) {
+                    throw new HttpError(400, '最大 token 数过小！请修改配置！')
+                }
+                await Promise.allSettled(aiArticles.map(async (article) => {
+                    const content = limitToken(getArticleContent(article, isSnippet, isIncludeTitle), reservedTokens)
+                    const chatCompletion = await openai.chat.completions.create({
+                        messages: [system, { role: 'user', content }],
+                        model: model || 'gpt-3.5-turbo',
+                        n: 1,
+                        temperature,
+                        max_tokens: reservedTokens,
+                    })
+                    const aiSummary = chatCompletion?.choices?.[0]?.message?.content?.trim()
+                    this.logger.debug(`AI 总结为：${aiSummary}`)
+                    article.aiSummary = aiSummary
+                    await this.articleRepository.save(article)
+                }))
+                return
+            }
+            default:
+                throw new Error(`不支持的 AI 大模型: ${type}`)
+        }
     }
 
     async enableFeedTask(feed: Feed, throwError = false) {
