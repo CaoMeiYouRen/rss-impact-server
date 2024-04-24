@@ -6148,6 +6148,16 @@
                         "title": "输出格式",
                         "example": "rss2.0"
                     },
+                    "useAiSummary": {
+                        "type": "boolean",
+                        "title": "使用 AI 总结",
+                        "description": "如果是，则用 AI 总结替换原本的总结"
+                    },
+                    "appendAiSummary": {
+                        "type": "boolean",
+                        "title": "增加 AI 总结",
+                        "description": "如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读"
+                    },
                     "key": {
                         "type": "string",
                         "minLength": 0,
@@ -6188,6 +6198,8 @@
                     "name",
                     "scope",
                     "format",
+                    "useAiSummary",
+                    "appendAiSummary",
                     "key",
                     "filter",
                     "filterout"
@@ -6286,6 +6298,16 @@
                         "title": "输出格式",
                         "example": "rss2.0"
                     },
+                    "useAiSummary": {
+                        "type": "boolean",
+                        "title": "使用 AI 总结",
+                        "description": "如果是，则用 AI 总结替换原本的总结"
+                    },
+                    "appendAiSummary": {
+                        "type": "boolean",
+                        "title": "增加 AI 总结",
+                        "description": "如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读"
+                    },
                     "url": {
                         "type": "string",
                         "title": "输出路径"
@@ -6315,6 +6337,8 @@
                     "name",
                     "scope",
                     "format",
+                    "useAiSummary",
+                    "appendAiSummary",
                     "filter",
                     "filterout"
                 ]
@@ -6390,6 +6414,16 @@
                         ],
                         "title": "输出格式",
                         "example": "rss2.0"
+                    },
+                    "useAiSummary": {
+                        "type": "boolean",
+                        "title": "使用 AI 总结",
+                        "description": "如果是，则用 AI 总结替换原本的总结"
+                    },
+                    "appendAiSummary": {
+                        "type": "boolean",
+                        "title": "增加 AI 总结",
+                        "description": "如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读"
                     },
                     "url": {
                         "type": "string",

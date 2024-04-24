@@ -63,7 +63,7 @@ export class CustomQueryController {
         if (key !== custom.key) {
             throw new HttpError(403, '错误的 key，没有权限访问！')
         }
-        const { name, format, filter = {}, url, scope, categories = [], feed } = custom
+        const { name, format, filter = {}, url, scope, categories = [], feed, useAiSummary, appendAiSummary } = custom
         const { limit, time } = filter
         let feedId: number | FindOperator<number>
         const pubDate = time ? MoreThanOrEqual(dayjs().add(-time, 'seconds').toDate()) : undefined
@@ -102,7 +102,8 @@ export class CustomQueryController {
             feedLink: url,
             description: `自定义查询：${name}`,
             author: 'CaoMeiYouRen',
-            item: filteredArticles.map((e) => articleToDataItem(e)),
+            ttl: 300, // 5 分钟
+            item: filteredArticles.map((e) => articleToDataItem(e, { useAiSummary, appendAiSummary })),
         }
 
         switch (format) {

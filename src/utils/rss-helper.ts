@@ -251,23 +251,43 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         .slice(0, condition.filter.limit || 20) // 默认最多 20 条
 }
 
-export function articleToDataItem(article: Article): DataItem {
+type ArticleOption = {
+    useAiSummary?: boolean
+    appendAiSummary?: boolean
+}
+
+export function articleToDataItem(article: Article, option: ArticleOption = {}): DataItem {
+    const { useAiSummary = false, appendAiSummary = false } = option
+    let content = article.content
+    let contentSnippet = article.contentSnippet
+    if (appendAiSummary && article.aiSummary) {
+        content = `AI Summary：
+${article.aiSummary}
+<hr/>
+${article.content}`
+
+        contentSnippet = `AI Summary：
+${article.aiSummary}
+
+${article.contentSnippet}`
+    }
+
+    content = content.replace(/\n/g, '<br>') // 替换换行符为 <br>
     const dataItem = {
         ...article,
         title: article.title || '',
         id: article.guid,
         content: {
-            html: article.content,
-            text: article.contentSnippet,
+            html: content,
+            text: contentSnippet,
         },
-        description: article.content,
-        summary: article.summary || article.contentSnippet?.slice(0, 256), // 如果没有总结，则使用 contentSnippet 填充
+        description: content,
+        summary: useAiSummary && article.aiSummary || article.summary || article.contentSnippet?.slice(0, 256), // 如果没有总结，则使用 contentSnippet 填充
         pubDate: article.pubDate.toUTCString(),
         updated: article.pubDate.toUTCString(),
         enclosure_url: article.enclosure?.url,
         enclosure_type: article.enclosure?.type,
         enclosure_length: article.enclosure?.length,
-
     }
     return dataItem
 }

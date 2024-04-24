@@ -1,6 +1,6 @@
 import { AfterLoad, BeforeInsert, Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn, ValidateIf, IsArray } from 'class-validator'
+import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn, ValidateIf, IsArray, IsBoolean } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Filter, FilterOut } from './hook.entity'
@@ -106,6 +106,28 @@ export class CustomQuery extends AclBase {
         default: 'rss2.0',
     })
     format: OutputType
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '使用 AI 总结', description: '如果是，则用 AI 总结替换原本的总结' })
+    @IsBoolean()
+    @Column({
+        default: false,
+        nullable: true,
+    })
+    useAiSummary: boolean
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '增加 AI 总结', description: '如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读' })
+    @IsBoolean()
+    @Column({
+        default: false,
+        nullable: true,
+    })
+    appendAiSummary: boolean
 
     @SetAclCrudField({
         // addDisplay: false,
