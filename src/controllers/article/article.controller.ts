@@ -6,6 +6,7 @@ import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { Article, FindArticle } from '@/db/models/article.entity'
 
+@UseSession()
 @AclCrud({
     model: Article,
     config: {
@@ -15,24 +16,11 @@ import { Article, FindArticle } from '@/db/models/article.entity'
         },
     },
     routes: {
-        config: {
-            decorators: [UseSession()],
-        },
-        dicData: {
-            decorators: [UseSession()],
-        },
-        findOne: {
-            decorators: [UseSession()],
-        },
         find: {
             dto: FindArticle,
-            decorators: [UseSession()],
         },
         create: false,
         update: false,
-        delete: {
-            decorators: [UseSession()],
-        },
     },
     relations: [],
     order: {

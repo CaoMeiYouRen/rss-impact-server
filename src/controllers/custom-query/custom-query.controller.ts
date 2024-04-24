@@ -17,7 +17,7 @@ import rss from '@/views/rss'
 import json from '@/views/json'
 import { Category } from '@/db/models/category.entity'
 
-@UseSession()
+// @UseSession()
 @AclCrud({
     model: CustomQuery,
     config: {
@@ -27,14 +27,29 @@ import { Category } from '@/db/models/category.entity'
         },
     },
     routes: {
+        config: {
+            decorators: [UseSession()],
+        },
+        dicData: {
+            decorators: [UseSession()],
+        },
+        findOne: {
+            decorators: [UseSession()],
+        },
         find: {
             dto: FindCustomQuery,
+            decorators: [UseSession()],
         },
         create: {
             dto: CreateCustomQuery,
+            decorators: [UseSession()],
         },
         update: {
             dto: UpdateCustomQuery,
+            decorators: [UseSession()],
+        },
+        delete: {
+            decorators: [UseSession()],
         },
     },
     relations: ['categories'],
