@@ -10,7 +10,7 @@
     <channel>
         <title><![CDATA[{{@ title || 'RssImpact' }}]]></title>
         <link>{{ link || 'https://github.com/CaoMeiYouRen/rss-impact-server' }}</link>
-        <atom:link href="{{ atomlink }}" rel="self" type="application/rss+xml" />
+        <atom:link href="{{ atomlink || link }}" rel="self" type="application/rss+xml" />
         <description><![CDATA[{{@ description || title }} - Power by RssImpact(https://github.com/CaoMeiYouRen/rss-impact-server)]]></description>
         <generator>RssImpact</generator>
         <webMaster>CaoMeiYouRen</webMaster>

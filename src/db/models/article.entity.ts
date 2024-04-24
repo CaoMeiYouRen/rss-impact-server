@@ -3,7 +3,7 @@ import { Enclosure } from 'rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsArray, IsDate, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
 import dayjs from 'dayjs'
-import { Type } from 'class-transformer'
+import { plainToInstance, Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
@@ -230,8 +230,10 @@ export class Article extends AclBase {
     @AfterLoad()
     private updateEnclosure() {
         if (!this.enclosure) {
-            this.enclosure = {} as any
+            this.enclosure = plainToInstance(EnclosureImpl, {})
+            return
         }
+        this.enclosure = plainToInstance(EnclosureImpl, this.enclosure)
     }
 
     @SetAclCrudField({

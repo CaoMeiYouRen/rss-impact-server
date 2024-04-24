@@ -1508,44 +1508,6 @@
                 ]
             }
         },
-        "/api/article/custom-query/{id}": {
-            "get": {
-                "operationId": "Article_customQuery",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {
-                            "type": "number"
-                        }
-                    },
-                    {
-                        "name": "key",
-                        "required": true,
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "article"
-                ]
-            }
-        },
         "/api/article/config": {
             "get": {
                 "operationId": "Article_config",
@@ -2988,6 +2950,74 @@
                 },
                 "tags": [
                     "proxy-config"
+                ]
+            }
+        },
+        "/api/custom-query/rss/{id}": {
+            "get": {
+                "operationId": "CustomQuery_customQuery",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "key",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "custom-query"
                 ]
             }
         },
@@ -6074,6 +6104,40 @@
                         "title": "名称",
                         "example": "查询A"
                     },
+                    "scope": {
+                        "type": "object",
+                        "enum": [
+                            "all",
+                            "category",
+                            "feed"
+                        ],
+                        "title": "查询范围",
+                        "description": "指定分组和指定订阅的配置互斥，只按照本项指定的范围查询",
+                        "example": "all"
+                    },
+                    "categories": {
+                        "title": "指定分组",
+                        "description": "支持选择多个分类",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        }
+                    },
+                    "feedId": {
+                        "type": "number",
+                        "title": "指定订阅",
+                        "description": "注意：订阅的查询是单选的",
+                        "example": 1
+                    },
+                    "feed": {
+                        "title": "订阅源",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Feed"
+                            }
+                        ]
+                    },
                     "format": {
                         "type": "object",
                         "enum": [
@@ -6081,8 +6145,6 @@
                             "atom",
                             "json"
                         ],
-                        "minLength": 0,
-                        "maxLength": 32,
                         "title": "输出格式",
                         "example": "rss2.0"
                     },
@@ -6091,6 +6153,7 @@
                         "minLength": 0,
                         "maxLength": 256,
                         "title": "访问秘钥",
+                        "description": "通过访问秘钥即可无需登录访问 RSS 订阅。一旦泄露，请立即修改！",
                         "example": "custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200"
                     },
                     "url": {
@@ -6123,6 +6186,7 @@
                     "userId",
                     "user",
                     "name",
+                    "scope",
                     "format",
                     "key",
                     "filter",
@@ -6178,6 +6242,40 @@
                         "title": "名称",
                         "example": "查询A"
                     },
+                    "scope": {
+                        "type": "object",
+                        "enum": [
+                            "all",
+                            "category",
+                            "feed"
+                        ],
+                        "title": "查询范围",
+                        "description": "指定分组和指定订阅的配置互斥，只按照本项指定的范围查询",
+                        "example": "all"
+                    },
+                    "categories": {
+                        "title": "指定分组",
+                        "description": "支持选择多个分类",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        }
+                    },
+                    "feedId": {
+                        "type": "number",
+                        "title": "指定订阅",
+                        "description": "注意：订阅的查询是单选的",
+                        "example": 1
+                    },
+                    "feed": {
+                        "title": "订阅源",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Feed"
+                            }
+                        ]
+                    },
                     "format": {
                         "type": "object",
                         "enum": [
@@ -6185,8 +6283,6 @@
                             "atom",
                             "json"
                         ],
-                        "minLength": 0,
-                        "maxLength": 32,
                         "title": "输出格式",
                         "example": "rss2.0"
                     },
@@ -6217,6 +6313,7 @@
                     "userId",
                     "user",
                     "name",
+                    "scope",
                     "format",
                     "filter",
                     "filterout"
@@ -6250,6 +6347,40 @@
                         "title": "名称",
                         "example": "查询A"
                     },
+                    "scope": {
+                        "type": "object",
+                        "enum": [
+                            "all",
+                            "category",
+                            "feed"
+                        ],
+                        "title": "查询范围",
+                        "description": "指定分组和指定订阅的配置互斥，只按照本项指定的范围查询",
+                        "example": "all"
+                    },
+                    "categories": {
+                        "title": "指定分组",
+                        "description": "支持选择多个分类",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        }
+                    },
+                    "feedId": {
+                        "type": "number",
+                        "title": "指定订阅",
+                        "description": "注意：订阅的查询是单选的",
+                        "example": 1
+                    },
+                    "feed": {
+                        "title": "订阅源",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Feed"
+                            }
+                        ]
+                    },
                     "format": {
                         "type": "object",
                         "enum": [
@@ -6257,8 +6388,6 @@
                             "atom",
                             "json"
                         ],
-                        "minLength": 0,
-                        "maxLength": 32,
                         "title": "输出格式",
                         "example": "rss2.0"
                     },
