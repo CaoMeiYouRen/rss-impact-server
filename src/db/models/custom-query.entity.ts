@@ -78,6 +78,7 @@ export class CustomQuery extends AclBase {
             label: 'title',
             value: 'id',
         },
+        value: null,
     })
     @ApiProperty({ title: '指定订阅', description: '注意：订阅的查询是单选的', example: 1 })
     @IsId()
@@ -130,13 +131,13 @@ export class CustomQuery extends AclBase {
     appendAiSummary: boolean
 
     @SetAclCrudField({
-        // addDisplay: false,
+        addDisplay: false,
         // editDisabled: true,
     })
     @ApiProperty({ title: '访问秘钥', description: '通过访问秘钥即可无需登录访问 RSS 订阅。一旦泄露，请立即修改！', example: 'custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200' })
     @ValidateIf((o) => typeof o.key !== 'undefined')
     @Length(0, 256)
-    @IsNotEmpty()
+    // @IsNotEmpty()
     @Column({
         length: 256,
     })
