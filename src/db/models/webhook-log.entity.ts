@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsInt, IsNotEmpty, IsObject, Length, Max, Min, ValidateIf } from 'class-validator'
+import { IsInt, IsNotEmpty, IsObject, IsOptional, Length, Max, Min } from 'class-validator'
 import { AxiosResponseHeaders, RawAxiosResponseHeaders } from 'axios'
 import { AclBase } from './acl-base.entity'
 import { Hook } from './hook.entity'
@@ -67,7 +67,7 @@ export class WebhookLog extends AclBase {
     @ApiProperty({ title: '响应体', example: { message: 'OK' } })
     @JsonStringLength(0, 2048)
     // @IsObject()
-    @ValidateIf((o) => typeof o.data !== 'undefined')
+    @IsOptional()
     @Column({
         type: 'simple-json',
         length: 2048,
@@ -78,7 +78,7 @@ export class WebhookLog extends AclBase {
     @ApiProperty({ title: '响应头', example: {} })
     @JsonStringLength(0, 2048)
     @IsObject()
-    @ValidateIf((o) => typeof o.headers !== 'undefined')
+    @IsOptional()
     @Column({
         type: 'simple-json',
         length: 2048,

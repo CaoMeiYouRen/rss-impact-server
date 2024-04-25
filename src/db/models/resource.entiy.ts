@@ -1,6 +1,6 @@
 import { AfterLoad, Column, Entity, Index } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, Length, ValidateIf } from 'class-validator'
+import { IsNotEmpty, IsOptional, Length } from 'class-validator'
 import md5 from 'md5'
 import { AclBase } from './acl-base.entity'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
@@ -54,7 +54,7 @@ export class Resource extends AclBase {
 
     @ApiProperty({ title: '文件路径', example: '/data/download/favicon-16x16-next.png' })
     @Length(0, 2048)
-    @ValidateIf((o) => typeof o.path !== 'undefined')
+    @IsOptional()
     @Column({
         length: 2048,
     })

@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsIn, IsNotEmpty, IsUrl, Length, ValidateIf } from 'class-validator'
+import { IsArray, IsBoolean, IsIn, IsNotEmpty, IsOptional, IsUrl, Length } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
@@ -58,7 +58,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '简介', example: '这是一段简介' })
     @Length(0, 4096, { message: '简介最大不能超过 $constraint2 个字符' })
-    @ValidateIf((o) => typeof o.description !== 'undefined')
+    @IsOptional()
     @Column({
         length: 4096,
         nullable: true,
@@ -74,7 +74,7 @@ export class Feed extends AclBase {
         require_tld: !__DEV__, // 是否要顶级域名
     }, { message: '封面Url必须为标准URL格式' })
     @Length(0, 2048, { message: '封面Url最大不能超过 $constraint2 个字符！' })
-    @ValidateIf((o) => Boolean(o.imageUrl))
+    @IsOptional()
     @Column({
         length: 2048,
         nullable: true,
@@ -155,7 +155,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '代理配置', description: '选择不代理后保存即可禁用代理', example: 1 })
     @IsId()
-    @ValidateIf((o) => Boolean(o.proxyConfigId))
+    @IsOptional()
     @Column({ nullable: true })
     proxyConfigId?: number
 

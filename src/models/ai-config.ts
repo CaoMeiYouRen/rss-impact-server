@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Length, IsIn, IsNotEmpty, ValidateIf, IsUrl, IsBoolean, Max, Min } from 'class-validator'
+import { Length, IsIn, IsNotEmpty, IsUrl, IsBoolean, Max, Min, IsOptional } from 'class-validator'
 import { AIList, AIType, ContentList, ContentType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { __DEV__ } from '@/app.config'
@@ -25,7 +25,7 @@ export class AIConfig {
 
     @ApiProperty({ title: '模型名称', description: 'OpenAI 模型名称。默认 gpt-3.5-turbo', example: 'gpt-3.5-turbo' })
     @Length(0, 128)
-    @ValidateIf((o) => typeof o.model !== 'undefined')
+    @IsOptional()
     model?: string
 
     @ApiProperty({ title: 'API 地址', description: 'OpenAI API 地址', example: 'https://api.openai.com/v1' })
@@ -33,7 +33,7 @@ export class AIConfig {
     @IsUrl({
         require_tld: !__DEV__, // 是否要顶级域名
     })
-    @ValidateIf((o) => typeof o.endpoint !== 'undefined')
+    @IsOptional()
     endpoint?: string
 
     @SetAclCrudField({
@@ -41,7 +41,7 @@ export class AIConfig {
     })
     @ApiProperty({ title: '提示语', description: 'OpenAI 提示语。通过修改提示语也可以实现翻译等功能' })
     @Length(0, 2048)
-    @ValidateIf((o) => typeof o.prompt !== 'undefined')
+    @IsOptional()
     prompt?: string
 
     @SetAclCrudField({
@@ -49,7 +49,7 @@ export class AIConfig {
     })
     @ApiProperty({ title: '超时时间(秒)', description: '默认值 120 秒', example: 120 })
     @IsSafeNaturalNumber()
-    @ValidateIf((o) => typeof o.maxTokens !== 'undefined')
+    @IsOptional()
     timeout?: number
 
     @SetAclCrudField({
@@ -59,7 +59,7 @@ export class AIConfig {
     @ApiProperty({ title: '温度参数', description: 'OpenAI 温度参数，越高越随机，反之越稳定。默认值 0', example: 0.1 })
     @Max(1)
     @Min(0)
-    @ValidateIf((o) => typeof o.temperature !== 'undefined')
+    @IsOptional()
     temperature?: number
 
     @SetAclCrudField({
@@ -67,7 +67,7 @@ export class AIConfig {
     })
     @ApiProperty({ title: '最大 token 数', description: 'OpenAI 最大 token 数。注意一定要比模型的 最大上下文 小，否则可能会总结失败。默认值 2048', example: 2048 })
     @IsSafeNaturalNumber()
-    @ValidateIf((o) => typeof o.maxTokens !== 'undefined')
+    @IsOptional()
     maxTokens?: number
 
     @SetAclCrudField({
@@ -75,12 +75,12 @@ export class AIConfig {
     })
     @ApiProperty({ title: '最小正文长度', description: '当 RSS 的正文超过这个数字时，才启用 AI 总结。默认值 1024。设置为 0 则不限制。', example: 1024 })
     @IsSafeNaturalNumber()
-    @ValidateIf((o) => typeof o.minContentLength !== 'undefined')
+    @IsOptional()
     minContentLength?: number
 
     // @ApiProperty({ title: '最大正文长度', description: '最多向 ChatGPT 提交多少正文，有可能会超过 token 数。默认值 4096' })
     // @IsSafeNaturalNumber()
-    // @ValidateIf((o) => typeof o.minContentLength !== 'undefined')
+    // @IsOptional()
     // maxContentLength?: number
 
     @SetAclCrudField({

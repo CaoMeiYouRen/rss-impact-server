@@ -224,6 +224,9 @@ export class AclCrudController {
         if (body.updatedAt) {
             delete body.updatedAt
         }
+        if (!id) {
+            throw new HttpError(400, 'update 必须要有 id')
+        }
         const document = await this.repository.findOne({
             where: {
                 id,

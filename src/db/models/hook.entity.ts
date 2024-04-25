@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
 import { ApiExtraModels, ApiProperty, getSchemaPath, OmitType, PartialType } from '@nestjs/swagger'
-import { IsBoolean, IsObject, Length, ValidateIf, ValidateNested, IsIn, IsNotEmpty } from 'class-validator'
+import { IsBoolean, IsObject, Length, ValidateNested, IsIn, IsNotEmpty, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
@@ -35,7 +35,7 @@ export class Filter {
 
     @ApiProperty({ title: '条数限制', description: '限制最大条数，主要用于排行榜类 RSS。默认值 20。', example: 20 })
     @IsSafeNaturalNumber(10000)
-    @ValidateIf((o) => typeof o.limit !== 'undefined')
+    @IsOptional()
     limit?: number
 
     @SetAclCrudField({
@@ -43,27 +43,27 @@ export class Filter {
     })
     @ApiProperty({ title: '过滤时间(秒)', description: '过滤时间，返回指定时间范围内的内容。设置为 0 禁用', example: 3600 })
     @IsSafeNaturalNumber()
-    @ValidateIf((o) => typeof o.time !== 'undefined')
+    @IsOptional()
     time?: number
 
     @ApiProperty({ title: '过滤标题', example: '标题1|标题2' })
     @Length(0, 256)
-    @ValidateIf((o) => typeof o.title !== 'undefined')
+    @IsOptional()
     title?: string
 
     @ApiProperty({ title: '过滤总结', example: '总结1|总结2' })
     @Length(0, 1024)
-    @ValidateIf((o) => typeof o.summary !== 'undefined')
+    @IsOptional()
     summary?: string
 
     @ApiProperty({ title: '过滤作者', example: 'CaoMeiYouRen' })
     @Length(0, 128)
-    @ValidateIf((o) => typeof o.author !== 'undefined')
+    @IsOptional()
     author?: string
 
     @ApiProperty({ title: '过滤分类', description: '分类正则中有一个对得上就保留', example: 'tag1|tag2' })
     @Length(0, 256)
-    @ValidateIf((o) => typeof o.categories !== 'undefined')
+    @IsOptional()
     categories?: string
 }
 /**
@@ -73,22 +73,22 @@ export class FilterOut {
 
     @ApiProperty({ title: '排除标题', example: '标题1|标题2' })
     @Length(0, 256)
-    @ValidateIf((o) => typeof o.title !== 'undefined')
+    @IsOptional()
     title?: string
 
     @ApiProperty({ title: '排除总结', example: '总结1|总结2' })
     @Length(0, 1024)
-    @ValidateIf((o) => typeof o.summary !== 'undefined')
+    @IsOptional()
     summary?: string
 
     @ApiProperty({ title: '排除作者', example: 'CaoMeiYouRen' })
     @Length(0, 128)
-    @ValidateIf((o) => typeof o.author !== 'undefined')
+    @IsOptional()
     author?: string
 
     @ApiProperty({ title: '排除分类', description: '分类正则中有一个对得上就排除', example: 'tag1|tag2' })
     @Length(0, 256)
-    @ValidateIf((o) => typeof o.categories !== 'undefined')
+    @IsOptional()
     categories?: string
 }
 
@@ -214,7 +214,7 @@ export class Hook extends AclBase {
     })
     @ApiProperty({ title: '代理配置', description: '选择不代理后保存即可禁用代理', example: 1 })
     @IsId()
-    @ValidateIf((o) => typeof o.proxyConfigId !== 'undefined')
+    @IsOptional()
     @Column({ nullable: true })
     proxyConfigId?: number
 
@@ -223,7 +223,7 @@ export class Hook extends AclBase {
     })
     @ApiProperty({ title: '代理配置', type: () => ProxyConfig })
     @ManyToOne(() => ProxyConfig)
-    proxyConfig: ProxyConfig
+    proxyConfig?: ProxyConfig
 
     @SetAclCrudField({
         hide: true,

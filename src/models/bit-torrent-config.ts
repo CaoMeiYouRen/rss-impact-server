@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Length, IsIn, IsNotEmpty, IsUrl, ValidateIf } from 'class-validator'
+import { Length, IsIn, IsNotEmpty, IsUrl, IsOptional } from 'class-validator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { BitTorrentList, BitTorrentType } from '@/constant/hook'
@@ -45,11 +45,11 @@ export class BitTorrentConfig {
 
     @ApiProperty({ title: '下载路径', example: '服务器上的地址，要保存到的路径。留空则为 BT 下载器的默认设置' })
     @Length(0, 256)
-    @ValidateIf((o) => typeof o.downloadPath !== 'undefined')
+    @IsOptional()
     downloadPath?: string
 
     @ApiProperty({ title: '最大体积(B)', description: '过滤资源体积，超过体积的资源不会下载。单位为 B (字节)。设置为 0 禁用', example: 114514 })
     @IsSafeNaturalNumber()
-    @ValidateIf((o) => typeof o.maxSize !== 'undefined')
+    @IsOptional()
     maxSize?: number
 }

@@ -1,6 +1,6 @@
 import { Method, AxiosRequestHeaders } from 'axios'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsIn, IsNotEmpty, IsObject, IsUrl, Length, ValidateIf } from 'class-validator'
+import { IsIn, IsNotEmpty, IsObject, IsOptional, IsUrl, Length } from 'class-validator'
 import { AjaxConfig } from '@/utils/ajax'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
@@ -36,25 +36,25 @@ export class WebhookConfig implements AjaxConfig {
     })
     @ApiProperty({ title: '请求方法', example: {} })
     @IsIn(methodOptions.map((e) => e.value))
-    @ValidateIf((o) => typeof o.method !== 'undefined')
+    @IsOptional()
     method?: Method
 
     @ApiProperty({ title: '查询字符串', example: { key: '114514' } })
     @IsObject()
     @JsonStringLength(0, 1024)
-    @ValidateIf((o) => typeof o.query !== 'undefined')
+    @IsOptional()
     query?: Record<string, unknown>
 
     @ApiProperty({ title: '请求体', example: {} })
     @IsObject()
     @JsonStringLength(0, 2048)
-    @ValidateIf((o) => typeof o.data !== 'undefined')
+    @IsOptional()
     data?: Record<string | number | symbol, unknown> | Record<string | number | symbol, unknown>[]
 
     @ApiProperty({ title: '请求头', example: {} })
     @JsonStringLength(0, 2048)
     @IsObject()
-    @ValidateIf((o) => typeof o.headers !== 'undefined')
+    @IsOptional()
     headers?: AxiosRequestHeaders
 
     @SetAclCrudField({
@@ -62,6 +62,6 @@ export class WebhookConfig implements AjaxConfig {
     })
     @ApiProperty({ title: '超时时间(秒)', description: '默认 60 秒。', example: 60 })
     @IsSafeNaturalNumber(86400)
-    @ValidateIf((o) => typeof o.timeout !== 'undefined')
+    @IsOptional()
     timeout?: number
 }

@@ -1,7 +1,7 @@
 import { Entity, Column, Index, ManyToOne, AfterLoad } from 'typeorm'
 import { Enclosure } from 'rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsDate, IsNotEmpty, IsObject, IsString, IsUrl, Length, ValidateIf, ValidateNested } from 'class-validator'
+import { IsArray, IsDate, IsNotEmpty, IsObject, IsOptional, IsString, IsUrl, Length, ValidateNested } from 'class-validator'
 import dayjs from 'dayjs'
 import { plainToInstance, Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
@@ -21,17 +21,17 @@ export class EnclosureImpl implements Enclosure {
         require_tld: !__DEV__,   // 是否要顶级域名
     })
     @Length(0, 65000)
-    @ValidateIf((o) => typeof o.url !== 'undefined')
+    @IsOptional()
     url: string
 
     @ApiProperty({ title: '长度', example: 114514 })
     @IsSafeNaturalNumber()
-    @ValidateIf((o) => typeof o.length !== 'undefined')
+    @IsOptional()
     length?: number
 
     @ApiProperty({ title: '媒体类型', example: 'application/x-bittorrent' })
     @Length(0, 128)
-    @ValidateIf((o) => typeof o.type !== 'undefined')
+    @IsOptional()
     type?: string
 }
 
@@ -66,7 +66,7 @@ export class Article extends AclBase {
         require_tld: !__DEV__, // 是否要顶级域名
     })
     @Length(0, 2048)
-    @ValidateIf((o) => typeof o.link !== 'undefined')
+    @IsOptional()
     @Column({
         length: 2048,
         nullable: true,
@@ -78,7 +78,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '标题', example: '这是一个标题' })
     @Length(0, 256)
-    @ValidateIf((o) => typeof o.title !== 'undefined')
+    @IsOptional()
     @Column({
         length: 256,
         nullable: true,
@@ -88,7 +88,7 @@ export class Article extends AclBase {
     /** 正文 content/content:encoded */
     @ApiProperty({ title: '正文', example: '这是一段正文' })
     @Length(0, 2 ** 20)
-    @ValidateIf((o) => typeof o.content !== 'undefined')
+    @IsOptional()
     @Column({
         type: 'text',
         length: 2 ** 20, // 1048576   varchar 上限 2147483647
@@ -105,7 +105,6 @@ export class Article extends AclBase {
     // @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     // @Type(() => Date)
     // @IsDate()
-    // @ValidateIf((o) => typeof o.publishDate !== 'undefined')
     @Column({
         nullable: true,
     })
@@ -121,7 +120,7 @@ export class Article extends AclBase {
     @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     @Type(() => Date)
     @IsDate()
-    @ValidateIf((o) => typeof o.pubDate !== 'undefined')
+    @IsOptional()
     @Column({
         nullable: true,
     })
@@ -140,7 +139,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '作者', example: 'CaoMeiYouRen' })
     @Length(0, 128)
-    @ValidateIf((o) => typeof o.author !== 'undefined')
+    @IsOptional()
     @Column({
         length: 128,
         nullable: true,
@@ -154,7 +153,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '摘要', description: '纯文本格式，无 HTML', example: '这是一段内容摘要' })
     @Length(0, 65536) // 65536
-    @ValidateIf((o) => typeof o.summary !== 'undefined')
+    @IsOptional()
     @Column({
         // type: 'text',
         length: 65536,
@@ -170,7 +169,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '总结', example: '这是一段总结' })
     @Length(0, 1024)
-    @ValidateIf((o) => typeof o.summary !== 'undefined')
+    @IsOptional()
     @Column({
         length: 1024,
         nullable: true,
@@ -186,7 +185,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: 'AI 总结', example: '这是一段 AI 总结' })
     @Length(0, 65536)
-    @ValidateIf((o) => typeof o.aiSummary !== 'undefined')
+    @IsOptional()
     @Column({
         length: 65536,
         nullable: true,
@@ -204,7 +203,7 @@ export class Article extends AclBase {
     @JsonStringLength(0, 512)
     @IsArray()
     @IsString({ each: true })
-    @ValidateIf((o) => typeof o.categories !== 'undefined')
+    @IsOptional()
     @Column({
         type: 'simple-json', // 用 json 来避免逗号问题
         length: 512,
@@ -218,7 +217,7 @@ export class Article extends AclBase {
     @ValidateNested()
     @JsonStringLength(0, 65536) // 2 ** 16
     @IsObject()
-    @ValidateIf((o) => typeof o.enclosure !== 'undefined')
+    @IsOptional()
     @Column({
         type: 'simple-json',
         length: 65536,

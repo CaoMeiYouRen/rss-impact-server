@@ -1,6 +1,6 @@
 import { Column, ManyToOne } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { ValidateIf } from 'class-validator'
+import { IsOptional } from 'class-validator'
 import { Base } from './base.entity'
 import { User } from './user.entity'
 import { IsId } from '@/decorators/is-id.decorator'
@@ -15,7 +15,7 @@ export abstract class AclBase extends Base {
     })
     @ApiProperty({ title: '所属用户', example: 1 })
     @IsId()
-    @ValidateIf((o) => typeof o.userId !== 'undefined')
+    @IsOptional()
     @Column({ nullable: true })
     userId: number
 

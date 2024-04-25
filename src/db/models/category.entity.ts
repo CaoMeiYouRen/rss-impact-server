@@ -1,6 +1,6 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsNotEmpty, Length, ValidateIf } from 'class-validator'
+import { IsNotEmpty, IsOptional, Length } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
@@ -34,7 +34,7 @@ export class Category extends AclBase {
     })
     @ApiProperty({ title: '简介', example: '分组A' })
     @Length(0, 2048, { message: '简介的长度必须在 $constraint1 到 $constraint2 个字符！' })
-    @ValidateIf((o) => typeof o.description !== 'undefined')
+    @IsOptional()
     @Column({
         nullable: true,
         length: 4096,

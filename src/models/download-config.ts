@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, Length, ValidateIf } from 'class-validator'
+import { IsNotEmpty, IsOptional, Length } from 'class-validator'
 import md5 from 'md5'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
@@ -23,6 +23,6 @@ export class DownloadConfig {
     })
     @ApiProperty({ title: '超时时间(秒)', description: '默认 60 秒。', example: 60 })
     @IsSafeNaturalNumber()
-    @ValidateIf((o) => typeof o.timeout !== 'undefined')
+    @IsOptional()
     timeout?: number
 }

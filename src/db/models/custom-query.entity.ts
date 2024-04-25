@@ -1,6 +1,6 @@
 import { AfterLoad, BeforeInsert, Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn, ValidateIf, IsArray, IsBoolean } from 'class-validator'
+import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn, IsArray, IsBoolean, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Filter, FilterOut } from './hook.entity'
@@ -67,6 +67,7 @@ export class CustomQuery extends AclBase {
     // })
     @Type(() => Category)
     @IsArray()
+    @IsOptional()
     @ManyToMany(() => Category)
     @JoinTable()
     categories?: Category[]
@@ -82,7 +83,7 @@ export class CustomQuery extends AclBase {
     })
     @ApiProperty({ title: '指定订阅', description: '注意：订阅的查询是单选的', example: 1 })
     @IsId()
-    @ValidateIf((o) => typeof o.feedId !== 'undefined' && o.feedId !== null)
+    @IsOptional()
     @Column({ nullable: true })
     feedId?: number
 
@@ -135,7 +136,7 @@ export class CustomQuery extends AclBase {
         // editDisabled: true,
     })
     @ApiProperty({ title: '访问秘钥', description: '通过访问秘钥即可无需登录访问 RSS 订阅。一旦泄露，请立即修改！', example: 'custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200' })
-    @ValidateIf((o) => typeof o.key !== 'undefined')
+    @IsOptional()
     @Length(0, 256)
     // @IsNotEmpty()
     @Column({
