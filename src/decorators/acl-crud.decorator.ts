@@ -75,7 +75,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
         let value: any = options?.default
         let extra: any = {
             ...setAclCrudFieldOption,
-            nullable: options.nullable,
+            nullable: options?.nullable,
         }
         const label = swaggerOption?.title || upperFirst(prop)
         const tip = swaggerOption?.description
