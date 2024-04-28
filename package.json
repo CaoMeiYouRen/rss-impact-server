@@ -56,7 +56,7 @@
     "connect-sqlite3": "^0.9.13",
     "cron": "3.1.7",
     "crypto-hash": "git+https://github.com/CaoMeiYouRen/crypto-hash.git",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
     "express-rate-limit": "^7.2.0",
     "express-session": "^1.18.0",
