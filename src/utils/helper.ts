@@ -10,6 +10,7 @@ import { Equal, Like, ILike, Between, In } from 'typeorm'
 import { ValidationError } from 'class-validator'
 import { CQImage } from 'go-cqwebsocket/out/tags'
 import { encode, decode } from 'gpt-3-encoder'
+import * as betterBytes from 'better-bytes'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 
@@ -336,29 +337,7 @@ export function mdToCqcode(md: string) {
  * @param data 单位B
  */
 export function dataFormat(data: number | bigint): string {
-    if (data < 0) {
-        throw new Error('Data must be greater than or equal to 0')
-    }
-    const units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
-    let i = 0
-    let value: number | bigint
-    if (typeof data === 'bigint' || data > Number.MAX_SAFE_INTEGER) {
-        value = BigInt(data)
-        while (value >= 1024n && i < units.length - 1) {
-            value /= 1024n
-            i++
-        }
-        return `${value} ${units[i]}`
-    }
-    value = data
-    while (value >= 1024 && i < units.length - 1) {
-        value /= 1024
-        i++
-    }
-    if (i === 0) {
-        return `${value} ${units[i]}`
-    }
-    return `${value.toFixed(2)} ${units[i]}`
+    return betterBytes.format(data, { standard: 'kilobinary', decimal: 2, unitSeparator: ' ' })
 }
 
 type RetryBackoffConfig = {

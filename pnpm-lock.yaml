@@ -53,6 +53,9 @@ dependencies:
   bcryptjs:
     specifier: ^2.4.3
     version: 2.4.3
+  better-bytes:
+    specifier: ^1.2.4
+    version: 1.2.4
   class-transformer:
     specifier: ^0.5.1
     version: 0.5.1
@@ -3266,6 +3269,13 @@ packages:
 
   /bep53-range@1.1.1:
     resolution: {integrity: sha512-ct6s33iiwRCUPp9KXnJ4QMWDgHIgaw36caK/5XEQ9L8dCzSQlJt1Vk6VmHh1VD4AlGCAI4C2zmtfItifBBPrhQ==}
+    dev: false
+
+  /better-bytes@1.2.4:
+    resolution: {integrity: sha512-lA8ZltmVDd7ThuUtZgZxKMsb2I7qLZYHsaT+CkuMZeHLIXxiCxqgqokNNG+1WKTccs+ybFjeAW6+pc3gnKdoRg==}
+    engines: {node: '>=16'}
+    dependencies:
+      tslib: 2.6.2
     dev: false
 
   /binary-extensions@2.3.0:

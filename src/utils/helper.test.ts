@@ -198,22 +198,22 @@ describe('dataFormat', () => {
         expect(dataFormat(1073741824)).toBe('1.00 GiB')
         expect(dataFormat(1099511627776)).toBe('1.00 TiB')
         expect(dataFormat(1125899906842624)).toBe('1.00 PiB')
-        expect(dataFormat(1152921504606846976)).toBe('1 EiB')
-        expect(dataFormat(1180591620717411303424)).toBe('1 ZiB')
-        expect(dataFormat(1208925819614629174706176)).toBe('1 YiB')
+        expect(dataFormat(1152921504606846976)).toBe('1.00 EiB')
+        expect(dataFormat(1180591620717411303424)).toBe('1.00 ZiB')
+        expect(dataFormat(1208925819614629174706176)).toBe('1.00 YiB')
     })
 
     it('should format bytes correctly for bigints', () => {
         expect(dataFormat(0n)).toBe('0 B')
         expect(dataFormat(1023n)).toBe('1023 B')
-        expect(dataFormat(1024n)).toBe('1 KiB')
-        expect(dataFormat(1048576n)).toBe('1 MiB')
-        expect(dataFormat(1073741824n)).toBe('1 GiB')
-        expect(dataFormat(1099511627776n)).toBe('1 TiB')
-        expect(dataFormat(1125899906842624n)).toBe('1 PiB')
-        expect(dataFormat(1152921504606846976n)).toBe('1 EiB')
-        expect(dataFormat(1180591620717411303424n)).toBe('1 ZiB')
-        expect(dataFormat(1208925819614629174706176n)).toBe('1 YiB')
+        expect(dataFormat(1024n)).toBe('1.00 KiB')
+        expect(dataFormat(1048576n)).toBe('1.00 MiB')
+        expect(dataFormat(1073741824n)).toBe('1.00 GiB')
+        expect(dataFormat(1099511627776n)).toBe('1.00 TiB')
+        expect(dataFormat(1125899906842624n)).toBe('1.00 PiB')
+        expect(dataFormat(1152921504606846976n)).toBe('1.00 EiB')
+        expect(dataFormat(1180591620717411303424n)).toBe('1.00 ZiB')
+        expect(dataFormat(1208925819614629174706176n)).toBe('1.00 YiB')
     })
 
     it('should handle decimal values for numbers', () => {
@@ -224,10 +224,10 @@ describe('dataFormat', () => {
     })
 
     it('should handle large values', () => {
-        expect(dataFormat(9223372036854775807)).toBe('8 EiB')
-        expect(dataFormat(18446744073709551615)).toBe('16 EiB')
-        expect(dataFormat(18446744073709551616n)).toBe('16 EiB')
-        expect(dataFormat(36893488147419103232n)).toBe('32 EiB')
+        expect(dataFormat(9223372036854775807)).toBe('8.00 EiB')
+        expect(dataFormat(18446744073709551615)).toBe('16.00 EiB')
+        expect(dataFormat(18446744073709551616n)).toBe('16.00 EiB')
+        expect(dataFormat(36893488147419103232n)).toBe('32.00 EiB')
     })
 
     it('should throw an error when data is negative', () => {

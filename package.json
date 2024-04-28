@@ -47,6 +47,7 @@
     "art-template": "^4.13.2",
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
+    "better-bytes": "^1.2.4",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "compare-func": "2.0.0",
