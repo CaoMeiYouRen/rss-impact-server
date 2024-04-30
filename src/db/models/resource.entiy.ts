@@ -79,7 +79,7 @@ export class Resource extends AclBase {
         type: 'input',
         hide: true,
     })
-    @ApiProperty({ title: '文件大小(B)', description: '单位为 B', example: 114514 })
+    @ApiProperty({ title: '文件体积(B)', description: '单位为 B', example: 114514 })
     @IsSafeNaturalNumber()
     @Column({})
     size: number
@@ -89,7 +89,7 @@ export class Resource extends AclBase {
         labelWidth: 105,
         type: 'input',
     })
-    @ApiProperty({ title: '文件大小(B)', description: '单位为 B', example: '114.51 MiB' })
+    @ApiProperty({ title: '文件体积(B)', description: '单位为 B', example: '114.51 MiB' })
     sizeFormat?: string
 
     @AfterLoad() // 格式化数据

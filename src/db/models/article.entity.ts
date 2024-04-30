@@ -13,6 +13,7 @@ import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
 import { __DEV__ } from '@/app.config'
+import { dataFormat } from '@/utils/helper'
 
 export class EnclosureImpl implements Enclosure {
 
@@ -24,15 +25,29 @@ export class EnclosureImpl implements Enclosure {
     @IsOptional()
     url: string
 
-    @ApiProperty({ title: '长度', example: 114514 })
-    @IsSafeNaturalNumber()
-    @IsOptional()
-    length?: number
-
     @ApiProperty({ title: '媒体类型', example: 'application/x-bittorrent' })
     @Length(0, 128)
     @IsOptional()
     type?: string
+
+    @SetAclCrudField({
+        width: 100,
+        labelWidth: 105,
+        type: 'input',
+    })
+    @ApiProperty({ title: '文件体积(B)', example: 114514 })
+    @IsSafeNaturalNumber()
+    @IsOptional()
+    length?: number
+
+    @SetAclCrudField({
+        width: 100,
+        labelWidth: 105,
+        type: 'input',
+    })
+    @ApiProperty({ title: '文件体积', description: '单位为 B', example: '114.51 MiB' })
+    lengthFormat?: string
+
 }
 
 /**
@@ -231,6 +246,9 @@ export class Article extends AclBase {
         if (!this.enclosure) {
             this.enclosure = plainToInstance(EnclosureImpl, {})
             return
+        }
+        if (typeof this.enclosure.length === 'number') {
+            this.enclosure.lengthFormat = dataFormat(this.enclosure.length)
         }
         this.enclosure = plainToInstance(EnclosureImpl, this.enclosure)
     }
