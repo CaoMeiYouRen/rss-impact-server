@@ -132,8 +132,8 @@ dependencies:
     specifier: ^1.9.4
     version: 1.9.4(@nestjs/common@10.3.8)(winston@3.13.0)
   openai:
-    specifier: ^4.38.5
-    version: 4.38.5
+    specifier: ^4.39.1
+    version: 4.39.1
   p-limit:
     specifier: ^3.1.0
     version: 3.1.0
@@ -8534,8 +8534,8 @@ packages:
       mimic-fn: 4.0.0
     dev: true
 
-  /openai@4.38.5:
-    resolution: {integrity: sha512-Ym5GJL98ZhLJJ7enBx53jjG3vwN/fsB+Ozh46nnRZZS9W1NiYqbwkJ+sXd3dkCIiWIgcyyOPL2Zr8SQAzbpj3g==}
+  /openai@4.39.1:
+    resolution: {integrity: sha512-Qe3HXHrCMjwAHXWPywUwzI4PHf9r14uyiRRuMmiJjsfv1tREYMHtgIHXNlb54ZxtYJaIj19RHYMq6UQ2hgrIJQ==}
     hasBin: true
     dependencies:
       '@types/node': 18.19.31
