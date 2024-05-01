@@ -118,7 +118,7 @@
     "@types/module-alias": "^2.0.4",
     "@types/morgan": "^1.9.9",
     "@types/ms": "^0.7.34",
-    "@types/node": "^20.12.7",
+    "@types/node": "^20.12.8",
     "@types/parse-torrent": "^5.8.7",
     "@types/passport-local": "^1.0.38",
     "@types/passport-strategy": "^0.2.38",
