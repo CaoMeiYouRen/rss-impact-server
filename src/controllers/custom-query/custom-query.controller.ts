@@ -116,6 +116,7 @@ export class CustomQueryController {
             link: url,
             feedLink: url,
             description: `自定义查询：${name}`,
+            subtitle: `自定义查询：${name}`,
             author: 'CaoMeiYouRen',
             ttl: 300, // 5 分钟
             item: filteredArticles.map((e) => articleToDataItem(e, { useAiSummary, appendAiSummary })),

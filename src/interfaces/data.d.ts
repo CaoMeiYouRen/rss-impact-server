@@ -36,6 +36,7 @@ export type DataItem = {
 export type Data = {
     title: string
     description?: string
+    subtitle?: string
     link?: string
     item?: DataItem[]
     allowEmpty?: boolean

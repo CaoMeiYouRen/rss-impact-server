@@ -65,6 +65,30 @@ export class Filter {
     @Length(0, 256)
     @IsOptional()
     categories?: string
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '过滤附件URL', example: 'url1|url2' })
+    @Length(0, 1024)
+    @IsOptional()
+    enclosureUrl?: string
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '过滤附件类型', example: 'url1|url2' })
+    @Length(0, 128)
+    @IsOptional()
+    enclosureType?: string
+
+    @SetAclCrudField({
+        labelWidth: 116,
+    }) // 如果源 RSS 未设置附件体积，则该项不会生效
+    @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B。设置为 0 禁用。', example: 114514 })
+    @IsSafeNaturalNumber()
+    @IsOptional()
+    enclosureLength?: number
 }
 /**
  * 排除不想要的，有一个符合就排除
@@ -90,6 +114,30 @@ export class FilterOut {
     @Length(0, 256)
     @IsOptional()
     categories?: string
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '排除附件URL', example: 'url1|url2' })
+    @Length(0, 1024)
+    @IsOptional()
+    enclosureUrl?: string
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '排除附件类型', example: 'url1|url2' })
+    @Length(0, 128)
+    @IsOptional()
+    enclosureType?: string
+
+    // @SetAclCrudField({
+    //     labelWidth: 116,
+    // })
+    // @ApiProperty({ title: '排除附件体积(B)', description: '单位为 B。设置为 0 禁用', example: 114514 })
+    // @IsSafeNaturalNumber()
+    // @IsOptional()
+    // enclosureLength?: number
 }
 
 @ApiExtraModels(NotificationConfig, WebhookConfig, DownloadConfig, BitTorrentConfig, AIConfig)

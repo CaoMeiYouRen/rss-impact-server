@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import { plainToInstance } from 'class-transformer'
 import { isURL } from 'class-validator'
 import XRegExp from 'xregexp'
+import { get, camelCase } from 'lodash'
 import { deepTrim, htmlToMarkdown, isHttpURL, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Filter, FilterOut } from '@/db/models/hook.entity'
@@ -207,7 +208,7 @@ type Condition = {
     filterout: FilterOut
 }
 
-const filterFields = ['title', 'summary', 'author', 'categories']
+const filterFields = ['title', 'summary', 'author', 'categories', 'enclosure.url', 'enclosure.type', 'enclosure.length']
 
 /**
  * 按条件过滤文章
@@ -228,25 +229,43 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         })
         // 先判断 filterout
         .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
-            if (!condition.filterout[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+            const { filterout } = condition
+            if (!filterout[field] || !article[field]) { // 如果缺少 filterout 或 article 对应的项就跳过该过滤条件
                 return true
+            }
+            if (field.startsWith('enclosure')) {
+                if (!get(filterout, camelCase(field)) || !get(article, field)) { // 如果缺少 filterout enclosure 或 article.enclosure 对应的项就跳过该过滤条件
+                    return true
+                }
+                return !XRegExp(get(filterout, camelCase(field)), 'ig').test(get(article, field))
             }
             if (field === 'categories') {
                 // 有一个 category 对的上就 排除
-                return !article[field].some((category) => XRegExp(condition.filterout[field], 'ig').test(category))
+                return !article[field].some((category) => XRegExp(filterout[field], 'ig').test(category))
             }
-            return !XRegExp(condition.filterout[field], 'ig').test(article[field])
+            return !XRegExp(filterout[field], 'ig').test(article[field])
         }))
         // 再判断 filter
         .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
-            if (!condition.filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+            const { filter } = condition
+            if (!filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
                 return true
+            }
+            if (field.startsWith('enclosure')) {
+                if (!get(filter, camelCase(field)) || !get(article, field)) { // 如果缺少 filter enclosure 或 article.enclosure 对应的项就跳过该过滤条件
+                    return true
+                }
+                if (field === 'enclosure.length') {
+                    // 排除体积
+                    return filter.enclosureLength > article.enclosure?.length
+                }
+                return XRegExp(get(filter, camelCase(field)), 'ig').test(get(article, field))
             }
             if (field === 'categories') {
                 // 有一个 category 对的上就为 true
-                return article[field].some((category) => XRegExp(condition.filter[field], 'ig').test(category))
+                return article[field].some((category) => XRegExp(filter[field], 'ig').test(category))
             }
-            return XRegExp(condition.filter[field], 'ig').test(article[field])
+            return XRegExp(filter[field], 'ig').test(article[field])
         }))
         .slice(0, condition.filter.limit || 20) // 默认最多 20 条
 }
