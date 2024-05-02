@@ -132,8 +132,8 @@ dependencies:
     specifier: ^1.9.4
     version: 1.9.4(@nestjs/common@10.3.8)(winston@3.13.0)
   openai:
-    specifier: ^4.40.0
-    version: 4.40.0
+    specifier: ^4.40.1
+    version: 4.40.1
   opml:
     specifier: ^0.5.2
     version: 0.5.2
@@ -8674,8 +8674,8 @@ packages:
       mimic-fn: 4.0.0
     dev: true
 
-  /openai@4.40.0:
-    resolution: {integrity: sha512-ofh9qMxRPDSZTWYvifScusMfnyIwEQL3w+fv3ucQGn3cIn0W6Zw4vXSUod8DwYfcX/hkAx9/ZvWrdkFYnVXlmQ==}
+  /openai@4.40.1:
+    resolution: {integrity: sha512-mS7LerF4fY1/we0aKGGwIWtosTJFLKuNbBWMBR/G1TAZUHoktAdod0dqIrlQvSD39uS6jNEEbT7jRsXmzfEPBw==}
     hasBin: true
     dependencies:
       '@types/node': 18.19.31
@@ -10163,9 +10163,6 @@ packages:
   /sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       bindings: 1.5.0
       node-addon-api: 7.1.0
