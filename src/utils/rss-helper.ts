@@ -232,14 +232,14 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         // 先判断 filterout
         .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
             const { filterout } = condition
-            if (!filterout[field] || !article[field]) { // 如果缺少 filterout 或 article 对应的项就跳过该过滤条件
-                return true
-            }
             if (field.startsWith('enclosure')) {
                 if (!get(filterout, camelCase(field)) || !get(article, field)) { // 如果缺少 filterout enclosure 或 article.enclosure 对应的项就跳过该过滤条件
                     return true
                 }
                 return !XRegExp(get(filterout, camelCase(field)), 'ig').test(get(article, field))
+            }
+            if (!filterout[field] || !article[field]) { // 如果缺少 filterout 或 article 对应的项就跳过该过滤条件
+                return true
             }
             if (field === 'categories') {
                 // 有一个 category 对的上就 排除
@@ -250,9 +250,6 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         // 再判断 filter
         .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
             const { filter } = condition
-            if (!filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
-                return true
-            }
             if (field.startsWith('enclosure')) {
                 if (!get(filter, camelCase(field)) || !get(article, field)) { // 如果缺少 filter enclosure 或 article.enclosure 对应的项就跳过该过滤条件
                     return true
@@ -262,6 +259,9 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
                     return filter.enclosureLength > article.enclosure?.length
                 }
                 return XRegExp(get(filter, camelCase(field)), 'ig').test(get(article, field))
+            }
+            if (!filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+                return true
             }
             if (field === 'categories') {
                 // 有一个 category 对的上就为 true
