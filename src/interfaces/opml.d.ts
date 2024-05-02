@@ -21,6 +21,7 @@ declare module 'opml' {
     interface Sub2 {
         text: string
         subs: Sub[]
+        xmlUrl?: string
     }
     interface Body {
         subs: Sub2[]

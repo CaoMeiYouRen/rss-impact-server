@@ -20,7 +20,7 @@ import { Category, CreateCategory, FindCategory, UpdateCategory } from '@/db/mod
             dto: FindCategory,
         },
         create: {
-            dto: CreateCategory,
+            dto: CreateCategory, // TODO 同一个用户禁止创建相同 name 的分类
         },
         update: {
             dto: UpdateCategory,

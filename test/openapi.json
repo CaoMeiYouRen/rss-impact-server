@@ -697,6 +697,17 @@
                 "operationId": "Feed_importByOpml",
                 "summary": "从 OPML 文件导入订阅",
                 "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "description": "要上传的文件",
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FileUploadDto"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "响应成功"
@@ -5074,6 +5085,19 @@
                     "isEnabled",
                     "categoryId",
                     "hooks"
+                ]
+            },
+            "FileUploadDto": {
+                "type": "object",
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "title": "要上传的文件",
+                        "format": "binary"
+                    }
+                },
+                "required": [
+                    "file"
                 ]
             },
             "CreateFeed": {

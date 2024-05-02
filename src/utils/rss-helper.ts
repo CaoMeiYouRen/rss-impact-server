@@ -222,6 +222,7 @@ const filterFields = ['title', 'summary', 'author', 'categories', 'enclosure.url
  * @param condition 条件
  */
 export function filterArticles(articles: Article[], condition: Condition): Article[] {
+    const { filterout, filter } = condition
     return articles
         .filter((article) => {
             if (!article.pubDate || !condition.filter.time) { // 没有 pubDate/filter.time 不受过滤时间限制
@@ -231,7 +232,6 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         })
         // 先判断 filterout
         .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
-            const { filterout } = condition
             if (field.startsWith('enclosure')) {
                 if (!get(filterout, camelCase(field)) || !get(article, field)) { // 如果缺少 filterout enclosure 或 article.enclosure 对应的项就跳过该过滤条件
                     return true
@@ -249,7 +249,6 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         }))
         // 再判断 filter
         .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
-            const { filter } = condition
             if (field.startsWith('enclosure')) {
                 if (!get(filter, camelCase(field)) || !get(article, field)) { // 如果缺少 filter enclosure 或 article.enclosure 对应的项就跳过该过滤条件
                     return true
@@ -269,7 +268,7 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
             }
             return XRegExp(filter[field], 'ig').test(article[field])
         }))
-        .slice(0, condition.filter.limit || 20) // 默认最多 20 条
+        .slice(0, filter.limit || 20) // 默认最多 20 条
 }
 
 type ArticleOption = {

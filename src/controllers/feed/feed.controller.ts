@@ -1,11 +1,12 @@
 import { Body, Controller, Delete, Get, Header, Logger, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { groupBy } from 'lodash'
 import { Sub2 } from 'opml'
+import { plainToInstance } from 'class-transformer'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { CreateFeed, Feed, FindFeed, QuickCreateFeed, UpdateFeed } from '@/db/models/feed.entity'
 import { AclCrud, initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
@@ -15,10 +16,11 @@ import { HttpError } from '@/models/http-error'
 import { checkAuth } from '@/utils/check'
 import { TasksService } from '@/services/tasks/tasks.service'
 import { isId } from '@/decorators/is-id.decorator'
-import { opmlStringify, rssParserURL } from '@/utils/rss-helper'
+import { opmlParse, opmlStringify, rssParserURL } from '@/utils/rss-helper'
 import { AvueFormOption } from '@/interfaces/avue'
-
-type File = Express.Multer.File
+import { FileUploadDto } from '@/models/file-upload.dto'
+import { Category } from '@/db/models/category.entity'
+import { to } from '@/utils/helper'
 
 @UseSession()
 @AclCrud({
@@ -52,7 +54,9 @@ export class FeedController {
 
     private readonly logger = new Logger(FeedController.name)
 
-    constructor(@InjectRepository(Feed) private readonly repository: Repository<Feed>,
+    constructor(
+        @InjectRepository(Feed) private readonly repository: Repository<Feed>,
+        @InjectRepository(Category) private readonly categoryRepository: Repository<Category>,
         private readonly tasksService: TasksService,
     ) {
     }
@@ -96,10 +100,96 @@ export class FeedController {
     }
 
     @ApiOperation({ summary: '从 OPML 文件导入订阅' })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        description: '要上传的文件',
+        type: FileUploadDto,
+    })
     @Post('import')
     @UseInterceptors(FileInterceptor('file'))
-    async importByOpml(@UploadedFile() file: File, @CurrentUser() user: User) {
-        console.log(file)
+    async importByOpml(@UploadedFile() file: Express.Multer.File, @CurrentUser() user: User) {
+        const fileText = file.buffer.toString('utf-8')
+        const opmlResult = await opmlParse(fileText)
+        // console.log(opmlResult)
+        const subs = opmlResult?.body?.subs
+        const categories: Pick<Category, 'id' | 'name'>[] = []
+        const feeds: Feed[] = []
+        // 创建 未分类 项 Uncategorized
+        let uncategorizedId = (await this.categoryRepository.findOne({ // 如果没有这个分类，则创建
+            where: {
+                userId: user.id,
+                name: '未分类',
+            },
+        }))?.id
+        if (!uncategorizedId) {
+            uncategorizedId = (await this.categoryRepository.save(this.categoryRepository.create({
+                name: '未分类',
+                description: '未分类',
+                userId: user.id,
+            })))?.id
+        }
+
+        for await (const sub of subs) {
+            if (!sub.xmlUrl && sub.text) { // 如果在第一层，且没有 xmlUrl，则为分类
+                const categoryName = sub.text
+                let categoryId = (await this.categoryRepository.findOne({ // 如果没有这个分类，则创建
+                    where: {
+                        userId: user.id,
+                        name: categoryName,
+                    },
+                }))?.id
+                if (!categoryId) {
+                    categoryId = (await this.categoryRepository.save(this.categoryRepository.create({
+                        name: categoryName,
+                        description: categoryName,
+                        userId: user.id,
+                    })))?.id
+                }
+                categories.push({
+                    name: categoryName,
+                    id: categoryId,
+                })
+            }
+            if (sub.xmlUrl) { // 如果有 xmlUrl 则为 未分类 订阅
+                const newFeed = plainToInstance(Feed, {
+                    url: sub.xmlUrl,
+                    title: sub.text,
+                    cron: 'EVERY_10_MINUTES',
+                    isEnabled: true,
+                    categoryId: uncategorizedId,
+                    userId: user.id,
+                    hooks: [],
+                })
+                const [error, feed] = await to(this.create(newFeed, user))
+                if (error) {
+                    this.logger.error(error)
+                } else if (feed) {
+                    feeds.push(feed)
+                }
+            }
+            if (sub.subs?.length) { // 如果有子项，则为该分类下的项
+                for await (const subItem of sub.subs) {
+                    if (subItem.xmlUrl && subItem.text) {
+                        const newFeed = plainToInstance(Feed, {
+                            url: subItem.xmlUrl,
+                            title: subItem.text,
+                            cron: 'EVERY_10_MINUTES',
+                            isEnabled: true,
+                            categoryId: categories.find((e) => e.name === sub.text)?.id,
+                            userId: user.id,
+                            hooks: [],
+                        })
+                        const [error, feed] = await to(this.create(newFeed, user))
+                        if (error) {
+                            this.logger.error(error)
+                        } else if (feed) {
+                            feeds.push(feed)
+                        }
+                    }
+                }
+            }
+        }
+        return feeds
     }
 
     @ApiResponse({ status: 200, type: String })
@@ -117,15 +207,15 @@ export class FeedController {
         const groups = groupBy(feeds, (feed) => feed.category?.name)
 
         const subs: Sub2[] = Object.entries(groups).map(([key, group]) => ({
-                text: key,
-                subs: group.map((feed) => ({
-                        text: feed.title,
-                        title: feed.title,
-                        type: 'rss',
-                        xmlUrl: feed.url,
-                        description: feed.description,
-                    })),
-            }))
+            text: key,
+            subs: group.map((feed) => ({
+                text: feed.title,
+                title: feed.title,
+                type: 'rss',
+                xmlUrl: feed.url,
+                description: feed.description,
+            })),
+        }))
         return opmlStringify({
             version: '2.0',
             head: {
