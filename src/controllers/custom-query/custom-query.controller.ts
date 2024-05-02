@@ -63,7 +63,7 @@ export class CustomQueryController {
         @InjectRepository(Category) private readonly categoryRepository: Repository<Category>,
     ) {
     }
-    // TODO 增加按资源 size 筛选
+
     @ApiResponse({ status: 200, type: Object })
     // @UseAccessToken() , @CurrentUser() user: User
     @Get('rss/:id')

@@ -1,7 +1,11 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Header, Logger, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { Express } from 'express'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { groupBy } from 'lodash'
+import { Sub2 } from 'opml'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { CreateFeed, Feed, FindFeed, QuickCreateFeed, UpdateFeed } from '@/db/models/feed.entity'
 import { AclCrud, initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
@@ -11,8 +15,10 @@ import { HttpError } from '@/models/http-error'
 import { checkAuth } from '@/utils/check'
 import { TasksService } from '@/services/tasks/tasks.service'
 import { isId } from '@/decorators/is-id.decorator'
-import { rssParserURL } from '@/utils/rss-helper'
+import { opmlStringify, rssParserURL } from '@/utils/rss-helper'
 import { AvueFormOption } from '@/interfaces/avue'
+
+type File = Express.Multer.File
 
 @UseSession()
 @AclCrud({
@@ -87,6 +93,50 @@ export class FeedController {
             this.tasksService.getRssContent(feed, rss) // 同步 RSS 内容
         }
         return feed
+    }
+
+    @ApiOperation({ summary: '从 OPML 文件导入订阅' })
+    @Post('import')
+    @UseInterceptors(FileInterceptor('file'))
+    async importByOpml(@UploadedFile() file: File, @CurrentUser() user: User) {
+        console.log(file)
+    }
+
+    @ApiResponse({ status: 200, type: String })
+    @ApiOperation({ summary: '导出订阅为 OPML 文件' })
+    @Header('Content-Type', 'application/xml; charset=UTF-8')
+    @Get('export')
+    async exportByOpml(@CurrentUser() user: User) {
+        const feeds = await this.repository.find({
+            where: {
+                userId: user.id,
+            },
+            relations: ['category'],
+        })
+
+        const groups = groupBy(feeds, (feed) => feed.category?.name)
+
+        const subs: Sub2[] = Object.entries(groups).map(([key, group]) => ({
+                text: key,
+                subs: group.map((feed) => ({
+                        text: feed.title,
+                        title: feed.title,
+                        type: 'rss',
+                        xmlUrl: feed.url,
+                        description: feed.description,
+                    })),
+            }))
+        return opmlStringify({
+            version: '2.0',
+            head: {
+                title: 'RssImpact',
+                dateCreated: new Date().toUTCString(),
+                generator: 'CaoMeiYouRen',
+            },
+            body: {
+                subs,
+            },
+        })
     }
 
     @ApiResponse({ status: 201, type: Feed })

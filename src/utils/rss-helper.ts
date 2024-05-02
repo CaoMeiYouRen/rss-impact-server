@@ -1,3 +1,4 @@
+import { promisify } from 'util'
 import Parser, { Output, Item } from 'rss-parser'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
@@ -5,6 +6,7 @@ import { plainToInstance } from 'class-transformer'
 import { isURL } from 'class-validator'
 import XRegExp from 'xregexp'
 import { get, camelCase } from 'lodash'
+import opml, { Opml } from 'opml'
 import { deepTrim, htmlToMarkdown, isHttpURL, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Filter, FilterOut } from '@/db/models/hook.entity'
@@ -310,4 +312,29 @@ ${article.contentSnippet}`
         enclosure_length: article.enclosure?.length,
     }
     return dataItem
+}
+
+const asyncParse = promisify(opml.parse)
+/**
+ * 解析 OPML
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-05-02
+ * @export
+ * @param input
+ */
+export async function opmlParse(input: string) {
+    return (await asyncParse(input)).opml
+}
+
+/**
+ * 生成 OPML
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-05-02
+ * @export
+ * @param output
+ */
+export function opmlStringify(output: Opml) {
+    return opml.stringify({ opml: output })
 }
