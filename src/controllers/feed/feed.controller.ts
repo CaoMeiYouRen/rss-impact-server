@@ -61,7 +61,7 @@ export class FeedController {
     ) {
     }
 
-    @ApiResponse({ status: 200, type: Feed })
+    @ApiResponse({ status: 200, type: Object })
     @ApiOperation({ summary: '快速添加订阅的配置项' })
     @Get('quickCreate/option')
     async quickCreateOption(): Promise<AvueFormOption> {
@@ -99,6 +99,31 @@ export class FeedController {
         return feed
     }
 
+    @ApiResponse({ status: 200, type: Object })
+    @ApiOperation({ summary: '导入 OPML 文件的配置项' })
+    @Get('import/option')
+    async importByOpmlOption(): Promise<AvueFormOption> {
+        return {
+            submitBtn: false,
+            emptyBtn: false,
+            column: [
+                {
+                    label: 'OPML文件',
+                    prop: 'file',
+                    type: 'upload',
+                    // listType: 'picture-card',
+                    accept: '.xml, .opml',
+                    limit: 1,
+                    fileSize: 10000,
+                    span: 24,
+                    tip: '只能上传xml/opml文件，且不超过10M',
+                    action: '/feed/import',
+
+                },
+            ],
+        }
+    }
+
     @ApiOperation({ summary: '从 OPML 文件导入订阅' })
     @ApiConsumes('multipart/form-data')
     @ApiBody({
@@ -115,36 +140,12 @@ export class FeedController {
         const categories: Pick<Category, 'id' | 'name'>[] = []
         const feeds: Feed[] = []
         // 创建 未分类 项 Uncategorized
-        let uncategorizedId = (await this.categoryRepository.findOne({ // 如果没有这个分类，则创建
-            where: {
-                userId: user.id,
-                name: '未分类',
-            },
-        }))?.id
-        if (!uncategorizedId) {
-            uncategorizedId = (await this.categoryRepository.save(this.categoryRepository.create({
-                name: '未分类',
-                description: '未分类',
-                userId: user.id,
-            })))?.id
-        }
+        const uncategorizedId = (await this.findOrCreateCategory('未分类', user))?.id
 
         for await (const sub of subs) {
             if (!sub.xmlUrl && sub.text) { // 如果在第一层，且没有 xmlUrl，则为分类
                 const categoryName = sub.text
-                let categoryId = (await this.categoryRepository.findOne({ // 如果没有这个分类，则创建
-                    where: {
-                        userId: user.id,
-                        name: categoryName,
-                    },
-                }))?.id
-                if (!categoryId) {
-                    categoryId = (await this.categoryRepository.save(this.categoryRepository.create({
-                        name: categoryName,
-                        description: categoryName,
-                        userId: user.id,
-                    })))?.id
-                }
+                const categoryId = (await this.findOrCreateCategory(categoryName, user)).id
                 categories.push({
                     name: categoryName,
                     id: categoryId,
@@ -192,6 +193,23 @@ export class FeedController {
         return feeds
     }
 
+    private async findOrCreateCategory(name: string, user: User) {
+        const category = await this.categoryRepository.findOne({
+            where: {
+                userId: user.id,
+                name,
+            },
+        })
+        if (category) {
+            return category
+        }
+        return this.categoryRepository.save(this.categoryRepository.create({
+            name,
+            description: name,
+            userId: user.id,
+        }))
+    }
+
     @ApiResponse({ status: 200, type: String })
     @ApiOperation({ summary: '导出订阅为 OPML 文件' })
     @Header('Content-Type', 'application/xml; charset=UTF-8')
@@ -213,7 +231,7 @@ export class FeedController {
                 title: feed.title,
                 type: 'rss',
                 xmlUrl: feed.url,
-                description: feed.description,
+                description: feed.description || '',
             })),
         }))
         return opmlStringify({

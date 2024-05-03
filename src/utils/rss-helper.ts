@@ -335,5 +335,5 @@ export async function opmlParse(input: string) {
  * @param output
  */
 export function opmlStringify(output: Opml) {
-    return opml.stringify({ opml: output })
+    return opml.stringify({ opml: output }).replace('encoding="ISO-8859-1"', 'encoding="UTF-8"')
 }

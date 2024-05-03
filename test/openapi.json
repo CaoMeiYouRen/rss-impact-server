@@ -589,7 +589,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Feed"
+                                    "type": "object"
                                 }
                             }
                         }
@@ -658,6 +658,58 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "feed"
+                ]
+            }
+        },
+        "/api/feed/import/option": {
+            "get": {
+                "operationId": "Feed_importByOpmlOption",
+                "summary": "快速添加订阅的配置项",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
                     },
                     "400": {
                         "description": "数据格式有误"
@@ -4023,241 +4075,6 @@
                     "email"
                 ]
             },
-            "ProxyConfig": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "number",
-                        "title": "ID",
-                        "example": 1
-                    },
-                    "createdAt": {
-                        "format": "date-time",
-                        "type": "string",
-                        "title": "创建时间",
-                        "example": "2023-12-31T16:00:00.000Z"
-                    },
-                    "updatedAt": {
-                        "format": "date-time",
-                        "type": "string",
-                        "title": "更新时间",
-                        "example": "2023-12-31T16:00:00.000Z"
-                    },
-                    "userId": {
-                        "type": "number",
-                        "title": "所属用户",
-                        "example": 1
-                    },
-                    "user": {
-                        "title": "所属用户",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/User"
-                            }
-                        ]
-                    },
-                    "name": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 256,
-                        "title": "代理名称",
-                        "example": "代理A"
-                    },
-                    "url": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 2048,
-                        "title": "代理URL",
-                        "description": "支持 http/https/socks/socks5 协议。例如 http://127.0.0.1:8080",
-                        "example": "http://127.0.0.1:8080"
-                    }
-                },
-                "required": [
-                    "id",
-                    "createdAt",
-                    "updatedAt",
-                    "userId",
-                    "user",
-                    "name",
-                    "url"
-                ]
-            },
-            "EnclosureImpl": {
-                "type": "object",
-                "properties": {
-                    "url": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 65000,
-                        "title": "URL",
-                        "example": "http://bt.example.com"
-                    },
-                    "type": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 128,
-                        "title": "媒体类型",
-                        "example": "application/x-bittorrent"
-                    },
-                    "length": {
-                        "type": "number",
-                        "title": "文件体积(B)",
-                        "example": 114514
-                    },
-                    "lengthFormat": {
-                        "type": "string",
-                        "title": "文件体积",
-                        "description": "单位为 B",
-                        "example": "114.51 MiB"
-                    }
-                },
-                "required": [
-                    "url"
-                ]
-            },
-            "Article": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "number",
-                        "title": "ID",
-                        "example": 1
-                    },
-                    "createdAt": {
-                        "format": "date-time",
-                        "type": "string",
-                        "title": "创建时间",
-                        "example": "2023-12-31T16:00:00.000Z"
-                    },
-                    "updatedAt": {
-                        "format": "date-time",
-                        "type": "string",
-                        "title": "更新时间",
-                        "example": "2023-12-31T16:00:00.000Z"
-                    },
-                    "userId": {
-                        "type": "number",
-                        "title": "所属用户",
-                        "example": 1
-                    },
-                    "user": {
-                        "title": "所属用户",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/User"
-                            }
-                        ]
-                    },
-                    "guid": {
-                        "type": "string",
-                        "title": "全局索引",
-                        "example": "499d4cee"
-                    },
-                    "link": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 2048,
-                        "title": "链接",
-                        "example": "https://blog.cmyr.ltd/archives/499d4cee.html"
-                    },
-                    "title": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 256,
-                        "title": "标题",
-                        "example": "这是一个标题"
-                    },
-                    "content": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 1048576,
-                        "title": "正文",
-                        "example": "这是一段正文"
-                    },
-                    "pubDate": {
-                        "format": "date-time",
-                        "type": "string",
-                        "title": "发布日期",
-                        "example": "2023-12-31T16:00:00.000Z"
-                    },
-                    "author": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 128,
-                        "title": "作者",
-                        "example": "CaoMeiYouRen"
-                    },
-                    "contentSnippet": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 65536,
-                        "title": "摘要",
-                        "description": "纯文本格式，无 HTML",
-                        "example": "这是一段内容摘要"
-                    },
-                    "summary": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 1024,
-                        "title": "总结",
-                        "example": "这是一段总结"
-                    },
-                    "aiSummary": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 65536,
-                        "title": "AI 总结",
-                        "example": "这是一段 AI 总结"
-                    },
-                    "categories": {
-                        "title": "分类列表",
-                        "description": "RSS 源定义的分类，和 本地RSS 的分组不是同一个",
-                        "example": [
-                            "tag1",
-                            "tag2"
-                        ],
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "enclosure": {
-                        "title": "附件",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/EnclosureImpl"
-                            }
-                        ]
-                    },
-                    "feedId": {
-                        "type": "number",
-                        "title": "订阅源",
-                        "example": 1
-                    },
-                    "feed": {
-                        "title": "订阅源",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Feed"
-                            }
-                        ]
-                    },
-                    "publishDate": {
-                        "format": "date-time",
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "id",
-                    "createdAt",
-                    "updatedAt",
-                    "userId",
-                    "user",
-                    "guid",
-                    "feedId",
-                    "feed"
-                ]
-            },
             "NotificationConfig": {
                 "type": "object",
                 "properties": {
@@ -4712,7 +4529,66 @@
                     }
                 }
             },
-            "Hook": {
+            "ProxyConfig": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "代理名称",
+                        "example": "代理A"
+                    },
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "代理URL",
+                        "description": "支持 http/https/socks/socks5 协议。例如 http://127.0.0.1:8080",
+                        "example": "http://127.0.0.1:8080"
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "name",
+                    "url"
+                ]
+            },
+            "Category": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -4750,85 +4626,17 @@
                         "minLength": 0,
                         "maxLength": 256,
                         "title": "名称",
-                        "example": "Hook1"
+                        "example": "分组A"
                     },
-                    "type": {
+                    "description": {
                         "type": "string",
-                        "enum": [
-                            "notification",
-                            "webhook",
-                            "download",
-                            "bitTorrent",
-                            "aiSummary",
-                            "regular"
-                        ],
-                        "title": "类型",
-                        "example": "webhook"
-                    },
-                    "config": {
-                        "title": "配置",
-                        "example": {},
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/NotificationConfig"
-                            },
-                            {
-                                "$ref": "#/components/schemas/WebhookConfig"
-                            },
-                            {
-                                "$ref": "#/components/schemas/DownloadConfig"
-                            },
-                            {
-                                "$ref": "#/components/schemas/BitTorrentConfig"
-                            },
-                            {
-                                "$ref": "#/components/schemas/AIConfig"
-                            },
-                            {
-                                "$ref": "#/components/schemas/RegularConfig"
-                            }
-                        ]
-                    },
-                    "filter": {
-                        "title": "过滤条件",
-                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Filter"
-                            }
-                        ]
-                    },
-                    "filterout": {
-                        "title": "排除条件",
-                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/FilterOut"
-                            }
-                        ]
-                    },
-                    "isReversed": {
-                        "type": "boolean",
-                        "title": "反转模式",
-                        "description": "如果服务可访问，则认为是故障",
-                        "example": false
-                    },
-                    "proxyConfigId": {
-                        "type": "number",
-                        "title": "代理配置",
-                        "description": "选择不代理后保存即可禁用代理",
-                        "example": 1
-                    },
-                    "proxyConfig": {
-                        "title": "代理配置",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/ProxyConfig"
-                            }
-                        ]
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "简介",
+                        "example": "分组A"
                     },
                     "feeds": {
-                        "title": "订阅源列表",
+                        "title": "订阅链接",
                         "example": [],
                         "type": "array",
                         "items": {
@@ -4843,12 +4651,183 @@
                     "userId",
                     "user",
                     "name",
-                    "type",
-                    "config",
-                    "filter",
-                    "filterout",
-                    "isReversed",
                     "feeds"
+                ]
+            },
+            "EnclosureImpl": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 65000,
+                        "title": "URL",
+                        "example": "http://bt.example.com"
+                    },
+                    "type": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "媒体类型",
+                        "example": "application/x-bittorrent"
+                    },
+                    "length": {
+                        "type": "number",
+                        "title": "文件体积(B)",
+                        "example": 114514
+                    },
+                    "lengthFormat": {
+                        "type": "string",
+                        "title": "文件体积",
+                        "description": "单位为 B",
+                        "example": "114.51 MiB"
+                    }
+                },
+                "required": [
+                    "url"
+                ]
+            },
+            "Article": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "guid": {
+                        "type": "string",
+                        "title": "全局索引",
+                        "example": "499d4cee"
+                    },
+                    "link": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "链接",
+                        "example": "https://blog.cmyr.ltd/archives/499d4cee.html"
+                    },
+                    "title": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "标题",
+                        "example": "这是一个标题"
+                    },
+                    "content": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1048576,
+                        "title": "正文",
+                        "example": "这是一段正文"
+                    },
+                    "pubDate": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "发布日期",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "author": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "作者",
+                        "example": "CaoMeiYouRen"
+                    },
+                    "contentSnippet": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 65536,
+                        "title": "摘要",
+                        "description": "纯文本格式，无 HTML",
+                        "example": "这是一段内容摘要"
+                    },
+                    "summary": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "总结",
+                        "example": "这是一段总结"
+                    },
+                    "aiSummary": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 65536,
+                        "title": "AI 总结",
+                        "example": "这是一段 AI 总结"
+                    },
+                    "categories": {
+                        "title": "分类列表",
+                        "description": "RSS 源定义的分类，和 本地RSS 的分组不是同一个",
+                        "example": [
+                            "tag1",
+                            "tag2"
+                        ],
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "enclosure": {
+                        "title": "附件",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/EnclosureImpl"
+                            }
+                        ]
+                    },
+                    "feedId": {
+                        "type": "number",
+                        "title": "订阅源",
+                        "example": 1
+                    },
+                    "feed": {
+                        "title": "订阅源",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Feed"
+                            }
+                        ]
+                    },
+                    "publishDate": {
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "guid",
+                    "feedId",
+                    "feed"
                 ]
             },
             "Feed": {
@@ -4995,7 +4974,7 @@
                     "hooks"
                 ]
             },
-            "Category": {
+            "Hook": {
                 "type": "object",
                 "properties": {
                     "id": {
@@ -5033,17 +5012,85 @@
                         "minLength": 0,
                         "maxLength": 256,
                         "title": "名称",
-                        "example": "分组A"
+                        "example": "Hook1"
                     },
-                    "description": {
+                    "type": {
                         "type": "string",
-                        "minLength": 0,
-                        "maxLength": 2048,
-                        "title": "简介",
-                        "example": "分组A"
+                        "enum": [
+                            "notification",
+                            "webhook",
+                            "download",
+                            "bitTorrent",
+                            "aiSummary",
+                            "regular"
+                        ],
+                        "title": "类型",
+                        "example": "webhook"
+                    },
+                    "config": {
+                        "title": "配置",
+                        "example": {},
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/NotificationConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/WebhookConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/DownloadConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/BitTorrentConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AIConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/RegularConfig"
+                            }
+                        ]
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
+                    },
+                    "isReversed": {
+                        "type": "boolean",
+                        "title": "反转模式",
+                        "description": "如果服务可访问，则认为是故障",
+                        "example": false
+                    },
+                    "proxyConfigId": {
+                        "type": "number",
+                        "title": "代理配置",
+                        "description": "选择不代理后保存即可禁用代理",
+                        "example": 1
+                    },
+                    "proxyConfig": {
+                        "title": "代理配置",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ProxyConfig"
+                            }
+                        ]
                     },
                     "feeds": {
-                        "title": "订阅链接",
+                        "title": "订阅源列表",
                         "example": [],
                         "type": "array",
                         "items": {
@@ -5058,6 +5105,11 @@
                     "userId",
                     "user",
                     "name",
+                    "type",
+                    "config",
+                    "filter",
+                    "filterout",
+                    "isReversed",
                     "feeds"
                 ]
             },
