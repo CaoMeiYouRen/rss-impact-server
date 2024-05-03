@@ -67,3 +67,5 @@ export const REVERSE_TRIGGER_LIMIT = Number(env.REVERSE_TRIGGER_LIMIT || 10)
 export const AI_LIMIT_MAX = Number(env.AI_LIMIT_MAX || 3)
 
 export const BIT_TORRENT_LIMIT_MAX = Number(env.AI_LIMIT_MAX || 5)
+
+export const RSS_LIMIT_MAX = Number(env.RSS_LIMIT_MAX || 5)

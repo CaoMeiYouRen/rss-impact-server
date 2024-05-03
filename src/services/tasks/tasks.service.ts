@@ -20,7 +20,7 @@ import OpenAI from 'openai'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
+import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
@@ -40,7 +40,9 @@ import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 
-const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
+const rssLimit = pLimit(RSS_LIMIT_MAX)
+// os.cpus().length
+const downloadLimit = pLimit(DOWNLOAD_LIMIT_MAX) // 下载并发数限制
 
 const aiLimit = pLimit(AI_LIMIT_MAX) // AI 总结并发数
 
@@ -812,11 +814,11 @@ The content to be summarized is:`
                 start: true,
                 onTick: async () => {
                     try {
-                        const maxDelay = __DEV__ ? 1000 : 30 * 1000
+                        const maxDelay = __DEV__ ? 1000 : 60 * 1000
                         this.logger.log(`rss ${feed.url} 已进入订阅队列`)
                         await randomSleep(0, maxDelay)
                         this.logger.log(`rss ${feed.url} 正在检测更新中……`)
-                        await this.getRssContent(feed)
+                        rssLimit(() => this.getRssContent(feed))
                     } catch (error) {
                         this.logger.error(error?.message, error?.stack)
                         // 如果出现异常就停止 该 rss
