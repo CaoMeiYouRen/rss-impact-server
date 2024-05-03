@@ -521,14 +521,14 @@ export class TasksService implements OnApplicationBootstrap {
                         magnet = parseTorrent(url) as Instance
                         hash = magnet.infoHash?.toLowerCase()
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
-                            this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
+                            this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
                             return
                         }
                         this.logger.log(`正在下载资源：${url.slice(0, 128)}`)
                         await qBittorrent.addMagnet(url, { savepath: downloadPath })
                     } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
                         if (await this.resourceRepository.findOne({ where: { url, userId } })) {
-                            this.logger.debug(`资源 ${url} 已存在，跳过该资源下载`)
+                            this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
                             return
                         }
                         const resp = await ajax<ArrayBuffer>({
@@ -541,7 +541,7 @@ export class TasksService implements OnApplicationBootstrap {
                         magnet = parseTorrent(torrent) as Instance
                         hash = magnet.infoHash?.toLowerCase() // hash
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
-                            this.logger.debug(`资源 ${magnetUri} 已存在，跳过该资源下载`)
+                            this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
                             return
                         }
                         this.logger.log(`正在下载资源：${url.slice(0, 128)}`)
@@ -555,7 +555,9 @@ export class TasksService implements OnApplicationBootstrap {
                             size = magnet.length
                         } else if (magnet.xl) {
                             size = Number(magnet.xl)
-                        } else if (article.enclosure.length === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
+                        }
+
+                        if (article.enclosure.length === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
                             size = 0
                             article.enclosure.length = 0
                         }
@@ -584,7 +586,7 @@ export class TasksService implements OnApplicationBootstrap {
                             await this.articleRepository.save(article)
                         }
                         if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
-                            this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
+                            this.logger.warn(`资源 ${url.slice(0, 128)} 的大小超过限制，跳过该资源下载`)
                             await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
                             newResource.status = 'skip'
                             await this.resourceRepository.save(newResource)
@@ -593,7 +595,7 @@ export class TasksService implements OnApplicationBootstrap {
                         // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
                         // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
                         if (!newResource.size || newResource.size <= 0) {
-                            const n = 20
+                            const n = 30
                             setTimeout(async () => {
                                 let i = 0
                                 do {
@@ -602,13 +604,13 @@ export class TasksService implements OnApplicationBootstrap {
                                         break
                                     }
                                     i++
-                                    await sleep(10 * 1000) // 等待 10 秒后更新 元数据，至多重试 20 次
+                                    await sleep(10 * 1000) // 等待 10 秒后更新 元数据，至多重试 30 次
                                 } while (n > i)
                             }, 0)
                         }
                         return
                     }
-                    this.logger.error(`不支持的 资源类型：${url}`)
+                    this.logger.error(`不支持的 资源类型：${url.slice(0, 128)}`)
                 })))
                 return
             }
@@ -649,7 +651,7 @@ export class TasksService implements OnApplicationBootstrap {
             await this.articleRepository.save(article)
         }
         if (isSafePositiveInteger(maxSize) && maxSize > 0 && resource.size > 0 && maxSize <= resource.size) {
-            this.logger.warn(`资源 ${magnetUri} 的大小超过限制，跳过该资源下载`)
+            this.logger.warn(`资源 ${url.slice(0, 128)} 的大小超过限制，跳过该资源下载`)
             await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
             resource.status = 'skip'
             await this.resourceRepository.save(resource)
