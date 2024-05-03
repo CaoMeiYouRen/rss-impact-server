@@ -490,7 +490,9 @@ export class TasksService implements OnApplicationBootstrap {
 
         })))
     }
-
+    // TODO 增加对未知和跳过状态的资源二次确认
+    // 增加一个定时任务，对处于 未知状态的继续尝试检测 若干次（10分钟）
+    // 对处于跳过状态的，检测是否真的删除了
     private async bitTorrentHook(hook: Hook, feed: Feed, articles: Article[]) {
         const userId = hook.userId
         const config = hook.config as BitTorrentConfig
@@ -630,6 +632,7 @@ export class TasksService implements OnApplicationBootstrap {
         const { hash } = resource
         const [error, torrentInfo] = await to(qBittorrent.getTorrent(hash))
         if (error) {
+            this.logger.error(`hash: ${hash}, url: ${url.slice(0, 128)}`)
             this.logger.error(error?.message, error?.stack)
             return 0
         }
