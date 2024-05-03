@@ -20,7 +20,7 @@ import OpenAI from 'openai'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
+import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken } from '@/utils/helper'
 import { articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
@@ -43,6 +43,8 @@ import { RegularConfig } from '@/models/regular-config'
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
 
 const aiLimit = pLimit(AI_LIMIT_MAX) // AI 总结并发数
+
+const bitTorrentLimit = pLimit(BIT_TORRENT_LIMIT_MAX) // BitTorrent 并发数
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -284,8 +286,8 @@ export class TasksService implements OnApplicationBootstrap {
                         return
                     }
                     case 'download': {
-                        // 下载并发数是全局的，所以需要从外部传入
-                        await this.downloadHook(hook, feed, filteredArticles, downloadLimit)
+                        // 下载并发数是全局的
+                        await this.downloadHook(hook, feed, filteredArticles)
                         return
                     }
                     case 'bitTorrent': {
@@ -386,8 +388,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    private async downloadHook(hook: Hook, feed: Feed, articles: Article[], downloadLimit: pLimit.Limit) {
+    private async downloadHook(hook: Hook, feed: Feed, articles: Article[]) {
         const userId = hook.userId
         const config = hook.config as DownloadConfig
         const proxyUrl = hook.proxyConfig?.url
@@ -506,7 +507,7 @@ export class TasksService implements OnApplicationBootstrap {
                     password,
                     timeout: 60 * 1000,
                 })
-                await Promise.allSettled(btArticles.map(async (article) => {
+                await Promise.allSettled(btArticles.map((article) => bitTorrentLimit(async () => {
                     const url = article.enclosure.url
                     let hash = ''
                     let magnetUri = ''
@@ -606,7 +607,7 @@ export class TasksService implements OnApplicationBootstrap {
                         return
                     }
                     this.logger.error(`不支持的 资源类型：${url}`)
-                }))
+                })))
                 return
             }
             default:
