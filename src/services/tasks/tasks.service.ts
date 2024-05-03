@@ -38,6 +38,7 @@ import { WebhookConfig } from '@/models/webhook-config'
 import { NotificationConfig } from '@/models/notification-config'
 import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
+import { RegularConfig } from '@/models/regular-config'
 
 const downloadLimit = pLimit(Math.min(os.cpus().length, DOWNLOAD_LIMIT_MAX)) // 下载并发数限制
 
@@ -77,7 +78,7 @@ export class TasksService implements OnApplicationBootstrap {
             const feeds = await this.getAllFeeds()
             feeds.forEach((feed) => {
                 this.enableFeedTask(feed)
-                // this.getRssContent(feed)
+                this.getRssContent(feed)
             })
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
@@ -293,6 +294,10 @@ export class TasksService implements OnApplicationBootstrap {
                     }
                     case 'aiSummary': {
                         await this.aiHook(hook, feed, filteredArticles)
+                        return
+                    }
+                    case 'regular': {
+                        await this.regularHook(hook, feed, filteredArticles)
                         return
                     }
                     default:
@@ -765,6 +770,23 @@ The content to be summarized is:`
             default:
                 throw new Error(`不支持的 AI 大模型: ${type}`)
         }
+    }
+
+    private async regularHook(hook: Hook, feed: Feed, articles: Article[]) {
+        const config = hook.config as RegularConfig
+        const { contentRegular, contentReplace } = config
+        const reg = XRegExp(contentRegular, 'ig')
+        const newArticles = articles.map((article) => {
+            try {
+                article.content = article.content.replace(reg, contentReplace)
+                article.contentSnippet = article.contentSnippet.replace(reg, contentReplace)
+                return article
+            } catch (error) {
+                this.logger.error(error)
+                return article
+            }
+        }).map((article) => plainToInstance(Article, article))
+        await this.articleRepository.save(newArticles)
     }
 
     async enableFeedTask(feed: Feed, throwError = false) {

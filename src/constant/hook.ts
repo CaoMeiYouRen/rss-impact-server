@@ -4,6 +4,7 @@ export const HookMap = {
     download: '下载',
     bitTorrent: 'BitTorrent', // /磁力链接
     aiSummary: 'AI 总结',
+    regular: '正则替换',
 } as const
 
 export const HookList = Object.entries(HookMap).map(([value, label]) => ({

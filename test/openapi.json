@@ -4573,6 +4573,31 @@
                     "contentType"
                 ]
             },
+            "RegularConfig": {
+                "type": "object",
+                "properties": {
+                    "contentRegular": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "正文正则",
+                        "description": "匹配正则",
+                        "example": ""
+                    },
+                    "contentReplace": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "正文替换内容",
+                        "description": "用该内容替换正文的内容",
+                        "example": ""
+                    }
+                },
+                "required": [
+                    "contentRegular",
+                    "contentReplace"
+                ]
+            },
             "Filter": {
                 "type": "object",
                 "properties": {
@@ -4734,7 +4759,8 @@
                             "webhook",
                             "download",
                             "bitTorrent",
-                            "aiSummary"
+                            "aiSummary",
+                            "regular"
                         ],
                         "title": "类型",
                         "example": "webhook"
@@ -4757,6 +4783,9 @@
                             },
                             {
                                 "$ref": "#/components/schemas/AIConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/RegularConfig"
                             }
                         ]
                     },
@@ -5566,7 +5595,8 @@
                             "webhook",
                             "download",
                             "bitTorrent",
-                            "aiSummary"
+                            "aiSummary",
+                            "regular"
                         ],
                         "title": "类型",
                         "example": "webhook"
@@ -5589,6 +5619,9 @@
                             },
                             {
                                 "$ref": "#/components/schemas/AIConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/RegularConfig"
                             }
                         ]
                     },
@@ -5686,7 +5719,8 @@
                             "webhook",
                             "download",
                             "bitTorrent",
-                            "aiSummary"
+                            "aiSummary",
+                            "regular"
                         ],
                         "title": "类型",
                         "example": "webhook"
@@ -5709,6 +5743,9 @@
                             },
                             {
                                 "$ref": "#/components/schemas/AIConfig"
+                            },
+                            {
+                                "$ref": "#/components/schemas/RegularConfig"
                             }
                         ]
                     },

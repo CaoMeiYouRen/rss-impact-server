@@ -18,6 +18,7 @@ import { BitTorrentConfig } from '@/models/bit-torrent-config'
 import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { IsId } from '@/decorators/is-id.decorator'
 import { AIConfig } from '@/models/ai-config'
+import { RegularConfig } from '@/models/regular-config'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const hookConfig: Record<HookType, Function> = {
@@ -26,6 +27,7 @@ const hookConfig: Record<HookType, Function> = {
     download: DownloadConfig,
     bitTorrent: BitTorrentConfig,
     aiSummary: AIConfig,
+    regular: RegularConfig,
 }
 
 /**
@@ -140,7 +142,7 @@ export class FilterOut {
     // enclosureLength?: number
 }
 
-@ApiExtraModels(NotificationConfig, WebhookConfig, DownloadConfig, BitTorrentConfig, AIConfig)
+@ApiExtraModels(...Object.values(hookConfig))
 @Entity()
 export class Hook extends AclBase {
 
@@ -182,11 +184,7 @@ export class Hook extends AclBase {
         title: '配置',
         example: {},
         oneOf: [
-            { $ref: getSchemaPath(NotificationConfig) },
-            { $ref: getSchemaPath(WebhookConfig) },
-            { $ref: getSchemaPath(DownloadConfig) },
-            { $ref: getSchemaPath(BitTorrentConfig) },
-            { $ref: getSchemaPath(AIConfig) },
+            ...Object.values(hookConfig).map((e) => ({ $ref: getSchemaPath(e) })),
         ],
     })
     @JsonStringLength(0, 2048)
