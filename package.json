@@ -157,7 +157,8 @@
       "crypto-hash": "$crypto-hash",
       "compare-func": "$compare-func",
       "cron": "$cron",
-      "formidable": "^3.2.4"
+      "formidable": "^3.2.4",
+      "tough-cookie": "^4.1.3"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
