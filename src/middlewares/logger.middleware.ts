@@ -73,7 +73,7 @@ const format = winston.format.combine(
 const dailyRotateFileOption = {
     dirname: logDir,
     datePattern: 'YYYY-MM-DD',
-    zippedArchive: true,
+    zippedArchive: false,
     maxSize: '20m',
     maxFiles: '31d',
     format,
