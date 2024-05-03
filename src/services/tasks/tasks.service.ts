@@ -80,7 +80,7 @@ export class TasksService implements OnApplicationBootstrap {
             const feeds = await this.getAllFeeds()
             feeds.forEach((feed) => {
                 this.enableFeedTask(feed)
-                this.getRssContent(feed)
+                // this.getRssContent(feed)
             })
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
