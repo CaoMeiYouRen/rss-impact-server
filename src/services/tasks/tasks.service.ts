@@ -818,7 +818,7 @@ The content to be summarized is:`
                         this.logger.log(`rss ${feed.url} 已进入订阅队列`)
                         await randomSleep(0, maxDelay)
                         this.logger.log(`rss ${feed.url} 正在检测更新中……`)
-                        rssLimit(() => this.getRssContent(feed))
+                        await rssLimit(() => this.getRssContent(feed))
                     } catch (error) {
                         this.logger.error(error?.message, error?.stack)
                         // 如果出现异常就停止 该 rss
