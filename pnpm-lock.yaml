@@ -252,8 +252,8 @@ devDependencies:
     specifier: ^29.5.12
     version: 29.5.12
   '@types/lodash':
-    specifier: ^4.14.202
-    version: 4.17.0
+    specifier: ^4.17.1
+    version: 4.17.1
   '@types/md5':
     specifier: ^2.3.5
     version: 2.3.5
@@ -2325,8 +2325,8 @@ packages:
     resolution: {integrity: sha512-HMwFiRujE5PjrgwHQ25+bsLJgowjGjm5Z8FVSf0N6PwgJrwxH0QxzHYDcKsTfV3wva0vzrpqMTJS2jXPr5BMEQ==}
     dev: true
 
-  /@types/lodash@4.17.0:
-    resolution: {integrity: sha512-t7dhREVv6dbNj0q17X12j7yDG4bD/DHYX7o5/DbDxobP0HnGPgpRz2Ej77aL7TZT3DSw13fqUTj8J4mMnqa7WA==}
+  /@types/lodash@4.17.1:
+    resolution: {integrity: sha512-X+2qazGS3jxLAIz5JDXDzglAF3KpijdhFxlf/V1+hEsOUc+HnWi81L/uv/EvGuV90WY+7mPGFCUDGfQC3Gj95Q==}
     dev: true
 
   /@types/luxon@3.4.2:
