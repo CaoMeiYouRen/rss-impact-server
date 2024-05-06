@@ -665,7 +665,8 @@ export class TasksService implements OnApplicationBootstrap {
                 resource.status = 'fail'
                 break
             case 'warning':
-                resource.status = 'fail'
+                // resource.status = 'fail'
+                resource.status = 'success'
                 break
             case 'downloading':
                 resource.status = 'success'
@@ -673,16 +674,16 @@ export class TasksService implements OnApplicationBootstrap {
             case 'seeding': // 如果是做种后完成的话，也是 seeding 状态
                 resource.status = 'success'
                 break
-            // case 'paused':
-            //     resource.status = 'success'
-            //     break
-            // case 'queued':
-            //     resource.status = 'success'
-            //     break
+            case 'paused':
+                resource.status = 'success'
+                break
+            case 'queued':
+                resource.status = 'success'
+                break
             // case 'checking':
             //     resource.status = 'success'
             //     break
-            default: // paused/queued/checking/unknown
+            default: // checking/unknown
                 resource.status = 'unknown'
                 break
         }
