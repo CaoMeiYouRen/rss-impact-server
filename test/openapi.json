@@ -695,7 +695,7 @@
         "/api/feed/import/option": {
             "get": {
                 "operationId": "Feed_importByOpmlOption",
-                "summary": "快速添加订阅的配置项",
+                "summary": "导入 OPML 文件的配置项",
                 "parameters": [],
                 "responses": {
                     "200": {

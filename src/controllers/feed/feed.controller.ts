@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Header, Logger, Param, Post, Put, Upload
 import { ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { groupBy } from 'lodash'
 import { Sub2 } from 'opml'
@@ -42,7 +41,7 @@ import { to } from '@/utils/helper'
             dto: UpdateFeed,
         },
     },
-    relations: ['hooks'],
+    relations: ['hooks', 'proxyConfig'],
     props: {
         label: 'title',
         value: 'id',
@@ -132,6 +131,7 @@ export class FeedController {
     })
     @Post('import')
     @UseInterceptors(FileInterceptor('file'))
+    // eslint-disable-next-line no-undef
     async importByOpml(@UploadedFile() file: Express.Multer.File, @CurrentUser() user: User) {
         const fileText = file.buffer.toString('utf-8')
         const opmlResult = await opmlParse(fileText)

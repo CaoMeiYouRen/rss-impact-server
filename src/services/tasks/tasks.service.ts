@@ -161,7 +161,7 @@ export class TasksService implements OnApplicationBootstrap {
             return
         }
         // 拉取最新的 hook 配置
-        const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['hooks'], select: ['hooks'] }))
+        const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['proxyConfig', 'hooks', 'hooks.proxyConfig'], select: ['hooks'] }))
             ?.hooks
             ?.filter((hook) => hook.isReversed && ['notification', 'webhook'].includes(hook.type), // 处理反转触发的 Hook；只触发 notification/webhook 类型的
             )

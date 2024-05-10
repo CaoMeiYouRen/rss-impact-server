@@ -26,7 +26,7 @@ import { CreateHook, FindHook, Hook, UpdateHook } from '@/db/models/hook.entity'
             dto: UpdateHook,
         },
     },
-    relations: [],
+    relations: ['proxyConfig'],
     props: {
         label: 'name',
         value: 'id',
