@@ -64,6 +64,7 @@ export class CustomQueryController {
     ) {
     }
 
+    // TODO 自定义查询增加缓存
     @ApiResponse({ status: 200, type: Object })
     // @UseAccessToken() , @CurrentUser() user: User
     @Get('rss/:id')
@@ -71,7 +72,7 @@ export class CustomQueryController {
         if (!isId(id)) {
             throw new HttpError(400, '无效的 Id！')
         }
-        const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'feed'] })
+        const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feed'] })
         if (!custom) {
             throw new HttpError(404, '该 Id 对应的资源不存在！')
         }
@@ -91,13 +92,13 @@ export class CustomQueryController {
             if (!categories?.length) {
                 throw new HttpError(400, '指定分组时必须要选择分组！')
             }
-            const categoryList = await this.categoryRepository.find({
-                where: {
-                    id: In(categories.map((e) => e.id)),
-                },
-                relations: ['feeds'],
-            })
-            feedId = In(categoryList.map((e) => e.feeds.map((f) => f.id)).flat())
+            // const categoryList = await this.categoryRepository.find({
+            //     where: {
+            //         id: In(categories.map((e) => e.id)),
+            //     },
+            //     relations: ['feeds'],
+            // })
+            feedId = In(categories.map((e) => e?.feeds?.map((f) => f?.id))?.flat()?.filter(Boolean))
         }
 
         const articles = await this.articlerepository.find({
