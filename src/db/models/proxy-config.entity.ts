@@ -36,7 +36,7 @@ export class ProxyConfig extends AclBase {
     @ApiProperty({ title: '代理URL', description: '支持 http/https/socks/socks5 协议。例如 http://127.0.0.1:8080', example: 'http://127.0.0.1:8080' })
     @IsNotEmpty({})
     @IsHttpHttpsSocksSocks5Url({}, {
-        require_tld: !__DEV__, // 是否要顶级域名
+        require_tld: false, // 是否要顶级域名
     })
     @Length(0, 2048, {})
     @Index({})
