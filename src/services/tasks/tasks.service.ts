@@ -113,6 +113,10 @@ export class TasksService implements OnApplicationBootstrap {
                 rss = await rssParserString(resp)
             }
             if (Array.isArray(rss?.items)) {
+                if (!feed.description && rss.description) { // 解决部分情况下未设置 description 的问题
+                    feed.description = rss.description?.trim()
+                    await this.feedRepository.save(feed)
+                }
                 // 根据 guid 去重复 | 每个 user 的 不重复
                 const guids = rss.items.map((e) => e.guid)
                 const existingArticles = await this.articleRepository.find({
