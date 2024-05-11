@@ -112,6 +112,7 @@ export class TasksService implements OnApplicationBootstrap {
                     } else {
                         this.logger.warn(JSON.stringify(newFeed, null, 4))
                         this.logger.warn('proxyConfig 为空！')
+                        return
                     }
                 }
                 // this.logger.log(`url: ${url}\nproxyUrl: ${proxyUrl}`)
@@ -815,7 +816,7 @@ The content to be summarized is:`
 
     async enableFeedTask(feed: Feed, throwError = false) {
         const name = `feed_${feed.id}`
-        this.logger.debug(JSON.stringify(feed, null, 4))
+        // this.logger.debug(JSON.stringify(feed, null, 4))
         try {
             if (!feed.isEnabled) {
                 this.logger.warn(`定时任务 ${name} 已关闭，请启用后重试`)

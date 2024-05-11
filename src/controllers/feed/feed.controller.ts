@@ -303,7 +303,7 @@ export class FeedController {
         const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
         if (updatedDocument.isEnabled) {
             await this.tasksService.disableFeedTask(updatedDocument, true) // 先禁用再启用
-            await this.tasksService.enableFeedTask(updatedDocument, true)
+            await this.tasksService.enableFeedTask(await this.repository.findOne({ where: { id: updatedDocument.id }, relations: ['proxyConfig', 'hooks', 'hooks.proxyConfig'] }), true)
         } else {
             await this.tasksService.disableFeedTask(updatedDocument, true)
         }
