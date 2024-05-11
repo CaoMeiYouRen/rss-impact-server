@@ -102,8 +102,10 @@ export class TasksService implements OnApplicationBootstrap {
         const uid = feed.userId
         const url = feed.url
         const proxyUrl = feed.proxyConfig?.url
+
         try {
             if (!rss) {
+                this.logger.log(`url: ${url}\nproxyUrl: ${proxyUrl}`)
                 const resp = (await ajax({
                     url,
                     proxyUrl,
@@ -139,7 +141,7 @@ export class TasksService implements OnApplicationBootstrap {
                 }
             }
         } catch (error) {
-            this.logger.error(`url: ${url}proxyUrl: ${proxyUrl}\nmessage: ${error?.message}`, error?.stack)
+            this.logger.error(`url: ${url}\nproxyUrl: ${proxyUrl}\nmessage: ${error?.message}`, error?.stack)
             await this.reverseTriggerHooks(feed, error)
         }
     }
@@ -804,6 +806,7 @@ The content to be summarized is:`
 
     async enableFeedTask(feed: Feed, throwError = false) {
         const name = `feed_${feed.id}`
+        this.logger.debug(JSON.stringify(feed, null, 4))
         try {
             if (!feed.isEnabled) {
                 this.logger.warn(`定时任务 ${name} 已关闭，请启用后重试`)
