@@ -3,7 +3,7 @@ export const HookMap = {
     webhook: 'Webhook',
     download: '下载',
     bitTorrent: 'BitTorrent', // /磁力链接
-    aiSummary: 'AI 总结',
+    aiSummary: 'AI 大模型',
     regular: '正则替换',
 } as const
 

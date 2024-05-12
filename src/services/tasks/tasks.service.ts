@@ -110,9 +110,7 @@ export class TasksService implements OnApplicationBootstrap {
                     if (newFeed.proxyConfig?.url) {
                         proxyUrl = newFeed.proxyConfig?.url
                     } else {
-                        this.logger.warn(JSON.stringify(newFeed, null, 4))
-                        this.logger.warn('proxyConfig 为空！')
-                        return
+                        throw new Error(`订阅 id: ${feed.id} 的 proxyConfig 为空！`)
                     }
                 }
                 // this.logger.log(`url: ${url}\nproxyUrl: ${proxyUrl}`)

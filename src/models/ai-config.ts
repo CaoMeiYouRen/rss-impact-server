@@ -86,14 +86,14 @@ export class AIConfig {
     @SetAclCrudField({
         value: true,
     })
-    @ApiProperty({ title: '总结为空', description: '仅在总结为空时启用 AI 总结' })
+    @ApiProperty({ title: '总结为空', description: '仅在总结为空时启用 AI 大模型' })
     @IsBoolean()
     isOnlySummaryEmpty: boolean
 
     @SetAclCrudField({
         value: false,
     })
-    @ApiProperty({ title: '分段总结', description: '如果正文的长度超过 最大 token 数，是否分段进行总结' })
+    @ApiProperty({ title: '分段提交', description: '如果正文的长度超过 最大 token 数，是否分段提交给 AI 大模型。如果为否，则只提交不超过 最大 token 数 的内容' })
     @IsBoolean()
     isSplit: boolean
 
@@ -110,7 +110,7 @@ export class AIConfig {
         search: true,
         value: 'text',
     })
-    @ApiProperty({ title: '总结格式', description: '如果为 纯文本，则使用 摘要 输出 纯文本总结；如果为 HTML，则使用正文输出 HTML 总结。正文长度也将分别计算。', example: 'text' })
+    @ApiProperty({ title: '输出格式', description: '如果为 纯文本，则使用 摘要 输出 纯文本总结；如果为 HTML，则使用正文输出 HTML 总结。正文长度也将分别计算。', example: 'text' })
     @IsIn(ContentList.map((e) => e.value))
     @IsNotEmpty()
     contentType: ContentType

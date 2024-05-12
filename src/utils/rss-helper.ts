@@ -281,13 +281,13 @@ export function articleToDataItem(article: Article, option: ArticleOption = {}):
     let content = article.content
     let contentSnippet = article.contentSnippet
     if (appendAiSummary && article.aiSummary) {
-        content = `<p><b>AI 总结：
+        content = `<p><b>AI 输出：
 ${article.aiSummary}</b></p>
 <hr/>
 
 ${article.content}`
 
-        contentSnippet = `AI 总结：
+        contentSnippet = `AI 输出：
 ${article.aiSummary}
 
 ${article.contentSnippet}`
