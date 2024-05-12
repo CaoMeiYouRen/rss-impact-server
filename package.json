@@ -84,7 +84,7 @@
     "query-string": "^7.1.3",
     "rate-limit-redis": "^4.2.0",
     "reflect-metadata": "^0.2.1",
-    "rimraf": "^5.0.5",
+    "rimraf": "^5.0.7",
     "rss-parser": "git+https://github.com/CaoMeiYouRen/rss-parser.git",
     "rxjs": "^7.8.1",
     "socks-proxy-agent": "^8.0.3",
