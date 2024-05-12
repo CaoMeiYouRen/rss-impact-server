@@ -127,6 +127,10 @@ export class TasksService implements OnApplicationBootstrap {
                     feed.description = rss.description?.trim()
                     await this.feedRepository.save(feed)
                 }
+                if (!feed.imageUrl && rss?.image?.url) { // 解决部分情况下未设置 imageUrl 的问题
+                    feed.imageUrl = rss.image.url
+                    await this.feedRepository.save(feed)
+                }
                 // 根据 guid 去重复 | 每个 user 的 不重复
                 const guids = rss.items.map((e) => e.guid)
                 const existingArticles = await this.articleRepository.find({
