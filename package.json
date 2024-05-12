@@ -126,7 +126,7 @@
     "@types/passport-strategy": "^0.2.38",
     "@types/supertest": "^6.0.2",
     "@types/turndown": "^5.0.4",
-    "@types/validator": "^13.11.9",
+    "@types/validator": "^13.11.10",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "commitizen": "^4.2.3",
