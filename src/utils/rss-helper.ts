@@ -120,13 +120,22 @@ export type ArticleFormatoption = {
     isMarkdown?: boolean
     // 是否为 纯文本（去除 HTML）
     isSnippet?: boolean
+    // 只推送总结部分
+    onlySummary?: boolean
 }
 
 export function articleItemFormat(item: Article, option: ArticleFormatoption = {}) {
-    const { isMarkdown = false, isSnippet = false } = option
+    const { isMarkdown = false, isSnippet = false, onlySummary = false } = option
     const title: string = item.title?.replace(/\.\.\.$/, '') // 移除句末省略号
     let text = ''
-    const content = isSnippet ? item.contentSnippet : item.content
+    let content = ''
+    if (onlySummary) {
+        content = item.summary || item.contentSnippet?.slice(0, 512)
+    } else if (isSnippet) {
+        content = item.contentSnippet
+    } else {
+        content = item.content
+    }
 
     // 排除内容和标题重复
     if (title && !content?.startsWith(title)) {
@@ -143,10 +152,18 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
         text += `作者：${item.author}\n`
     }
     if (item.enclosure?.url) {
-        text += `资源链接：${item.enclosure?.url}\n`
+        if (isMarkdown) {
+            text += `资源链接：[${item.enclosure?.url}](${item.enclosure?.url})\n`
+        } else {
+            text += `资源链接：${item.enclosure?.url}\n`
+        }
     }
     if (item.link) {
-        text += `链接：${item.link}\n`
+        if (isMarkdown) {
+            text += `链接：[${item.link}](${item.link})\n`
+        } else {
+            text += `链接：${item.link}\n`
+        }
     }
     if (item.pubDate) {
         const date = timeFormat(item.pubDate, 'YYYY-MM-DD HH:mm:ss')

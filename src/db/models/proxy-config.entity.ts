@@ -3,7 +3,6 @@ import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsNotEmpty, Length } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
-import { __DEV__ } from '@/app.config'
 import { IsHttpHttpsSocksSocks5Url } from '@/decorators/is-http-https-socks-socks5-url.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 

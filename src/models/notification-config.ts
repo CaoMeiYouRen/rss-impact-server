@@ -32,7 +32,12 @@ export class NotificationConfig<T extends PushType = PushType> implements MetaPu
     @IsBoolean({})
     isSnippet: boolean
 
+    @ApiProperty({ title: '仅总结', description: '如果有总结的话，只推送总结部分；否则从 摘要 中截取前 512 个字符', example: false })
+    @IsBoolean({})
+    onlySummary: boolean
+
     @ApiProperty({ title: '最大长度', description: '一次推送文本的最大长度。默认值为 4096', example: 4096 })
     @IsSafeNaturalNumber(65535)
     maxLength: number
+
 }
