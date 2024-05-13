@@ -6,7 +6,7 @@ import DailyRotateFile from 'winston-daily-rotate-file'
 import { Request } from 'express'
 import { isNumberString } from 'class-validator'
 import { timeFormat } from '@/utils/helper'
-import { __DEV__ } from '@/app.config'
+import { __DEV__, __PROD__ } from '@/app.config'
 import { User } from '@/db/models/user.entity'
 
 const logDir = path.resolve('logs')
@@ -47,6 +47,9 @@ const stream: StreamOptions = {
                 log.status = Number(log.status)
             }
             const { ip, method, url, httpVersion, status, responseTime, requestId } = log
+            if (__PROD__ && /(\/assets|\/vite\.svg)/.test(url)) { // 生产环境忽略静态文件日志
+                return
+            }
             const message = `${ip} - "${requestId}" "${method} ${url}" "HTTP/${httpVersion}" ${status} - ${responseTime} ms`
             if (log.status < 400) {
                 winstonLogger.log(message, 'HttpHandle')

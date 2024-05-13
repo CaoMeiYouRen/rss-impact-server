@@ -3,7 +3,7 @@ import { Length, IsIn, IsNotEmpty, IsUrl, IsOptional } from 'class-validator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { BitTorrentList, BitTorrentType } from '@/constant/hook'
-import { __DEV__ } from '@/app.config'
+import { __PROD__ } from '@/app.config'
 
 export class BitTorrentConfig {
 
@@ -24,7 +24,7 @@ export class BitTorrentConfig {
     })
     @ApiProperty({ title: '服务器地址', description: 'BT服务器地址，例如 http://localhost:8080/', example: 'http://localhost:8080/' })
     @IsUrl({
-        require_tld: !__DEV__, // 是否要顶级域名
+        require_tld: __PROD__, // 是否要顶级域名
     })
     @IsNotEmpty()
     @Length(0, 1024)

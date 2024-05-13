@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Length, IsIn, IsNotEmpty, IsUrl, IsBoolean, Max, Min, IsOptional } from 'class-validator'
 import { AIList, AIType, ContentList, ContentType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
-import { __DEV__ } from '@/app.config'
+import { __PROD__ } from '@/app.config'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 
 export class AIConfig {
@@ -31,7 +31,7 @@ export class AIConfig {
     @ApiProperty({ title: 'API 地址', description: 'OpenAI API 地址', example: 'https://api.openai.com/v1' })
     @Length(0, 2048)
     @IsUrl({
-        require_tld: !__DEV__, // 是否要顶级域名
+        require_tld: __PROD__, // 是否要顶级域名
     })
     @IsOptional()
     endpoint?: string

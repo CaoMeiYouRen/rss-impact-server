@@ -16,6 +16,8 @@ const env = process.env
 
 export const NODE_ENV = env.NODE_ENV
 
+export const __PROD__ = NODE_ENV === 'production'
+
 export const __DEV__ = NODE_ENV === 'development'
 
 export const __TEST__ = NODE_ENV === 'test'

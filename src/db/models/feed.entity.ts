@@ -11,7 +11,7 @@ import { IsId } from '@/decorators/is-id.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
-import { __DEV__ } from '@/app.config'
+import { __PROD__ } from '@/app.config'
 
 /**
  * RSS 订阅表
@@ -30,7 +30,7 @@ export class Feed extends AclBase {
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/atom.xml' })
     @IsNotEmpty({ message: '$property 不能为空' })
     @IsUrl({
-        require_tld: !__DEV__, // 是否要顶级域名
+        require_tld: __PROD__, // 是否要顶级域名
     }, { message: '$property 必须为标准URL格式' })
     @Length(0, 2048, { message: '$property 的长度必须在 $constraint1 到 $constraint2 个字符！' })
     @Index({
@@ -71,7 +71,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
     @IsUrl({
-        require_tld: !__DEV__, // 是否要顶级域名
+        require_tld: __PROD__, // 是否要顶级域名
     }, { message: '封面Url必须为标准URL格式' })
     @Length(0, 2048, { message: '封面Url最大不能超过 $constraint2 个字符！' })
     @IsOptional()

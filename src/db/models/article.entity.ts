@@ -12,14 +12,14 @@ import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
-import { __DEV__ } from '@/app.config'
+import { __PROD__ } from '@/app.config'
 import { dataFormat } from '@/utils/helper'
 
 export class EnclosureImpl implements Enclosure {
 
     @ApiProperty({ title: 'URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
     @IsUrlOrMagnetUri({}, {
-        require_tld: !__DEV__,   // 是否要顶级域名
+        require_tld: __PROD__,   // 是否要顶级域名
     })
     @Length(0, 65000)
     @IsOptional()
@@ -78,7 +78,7 @@ export class Article extends AclBase {
 
     @ApiProperty({ title: '链接', example: 'https://blog.cmyr.ltd/archives/499d4cee.html' })
     @IsUrl({
-        require_tld: !__DEV__, // 是否要顶级域名
+        require_tld: __PROD__, // 是否要顶级域名
     })
     @Length(0, 2048)
     @IsOptional()

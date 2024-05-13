@@ -20,7 +20,7 @@ if (REDIS_URL) {
  */
 export const limiter = RateLimit({
     store,
-    max: __DEV__ ? 10000 : 1000,
+    max: __DEV__ ? 10000 : 500,
     windowMs: ms('1m'), // 1 分钟时间
     validate: {
         trustProxy: false, // 解决 ERR_ERL_PERMISSIVE_TRUST_PROXY 代理不可信问题
