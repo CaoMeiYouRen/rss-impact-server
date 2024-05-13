@@ -163,7 +163,7 @@ export class FeedController {
                 })
                 const [error, feed] = await to(this.create(newFeed, user))
                 if (error) {
-                    this.logger.error(error)
+                    this.logger.error(error?.message, error?.stack)
                 } else if (feed) {
                     feeds.push(feed)
                 }
@@ -182,7 +182,7 @@ export class FeedController {
                         })
                         const [error, feed] = await to(this.create(newFeed, user))
                         if (error) {
-                            this.logger.error(error)
+                            this.logger.error(error?.message, error?.stack)
                         } else if (feed) {
                             feeds.push(feed)
                         }

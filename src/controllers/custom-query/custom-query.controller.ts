@@ -1,11 +1,9 @@
-import { Controller, Get, Inject, Param, Query, Res } from '@nestjs/common'
+import { Controller, Get, Param, Query, Res } from '@nestjs/common'
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { FindOperator, In, MoreThanOrEqual, Repository } from 'typeorm'
 import dayjs from 'dayjs'
 import { Response } from 'express'
-import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Cache } from 'cache-manager'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { CustomQuery, FindCustomQuery, CreateCustomQuery, UpdateCustomQuery } from '@/db/models/custom-query.entity'
@@ -17,8 +15,7 @@ import { filterArticles, articleToDataItem } from '@/utils/rss-helper'
 import atom from '@/views/atom'
 import rss from '@/views/rss'
 import json from '@/views/json'
-import { Category } from '@/db/models/category.entity'
-import { CACHE_EXPIRE } from '@/app.config'
+import { CacheService } from '@/services/cache/cache.service'
 
 @AclCrud({
     model: CustomQuery,
@@ -62,7 +59,7 @@ export class CustomQueryController {
     constructor(
         @InjectRepository(CustomQuery) private readonly repository: Repository<CustomQuery>,
         @InjectRepository(Article) private readonly articlerepository: Repository<Article>,
-        @Inject(CACHE_MANAGER) private cacheManager: Cache,
+        private readonly cacheService: CacheService,
     ) {
     }
 
@@ -73,91 +70,91 @@ export class CustomQueryController {
         if (!isId(id)) {
             throw new HttpError(400, '无效的 Id！')
         }
-        const cacheKey = `rss-impact:custom-query-rss:${id}`
-        const cacheData = await this.cacheManager.get<string>(cacheKey)
-        if (cacheData) {
-            const { headers, body } = JSON.parse(cacheData)
-            if (!res.headersSent) {
-                res.header('Content-Type', headers['Content-Type']).status(200).send(body)
+        const cacheKey = `custom-query-rss:${id}`
+        const cacheData = await this.cacheService.tryGet(async () => {
+            const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feed'] })
+            if (!custom) {
+                throw new HttpError(404, '该 Id 对应的资源不存在！')
             }
-            return
-        }
-        const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feed'] })
-        if (!custom) {
-            throw new HttpError(404, '该 Id 对应的资源不存在！')
-        }
-        if (key !== custom.key) {
-            throw new HttpError(403, '错误的 key，没有权限访问！')
-        }
-        const { name, format, filter = {}, url, scope, categories = [], feed, useAiSummary, appendAiSummary } = custom
-        const { limit, time } = filter
-        let feedId: number | FindOperator<number>
-        const pubDate = time ? MoreThanOrEqual(dayjs().add(-time, 'seconds').toDate()) : undefined
-        if (scope === 'feed') {
-            if (!feed?.id) {
-                throw new HttpError(400, '指定订阅时必须要选择订阅！')
+            if (key !== custom.key) {
+                throw new HttpError(403, '错误的 key，没有权限访问！')
             }
-            feedId = feed.id
-        } else if (scope === 'category') {
-            if (!categories?.length) {
-                throw new HttpError(400, '指定分组时必须要选择分组！')
+            const { name, format, filter = {}, url, scope, categories = [], feed, useAiSummary, appendAiSummary } = custom
+            const { limit, time } = filter
+            let feedId: number | FindOperator<number>
+            const pubDate = time ? MoreThanOrEqual(dayjs().add(-time, 'seconds').toDate()) : undefined
+            if (scope === 'feed') {
+                if (!feed?.id) {
+                    throw new HttpError(400, '指定订阅时必须要选择订阅！')
+                }
+                feedId = feed.id
+            } else if (scope === 'category') {
+                if (!categories?.length) {
+                    throw new HttpError(400, '指定分组时必须要选择分组！')
+                }
+                // const categoryList = await this.categoryRepository.find({
+                //     where: {
+                //         id: In(categories.map((e) => e.id)),
+                //     },
+                //     relations: ['feeds'],
+                // })
+                feedId = In(categories.map((e) => e?.feeds?.map((f) => f?.id))?.flat()?.filter(Boolean))
             }
-            // const categoryList = await this.categoryRepository.find({
-            //     where: {
-            //         id: In(categories.map((e) => e.id)),
-            //     },
-            //     relations: ['feeds'],
-            // })
-            feedId = In(categories.map((e) => e?.feeds?.map((f) => f?.id))?.flat()?.filter(Boolean))
-        }
 
-        const articles = await this.articlerepository.find({
-            where: {
-                pubDate,
-                feedId,
-            },
-            take: limit || 20,
-            order: {
-                pubDate: 'DESC',
-            },
-        })
-        const filteredArticles = filterArticles(articles, custom)
-        const data: Data = {
-            title: name,
-            link: url,
-            feedLink: url,
-            description: `自定义查询：${name}`,
-            subtitle: `自定义查询：${name}`,
-            author: 'CaoMeiYouRen',
-            ttl: 300, // 5 分钟
-            lastBuildDate: new Date().toUTCString(),
-            item: filteredArticles.map((e) => articleToDataItem(e, { useAiSummary, appendAiSummary })),
-        }
-        const headers = {
-            'Content-Type': '',
-        }
-        let body = ''
-        switch (format) {
-            case 'json':
-                headers['Content-Type'] = 'application/feed+json; charset=UTF-8'
-                body = json(data)
+            const articles = await this.articlerepository.find({
+                where: {
+                    pubDate,
+                    feedId,
+                },
+                take: limit || 20,
+                order: {
+                    pubDate: 'DESC',
+                },
+            })
+            const filteredArticles = filterArticles(articles, custom)
+            const data: Data = {
+                title: name,
+                link: url,
+                feedLink: url,
+                description: `自定义查询：${name}`,
+                subtitle: `自定义查询：${name}`,
+                author: 'CaoMeiYouRen',
+                ttl: 300, // 5 分钟
+                lastBuildDate: new Date().toUTCString(),
+                item: filteredArticles.map((e) => articleToDataItem(e, { useAiSummary, appendAiSummary })),
+            }
+            const headers = {
+                'Content-Type': '',
+            }
+            let body = ''
+            switch (format) {
+                case 'json':
+                    headers['Content-Type'] = 'application/feed+json; charset=UTF-8'
+                    body = json(data)
 
-                break
-            case 'rss2.0':
-                headers['Content-Type'] = 'application/xml; charset=UTF-8'  // application/rss+xml
-                body = rss(data)
-                break
-            case 'atom':
-                headers['Content-Type'] = 'application/xml; charset=UTF-8'  // application/atom+xml
-                body = atom(data)
-                break
-            default:
-                throw new HttpError(400, '未知的输出格式！')
-        }
-        await this.cacheManager.set(cacheKey, JSON.stringify({ headers, body }), CACHE_EXPIRE * 1000)
+                    break
+                case 'rss2.0':
+                    headers['Content-Type'] = 'application/xml; charset=UTF-8'  // application/rss+xml
+                    body = rss(data)
+                    break
+                case 'atom':
+                    headers['Content-Type'] = 'application/xml; charset=UTF-8'  // application/atom+xml
+                    body = atom(data)
+                    break
+                default:
+                    throw new HttpError(400, '未知的输出格式！')
+            }
+            return {
+                headers,
+                body,
+            }
+        }, cacheKey)
+
+        const { headers, body } = cacheData
         if (!res.headersSent) {
             res.header('Content-Type', headers['Content-Type']).status(200).send(body)
         }
+
     }
 
 }

@@ -20,6 +20,7 @@ import { ResourceService } from './services/resource/resource.service'
 import { WebhookLogController } from './controllers/webhook-log/webhook-log.controller'
 import { ProxyConfigController } from './controllers/proxy-config/proxy-config.controller'
 import { CustomQueryController } from './controllers/custom-query/custom-query.controller'
+import { CacheService } from './services/cache/cache.service'
 
 @Global()
 @Module({
@@ -56,6 +57,7 @@ import { CustomQueryController } from './controllers/custom-query/custom-query.c
         TokenStrategy,
         TasksService,
         ResourceService,
+        CacheService,
     ],
 })
 export class AppModule { }

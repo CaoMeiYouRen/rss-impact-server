@@ -4,7 +4,7 @@ import { CacheModule } from '@nestjs/cache-manager'
 import { PassportModule } from '@nestjs/passport'
 import { ScheduleModule } from '@nestjs/schedule'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { RedisStore, redisInsStore } from 'cache-manager-ioredis-yet'
+import { redisInsStore } from 'cache-manager-ioredis-yet'
 import { CACHE_EXPIRE, ENABLE_DOWNLOAD_HTTP, REDIS_URL, RESOURCE_DOWNLOAD_PATH } from '@/app.config'
 import { getRedisClient } from '@/utils/redis'
 
