@@ -53,9 +53,9 @@ const stream: StreamOptions = {
             const message = `${ip} - "${requestId}" "${method} ${url}" "HTTP/${httpVersion}" ${status} - ${responseTime} ms`
             if (log.status < 400) {
                 winstonLogger.log(message, 'HttpHandle')
-            } else {
-                winstonLogger.error(`[HttpHandle] ${message}`)
+                return
             }
+            winstonLogger.error(`[HttpHandle] ${message}`)
         } catch (error) {
             winstonLogger.error(error?.message, error?.stack)
         }

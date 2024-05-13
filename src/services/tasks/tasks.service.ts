@@ -107,13 +107,11 @@ export class TasksService implements OnApplicationBootstrap {
             if (!rss) {
                 if (feed.proxyConfigId && !feed.proxyConfig) {
                     const newFeed = await this.feedRepository.findOne({ where: { id: fid }, relations: ['proxyConfig'] })
-                    if (newFeed.proxyConfig?.url) {
-                        proxyUrl = newFeed.proxyConfig?.url
-                    } else {
+                    if (!newFeed.proxyConfig?.url) {
                         throw new Error(`订阅 id: ${feed.id} 的 proxyConfig 为空！`)
                     }
+                    proxyUrl = newFeed.proxyConfig?.url
                 }
-                // this.logger.log(`url: ${url}\nproxyUrl: ${proxyUrl}`)
                 const resp = (await ajax({
                     url,
                     proxyUrl,

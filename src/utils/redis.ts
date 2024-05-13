@@ -18,7 +18,7 @@ export function getRedisClient() {
         logger.error('Redis error: ', error)
     })
     clients.redisClient.on('connect', () => {
-        logger.log('Redis connected.')
+        logger.log('Redis connected.', 'Redis')
     })
     return clients.redisClient
 }

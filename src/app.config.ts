@@ -71,3 +71,5 @@ export const AI_LIMIT_MAX = Number(env.AI_LIMIT_MAX || 3)
 export const BIT_TORRENT_LIMIT_MAX = Number(env.AI_LIMIT_MAX || 5)
 
 export const RSS_LIMIT_MAX = Number(env.RSS_LIMIT_MAX || 5)
+// 路由缓存时间，单位：秒
+export const CACHE_EXPIRE = Number(env.CACHE_EXPIRE || 300)

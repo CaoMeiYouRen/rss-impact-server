@@ -1,9 +1,11 @@
-import { Controller, Get, Param, Query, Res } from '@nestjs/common'
+import { Controller, Get, Inject, Param, Query, Res } from '@nestjs/common'
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { FindOperator, In, MoreThanOrEqual, Repository } from 'typeorm'
 import dayjs from 'dayjs'
 import { Response } from 'express'
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Cache } from 'cache-manager'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { CustomQuery, FindCustomQuery, CreateCustomQuery, UpdateCustomQuery } from '@/db/models/custom-query.entity'
@@ -16,8 +18,8 @@ import atom from '@/views/atom'
 import rss from '@/views/rss'
 import json from '@/views/json'
 import { Category } from '@/db/models/category.entity'
+import { CACHE_EXPIRE } from '@/app.config'
 
-// @UseSession()
 @AclCrud({
     model: CustomQuery,
     config: {
@@ -60,17 +62,25 @@ export class CustomQueryController {
     constructor(
         @InjectRepository(CustomQuery) private readonly repository: Repository<CustomQuery>,
         @InjectRepository(Article) private readonly articlerepository: Repository<Article>,
-        @InjectRepository(Category) private readonly categoryRepository: Repository<Category>,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {
     }
 
-    // TODO 自定义查询增加缓存
     @ApiResponse({ status: 200, type: Object })
     // @UseAccessToken() , @CurrentUser() user: User
     @Get('rss/:id')
-    async customQuery(@Param('id') id: number, @Query('key') key: string, @Res() res: Response) {
+    async customQuery(@Param('id') id: number, @Query('key') key: string, @Res({ passthrough: false }) res: Response) {
         if (!isId(id)) {
             throw new HttpError(400, '无效的 Id！')
+        }
+        const cacheKey = `rss-impact:custom-query-rss:${id}`
+        const cacheData = await this.cacheManager.get<string>(cacheKey)
+        if (cacheData) {
+            const { headers, body } = JSON.parse(cacheData)
+            if (!res.headersSent) {
+                res.header('Content-Type', headers['Content-Type']).status(200).send(body)
+            }
+            return
         }
         const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feed'] })
         if (!custom) {
@@ -120,29 +130,33 @@ export class CustomQueryController {
             subtitle: `自定义查询：${name}`,
             author: 'CaoMeiYouRen',
             ttl: 300, // 5 分钟
+            lastBuildDate: new Date().toUTCString(),
             item: filteredArticles.map((e) => articleToDataItem(e, { useAiSummary, appendAiSummary })),
         }
-
+        const headers = {
+            'Content-Type': '',
+        }
+        let body = ''
         switch (format) {
             case 'json':
-                if (!res.headersSent) {
-                    res.header('Content-Type', 'application/feed+json; charset=UTF-8').status(200).json(json(data))
-                }
-                return
+                headers['Content-Type'] = 'application/feed+json; charset=UTF-8'
+                body = json(data)
+
+                break
             case 'rss2.0':
-                // application/rss+xml
-                if (!res.headersSent) {
-                    res.header('Content-Type', 'application/xml; charset=UTF-8').status(200).send(rss(data))
-                }
-                return
+                headers['Content-Type'] = 'application/xml; charset=UTF-8'  // application/rss+xml
+                body = rss(data)
+                break
             case 'atom':
-                // application/atom+xml
-                if (!res.headersSent) {
-                    res.header('Content-Type', 'application/xml; charset=UTF-8').status(200).send(atom(data))
-                }
-                return
+                headers['Content-Type'] = 'application/xml; charset=UTF-8'  // application/atom+xml
+                body = atom(data)
+                break
             default:
                 throw new HttpError(400, '未知的输出格式！')
+        }
+        await this.cacheManager.set(cacheKey, JSON.stringify({ headers, body }), CACHE_EXPIRE * 1000)
+        if (!res.headersSent) {
+            res.header('Content-Type', headers['Content-Type']).status(200).send(body)
         }
     }
 

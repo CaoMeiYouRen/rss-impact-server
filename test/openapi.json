@@ -4128,6 +4128,12 @@
                         "description": "去除 HTML，仅保留纯文本部分",
                         "example": false
                     },
+                    "onlySummary": {
+                        "type": "boolean",
+                        "title": "仅总结",
+                        "description": "如果有总结的话，只推送总结部分；否则从 摘要 中截取前 512 个字符",
+                        "example": false
+                    },
                     "maxLength": {
                         "type": "number",
                         "title": "最大长度",
@@ -4141,6 +4147,7 @@
                     "isMergePush",
                     "isMarkdown",
                     "isSnippet",
+                    "onlySummary",
                     "maxLength"
                 ]
             },
@@ -4358,12 +4365,12 @@
                     "isOnlySummaryEmpty": {
                         "type": "boolean",
                         "title": "总结为空",
-                        "description": "仅在总结为空时启用 AI 总结"
+                        "description": "仅在总结为空时启用 AI 大模型"
                     },
                     "isSplit": {
                         "type": "boolean",
-                        "title": "分段总结",
-                        "description": "如果正文的长度超过 最大 token 数，是否分段进行总结"
+                        "title": "分段提交",
+                        "description": "如果正文的长度超过 最大 token 数，是否分段提交给 AI 大模型。如果为否，则只提交不超过 最大 token 数 的内容"
                     },
                     "isIncludeTitle": {
                         "type": "boolean",
@@ -4376,7 +4383,7 @@
                             "text",
                             "html"
                         ],
-                        "title": "总结格式",
+                        "title": "输出格式",
                         "description": "如果为 纯文本，则使用 摘要 输出 纯文本总结；如果为 HTML，则使用正文输出 HTML 总结。正文长度也将分别计算。",
                         "example": "text"
                     }
