@@ -44,6 +44,7 @@ async function isSynchronized() {
                 return {
                     // TODO MySQL 支持
                     // TODO Postgres 支持
+                    // TODO 增加数据库用量统计
                     type: 'sqlite',
                     database: DATABASE_PATH,
                     entities,

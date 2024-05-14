@@ -71,7 +71,7 @@ export class CustomQueryController {
             throw new HttpError(400, '无效的 Id！')
         }
         const cacheKey = `custom-query-rss:${id}`
-        const cacheData = await this.cacheService.tryGet(async () => {
+        const cacheData = await this.cacheService.tryGet(cacheKey, async () => {
             const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feed'] })
             if (!custom) {
                 throw new HttpError(404, '该 Id 对应的资源不存在！')
@@ -148,7 +148,7 @@ export class CustomQueryController {
                 headers,
                 body,
             }
-        }, cacheKey)
+        })
 
         const { headers, body } = cacheData
         if (!res.headersSent) {
