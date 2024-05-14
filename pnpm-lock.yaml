@@ -142,8 +142,8 @@ dependencies:
     specifier: ^1.9.6
     version: 1.9.6(@nestjs/common@10.3.8)(winston@3.13.0)
   openai:
-    specifier: ^4.46.1
-    version: 4.46.1
+    specifier: ^4.47.1
+    version: 4.47.1
   opml:
     specifier: ^0.5.2
     version: 0.5.2
@@ -8729,8 +8729,8 @@ packages:
       mimic-fn: 4.0.0
     dev: true
 
-  /openai@4.46.1:
-    resolution: {integrity: sha512-YILOwSwyg6h4FqDCehzZ/vu0hI6eQWXv7BQ/nNNyRHbprerZmkiRYBzq2h4iiJKUOrIw66APE46ZW/iP8y8Fiw==}
+  /openai@4.47.1:
+    resolution: {integrity: sha512-WWSxhC/69ZhYWxH/OBsLEirIjUcfpQ5+ihkXKp06hmeYXgBBIUCa9IptMzYx6NdkiOCsSGYCnTIsxaic3AjRCQ==}
     hasBin: true
     dependencies:
       '@types/node': 18.19.31
