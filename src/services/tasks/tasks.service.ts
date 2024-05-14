@@ -40,6 +40,7 @@ import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 
+// TODO 优化 limit 相关逻辑，增加全局 hook limit 限制，优化具体类型的 hook limit 限制
 const rssLimit = pLimit(RSS_LIMIT_MAX)
 // os.cpus().length
 const downloadLimit = pLimit(DOWNLOAD_LIMIT_MAX) // 下载并发数限制
@@ -172,6 +173,8 @@ export class TasksService implements OnApplicationBootstrap {
                 createdAt: MoreThanOrEqual(dayjs().add(-1, 'hour').toDate()), // 最近 1 小时
             },
         })
+        // TODO 反向触发增加重试次数
+        // 当错误若干次后才真正触发 Hook
         if (count >= REVERSE_TRIGGER_LIMIT) {
             this.logger.warn(`订阅 id: ${feed.id} 在一小时内触发超过 ${REVERSE_TRIGGER_LIMIT} 次！跳过触发。`)
             return
@@ -304,7 +307,6 @@ export class TasksService implements OnApplicationBootstrap {
                         return
                     }
                     case 'download': {
-                        // 下载并发数是全局的
                         await this.downloadHook(hook, feed, filteredArticles)
                         return
                     }
@@ -768,7 +770,7 @@ The content to be summarized is:`
                 await Promise.allSettled(aiArticles.map((article) => aiLimit(async () => {
                     const articleContent = getArticleContent(article, isSnippet, isIncludeTitle)
                     const articleContentLiat = isSplit ? splitStringByToken(articleContent, reservedTokens) : [limitToken(articleContent, reservedTokens)]
-                    this.logger.log(`正在总结文章：${article.title}`)
+                    this.logger.log(`正在总结文章(id: ${article.id})：${article.title}`)
                     const aiSummaries: string[] = []
                     for await (const content of articleContentLiat) { // 串行请求
                         const [error, chatCompletion] = await to(openai.chat.completions.create({
@@ -785,7 +787,7 @@ The content to be summarized is:`
                         }
                     }
                     const aiSummary = aiSummaries.join('')
-                    this.logger.log(`文章 ${article.title} 总结完成`)
+                    this.logger.log(`文章(id: ${article.id}) ${article.title} 总结完成`)
                     // __DEV__ && this.logger.debug(`AI 总结为：${aiSummary}`)
                     article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                     article.aiSummary = aiSummary
