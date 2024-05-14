@@ -78,8 +78,8 @@ jobs:
           # tags: ${{ env.REPO }}:${{ env.TAG }},${{ env.REPO }}:latest
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
-          cache-from: type=gha,scope=docker-release
-          cache-to: type=gha,mode=max,scope=docker-release
+          # cache-from: type=gha,scope=docker-release
+          # cache-to: type=gha,mode=max,scope=docker-release
       - name: Deploy demo
         run: curl -X GET -L --user ${{ secrets.JENKINS_DEMO_TOKEN }} "${{ secrets.JENKINS_DEMO_URL }}/buildWithParameters?token=${{ secrets.JENKINS_DEMO_JOB_TOKEN }}&DOCKER_IMAGE=${{ env.REPO }}:${{ env.TAG }}"
       - name: Deploy to Jenkins
