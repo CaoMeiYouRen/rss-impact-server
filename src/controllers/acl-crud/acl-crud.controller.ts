@@ -18,7 +18,7 @@ import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { HttpError } from '@/models/http-error'
 import { getConditions, checkAuth } from '@/utils/check'
-import { PAGE_LIMIT_MAX } from '@/app.config'
+import { __DEV__, PAGE_LIMIT_MAX } from '@/app.config'
 import { Role } from '@/constant/role'
 import { AclBase } from '@/db/models/acl-base.entity'
 import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
@@ -144,7 +144,7 @@ export class AclCrudController {
         limit = user?.roles?.includes(Role.admin) ? limit : Math.min(limit, PAGE_LIMIT_MAX)
         skip = skip || (page - 1) * limit
         const conditions = getConditions(user)
-        this.logger.debug(query)
+        __DEV__ && this.logger.debug(query)
         const [data, total] = await this.repository.findAndCount({
             where: {
                 ...transformQueryOperator(where),
@@ -191,7 +191,7 @@ export class AclCrudController {
     @ApiOperation({ summary: '创建记录' })
     @Post('')
     async create(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
-        this.logger.debug(JSON.stringify(body, null, 4))
+        __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
 
         delete body.user  // 以 userId 字段为准
         body.userId = user.id  // 以 userId 字段为准
@@ -212,7 +212,7 @@ export class AclCrudController {
     @ApiOperation({ summary: '更新记录' })
     @Put('')
     async update(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
-        this.logger.debug(JSON.stringify(body, null, 4))
+        __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const id = body.id
         delete body.user  // 以 userId 字段为准
         if (!body.userId) {

@@ -11,7 +11,7 @@ import { UseSession } from '@/decorators/use-session.decorator'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { AvueCrudConfig } from '@/interfaces/avue'
-import { PAGE_LIMIT_MAX } from '@/app.config'
+import { __DEV__, PAGE_LIMIT_MAX } from '@/app.config'
 import { AvueCrudConfigImpl, DicData } from '@/models/avue.dto'
 import { transformQueryOperator } from '@/utils/helper'
 
@@ -67,7 +67,7 @@ export class UserController {
         let { limit = 10, skip = 0 } = query
         limit = Math.min(limit, PAGE_LIMIT_MAX)
         skip = skip || (page - 1) * limit
-        this.logger.debug(query)
+        __DEV__ && this.logger.debug(query)
         const [data, total] = await this.repository.findAndCount({
             where: {
                 ...transformQueryOperator(where),

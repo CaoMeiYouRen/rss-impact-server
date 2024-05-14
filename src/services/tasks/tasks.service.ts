@@ -428,13 +428,13 @@ export class TasksService implements OnApplicationBootstrap {
             const hashname = md5(url)
             const filename = hashname + ext
             const filepath = path.resolve(path.join(dirPath, filename))
-            this.logger.debug(`正在检测文件: ${filename}`)
+            __DEV__ && this.logger.debug(`正在检测文件: ${filename}`)
             // 如果在数据库里
             let resource = await this.resourceRepository.findOne({
                 where: { url, userId },
             })
             if (resource) {
-                this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
+                __DEV__ && this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
                 return
             }
             // 查找数据库内是否有其他用户存储了相同 URL 的文件
@@ -450,12 +450,12 @@ export class TasksService implements OnApplicationBootstrap {
                 resource.userId = userId
                 resource.status = skipHashes.includes(resource.hash) ? 'skip' : resource.status
                 await this.resourceRepository.save(resource)
-                this.logger.debug(`文件 ${filename} 下载成功`)
+                __DEV__ && this.logger.debug(`文件 ${filename} 下载成功`)
                 return
             }
 
             if (await fs.pathExists(filepath)) { // 如果已经下载了，则跳过
-                this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
+                __DEV__ && this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
                 // 同步到数据库
                 const stat = await fs.stat(filepath)
                 const { mime } = await FileType.fromFile(filepath)
@@ -483,7 +483,7 @@ export class TasksService implements OnApplicationBootstrap {
 
             try {
                 // 由于 hash 只能在下载后计算得出，所以第一次下载依旧会下载整个文件
-                this.logger.debug(`正在下载文件: ${filename}`)
+                __DEV__ && this.logger.debug(`正在下载文件: ${filename}`)
                 const fileInfo = await download(url, filepath, (timeout || 60) * 1000, proxyUrl)
                 newResource.type = fileInfo.type
                 newResource.size = fileInfo.size
@@ -540,14 +540,14 @@ export class TasksService implements OnApplicationBootstrap {
                         magnet = parseTorrent(url) as Instance
                         hash = magnet.infoHash?.toLowerCase()
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
-                            this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
+                            __DEV__ && this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
                             return
                         }
                         this.logger.log(`正在下载资源：${url.slice(0, 128)}`)
                         await qBittorrent.addMagnet(url, { savepath: downloadPath })
                     } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
                         if (await this.resourceRepository.findOne({ where: { url, userId } })) {
-                            this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
+                            __DEV__ && this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
                             return
                         }
                         const resp = await ajax<ArrayBuffer>({
@@ -560,7 +560,7 @@ export class TasksService implements OnApplicationBootstrap {
                         magnet = parseTorrent(torrent) as Instance
                         hash = magnet.infoHash?.toLowerCase() // hash
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
-                            this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
+                            __DEV__ && this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
                             return
                         }
                         this.logger.log(`正在下载资源：${url.slice(0, 128)}`)
@@ -786,7 +786,7 @@ The content to be summarized is:`
                     }
                     const aiSummary = aiSummaries.join('')
                     this.logger.log(`文章 ${article.title} 总结完成`)
-                    // this.logger.debug(`AI 总结为：${aiSummary}`)
+                    // __DEV__ && this.logger.debug(`AI 总结为：${aiSummary}`)
                     article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                     article.aiSummary = aiSummary
                     await this.articleRepository.save(article)
@@ -817,7 +817,7 @@ The content to be summarized is:`
 
     async enableFeedTask(feed: Feed, throwError = false) {
         const name = `feed_${feed.id}`
-        // this.logger.debug(JSON.stringify(feed, null, 4))
+        // __DEV__ && this.logger.debug(JSON.stringify(feed, null, 4))
         try {
             if (!feed.isEnabled) {
                 this.logger.warn(`定时任务 ${name} 已关闭，请启用后重试`)
@@ -885,7 +885,7 @@ The content to be summarized is:`
     private deleteCronJob(name: string) {
         try {
             this.scheduler.deleteCronJob(name)
-            this.logger.debug(`定时任务 ${name} 已删除`)
+            __DEV__ && this.logger.debug(`定时任务 ${name} 已删除`)
             return true
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
@@ -896,7 +896,7 @@ The content to be summarized is:`
     private addCronJob(name: string, job: CronJob) {
         try {
             this.scheduler.addCronJob(name, job)
-            this.logger.debug(`定时任务 ${name} 已新增`)
+            __DEV__ && this.logger.debug(`定时任务 ${name} 已新增`)
             return true
         } catch (error) {
             this.logger.error(error?.message, error?.stack)

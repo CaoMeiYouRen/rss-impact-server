@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-unused-vars */
 import path from 'path'
 import fs from 'fs-extra'
 import moduleAlias from 'module-alias'

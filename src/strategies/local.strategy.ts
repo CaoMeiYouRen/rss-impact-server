@@ -28,7 +28,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
             })
             .addSelect('user.password')
             .getOne()
-        // this.logger.debug(JSON.stringify(user))
+        // __DEV__ && this.logger.debug(JSON.stringify(user))
         if (!user) {
             // throw new UnauthorizedException()
             throw new HttpError(401, '用户名或密码错误！')

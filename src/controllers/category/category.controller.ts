@@ -9,6 +9,7 @@ import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { HttpError } from '@/models/http-error'
 import { checkAuth } from '@/utils/check'
+import { __DEV__ } from '@/app.config'
 
 @UseSession()
 @AclCrud({
@@ -49,7 +50,7 @@ export class CategoryController {
     @ApiOperation({ summary: '创建记录' })
     @Post('')
     async create(@Body() body: CreateCategory, @CurrentUser() user: User) {
-        this.logger.debug(JSON.stringify(body, null, 4))
+        __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const userId = user.id
         const { name } = body
         if (await this.repository.count({ where: { name, userId } })) {
@@ -67,7 +68,7 @@ export class CategoryController {
     @ApiOperation({ summary: '更新记录' })
     @Put('')
     async update(@Body() body: UpdateCategory, @CurrentUser() user: User) {
-        this.logger.debug(JSON.stringify(body, null, 4))
+        __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const id = body.id
         delete body.user  // 以 userId 字段为准
         if (!body.userId) {

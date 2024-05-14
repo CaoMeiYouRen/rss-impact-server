@@ -1,7 +1,6 @@
 import path from 'path'
 import { Global, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import fs from 'fs-extra'
 import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
 import { Category } from './models/category.entity'
@@ -11,7 +10,7 @@ import { Resource } from './models/resource.entiy'
 import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
-import { __DEV__, __TEST__, DATA_PATH } from '@/app.config'
+import { __TEST__, DATA_PATH } from '@/app.config'
 
 export const DATABASE_DIR = DATA_PATH
 
@@ -21,20 +20,6 @@ export const DATABASE_PATH = __TEST__ ?
 const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig, CustomQuery]
 
 const repositories = TypeOrmModule.forFeature(entities)
-
-// 判断是否同步了
-async function isSynchronized() {
-    const dir = DATABASE_DIR
-    if (!await fs.pathExists(dir)) {
-        await fs.mkdir(dir)
-    }
-    const lockfile = path.join(dir, '.database-lockfile')
-    if (await fs.pathExists(lockfile)) {
-        return true
-    }
-    await fs.writeJSON(lockfile, { isSynchronized: true })
-    return false
-}
 
 @Global()
 @Module({
@@ -49,7 +34,7 @@ async function isSynchronized() {
                     database: DATABASE_PATH,
                     entities,
                     // eslint-disable-next-line no-sync
-                    synchronize: true, // __DEV__ || !await isSynchronized(), // 开发环境固定同步；如果数据库文件不存在，则同步
+                    synchronize: true, // 开发环境固定同步；如果数据库文件不存在，则同步
                     autoLoadEntities: true,
                 }
             },

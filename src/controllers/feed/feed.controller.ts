@@ -20,6 +20,7 @@ import { AvueFormOption } from '@/interfaces/avue'
 import { FileUploadDto } from '@/models/file-upload.dto'
 import { Category } from '@/db/models/category.entity'
 import { to } from '@/utils/helper'
+import { __DEV__ } from '@/app.config'
 
 @UseSession()
 @AclCrud({
@@ -76,7 +77,7 @@ export class FeedController {
     @ApiOperation({ summary: '快速添加订阅' })
     @Post('quickCreate')
     async quickCreate(@Body() body: QuickCreateFeed, @CurrentUser() user: User) {
-        this.logger.debug(JSON.stringify(body, null, 4))
+        __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const userId = user.id
         const { url } = body
         if (await this.repository.count({ where: { url, userId } })) {
@@ -251,7 +252,7 @@ export class FeedController {
     @ApiOperation({ summary: '创建记录' })
     @Post('')
     async create(@Body() body: CreateFeed, @CurrentUser() user: User) {
-        this.logger.debug(JSON.stringify(body, null, 4))
+        __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const userId = user.id
         const { url } = body
         if (await this.repository.count({ where: { url, userId } })) {
@@ -271,7 +272,7 @@ export class FeedController {
     @ApiOperation({ summary: '更新记录' })
     @Put('')
     async update(@Body() body: UpdateFeed, @CurrentUser() user: User) {
-        this.logger.debug(JSON.stringify(body, null, 4))
+        __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const id = body.id
         delete body.user  // 以 userId 字段为准
         if (!body.userId) {
