@@ -42,7 +42,7 @@ import { __DEV__ } from '@/app.config'
             dto: UpdateFeed,
         },
     },
-    relations: ['hooks', 'proxyConfig'],
+    relations: ['hooks'],
     props: {
         label: 'title',
         value: 'id',
@@ -211,6 +211,15 @@ export class FeedController {
         }))
     }
 
+    /**
+     * 获取 feed 的关系
+     * @param feed
+     * @returns
+     */
+    private async getFeedRelations(feed: Feed) {
+        return this.repository.findOne({ where: { id: feed.id }, relations: ['proxyConfig', 'hooks', 'hooks.proxyConfig'] })
+    }
+
     @ApiResponse({ status: 200, type: String })
     @ApiOperation({ summary: '导出订阅为 OPML 文件' })
     @Header('Content-Type', 'application/xml; charset=UTF-8')
@@ -263,7 +272,7 @@ export class FeedController {
 
         const feed = await this.repository.save(this.repository.create(body))
         if (feed.isEnabled) {
-            await this.tasksService.enableFeedTask(feed, true)
+            await this.tasksService.enableFeedTask(await this.getFeedRelations(feed), true)
         }
         return feed
     }
@@ -277,6 +286,9 @@ export class FeedController {
         delete body.user  // 以 userId 字段为准
         if (!body.userId) {
             body.userId = user.id
+        }
+        if (!body.proxyConfigId) {
+            delete body.proxyConfig
         }
         const document = await this.repository.findOne({
             where: {
@@ -301,14 +313,14 @@ export class FeedController {
         if (oldFeed && oldFeed.id !== id) {
             throw new HttpError(400, '已存在相同 URL 的订阅！')
         }
-        const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
-        if (updatedDocument.isEnabled) {
-            await this.tasksService.disableFeedTask(updatedDocument, true) // 先禁用再启用
-            await this.tasksService.enableFeedTask(await this.repository.findOne({ where: { id: updatedDocument.id }, relations: ['proxyConfig', 'hooks', 'hooks.proxyConfig'] }), true)
+        const updatedFeed = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
+        if (updatedFeed.isEnabled) {
+            await this.tasksService.disableFeedTask(updatedFeed, true) // 先禁用再启用
+            await this.tasksService.enableFeedTask(await this.getFeedRelations(updatedFeed), true)
         } else {
-            await this.tasksService.disableFeedTask(updatedDocument, true)
+            await this.tasksService.disableFeedTask(updatedFeed, true)
         }
-        return updatedDocument
+        return updatedFeed
     }
 
     @ApiResponse({ status: 200, type: Feed })
@@ -318,20 +330,20 @@ export class FeedController {
         if (!isId(id)) {
             throw new HttpError(400, '无效的 Id！')
         }
-        const document = await this.repository.findOne({
+        const feed = await this.repository.findOne({
             where: {
                 id,
             },
             relations: ['user'],
         })
-        if (!checkAuth(document, user)) {
+        if (!checkAuth(feed, user)) {
             throw new HttpError(403, '该用户没有权限访问')
         }
-        if (!document) {
+        if (!feed) {
             throw new HttpError(404, '该 Id 对应的资源不存在！')
         }
         await this.repository.delete(id)
-        await this.tasksService.disableFeedTask(document, true)
-        return document
+        await this.tasksService.disableFeedTask(feed, true)
+        return feed
     }
 }
