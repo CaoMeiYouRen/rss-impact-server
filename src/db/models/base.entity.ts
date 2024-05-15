@@ -2,6 +2,7 @@ import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Index, Befo
 import { ApiProperty } from '@nestjs/swagger'
 import dayjs from 'dayjs'
 import { IsOptional, validate } from 'class-validator'
+import { plainToInstance } from 'class-transformer'
 import { IsId } from '@/decorators/is-id.decorator'
 import { flattenValidationErrors } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
@@ -27,7 +28,8 @@ export abstract class Base {
 
     @BeforeInsert()
     protected async insertValidate() { // 插入前校验
-        const validationErrors = await validate(this, {
+        const obj = plainToInstance(this.constructor as any, this) as any // 解决 部分情况下子字段无法校验的问题
+        const validationErrors = await validate(obj, {
             whitelist: true,
         })
 
@@ -40,7 +42,8 @@ export abstract class Base {
 
     @BeforeUpdate()
     protected async updateValidate() { // 更新前校验
-        const validationErrors = await validate(this, {
+        const obj = plainToInstance(this.constructor as any, this) as any // 解决 部分情况下子字段无法校验的问题
+        const validationErrors = await validate(obj, {
             whitelist: true,
             skipMissingProperties: true, // 忽略 null 和 undefined
             // skipUndefinedProperties: true, // 只忽略 undefined ，如果是 null 的话就会将字段设置为空
