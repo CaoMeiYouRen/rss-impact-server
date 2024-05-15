@@ -66,10 +66,15 @@ export const LOG_SAVE_DAYS = Number(env.LOG_SAVE_DAYS || 30)
 
 export const REVERSE_TRIGGER_LIMIT = Number(env.REVERSE_TRIGGER_LIMIT || 10)
 
+export const HOOK_LIMIT_MAX = Number(env.HOOK_LIMIT_MAX || 10)
+
 export const AI_LIMIT_MAX = Number(env.AI_LIMIT_MAX || 3)
 
 export const BIT_TORRENT_LIMIT_MAX = Number(env.AI_LIMIT_MAX || 5)
 
 export const RSS_LIMIT_MAX = Number(env.RSS_LIMIT_MAX || 5)
+
+export const NOTIFICATION_LIMIT_MAX = Number(env.NOTIFICATION_LIMIT_MAX || 5)
+
 // 路由缓存时间，单位：秒
 export const CACHE_EXPIRE = Number(env.CACHE_EXPIRE || 300)

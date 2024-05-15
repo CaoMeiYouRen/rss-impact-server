@@ -20,7 +20,7 @@ import OpenAI from 'openai'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, LOG_SAVE_DAYS, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
+import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
@@ -40,14 +40,17 @@ import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 
-// TODO 优化 limit 相关逻辑，增加全局 hook limit 限制，优化具体类型的 hook limit 限制
-const rssLimit = pLimit(RSS_LIMIT_MAX)
-// os.cpus().length
+const rssLimit = pLimit(RSS_LIMIT_MAX) // RSS 请求并发数
+
+const hookLimit = pLimit(HOOK_LIMIT_MAX) // Hook 并发数
+
 const downloadLimit = pLimit(DOWNLOAD_LIMIT_MAX) // 下载并发数限制
 
 const aiLimit = pLimit(AI_LIMIT_MAX) // AI 总结并发数
 
 const bitTorrentLimit = pLimit(BIT_TORRENT_LIMIT_MAX) // BitTorrent 并发数
+
+const notificationLimit = pLimit(NOTIFICATION_LIMIT_MAX) // 推送 并发数
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -164,12 +167,12 @@ export class TasksService implements OnApplicationBootstrap {
                 })
                 if (diffArticles?.length) {
                     const newArticles = await this.articleRepository.save(diffArticles)
-                    await this.triggerHooks(feed, newArticles)
+                    this.triggerHooks(feed, newArticles)
                 }
             }
         } catch (error) {
             this.logger.error(`url: ${url}\nproxyUrl: ${proxyUrl}\nmessage: ${error?.message}`, error?.stack)
-            await this.reverseTriggerHooks(feed, error)
+            this.reverseTriggerHooks(feed, error)
         }
     }
 
@@ -205,27 +208,28 @@ export class TasksService implements OnApplicationBootstrap {
         const userId = feed.userId
         const user = await this.userRepository.findOne({ where: { id: userId } })
         const isAdmin = user?.roles?.includes(Role.admin) // 只有 admin 用户可以看到 堆栈
-        await Promise.allSettled(hooks.map(async (hook) => {
-            switch (hook.type) {
-                case 'notification':
-                    await this.reverseNotificationHook(hook, feed, error, isAdmin)
-                    return
-                case 'webhook': {
-                    const data = {
-                        feed,
-                        message: error?.message,
-                        stack: __DEV__ || isAdmin ? error?.stack : undefined,
-                        cause: __DEV__ || isAdmin ? error?.cause : undefined,
-                        date: new Date(),
+        await Promise.allSettled(hooks
+            .map((hook) => hookLimit(async () => {
+                switch (hook.type) {
+                    case 'notification':
+                        await this.reverseNotificationHook(hook, feed, error, isAdmin)
+                        return
+                    case 'webhook': {
+                        const data = {
+                            feed,
+                            message: error?.message,
+                            stack: __DEV__ || isAdmin ? error?.stack : undefined,
+                            cause: __DEV__ || isAdmin ? error?.cause : undefined,
+                            date: new Date(),
+                        }
+                        await this.webhook(hook, feed, data)
+                        return
                     }
-                    await this.webhook(hook, feed, data)
-                    return
+                    default:
+                        this.logger.warn(`${hook.type} 类型的 Hook 无法反转触发！`)
                 }
-                default:
-                    this.logger.warn(`${hook.type} 类型的 Hook 无法反转触发！`)
-
-            }
-        }))
+            }).catch((error2) => this.logger.error(error2?.message, error2?.stack))),
+        )
     }
 
     // 反转触发通知
@@ -250,7 +254,7 @@ export class TasksService implements OnApplicationBootstrap {
                 desp = desp.replace(link, link.replaceAll('.', '\u200d.\u200d')) // 在点号上添加零宽字符
             })
         }
-        await this.notification(hook, feed, title, desp)
+        await notificationLimit(() => this.notification(hook, feed, title, desp))
     }
 
     private async notification(hook: Hook, feed: Feed, title: string, desp: string) {
@@ -304,9 +308,8 @@ export class TasksService implements OnApplicationBootstrap {
         if (!hooks?.length || !articles?.length) {
             return
         }
-        // try {
         await Promise.allSettled(hooks
-            .map(async (hook) => {
+            .map((hook) => hookLimit(async () => {
                 const filteredArticles = filterArticles(articles, hook)
                 if (!filteredArticles?.length) {
                     return
@@ -338,13 +341,10 @@ export class TasksService implements OnApplicationBootstrap {
                     }
                     default:
                         this.logger.warn('未匹配到任何类型的Hook！')
-
                 }
-            }),
+            }).catch((error) => this.logger.error(error?.message, error?.stack)),
+            ),
         )
-        // } catch (error) {
-        //     this.logger.error(error?.message, error?.stack)
-        // }
     }
     // TODO 考虑支持 推送 AI 总结
     private async notificationHook(hook: Hook, feed: Feed, articles: Article[]) {
@@ -379,9 +379,9 @@ export class TasksService implements OnApplicationBootstrap {
             })
         }
 
-        await Promise.allSettled(notifications.map(async (notification) => {
-            await this.notification(hook, feed, notification.title, notification.desp)
-        }))
+        await Promise.allSettled(notifications
+            .map((notification) => notificationLimit(async () => this.notification(hook, feed, notification.title, notification.desp),
+            )))
     }
 
     private async webhook(hook: Hook, feed: Feed, data: Article[] | any) {
