@@ -39,4 +39,9 @@ export class CacheService {
         return this.cacheManager.set(cacheKey, value, ttl)
     }
 
+    async del(key: string) {
+        const cacheKey = `cmyr-llm-server:${key}`
+        return this.cacheManager.del(cacheKey)
+    }
+
 }

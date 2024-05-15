@@ -1,5 +1,5 @@
-import { Controller, Get, Param, Query, Res } from '@nestjs/common'
-import { ApiResponse, ApiTags } from '@nestjs/swagger'
+import { Body, Controller, Get, Param, Put, Query, Res } from '@nestjs/common'
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { FindOperator, In, MoreThanOrEqual, Repository } from 'typeorm'
 import dayjs from 'dayjs'
@@ -16,6 +16,10 @@ import atom from '@/views/atom'
 import rss from '@/views/rss'
 import json from '@/views/json'
 import { CacheService } from '@/services/cache/cache.service'
+import { User } from '@/db/models/user.entity'
+import { CurrentUser } from '@/decorators/current-user.decorator'
+import { checkAuth } from '@/utils/check'
+import { to } from '@/utils/helper'
 
 @AclCrud({
     model: CustomQuery,
@@ -62,7 +66,7 @@ export class CustomQueryController {
         private readonly cacheService: CacheService,
     ) {
     }
-    // TODO 优化自定义查询在更新后的缓存逻辑
+
     @ApiResponse({ status: 200, type: Object })
     // @UseAccessToken() , @CurrentUser() user: User
     @Get('rss/:id')
@@ -131,7 +135,6 @@ export class CustomQueryController {
                 case 'json':
                     headers['Content-Type'] = 'application/feed+json; charset=UTF-8'
                     body = json(data)
-
                     break
                 case 'rss2.0':
                     headers['Content-Type'] = 'application/xml; charset=UTF-8'  // application/rss+xml
@@ -155,6 +158,37 @@ export class CustomQueryController {
             res.header('Content-Type', headers['Content-Type']).status(200).send(body)
         }
 
+    }
+
+    @ApiResponse({ status: 200, type: CustomQuery })
+    @ApiOperation({ summary: '更新 CustomQuery' })
+    @Put('')
+    async update(@Body() body: UpdateCustomQuery, @CurrentUser() user: User) {
+        const id = body.id
+        delete body.user  // 以 userId 字段为准
+        if (!body.userId) {
+            body.userId = user.id
+        }
+        if (!id) {
+            throw new HttpError(400, 'update 必须要有 id')
+        }
+        const document = await this.repository.findOne({
+            where: {
+                id,
+            },
+            relations: ['user'],
+        })
+        if (!checkAuth(document, user)) {
+            throw new HttpError(403, '该用户没有权限访问')
+        }
+        if (!document) {
+            throw new HttpError(404, '该 Id 对应的资源不存在！')
+        }
+        const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
+        // 删除原有缓存
+        const cacheKey = `custom-query-rss:${id}`
+        await to(this.cacheService.del(cacheKey)) // 忽略错误
+        return updatedDocument
     }
 
 }
