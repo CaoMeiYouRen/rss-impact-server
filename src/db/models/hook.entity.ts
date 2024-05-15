@@ -240,6 +240,30 @@ export class Hook extends AclBase {
     isReversed: boolean
 
     // @SetAclCrudField({
+    //     labelWidth: 105,
+    // })
+    // @ApiProperty({ title: '触发次数上限', description: '当一小时内触发次数超过该数字，则停止触发该 Hook。推荐在推送Hook中设置。默认为 0(无限制)，即每次都触发', example: 20 })
+    // @IsSafeNaturalNumber()
+    // @IsOptional()
+    // @Column({
+    //     nullable: true,
+    //     default: 0,
+    // })
+    // triggerLimit?: number
+
+    // @SetAclCrudField({
+    //     labelWidth: 116,
+    // })
+    // @ApiProperty({ title: '反转触发下限', description: '当一小时内该路由报错次数大于该数字，才反转触发 Hook。默认为 0(无限制)，即每次都触发', example: 3 })
+    // @IsSafeNaturalNumber()
+    // @IsOptional()
+    // @Column({
+    //     nullable: true,
+    //     default: 0,
+    // })
+    // reverseLimit?: number
+
+    // @SetAclCrudField({
     //     labelWidth: 120,
     // })
     // @ApiProperty({ title: '是否启用代理', example: false })

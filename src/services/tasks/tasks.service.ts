@@ -113,13 +113,29 @@ export class TasksService implements OnApplicationBootstrap {
                     }
                     proxyUrl = newFeed.proxyConfig?.url
                 }
-                const resp = (await ajax({
-                    url,
-                    proxyUrl,
-                    timeout: 60 * 1000,
-                })).data
+                const maxRetries = feed.maxRetries || 0
+                let count = 0
+                let resp = ''
+                do {
+                    const [error, response] = await to(ajax({
+                        url,
+                        proxyUrl,
+                        timeout: 60 * 1000,
+                    }))
+                    if (error) {
+                        this.logger.error(error?.message, error?.stack)
+                        await sleep(60 * 1000)
+                    } else if (response?.data) {
+                        resp = response.data
+                        break
+                    }
+                    count++
+                } while (maxRetries > count)
+
                 // TODO 增加抓取全文功能，例如 少数派
-                rss = await rssParserString(resp)
+                if (resp) {
+                    rss = await rssParserString(resp)
+                }
             }
             if (Array.isArray(rss?.items)) {
                 if (!feed.description && rss.description) { // 解决部分情况下未设置 description 的问题
@@ -173,17 +189,15 @@ export class TasksService implements OnApplicationBootstrap {
                 createdAt: MoreThanOrEqual(dayjs().add(-1, 'hour').toDate()), // 最近 1 小时
             },
         })
-        // TODO 反向触发增加重试次数
-        // 当错误若干次后才真正触发 Hook
         if (count >= REVERSE_TRIGGER_LIMIT) {
             this.logger.warn(`订阅 id: ${feed.id} 在一小时内触发超过 ${REVERSE_TRIGGER_LIMIT} 次！跳过触发。`)
             return
         }
         // 拉取最新的 hook 配置
+        // ；如果有 反转触发下限，则大于 反转触发下限 才触发 && (hook.reverseLimit ? hook.reverseLimit > count : true)
         const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['proxyConfig', 'hooks', 'hooks.proxyConfig'], select: ['hooks'] }))
-            ?.hooks
-            ?.filter((hook) => hook.isReversed && ['notification', 'webhook'].includes(hook.type), // 处理反转触发的 Hook；只触发 notification/webhook 类型的
-            )
+            ?.hooks   // 处理反转触发的 Hook；只触发 notification/webhook 类型的
+            ?.filter((hook) => hook.isReversed && ['notification', 'webhook'].includes(hook.type))
 
         if (!hooks?.length) {
             return

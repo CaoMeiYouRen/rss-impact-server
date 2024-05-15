@@ -12,6 +12,7 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { __PROD__ } from '@/app.config'
+import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 
 /**
  * RSS 订阅表
@@ -165,6 +166,18 @@ export class Feed extends AclBase {
     @ApiProperty({ title: '代理配置', type: () => ProxyConfig })
     @ManyToOne(() => ProxyConfig)
     proxyConfig?: ProxyConfig
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '重试次数', description: '至多重试几次。默认为 0，即不重试。', example: 3 })
+    @IsSafeNaturalNumber()
+    @IsOptional()
+    @Column({
+        nullable: true,
+        default: 0,
+    })
+    maxRetries?: number
 
     @SetAclCrudField({
         hide: true,

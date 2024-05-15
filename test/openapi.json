@@ -3271,18 +3271,28 @@
                 ]
             }
         },
-        "/api/custom-query/config": {
-            "get": {
-                "operationId": "CustomQuery_config",
-                "summary": "获取 config",
+        "/api/custom-query": {
+            "put": {
+                "operationId": "CustomQuery_update",
+                "summary": "更新 CustomQuery",
                 "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCustomQuery"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/CustomQuery"
                                 }
                             }
                         }
@@ -3291,9 +3301,7 @@
                 "tags": [
                     "custom-query"
                 ]
-            }
-        },
-        "/api/custom-query": {
+            },
             "get": {
                 "operationId": "CustomQuery_find",
                 "summary": "查找所有记录",
@@ -3353,28 +3361,20 @@
                 "tags": [
                     "custom-query"
                 ]
-            },
-            "put": {
-                "operationId": "CustomQuery_update",
-                "summary": "更新记录",
+            }
+        },
+        "/api/custom-query/config": {
+            "get": {
+                "operationId": "CustomQuery_config",
+                "summary": "获取 config",
                 "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/UpdateCustomQuery"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CustomQuery"
+                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
                                 }
                             }
                         }
@@ -4948,6 +4948,12 @@
                             }
                         ]
                     },
+                    "maxRetries": {
+                        "type": "number",
+                        "title": "重试次数",
+                        "description": "至多重试几次。默认为 0，即不重试。",
+                        "example": 3
+                    },
                     "articles": {
                         "title": "文章列表",
                         "example": [],
@@ -5282,6 +5288,12 @@
                             }
                         ]
                     },
+                    "maxRetries": {
+                        "type": "number",
+                        "title": "重试次数",
+                        "description": "至多重试几次。默认为 0，即不重试。",
+                        "example": 3
+                    },
                     "articles": {
                         "title": "文章列表",
                         "example": [],
@@ -5410,6 +5422,12 @@
                                 "$ref": "#/components/schemas/ProxyConfig"
                             }
                         ]
+                    },
+                    "maxRetries": {
+                        "type": "number",
+                        "title": "重试次数",
+                        "description": "至多重试几次。默认为 0，即不重试。",
+                        "example": 3
                     },
                     "articles": {
                         "title": "文章列表",
@@ -6229,6 +6247,112 @@
                     }
                 }
             },
+            "UpdateCustomQuery": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 256,
+                        "title": "名称",
+                        "example": "查询A"
+                    },
+                    "scope": {
+                        "type": "object",
+                        "enum": [
+                            "all",
+                            "category",
+                            "feed"
+                        ],
+                        "title": "查询范围",
+                        "description": "指定分组和指定订阅的配置互斥，只按照本项指定的范围查询",
+                        "example": "all"
+                    },
+                    "categories": {
+                        "title": "指定分组",
+                        "description": "支持选择多个分类",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        }
+                    },
+                    "feedId": {
+                        "type": "number",
+                        "title": "指定订阅",
+                        "description": "注意：订阅的查询是单选的",
+                        "example": 1
+                    },
+                    "feed": {
+                        "title": "订阅源",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Feed"
+                            }
+                        ]
+                    },
+                    "format": {
+                        "type": "object",
+                        "enum": [
+                            "rss2.0",
+                            "atom",
+                            "json"
+                        ],
+                        "title": "输出格式",
+                        "example": "rss2.0"
+                    },
+                    "useAiSummary": {
+                        "type": "boolean",
+                        "title": "使用 AI 总结",
+                        "description": "如果是，则用 AI 总结替换原本的总结"
+                    },
+                    "appendAiSummary": {
+                        "type": "boolean",
+                        "title": "增加 AI 总结",
+                        "description": "如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读"
+                    },
+                    "url": {
+                        "type": "string",
+                        "title": "输出路径"
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
+                    }
+                }
+            },
             "CustomQuery": {
                 "type": "object",
                 "properties": {
@@ -6507,112 +6631,6 @@
                     "filter",
                     "filterout"
                 ]
-            },
-            "UpdateCustomQuery": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "number",
-                        "title": "ID",
-                        "example": 1
-                    },
-                    "userId": {
-                        "type": "number",
-                        "title": "所属用户",
-                        "example": 1
-                    },
-                    "user": {
-                        "title": "所属用户",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/User"
-                            }
-                        ]
-                    },
-                    "name": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 256,
-                        "title": "名称",
-                        "example": "查询A"
-                    },
-                    "scope": {
-                        "type": "object",
-                        "enum": [
-                            "all",
-                            "category",
-                            "feed"
-                        ],
-                        "title": "查询范围",
-                        "description": "指定分组和指定订阅的配置互斥，只按照本项指定的范围查询",
-                        "example": "all"
-                    },
-                    "categories": {
-                        "title": "指定分组",
-                        "description": "支持选择多个分类",
-                        "example": [],
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Category"
-                        }
-                    },
-                    "feedId": {
-                        "type": "number",
-                        "title": "指定订阅",
-                        "description": "注意：订阅的查询是单选的",
-                        "example": 1
-                    },
-                    "feed": {
-                        "title": "订阅源",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Feed"
-                            }
-                        ]
-                    },
-                    "format": {
-                        "type": "object",
-                        "enum": [
-                            "rss2.0",
-                            "atom",
-                            "json"
-                        ],
-                        "title": "输出格式",
-                        "example": "rss2.0"
-                    },
-                    "useAiSummary": {
-                        "type": "boolean",
-                        "title": "使用 AI 总结",
-                        "description": "如果是，则用 AI 总结替换原本的总结"
-                    },
-                    "appendAiSummary": {
-                        "type": "boolean",
-                        "title": "增加 AI 总结",
-                        "description": "如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读"
-                    },
-                    "url": {
-                        "type": "string",
-                        "title": "输出路径"
-                    },
-                    "filter": {
-                        "title": "过滤条件",
-                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Filter"
-                            }
-                        ]
-                    },
-                    "filterout": {
-                        "title": "排除条件",
-                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/FilterOut"
-                            }
-                        ]
-                    }
-                }
             }
         }
     }
