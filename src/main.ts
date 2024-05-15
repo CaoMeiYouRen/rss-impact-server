@@ -13,7 +13,7 @@ import fs from 'fs-extra'
 import artTemplate from 'art-template'
 import { setRequestId } from './middlewares/request.middleware'
 import { sessionMiddleware } from './middlewares/session.middleware'
-import { fileLogger, logger } from './middlewares/logger.middleware'
+import { jsonLogger, logger } from './middlewares/logger.middleware'
 import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
 import { limiter } from './middlewares/limit.middleware'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
@@ -60,7 +60,7 @@ async function bootstrap() {
     app.use(limiter)
     app.use(helmet({}))
     app.use(setRequestId)
-    app.use(fileLogger)
+    app.use(jsonLogger)
     // app.use(consoleLogger)
     app.useGlobalFilters(new AllExceptionsFilter())
     app.useGlobalInterceptors(new TimeoutInterceptor())

@@ -62,7 +62,7 @@ const stream: StreamOptions = {
     },
 }
 
-export const fileLogger = morgan('json', { stream })
+export const jsonLogger = morgan('json', { stream })
 
 const format = winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss.SSSZ' }),
