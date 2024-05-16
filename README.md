@@ -18,7 +18,7 @@
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" />
   </a>
   <a href="https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/LICENSE" target="_blank">
-    <img alt="License: AGPL--3.0" src="https://img.shields.io/github/license/CaoMeiYouRen/rss-impact-server?color=yellow" />
+    <img alt="License: AGPL-3.0" src="https://img.shields.io/github/license/CaoMeiYouRen/rss-impact-server?color=yellow" />
   </a>
 </p>
 

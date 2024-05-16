@@ -523,9 +523,7 @@ export class TasksService implements OnApplicationBootstrap {
 
         })))
     }
-    // TODO 增加对未知和跳过状态的资源二次确认
-    // 增加一个定时任务，对处于 未知状态的继续尝试检测 若干次（10分钟）
-    // 对处于跳过状态的，检测是否真的删除了
+
     private async bitTorrentHook(hook: Hook, feed: Feed, articles: Article[]) {
         const userId = hook.userId
         const config = hook.config as BitTorrentConfig
@@ -622,9 +620,11 @@ export class TasksService implements OnApplicationBootstrap {
                         }
                         if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
                             this.logger.warn(`资源 ${url.slice(0, 128)} 的大小超过限制，跳过该资源下载`)
-                            await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
                             newResource.status = 'skip'
                             await this.resourceRepository.save(newResource)
+                            // 移除超过限制的资源
+                            // 校验是否真的删除了
+                            this.tryRemoveTorrent(qBittorrent, hash)
                             return
                         }
                         // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
@@ -653,6 +653,28 @@ export class TasksService implements OnApplicationBootstrap {
                 throw new Error(`不支持的BT下载器类型: ${type}`)
         }
     }
+
+    private async tryRemoveTorrent(qBittorrent: QBittorrent, hash: string) {
+        const n = 10
+        let i = 0
+        do {
+            const [error, flag] = await to(qBittorrent.removeTorrent(hash))
+            if (error || !flag) { // 删除失败
+                this.logger.error(error?.message, error?.stack)
+            }
+            const [error2, torrentInfo] = await to(qBittorrent.getTorrent(hash))
+            if (error2) { // 如果报错，则说明删了
+                __DEV__ && this.logger.debug(error?.stack)
+                return
+            }
+            if (!torrentInfo) { // 如果没有数据，说明删了
+                return
+            }
+            i++
+            await sleep(10 * 1000) // 等待 10 秒后再次查询
+        } while (n > i)
+    }
+
     /**
      * 更新 BT 资源信息
      *
@@ -691,6 +713,9 @@ export class TasksService implements OnApplicationBootstrap {
             await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
             resource.status = 'skip'
             await this.resourceRepository.save(resource)
+            // 移除超过限制的资源
+            // 校验是否真的删除了
+            this.tryRemoveTorrent(qBittorrent, hash)
             return -1
         }
         switch (torrentInfo.state) {
