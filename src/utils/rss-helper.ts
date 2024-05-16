@@ -7,7 +7,7 @@ import { isURL } from 'class-validator'
 import XRegExp from 'xregexp'
 import { get, camelCase } from 'lodash'
 import opml, { Opml } from 'opml'
-import { deepTrim, htmlToMarkdown, isHttpURL, timeFormat, uuid } from './helper'
+import { collapseWhitespace, deepTrim, htmlToMarkdown, isHttpURL, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Filter, FilterOut } from '@/db/models/hook.entity'
 import { DataItem } from '@/interfaces/data'
@@ -146,13 +146,13 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
         content += item.contentSnippet
     } else {
         if (appendAiSummary && item.aiSummary) {
-            content += `<p><b>AI 输出：\n${item.aiSummary}</b></p>\n<hr/>`
+            content += `<p><b>AI 输出：\n${item.aiSummary}</b></p>\n`
         }
         content += item.content
     }
 
     // 排除内容和标题重复
-    if (title && !content?.startsWith(title)) {
+    if (title && !collapseWhitespace(content)?.includes(collapseWhitespace(title))) {
         text += `${title}\n`
     }
 
@@ -232,7 +232,7 @@ export function articlesFormat(articles: Article[], option: ArticleFormatoption 
     const text = articles
         .map((item) => articleItemFormat(item, option))
         .map((e) => e.text)
-        .join(option?.isMarkdown ? '\n\n' : '\n')
+        .join(option?.isMarkdown ? `\n\n${htmlToMarkdown('<hr/>')}\n\n` : '\n')
     return text
 }
 

@@ -119,6 +119,8 @@ export class TasksService implements OnApplicationBootstrap {
                 const maxRetries = feed.maxRetries || 0
                 let count = 0
                 let resp = ''
+                // TODO 优化 retry 逻辑
+                // 用 retryBackoff 优化
                 do {
                     const [error, response] = await to(ajax({
                         url,
@@ -310,6 +312,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
         await Promise.allSettled(hooks
             .map((hook) => hookLimit(async () => {
+                __DEV__ && this.logger.debug(`正在触发 Hook ${hook.name}`)
                 const filteredArticles = filterArticles(articles, hook)
                 if (!filteredArticles?.length) {
                     return

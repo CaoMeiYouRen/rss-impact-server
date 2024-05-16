@@ -384,7 +384,7 @@ export async function retryBackoff<T = void>(cb: () => T | Promise<T>, config: R
             if (currentRetries >= maxRetries) {
                 throw new Error(`函数 ${cb.name} 重试次数已达到最大重试次数 ${maxRetries} 次！`, { cause: err })
             }
-            const interval = Math.max(100, initialInterval) // 不小于 100 毫秒
+            const interval = Math.max(10, initialInterval) // 不小于 10 毫秒
             const delayed = interval * 2 ** currentRetries // 2 的 currentRetries 次方
             if (delayed >= maxInterval) {
                 throw new Error(`函数 ${cb.name} 重试次数已达到重试间隔 ${maxInterval} 次！`, { cause: err })
@@ -495,4 +495,15 @@ export function splitStringByToken(str: string, maxLength: number): string[] {
         start += maxLength
     }
     return chunks
+}
+
+const rWhiteSpace = /\s+/
+const rAllWhiteSpace = /\s+/g
+
+// collapse all whitespaces into a single space (like "white-space: normal;" would do), and trim
+export const collapseWhitespace = (str?: string | null) => {
+    if (str && rWhiteSpace.test(str)) {
+        return str.replaceAll(rAllWhiteSpace, ' ').trim()
+    }
+    return str
 }
