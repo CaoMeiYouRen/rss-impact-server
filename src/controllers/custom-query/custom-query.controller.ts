@@ -160,6 +160,7 @@ export class CustomQueryController {
 
     }
 
+    @UseSession()
     @ApiResponse({ status: 200, type: CustomQuery })
     @ApiOperation({ summary: '更新 CustomQuery' })
     @Put('')
