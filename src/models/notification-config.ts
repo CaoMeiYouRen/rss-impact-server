@@ -36,6 +36,20 @@ export class NotificationConfig<T extends PushType = PushType> implements MetaPu
     @IsBoolean({})
     onlySummary: boolean
 
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '使用 AI 总结', description: '如果是，则用 AI 总结替换原本的总结' })
+    @IsBoolean()
+    useAiSummary: boolean
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '增加 AI 总结', description: '如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读' })
+    @IsBoolean()
+    appendAiSummary: boolean
+
     @ApiProperty({ title: '最大长度', description: '一次推送文本的最大长度。默认值为 4096', example: 4096 })
     @IsSafeNaturalNumber(65535)
     maxLength: number

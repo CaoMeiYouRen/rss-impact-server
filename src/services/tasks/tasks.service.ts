@@ -346,13 +346,28 @@ export class TasksService implements OnApplicationBootstrap {
             ),
         )
     }
-    // TODO 考虑支持 推送 AI 总结
+
     private async notificationHook(hook: Hook, feed: Feed, articles: Article[]) {
         const config = hook.config as NotificationConfig
-        const { isMergePush = false, isMarkdown = false, isSnippet = false, onlySummary = false, maxLength = 4096 } = config
+        const { isMergePush = false, isMarkdown = false, isSnippet = false, onlySummary = false, maxLength = 4096, useAiSummary = false, appendAiSummary = false } = config
         const title = `检测到【 ${feed.title} 】有更新`
         const notifications: { title: string, desp: string }[] = []
-        const articleFormatoption: ArticleFormatoption = { isMarkdown, isSnippet, onlySummary }
+        const articleFormatoption: ArticleFormatoption = { isMarkdown, isSnippet, onlySummary, useAiSummary, appendAiSummary }
+        // 如果要使用 AI 总结，则延后
+        if (appendAiSummary || useAiSummary) {
+            const n = 30
+            for (let i = 0; i < n; i++) {
+                articles = await this.articleRepository.find({
+                    where: {
+                        id: In(articles.map((e) => e.id)),
+                    },
+                })
+                if (articles.every((article) => article.aiSummary)) {
+                    break
+                }
+                await sleep(10 * 1000) // 延后 10 秒
+            }
+        }
         if (isMergePush) {
             // 合并推送
             const desp = articlesFormat(articles, articleFormatoption)
@@ -380,8 +395,8 @@ export class TasksService implements OnApplicationBootstrap {
         }
 
         await Promise.allSettled(notifications
-            .map((notification) => notificationLimit(async () => this.notification(hook, feed, notification.title, notification.desp),
-            )))
+            .map((notification) => notificationLimit(async () => this.notification(hook, feed, notification.title, notification.desp))),
+        )
     }
 
     private async webhook(hook: Hook, feed: Feed, data: Article[] | any) {

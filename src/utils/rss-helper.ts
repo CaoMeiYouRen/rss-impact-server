@@ -122,19 +122,33 @@ export type ArticleFormatoption = {
     isSnippet?: boolean
     // 只推送总结部分
     onlySummary?: boolean
+    // 使用 AI 总结
+    useAiSummary?: boolean
+    // 增加 AI 总结
+    appendAiSummary?: boolean
 }
 
 export function articleItemFormat(item: Article, option: ArticleFormatoption = {}) {
-    const { isMarkdown = false, isSnippet = false, onlySummary = false } = option
+    const { isMarkdown = false, isSnippet = false, onlySummary = false, useAiSummary = false, appendAiSummary = false } = option
     const title: string = item.title?.replace(/\.\.\.$/, '') // 移除句末省略号
     let text = ''
     let content = ''
     if (onlySummary) {
-        content = item.summary || item.contentSnippet?.slice(0, 512)
+        if (useAiSummary && item.aiSummary) {
+            content = item.aiSummary
+        } else {
+            content = item.summary || item.contentSnippet?.slice(0, 512)
+        }
     } else if (isSnippet) {
-        content = item.contentSnippet
+        if (appendAiSummary && item.aiSummary) {
+            content += `AI 输出：\n${item.aiSummary}\n`
+        }
+        content += item.contentSnippet
     } else {
-        content = item.content
+        if (appendAiSummary && item.aiSummary) {
+            content += `<p><b>AI 输出：\n${item.aiSummary}</b></p>\n<hr/>`
+        }
+        content += item.content
     }
 
     // 排除内容和标题重复
