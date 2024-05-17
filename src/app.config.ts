@@ -78,3 +78,5 @@ export const NOTIFICATION_LIMIT_MAX = Number(env.NOTIFICATION_LIMIT_MAX || 5)
 
 // 路由缓存时间，单位：秒
 export const CACHE_EXPIRE = Number(env.CACHE_EXPIRE || 300)
+
+export const DATABASE_TYPE = env.DATABASE_TYPE || 'sqlite'

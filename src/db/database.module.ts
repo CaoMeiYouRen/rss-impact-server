@@ -10,7 +10,7 @@ import { Resource } from './models/resource.entiy'
 import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
-import { __TEST__, DATA_PATH } from '@/app.config'
+import { __TEST__, DATA_PATH, DATABASE_TYPE } from '@/app.config'
 
 export const DATABASE_DIR = DATA_PATH
 
@@ -20,17 +20,21 @@ export const DATABASE_PATH = __TEST__ ?
 const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig, CustomQuery]
 
 const repositories = TypeOrmModule.forFeature(entities)
+// 支持的数据库类型
+const SUPPORTED_DATABASE_TYPES = ['sqlite']
 
 @Global()
 @Module({
     imports: [
         TypeOrmModule.forRootAsync({
             async useFactory() {
+                if (!SUPPORTED_DATABASE_TYPES.includes(DATABASE_TYPE)) {
+                    throw new Error('不支持的数据库类型')
+                }
                 return {
                     // TODO MySQL 支持
                     // TODO Postgres 支持
-                    // TODO 增加数据库用量统计
-                    type: 'sqlite',
+                    type: DATABASE_TYPE as any,
                     database: DATABASE_PATH,
                     entities,
                     // eslint-disable-next-line no-sync

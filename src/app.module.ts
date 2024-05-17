@@ -21,6 +21,7 @@ import { WebhookLogController } from './controllers/webhook-log/webhook-log.cont
 import { ProxyConfigController } from './controllers/proxy-config/proxy-config.controller'
 import { CustomQueryController } from './controllers/custom-query/custom-query.controller'
 import { CacheService } from './services/cache/cache.service'
+import { SystemController } from './controllers/system/system.controller'
 
 @Global()
 @Module({
@@ -47,6 +48,7 @@ import { CacheService } from './services/cache/cache.service'
         WebhookLogController,
         ProxyConfigController,
         CustomQueryController,
+        SystemController,
     ],
     providers: [
         AppService,
