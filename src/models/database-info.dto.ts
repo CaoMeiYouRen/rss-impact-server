@@ -27,4 +27,11 @@ export class DatabaseInfoDto {
     @ApiProperty({ title: '体积(B)', description: '单位为 B', example: '114.51 MiB' })
     sizeFormat: string
 
+    @SetAclCrudField({
+        readonly: true,
+        editDisabled: true,
+        span: 24,
+    })
+    @ApiProperty({ title: '实体类数量', description: 'typeorm 的实体类数量，即 SQL 表数量', example: 10 })
+    entitiesLength: number
 }

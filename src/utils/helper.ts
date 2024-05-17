@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import _ from 'lodash'
 import fs, { ReadStream } from 'fs-extra'
 import FileType from 'file-type'
@@ -13,10 +14,14 @@ import { encode, decode } from 'gpt-3-encoder'
 import * as betterBytes from 'better-bytes'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
+// TODO 考虑支持国际化
+import 'dayjs/locale/zh-cn'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.tz.setDefault(TZ)
+dayjs.extend(relativeTime)
+dayjs.locale('zh-cn')
 
 /**
  * 延时一段时间
@@ -506,4 +511,30 @@ export const collapseWhitespace = (str?: string | null) => {
         return str.replaceAll(rAllWhiteSpace, ' ').trim()
     }
     return str
+}
+
+/**
+ * 格式化时间
+ *
+ * @author CaoMeiYouRen
+ * @date 2020-05-29
+ * @export
+ * @param {number} time 毫秒数
+ * @returns
+ */
+export function timeFromNow(time: number) {
+    const arr = [
+        { name: 'ms', len: 1000 },
+        { name: 's', len: 60 },
+        { name: 'min', len: 60 },
+        { name: 'h', len: 24 },
+        // { name: 'day', len: Infinity },
+    ]
+    for (let i = 0; i < arr.length; i++) {
+        if (time < arr[i].len) {
+            return `${time.toFixed(2)} ${arr[i].name}`
+        }
+        time /= arr[i].len
+    }
+    return `${time.toFixed(2)} day`
 }

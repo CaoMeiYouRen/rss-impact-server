@@ -17,7 +17,7 @@ export const DATABASE_DIR = DATA_PATH
 export const DATABASE_PATH = __TEST__ ?
     path.join(DATABASE_DIR, 'database.test.sqlite') :
     path.join(DATABASE_DIR, 'database.sqlite')
-const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig, CustomQuery]
+export const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig, CustomQuery]
 
 const repositories = TypeOrmModule.forFeature(entities)
 // 支持的数据库类型

@@ -3471,7 +3471,7 @@
         "/api/system/getDatabaseInfo/option": {
             "get": {
                 "operationId": "System_getDatabaseInfoOption",
-                "summary": "获取数据库信息",
+                "summary": "获取数据库信息 option",
                 "parameters": [],
                 "responses": {
                     "200": {
@@ -3525,6 +3525,103 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/DatabaseInfoDto"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "system"
+                ]
+            }
+        },
+        "/api/system/getOsInfo/option": {
+            "get": {
+                "operationId": "System_getOsInfoOption",
+                "summary": "获取系统信息 option",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "system"
+                ]
+            }
+        },
+        "/api/system/getOsInfo": {
+            "get": {
+                "operationId": "System_getOsInfo",
+                "summary": "获取系统信息",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OsInfoDto"
                                 }
                             }
                         }
@@ -6784,12 +6881,96 @@
                         "title": "体积(B)",
                         "description": "单位为 B",
                         "example": "114.51 MiB"
+                    },
+                    "entitiesLength": {
+                        "type": "number",
+                        "title": "实体类数量",
+                        "description": "typeorm 的实体类数量，即 SQL 表数量",
+                        "example": 10
                     }
                 },
                 "required": [
                     "type",
                     "size",
-                    "sizeFormat"
+                    "sizeFormat",
+                    "entitiesLength"
+                ]
+            },
+            "OsInfoDto": {
+                "type": "object",
+                "properties": {
+                    "nodeVersion": {
+                        "type": "string",
+                        "title": "Node.js 版本",
+                        "description": "",
+                        "example": ""
+                    },
+                    "hostname": {
+                        "type": "string",
+                        "title": "主机名",
+                        "description": "",
+                        "example": ""
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "操作系统类型",
+                        "description": "",
+                        "example": ""
+                    },
+                    "platform": {
+                        "type": "string",
+                        "title": "操作系统平台",
+                        "description": "",
+                        "example": ""
+                    },
+                    "arch": {
+                        "type": "string",
+                        "title": "系统架构",
+                        "description": "",
+                        "example": ""
+                    },
+                    "release": {
+                        "type": "string",
+                        "title": "系统版本",
+                        "description": "",
+                        "example": ""
+                    },
+                    "totalmem": {
+                        "type": "string",
+                        "title": "总内存",
+                        "description": "",
+                        "example": ""
+                    },
+                    "freemem": {
+                        "type": "string",
+                        "title": "可用内存",
+                        "description": "",
+                        "example": ""
+                    },
+                    "cpuNum": {
+                        "type": "number",
+                        "title": "CPU 内核数",
+                        "description": "",
+                        "example": ""
+                    },
+                    "uptime": {
+                        "type": "string",
+                        "title": "运行时间",
+                        "description": "",
+                        "example": ""
+                    }
+                },
+                "required": [
+                    "nodeVersion",
+                    "hostname",
+                    "type",
+                    "platform",
+                    "arch",
+                    "release",
+                    "totalmem",
+                    "freemem",
+                    "cpuNum",
+                    "uptime"
                 ]
             }
         }
