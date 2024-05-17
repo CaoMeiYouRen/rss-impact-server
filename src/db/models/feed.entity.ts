@@ -67,7 +67,7 @@ export class Feed extends AclBase {
     description?: string
 
     @SetAclCrudField({
-        type: 'input',
+        // type: 'input',
         value: '',
     })
     @ApiProperty({ title: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })

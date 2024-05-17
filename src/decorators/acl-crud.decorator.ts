@@ -188,7 +188,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
         }
         // 如果有 isUrl 则为 url
         if (validatorOptions.find((e) => e.name === 'isUrl')) {
-            extra.type = 'input' // url 默认为数组，因此改为 input
+            extra.type = 'url' // url 默认为数组
             if (isImageUrl(Array.isArray(swaggerOption.example) ? swaggerOption.example[0] : swaggerOption.example)) { // 如果 example 是图片，则设置为 img
                 extra.type = 'img'
             }
