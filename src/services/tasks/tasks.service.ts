@@ -17,11 +17,12 @@ import { plainToInstance } from 'class-transformer'
 import parseTorrent, { Instance, toMagnetURI } from 'parse-torrent'
 import Parser from 'rss-parser'
 import OpenAI from 'openai'
+import ms from 'ms'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -117,26 +118,25 @@ export class TasksService implements OnApplicationBootstrap {
                     proxyUrl = newFeed.proxyConfig?.url
                 }
                 const maxRetries = feed.maxRetries || 0
-                let count = 0
-                let resp = ''
-                // TODO 优化 retry 逻辑
-                // 用 retryBackoff 优化
-                do {
-                    const [error, response] = await to(ajax({
-                        url,
-                        proxyUrl,
-                        timeout: 60 * 1000,
-                    }))
-                    if (error) {
-                        this.logger.error(error?.message, error?.stack)
-                        await sleep(60 * 1000)
-                    } else if (response?.data) {
-                        resp = response.data
-                        break
-                    }
-                    count++
-                } while (maxRetries > count)
-
+                const [error, response] = await to(
+                    retryBackoff(
+                        () => ajax({
+                            url,
+                            proxyUrl,
+                            timeout: ms('60 s'),
+                        }),
+                        {
+                            maxRetries,
+                            initialInterval: ms('10 s'),
+                            maxInterval: ms('10 m'), // 不超过最小轮询间隔
+                        },
+                    ),
+                )
+                if (error) {
+                    this.logger.error(error?.message, error?.stack)
+                    return
+                }
+                const resp = response.data
                 // TODO 增加抓取全文功能，例如 少数派
                 if (resp) {
                     rss = await rssParserString(resp)
@@ -562,6 +562,7 @@ export class TasksService implements OnApplicationBootstrap {
                 })
                 await Promise.allSettled(btArticles.map((article) => bitTorrentLimit(async () => {
                     const url = article.enclosure.url
+                    const shoutUrl = url?.slice(0, 128)
                     let hash = ''
                     let magnetUri = ''
                     let name = ''
@@ -572,14 +573,14 @@ export class TasksService implements OnApplicationBootstrap {
                         magnet = parseTorrent(url) as Instance
                         hash = magnet.infoHash?.toLowerCase()
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
-                            __DEV__ && this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
+                            __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
                             return
                         }
-                        this.logger.log(`正在下载资源：${url.slice(0, 128)}`)
+                        this.logger.log(`正在下载资源：${shoutUrl}`)
                         await qBittorrent.addMagnet(url, { savepath: downloadPath })
                     } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
                         if (await this.resourceRepository.findOne({ where: { url, userId } })) {
-                            __DEV__ && this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
+                            __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
                             return
                         }
                         const resp = await ajax<ArrayBuffer>({
@@ -592,10 +593,10 @@ export class TasksService implements OnApplicationBootstrap {
                         magnet = parseTorrent(torrent) as Instance
                         hash = magnet.infoHash?.toLowerCase() // hash
                         if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
-                            __DEV__ && this.logger.debug(`资源 ${url.slice(0, 128)} 已存在，跳过该资源下载`)
+                            __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
                             return
                         }
-                        this.logger.log(`正在下载资源：${url.slice(0, 128)}`)
+                        this.logger.log(`正在下载资源：${shoutUrl}`)
                         await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
                     }
 
@@ -637,7 +638,7 @@ export class TasksService implements OnApplicationBootstrap {
                             await this.articleRepository.save(article)
                         }
                         if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
-                            this.logger.warn(`资源 ${url.slice(0, 128)} 的大小超过限制，跳过该资源下载`)
+                            this.logger.warn(`资源 ${shoutUrl} 的大小超过限制，跳过该资源下载`)
                             newResource.status = 'skip'
                             await this.resourceRepository.save(newResource)
                             // 移除超过限制的资源
@@ -648,22 +649,24 @@ export class TasksService implements OnApplicationBootstrap {
                         // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
                         // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
                         if (!newResource.size || newResource.size <= 0) {
-                            const n = 30
                             setTimeout(async () => {
-                                let i = 0
-                                do {
+                                await retryBackoff(async () => {
                                     size = await this.updateTorrentInfo(qBittorrent, config, newResource, article)
                                     if (size > 0 || size === -1) {
-                                        break
+                                        return
                                     }
-                                    i++
-                                    await sleep(10 * 1000) // 等待 10 秒后更新 元数据，至多重试 30 次
-                                } while (n > i)
+                                    __DEV__ && this.logger.debug(`未解析出资源 ${shoutUrl} 的大小！即将重试。`)
+                                    throw new Error(`未解析出资源 ${shoutUrl} 的大小！`)
+                                }, {
+                                    maxRetries: 10,
+                                    initialInterval: ms('10 s'),
+                                    maxInterval: ms('1 h'),
+                                })
                             }, 0)
                         }
                         return
                     }
-                    this.logger.error(`不支持的 资源类型：${url.slice(0, 128)}`)
+                    this.logger.error(`不支持的 资源类型：${shoutUrl}`)
                 })))
                 return
             }
@@ -673,9 +676,7 @@ export class TasksService implements OnApplicationBootstrap {
     }
 
     private async tryRemoveTorrent(qBittorrent: QBittorrent, hash: string) {
-        const n = 10
-        let i = 0
-        do {
+        await retryBackoff(async () => {
             const [error, flag] = await to(qBittorrent.removeTorrent(hash))
             if (error || !flag) { // 删除失败
                 this.logger.error(error?.message, error?.stack)
@@ -688,9 +689,12 @@ export class TasksService implements OnApplicationBootstrap {
             if (!torrentInfo) { // 如果没有数据，说明删了
                 return
             }
-            i++
-            await sleep(10 * 1000) // 等待 10 秒后再次查询
-        } while (n > i)
+            throw new Error(`删除资源 ${hash} 失败`, { cause: error })
+        }, {
+            maxRetries: 10,
+            initialInterval: ms('10 s'),
+            maxInterval: ms('1 h'),
+        })
     }
 
     /**
@@ -703,9 +707,10 @@ export class TasksService implements OnApplicationBootstrap {
         const { url } = article.enclosure
         const { maxSize } = config
         const { hash } = resource
+        const shoutUrl = url?.slice(0, 128)
         const [error, torrentInfo] = await to(qBittorrent.getTorrent(hash))
         if (error) {
-            this.logger.error(`hash: ${hash}, url: ${url.slice(0, 128)}`)
+            this.logger.error(`hash: ${hash}, url: ${shoutUrl}`)
             this.logger.error(error?.message, error?.stack)
             return 0
         }
@@ -727,7 +732,7 @@ export class TasksService implements OnApplicationBootstrap {
             await this.articleRepository.save(article)
         }
         if (isSafePositiveInteger(maxSize) && maxSize > 0 && resource.size > 0 && maxSize <= resource.size) {
-            this.logger.warn(`资源 ${url.slice(0, 128)} 的大小超过限制，跳过该资源下载`)
+            this.logger.warn(`资源 ${shoutUrl} 的大小超过限制，跳过该资源下载`)
             await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
             resource.status = 'skip'
             await this.resourceRepository.save(resource)

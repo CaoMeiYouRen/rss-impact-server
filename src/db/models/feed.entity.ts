@@ -170,8 +170,8 @@ export class Feed extends AclBase {
     @SetAclCrudField({
         labelWidth: 105,
     })
-    @ApiProperty({ title: '重试次数', description: '至多重试几次。默认为 0，即不重试。', example: 3 })
-    @IsSafeNaturalNumber()
+    @ApiProperty({ title: '重试次数', description: '至多重试几次。默认为 0，即不重试。重试次数至多不超过 20', example: 3 })
+    @IsSafeNaturalNumber(20)
     @IsOptional()
     @Column({
         nullable: true,
