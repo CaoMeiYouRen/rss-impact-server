@@ -118,24 +118,19 @@ export class TasksService implements OnApplicationBootstrap {
                     proxyUrl = newFeed.proxyConfig?.url
                 }
                 const maxRetries = feed.maxRetries || 0
-                const [error, response] = await to(
-                    retryBackoff(
-                        () => ajax({
-                            url,
-                            proxyUrl,
-                            timeout: ms('60 s'),
-                        }),
-                        {
-                            maxRetries,
-                            initialInterval: ms('10 s'),
-                            maxInterval: ms('10 m'), // 不超过最小轮询间隔
-                        },
-                    ),
+
+                const response = await retryBackoff(
+                    () => ajax({
+                        url,
+                        proxyUrl,
+                        timeout: ms('60 s'),
+                    }),
+                    {
+                        maxRetries,
+                        initialInterval: ms('10 s'),
+                        maxInterval: ms('10 m'), // 不超过最小轮询间隔
+                    },
                 )
-                if (error) {
-                    this.logger.error(error?.message, error?.stack)
-                    return
-                }
                 const resp = response.data
                 // TODO 增加抓取全文功能，例如 少数派
                 if (resp) {
