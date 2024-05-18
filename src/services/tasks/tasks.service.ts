@@ -3,7 +3,7 @@ import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In, LessThan, MoreThanOrEqual } from 'typeorm'
+import { Repository, In, LessThan, MoreThanOrEqual, IsNull } from 'typeorm'
 import { CronJob } from 'cron'
 import { differenceWith, flattenDeep, pick } from 'lodash'
 import XRegExp from 'xregexp'
@@ -40,6 +40,7 @@ import { NotificationConfig } from '@/models/notification-config'
 import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
+import { CustomQuery } from '@/db/models/custom-query.entity'
 
 const rssLimit = pLimit(RSS_LIMIT_MAX) // RSS 请求并发数
 
@@ -67,10 +68,45 @@ export class TasksService implements OnApplicationBootstrap {
         @InjectRepository(Resource) private readonly resourceRepository: Repository<Resource>,
         @InjectRepository(WebhookLog) private readonly webhookLogRepository: Repository<WebhookLog>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
+        @InjectRepository(CustomQuery) private readonly customQueryRepository: Repository<CustomQuery>,
     ) { }
 
-    onApplicationBootstrap() {
-        this.initFeedTasks()
+    async onApplicationBootstrap() {
+        await this.fixDatabase()
+        await this.initFeedTasks()
+    }
+
+    private async fixDatabase() {
+        try {
+            // 修复 publishDate 字段到 pubDate 字段的更改
+            const articles = await this.articleRepository.find({
+                where: {
+                    pubDate: IsNull(),
+                    // publishDate: Not(IsNull()),
+                },
+            })
+            __DEV__ && this.logger.debug(`articles ${articles.length}`)
+            await this.articleRepository.save(articles.map((e) => {
+                e.pubDate = e.publishDate
+                return e
+            }))
+            // 修复 支持多个订阅的更改
+            // const customQueries = await this.customQueryRepository.find({
+            //     where: {
+            //         scope: 'feed',
+            //         // feedId: Not(null),
+            //         // feeds: IsNull(),
+            //     },
+            //     relations: ['feed', 'feeds'],
+            // })
+            // this.logger.debug(`customQueries ${customQueries.length}`)
+            // await this.customQueryRepository.save(customQueries.map((e) => {
+            //     e.feeds = [e.feed]
+            //     return e
+            // }))
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        }
     }
 
     private getAllFeeds() {

@@ -61,10 +61,6 @@ export class CustomQuery extends AclBase {
         },
     })
     @ApiProperty({ title: '指定分组', description: '支持选择多个分类', example: [], type: [Category] })
-    // @Column({
-    //     type: 'simple-json',
-    //     nullable: true,
-    // })
     @Type(() => Category)
     @IsArray()
     @IsOptional()
@@ -80,6 +76,7 @@ export class CustomQuery extends AclBase {
             value: 'id',
         },
         value: null,
+        hide: true,
     })
     @ApiProperty({ title: '指定订阅', description: '注意：订阅的查询是单选的', example: 1 })
     @IsId()
@@ -93,6 +90,23 @@ export class CustomQuery extends AclBase {
     @ApiProperty({ title: '订阅源', type: () => Feed })
     @ManyToOne(() => Feed)
     feed?: Feed
+
+    @SetAclCrudField({
+        type: 'select',
+        multiple: true,
+        dicUrl: '/feed/dicData',
+        props: {
+            label: 'title',
+            value: 'id',
+        },
+    })
+    @ApiProperty({ title: '指定订阅', description: '支持选择多个订阅', example: [], type: [Feed] })
+    @Type(() => Feed)
+    @IsArray()
+    @IsOptional()
+    @ManyToMany(() => Feed)
+    @JoinTable()
+    feeds?: Feed[]
 
     @SetAclCrudField({
         search: true,

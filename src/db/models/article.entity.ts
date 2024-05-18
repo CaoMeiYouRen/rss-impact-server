@@ -141,12 +141,12 @@ export class Article extends AclBase {
     })
     pubDate?: Date
 
-    @AfterLoad()
-    private updatePubDate() {
-        if (!this.pubDate && this.publishDate) {
-            this.pubDate = this.publishDate
-        }
-    }
+    // @AfterLoad()
+    // private updatePubDate() {
+    //     if (!this.pubDate && this.publishDate) {
+    //         this.pubDate = this.publishDate
+    //     }
+    // }
 
     /** 作者 creator/author/dc:creator */
     @SetAclCrudField({

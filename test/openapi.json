@@ -6538,6 +6538,15 @@
                             }
                         ]
                     },
+                    "feeds": {
+                        "title": "指定订阅",
+                        "description": "支持选择多个订阅",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    },
                     "format": {
                         "type": "object",
                         "enum": [
@@ -6655,6 +6664,15 @@
                                 "$ref": "#/components/schemas/Feed"
                             }
                         ]
+                    },
+                    "feeds": {
+                        "title": "指定订阅",
+                        "description": "支持选择多个订阅",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
                     },
                     "format": {
                         "type": "object",
@@ -6805,6 +6823,15 @@
                                 "$ref": "#/components/schemas/Feed"
                             }
                         ]
+                    },
+                    "feeds": {
+                        "title": "指定订阅",
+                        "description": "支持选择多个订阅",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
                     },
                     "format": {
                         "type": "object",

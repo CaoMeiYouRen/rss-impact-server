@@ -76,32 +76,32 @@ export class CustomQueryController {
         }
         const cacheKey = `custom-query-rss:${id}`
         const cacheData = await this.cacheService.tryGet(cacheKey, async () => {
-            const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feed'] })
+            const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feed', 'feeds'] })
             if (!custom) {
                 throw new HttpError(404, '该 Id 对应的资源不存在！')
             }
             if (key !== custom.key) {
                 throw new HttpError(403, '错误的 key，没有权限访问！')
             }
-            const { name, format, filter = {}, url, scope, categories = [], feed, useAiSummary, appendAiSummary } = custom
+            const { name, format, filter = {}, url, scope, categories = [], feed, feeds = [], useAiSummary, appendAiSummary } = custom
             const { limit, time } = filter
             let feedId: number | FindOperator<number>
             const pubDate = time ? MoreThanOrEqual(dayjs().add(-time, 'seconds').toDate()) : undefined
             if (scope === 'feed') {
-                if (!feed?.id) {
+                if (feeds?.length) {
+                    feedId = In(feeds.map((e) => e.id))
+                } else if (feed?.id) {
+                    feedId = feed.id
+                    custom.feeds = [feed] // 修复 feed 格式改变的问题
+                    await this.repository.save(custom)
+                } else {
                     throw new HttpError(400, '指定订阅时必须要选择订阅！')
                 }
-                feedId = feed.id
+
             } else if (scope === 'category') {
                 if (!categories?.length) {
                     throw new HttpError(400, '指定分组时必须要选择分组！')
                 }
-                // const categoryList = await this.categoryRepository.find({
-                //     where: {
-                //         id: In(categories.map((e) => e.id)),
-                //     },
-                //     relations: ['feeds'],
-                // })
                 feedId = In(categories.map((e) => e?.feeds?.map((f) => f?.id))?.flat()?.filter(Boolean))
             }
 
