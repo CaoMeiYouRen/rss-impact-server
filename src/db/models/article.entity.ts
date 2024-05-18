@@ -114,16 +114,16 @@ export class Article extends AclBase {
     /**
      *发布日期 pubDate/isoDate
      */
-    @SetAclCrudField({
-        hide: true,
-    })
+    // @SetAclCrudField({
+    //     hide: true,
+    // })
     // @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     // @Type(() => Date)
     // @IsDate()
-    @Column({
-        nullable: true,
-    })
-    publishDate?: Date
+    // @Column({
+    //     nullable: true,
+    // })
+    // publishDate?: Date
 
     /**
    *发布日期 pubDate/isoDate
@@ -140,13 +140,6 @@ export class Article extends AclBase {
         nullable: true,
     })
     pubDate?: Date
-
-    // @AfterLoad()
-    // private updatePubDate() {
-    //     if (!this.pubDate && this.publishDate) {
-    //         this.pubDate = this.publishDate
-    //     }
-    // }
 
     /** 作者 creator/author/dc:creator */
     @SetAclCrudField({
@@ -242,7 +235,7 @@ export class Article extends AclBase {
     enclosure?: EnclosureImpl
 
     @AfterLoad()
-    private updateEnclosure() {
+    protected updateEnclosure() {
         if (!this.enclosure) {
             this.enclosure = plainToInstance(EnclosureImpl, {})
             return

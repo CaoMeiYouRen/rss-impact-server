@@ -3,7 +3,7 @@ import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In, LessThan, MoreThanOrEqual, IsNull } from 'typeorm'
+import { Repository, In, LessThan, MoreThanOrEqual } from 'typeorm'
 import { CronJob } from 'cron'
 import { differenceWith, flattenDeep, pick } from 'lodash'
 import XRegExp from 'xregexp'
@@ -78,18 +78,6 @@ export class TasksService implements OnApplicationBootstrap {
 
     private async fixDatabase() {
         try {
-            // 修复 publishDate 字段到 pubDate 字段的更改
-            const articles = await this.articleRepository.find({
-                where: {
-                    pubDate: IsNull(),
-                    // publishDate: Not(IsNull()),
-                },
-            })
-            __DEV__ && this.logger.debug(`articles ${articles.length}`)
-            await this.articleRepository.save(articles.map((e) => {
-                e.pubDate = e.publishDate
-                return e
-            }))
             // 修复 支持多个订阅的更改
             // const customQueries = await this.customQueryRepository.find({
             //     where: {
