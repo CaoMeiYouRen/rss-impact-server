@@ -22,7 +22,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, sleep, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -377,17 +377,23 @@ export class TasksService implements OnApplicationBootstrap {
         const articleFormatoption: ArticleFormatoption = { isMarkdown, isSnippet, onlySummary, useAiSummary, appendAiSummary }
         // 如果要使用 AI 总结，则延后
         if (appendAiSummary || useAiSummary) {
-            const n = 30
-            for (let i = 0; i < n; i++) {
+            const [error] = await to(retryBackoff(async () => {
                 articles = await this.articleRepository.find({
                     where: {
                         id: In(articles.map((e) => e.id)),
                     },
                 })
                 if (articles.every((article) => article.aiSummary)) {
-                    break
+                    return
                 }
-                await sleep(10 * 1000) // 延后 10 秒
+                throw new Error('AI 总结未全部完成')
+            }, {
+                maxRetries: 10,
+                initialInterval: ms('10 s'),
+                maxInterval: ms('1 h'),
+            }))
+            if (error) {
+                this.logger.error(error?.message, error?.stack)
             }
         }
         if (isMergePush) {
