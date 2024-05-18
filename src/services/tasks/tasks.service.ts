@@ -3,7 +3,7 @@ import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In, LessThan, MoreThanOrEqual, Not } from 'typeorm'
+import { Repository, In, LessThan, MoreThanOrEqual } from 'typeorm'
 import { CronJob } from 'cron'
 import { differenceWith, flattenDeep, pick } from 'lodash'
 import XRegExp from 'xregexp'
@@ -77,24 +77,24 @@ export class TasksService implements OnApplicationBootstrap {
     }
 
     private async fixDatabase() {
-        try {
-            // 修复 支持多个订阅的更改
-            const customQueries = await this.customQueryRepository.find({
-                where: {
-                    scope: 'feed',
-                    feedId: Not(null),
-                    // feeds: IsNull(),
-                },
-                relations: ['feed', 'feeds'],
-            })
-            this.logger.debug(`customQueries ${customQueries.length}`)
-            await this.customQueryRepository.save(customQueries.map((e) => {
-                e.feeds = [e.feed]
-                return e
-            }))
-        } catch (error) {
-            this.logger.error(error?.message, error?.stack)
-        }
+        // try {
+        //     // 修复 支持多个订阅的更改
+        //     const customQueries = await this.customQueryRepository.find({
+        //         where: {
+        //             scope: 'feed',
+        //             feedId: Not(IsNull()),
+        //             // feeds: IsNull(),
+        //         },
+        //         relations: ['feed', 'feeds'],
+        //     })
+        //     this.logger.debug(`customQueries ${customQueries.length}`)
+        //     await this.customQueryRepository.save(customQueries.map((e) => {
+        //         e.feeds = [e.feed]
+        //         return e
+        //     }))
+        // } catch (error) {
+        //     this.logger.error(error?.message, error?.stack)
+        // }
     }
 
     private getAllFeeds() {

@@ -55,7 +55,7 @@ import { to } from '@/utils/helper'
             decorators: [UseSession()],
         },
     },
-    relations: ['categories'],
+    relations: ['categories', 'feeds'],
 })
 @ApiTags('custom-query')
 @Controller('custom-query')
