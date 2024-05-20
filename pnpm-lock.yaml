@@ -7,7 +7,7 @@ settings:
 overrides:
   '@types/methods': ^1.1.4
   '@types/superagent': ^8.1.0
-  axios: ^1.7.0
+  axios: ^1.7.1
   crypto-hash: git+https://github.com/CaoMeiYouRen/crypto-hash.git
   compare-func: 2.0.0
   cron: 3.1.7
@@ -52,8 +52,8 @@ dependencies:
     specifier: ^4.13.2
     version: 4.13.2
   axios:
-    specifier: ^1.7.0
-    version: 1.7.0(debug@4.3.4)
+    specifier: ^1.7.1
+    version: 1.7.1(debug@4.3.4)
   bcryptjs:
     specifier: ^2.4.3
     version: 2.4.3
@@ -3214,8 +3214,8 @@ packages:
     resolution: {integrity: sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==}
     dev: false
 
-  /axios@1.7.0(debug@4.3.4):
-    resolution: {integrity: sha512-IiB0wQeKyPRdsFVhBgIo31FbzOyf2M6wYl7/NVutFwFBRMiAbjNiydJIHKeLmPugF4kJLfA1uWZ82Is2QzqqFA==}
+  /axios@1.7.1(debug@4.3.4):
+    resolution: {integrity: sha512-+LV37nQcd1EpFalkXksWNBiA17NZ5m5/WspmHGmZmdx1qBOg/VNq/c4eRJiA9VQQHBOs+N0ZhhdU10h2TyNK7Q==}
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.4)
       form-data: 4.0.0
@@ -8770,7 +8770,7 @@ packages:
     dependencies:
       '@types/request': 2.48.12
       '@types/superagent': 8.1.6
-      axios: 1.7.0(debug@4.3.4)
+      axios: 1.7.1(debug@4.3.4)
       combos: 0.2.0
       fs-extra: 9.1.0
       js-yaml: 4.1.0
@@ -9306,7 +9306,7 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@colors/colors': 1.6.0
-      axios: 1.7.0(debug@4.3.4)
+      axios: 1.7.1(debug@4.3.4)
       crypto-js: 4.2.0
       debug: 4.3.4
       https-proxy-agent: 5.0.1
