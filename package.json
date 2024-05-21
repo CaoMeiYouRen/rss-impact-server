@@ -147,7 +147,7 @@
     "lint-staged": "^15.2.2",
     "semantic-release": "21.0.1",
     "supertest": "^7.0.0",
-    "ts-jest": "^29.1.2",
+    "ts-jest": "^29.1.3",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.10.5",
