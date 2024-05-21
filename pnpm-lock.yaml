@@ -139,8 +139,8 @@ dependencies:
     specifier: ^2.1.3
     version: 2.1.3
   nest-winston:
-    specifier: ^1.9.6
-    version: 1.9.6(@nestjs/common@10.3.8)(winston@3.13.0)
+    specifier: ^1.10.0
+    version: 1.10.0(@nestjs/common@10.3.8)(winston@3.13.0)
   openai:
     specifier: ^4.47.1
     version: 4.47.1
@@ -8374,8 +8374,8 @@ packages:
     resolution: {integrity: sha512-EZSPZB70jiVsivaBLYDCyntd5eH8NTSMOn3rB+HxwdmKThGELLdYv8qVIMWvZEFy9w8ZZpW9h9OB32l1rGtj7g==}
     dev: true
 
-  /nest-winston@1.9.6(@nestjs/common@10.3.8)(winston@3.13.0):
-    resolution: {integrity: sha512-A8I9XVzPZxvR3+XuUQJYsnjkx9BFuqHqofuxFQ6R37n/2PzutCUU6J1OXd5b5xx5gK1yP6RPd9VCt1b0n4QDKA==}
+  /nest-winston@1.10.0(@nestjs/common@10.3.8)(winston@3.13.0):
+    resolution: {integrity: sha512-ipfvW6jxjX9xUqACw1HhDmrE1HLLLReqqR5cYt2mehW6Fg87LYTYuoCqwAUYTrawekrQd2vNAe5YBC/Jmxxoxw==}
     peerDependencies:
       '@nestjs/common': ^5.0.0 || ^6.6.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
       winston: ^3.0.0
