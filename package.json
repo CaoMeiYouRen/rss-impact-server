@@ -144,7 +144,7 @@
     "husky": "^9.0.11",
     "jest": "^29.7.0",
     "jest-openapi": "^0.14.2",
-    "lint-staged": "^15.2.2",
+    "lint-staged": "^15.2.4",
     "semantic-release": "21.0.1",
     "supertest": "^7.0.0",
     "ts-jest": "^29.1.2",
