@@ -20,7 +20,7 @@ dependencies:
     version: 1.0.3
   '@nestjs/cache-manager':
     specifier: ^2.2.2
-    version: 2.2.2(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)(cache-manager@5.5.2)(rxjs@7.8.1)
+    version: 2.2.2(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)(cache-manager@5.5.3)(rxjs@7.8.1)
   '@nestjs/common':
     specifier: ^10.3.8
     version: 10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -61,8 +61,8 @@ dependencies:
     specifier: ^1.2.4
     version: 1.2.4
   cache-manager:
-    specifier: ^5.5.2
-    version: 5.5.2
+    specifier: ^5.5.3
+    version: 5.5.3
   cache-manager-ioredis-yet:
     specifier: ^2.0.4
     version: 2.0.4
@@ -1519,7 +1519,7 @@ packages:
     resolution: {integrity: sha512-Y28PR25bHXUg88kCV7nivXrP2Nj2RueZ3/l/jdx6J9f8J4nsEGcgX0Qe6lt7Pa+J79+kPiJU3LguR6O/6zrLOw==}
     dev: false
 
-  /@nestjs/cache-manager@2.2.2(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)(cache-manager@5.5.2)(rxjs@7.8.1):
+  /@nestjs/cache-manager@2.2.2(@nestjs/common@10.3.8)(@nestjs/core@10.3.8)(cache-manager@5.5.3)(rxjs@7.8.1):
     resolution: {integrity: sha512-+n7rpU1QABeW2WV17Dl1vZCG3vWjJU1MaamWgZvbGxYE9EeCM0lVLfw3z7acgDTNwOy+K68xuQPoIMxD0bhjlA==}
     peerDependencies:
       '@nestjs/common': ^9.0.0 || ^10.0.0
@@ -1529,7 +1529,7 @@ packages:
     dependencies:
       '@nestjs/common': 10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.8(@nestjs/common@10.3.8)(@nestjs/platform-express@10.3.8)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      cache-manager: 5.5.2
+      cache-manager: 5.5.3
       rxjs: 7.8.1
     dev: false
 
@@ -3492,15 +3492,15 @@ packages:
     resolution: {integrity: sha512-IYg0/QjaQ7G9NObopYCmJ9mytkUOw995/lyxraY9UlqLL5zR+7SdbJdUDF3cFip2H/aPM6UEtJ+j180sMF5OAw==}
     engines: {node: '>= 18.0.0'}
     dependencies:
-      cache-manager: 5.5.2
+      cache-manager: 5.5.3
       ioredis: 5.4.1
       telejson: 7.2.0
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /cache-manager@5.5.2:
-    resolution: {integrity: sha512-HozSRPCBB26O1ZVIzX8GjauYMoZOpWcArqRIFlPKr+Mm3o+p/6VcHxRt8ia0F/tMwZdKxpHG0M+Am5Qh9FmfKw==}
+  /cache-manager@5.5.3:
+    resolution: {integrity: sha512-Td6F8lZE/YCciSi8xmdBjur6zlKIcoLMZp9jTmJNc44DrXIIcEhr9gra5j1T7RRbtWHaG5tJMEBKS+0S1+T2NQ==}
     dependencies:
       eventemitter3: 5.0.1
       lodash.clonedeep: 4.5.0
