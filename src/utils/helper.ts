@@ -524,10 +524,10 @@ export const collapseWhitespace = (str?: string | null) => {
  */
 export function timeFromNow(time: number) {
     const arr = [
-        { name: 'ms', len: 1000 },
-        { name: 's', len: 60 },
-        { name: 'min', len: 60 },
-        { name: 'h', len: 24 },
+        { name: 'milliseconds', len: 1000 },
+        { name: 'seconds', len: 60 },
+        { name: 'minutes', len: 60 },
+        { name: 'hours', len: 24 },
         // { name: 'day', len: Infinity },
     ]
     for (let i = 0; i < arr.length; i++) {
@@ -536,5 +536,5 @@ export function timeFromNow(time: number) {
         }
         time /= arr[i].len
     }
-    return `${time.toFixed(2)} day`
+    return `${time.toFixed(2)} days`
 }
