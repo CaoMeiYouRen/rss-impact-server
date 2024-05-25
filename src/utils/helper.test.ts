@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString } from './helper';
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace } from './helper';
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {
@@ -298,5 +298,34 @@ describe('splitString', () => {
         const result = splitString(str, maxLength);
 
         expect(result).toEqual(expected);
+    });
+});
+
+describe('timeFromNow', () => {
+    it('should format time correctly', () => {
+        expect(timeFromNow(1000)).toBe('1.00 s');
+        expect(timeFromNow(60000)).toBe('1.00 min');
+        expect(timeFromNow(3600000)).toBe('1.00 h');
+        expect(timeFromNow(86400000)).toBe('1.00 day');
+        expect(timeFromNow(1234)).toBe('1.23 s');
+        expect(timeFromNow(12345)).toBe('12.35 s');
+        expect(timeFromNow(123456)).toBe('2.06 min');
+        expect(timeFromNow(1234567)).toBe('20.58 min');
+        expect(timeFromNow(12345678)).toBe('3.43 h');
+        expect(timeFromNow(123456789)).toBe('1.43 day');
+        expect(timeFromNow(1234567890)).toBe('14.29 day');
+    });
+});
+
+
+describe('collapseWhitespace', () => {
+    it('should collapse and trim whitespace', () => {
+        expect(collapseWhitespace('   hello   world   ')).toBe('hello world');
+        expect(collapseWhitespace('   hello\t\n\r   world   ')).toBe('hello world');
+        expect(collapseWhitespace('   hello   \t\n\r   world   ')).toBe('hello world');
+        expect(collapseWhitespace('hello world')).toBe('hello world');
+        expect(collapseWhitespace('')).toBe('');
+        expect(collapseWhitespace(null)).toBeNull();
+        expect(collapseWhitespace(undefined)).toBeUndefined();
     });
 });
