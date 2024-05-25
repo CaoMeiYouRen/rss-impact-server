@@ -52,4 +52,12 @@ export class BitTorrentConfig {
     @IsSafeNaturalNumber()
     @IsOptional()
     maxSize?: number
+
+    @SetAclCrudField({
+        labelWidth: 120,
+    })
+    @ApiProperty({ title: '磁盘最小空间(B)', description: '保留磁盘空间的最小值，小于这个值是将不会下载资源。单位为 B (字节)。设置为 0 禁用', example: 114514 })
+    @IsSafeNaturalNumber()
+    @IsOptional()
+    minDiskSize?: number
 }

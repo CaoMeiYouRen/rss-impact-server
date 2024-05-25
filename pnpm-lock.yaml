@@ -19,8 +19,8 @@ importers:
   .:
     dependencies:
       '@cao-mei-you-ren/qbittorrent':
-        specifier: ^1.0.3
-        version: 1.0.3
+        specifier: ^1.0.4
+        version: 1.0.4
       '@nestjs/cache-manager':
         specifier: ^2.2.2
         version: 2.2.2(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.8(@nestjs/common@10.3.8(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.8)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.5.3)(rxjs@7.8.1)
@@ -571,8 +571,8 @@ packages:
     resolution: {integrity: sha512-+ueuoY3qHiBIf6dTk4GA5QQ5Rg1YHE48r6VK4NL8ZsQ72K56c0WzJyDPgu8zQUT0xqkKRfyteQnz74ekmqlIiQ==}
     engines: {node: '>=16'}
 
-  '@cao-mei-you-ren/qbittorrent@1.0.3':
-    resolution: {integrity: sha512-vJKxXdVhV/PpwKClFDxVkEsSMtdfS0EwbPF7dewSzG5Th41PiyUDEm4hnM/CakjasJ/9NTSeSgk7oKyE+3tGNA==}
+  '@cao-mei-you-ren/qbittorrent@1.0.4':
+    resolution: {integrity: sha512-0os0L3g9VNuElmt3ZcFU0cqTPficBvv3yedSIEChv+ZG/5jUCQBuq6Oza6rqqqNudYSHQQhfwP0PgzmzBsEpHQ==}
     engines: {node: '>=18'}
 
   '@colors/colors@1.5.0':
@@ -2352,6 +2352,11 @@ packages:
 
   crypt@0.0.2:
     resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
+
+  crypto-hash@git+https://git@github.com:CaoMeiYouRen/crypto-hash.git#cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
+    resolution: {commit: cbe97d052b7da4eaf3fa774ac2fae4ad225aa118, repo: git@github.com:CaoMeiYouRen/crypto-hash.git, type: git}
+    version: 3.0.0
+    engines: {node: '>=18'}
 
   crypto-hash@https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118:
     resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118}
@@ -6655,7 +6660,7 @@ snapshots:
     dependencies:
       tslib: 2.6.2
 
-  '@cao-mei-you-ren/qbittorrent@1.0.3':
+  '@cao-mei-you-ren/qbittorrent@1.0.4':
     dependencies:
       '@ctrl/magnet-link': 4.0.2
       '@ctrl/shared-torrent': 6.0.0
@@ -6735,7 +6740,7 @@ snapshots:
 
   '@ctrl/torrent-file@4.0.0':
     dependencies:
-      crypto-hash: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
+      crypto-hash: git+https://git@github.com:CaoMeiYouRen/crypto-hash.git#cbe97d052b7da4eaf3fa774ac2fae4ad225aa118
       uint8array-extras: 1.1.0
 
   '@dabh/diagnostics@2.0.3':
@@ -8806,6 +8811,8 @@ snapshots:
       which: 2.0.2
 
   crypt@0.0.2: {}
+
+  crypto-hash@git+https://git@github.com:CaoMeiYouRen/crypto-hash.git#cbe97d052b7da4eaf3fa774ac2fae4ad225aa118: {}
 
   crypto-hash@https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/cbe97d052b7da4eaf3fa774ac2fae4ad225aa118: {}
 

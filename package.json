@@ -34,7 +34,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@cao-mei-you-ren/qbittorrent": "^1.0.3",
+    "@cao-mei-you-ren/qbittorrent": "^1.0.4",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.3.8",
     "@nestjs/config": "^3.2.0",
