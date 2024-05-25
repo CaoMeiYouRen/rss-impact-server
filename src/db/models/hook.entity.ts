@@ -77,7 +77,7 @@ export class Filter {
     enclosureUrl?: string
 
     @SetAclCrudField({
-        labelWidth: 105,
+        labelWidth: 116,
     })
     @ApiProperty({ title: '过滤附件类型', example: 'url1|url2' })
     @Length(0, 128)
@@ -85,7 +85,7 @@ export class Filter {
     enclosureType?: string
 
     @SetAclCrudField({
-        labelWidth: 116,
+        labelWidth: 125,
     }) // 如果源 RSS 未设置附件体积，则该项不会生效
     @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B。设置为 0 禁用。', example: 114514 })
     @IsSafeNaturalNumber()
@@ -126,7 +126,7 @@ export class FilterOut {
     enclosureUrl?: string
 
     @SetAclCrudField({
-        labelWidth: 105,
+        labelWidth: 116,
     })
     @ApiProperty({ title: '排除附件类型', example: 'url1|url2' })
     @Length(0, 128)
