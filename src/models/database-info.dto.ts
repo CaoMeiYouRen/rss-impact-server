@@ -15,6 +15,7 @@ export class DatabaseInfoDto {
         readonly: true,
         editDisabled: true,
         span: 24,
+        hide: true,
     })
     @ApiProperty({ title: '体积(B)', description: '单位为 B', example: 114514 })
     size: number
