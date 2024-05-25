@@ -262,7 +262,7 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
             return dayjs().diff(article.pubDate, 'second') <= condition.filter.time
         })
         // 先判断 filterout
-        .filter((article) => filterFields.some((field) => { // 所有条件为 并集，即 符合一个就排除
+        .filter((article) => filterFields.every((field) => { // 所有条件为 并集，即 有一个 不符合 就排除
             if (field.startsWith('enclosure')) {
                 if (!get(filterout, camelCase(field)) || !get(article, field)) { // 如果缺少 filterout enclosure 或 article.enclosure 对应的项就跳过该过滤条件
                     return true
@@ -279,7 +279,7 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
             return !XRegExp(filterout[field], 'ig').test(article[field])
         }))
         // 再判断 filter
-        .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部符合
+        .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部条件 符合
             if (field.startsWith('enclosure')) {
                 if (!get(filter, camelCase(field)) || !get(article, field)) { // 如果缺少 filter enclosure 或 article.enclosure 对应的项就跳过该过滤条件
                     return true
