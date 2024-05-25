@@ -19,6 +19,7 @@ import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { IsId } from '@/decorators/is-id.decorator'
 import { AIConfig } from '@/models/ai-config'
 import { RegularConfig } from '@/models/regular-config'
+import { IsBetterBytesString } from '@/decorators/is-better-bytes-string'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const hookConfig: Record<HookType, Function> = {
@@ -86,11 +87,14 @@ export class Filter {
 
     @SetAclCrudField({
         labelWidth: 125,
+        type: 'input',
+        value: '',
     }) // 如果源 RSS 未设置附件体积，则该项不会生效
-    @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B。设置为 0 禁用。', example: 114514 })
-    @IsSafeNaturalNumber()
+    @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B，支持带单位，例如：1 GiB。设置为 空 禁用', example: '1 GiB', type: String })
+    // @IsSafeNaturalNumber()
+    @IsBetterBytesString()
     @IsOptional()
-    enclosureLength?: number
+    enclosureLength?: number | string
 }
 /**
  * 排除不想要的，有一个符合就排除

@@ -4716,10 +4716,10 @@
                         "example": "url1|url2"
                     },
                     "enclosureLength": {
-                        "type": "number",
+                        "type": "string",
                         "title": "过滤附件体积(B)",
-                        "description": "单位为 B。设置为 0 禁用。",
-                        "example": 114514
+                        "description": "单位为 B，支持带单位，例如：1 GiB。设置为 空 禁用",
+                        "example": "1 GiB"
                     }
                 }
             },

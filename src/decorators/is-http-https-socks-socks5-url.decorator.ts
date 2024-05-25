@@ -17,7 +17,7 @@ export function IsHttpHttpsSocksSocks5Url(validationOptions?: ValidationOptions,
                     return allowedProtocols.includes(protocol) && (isURL(value, isUrlOptions) || isSocksUrl(value))
                 },
                 defaultMessage(): string {
-                    return 'Value must be a valid URL with http, https, socks or socks5 protocol'
+                    return `${propertyName} must be a valid URL with http, https, socks or socks5 protocol`
                 },
             },
         })

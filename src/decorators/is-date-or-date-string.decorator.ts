@@ -12,7 +12,7 @@ export function IsDateOrDateString(validationOptions?: ValidationOptions) {
                     return isDate(value) || isDateString(value)
                 },
                 defaultMessage(): string {
-                    return 'Value must be a valid date or date string'
+                    return `${propertyName} must be a valid date or date string`
                 },
             },
         })

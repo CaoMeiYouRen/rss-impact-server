@@ -13,7 +13,7 @@ export function IsUrlOrMagnetUri(validationOptions?: ValidationOptions, isUrlOpt
                     return isURL(value, isUrlOptions) || isMagnetURI(value)
                 },
                 defaultMessage(): string {
-                    return 'Value must be a valid URL or Magnet URI'
+                    return `${propertyName} must be a valid URL or Magnet URI`
                 },
             },
         })
