@@ -90,6 +90,15 @@ export class OsInfoDto {
         span: 24,
         labelWidth: 130,
     })
-    @ApiProperty({ title: '运行时间', description: '', example: '' })
+    @ApiProperty({ title: '系统运行时间', description: '', example: '' })
+    osUptime: string
+
+    @SetAclCrudField({
+        readonly: true,
+        editDisabled: true,
+        span: 24,
+        labelWidth: 130,
+    })
+    @ApiProperty({ title: '进程运行时间', description: '', example: '' })
     uptime: string
 }

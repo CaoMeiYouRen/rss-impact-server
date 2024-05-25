@@ -6976,9 +6976,15 @@
                         "description": "",
                         "example": ""
                     },
+                    "osUptime": {
+                        "type": "string",
+                        "title": "系统运行时间",
+                        "description": "",
+                        "example": ""
+                    },
                     "uptime": {
                         "type": "string",
-                        "title": "运行时间",
+                        "title": "进程运行时间",
                         "description": "",
                         "example": ""
                     }
@@ -6993,6 +6999,7 @@
                     "totalmem",
                     "freemem",
                     "cpuNum",
+                    "osUptime",
                     "uptime"
                 ]
             }

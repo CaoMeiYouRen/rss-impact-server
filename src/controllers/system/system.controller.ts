@@ -65,7 +65,8 @@ export class SystemController {
         const cpuNum = os.cpus().length // CPU 数量
         const totalmem = dataFormat(os.totalmem())// 系统内存总量
         const freemem = dataFormat(os.freemem()) // 系统空闲内存量
-        const uptime = timeFromNow(os.uptime() * 1000) // 启动时间 ms(os.uptime() * 1000, { long: true })   // dayjs().add(-os.uptime(), 's').fromNow(true)// 启动时间
+        const osUptime = timeFromNow(os.uptime() * 1000) // 系统启动时间 ms(os.uptime() * 1000, { long: true })   // dayjs().add(-os.uptime(), 's').fromNow(true)// 启动时间
+        const uptime = timeFromNow(process.uptime() * 1000) // 进程运行时间
         const info: OsInfoDto = {
             nodeVersion: process.versions.node,
             hostname,
@@ -76,6 +77,7 @@ export class SystemController {
             totalmem,
             freemem,
             cpuNum,
+            osUptime,
             uptime,
         }
         return info
