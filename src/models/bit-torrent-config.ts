@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Length, IsIn, IsNotEmpty, IsUrl, IsOptional } from 'class-validator'
-import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { BitTorrentList, BitTorrentType } from '@/constant/hook'
 import { __PROD__ } from '@/app.config'
+import { IsBetterBytesString } from '@/decorators/is-better-bytes-string'
 
 export class BitTorrentConfig {
 
@@ -50,17 +50,23 @@ export class BitTorrentConfig {
 
     @SetAclCrudField({
         labelWidth: 110,
+        type: 'input',
+        value: '',
     })
-    @ApiProperty({ title: '最大体积(B)', description: '过滤资源体积，超过体积的资源不会下载。单位为 B (字节)。设置为 0 禁用', example: 114514 })
-    @IsSafeNaturalNumber()
+    @ApiProperty({ title: '最大体积(B)', description: '过滤资源体积，超过体积的资源不会下载。单位为 B (字节)。支持带单位，例如：1 GiB。设置为空禁用', example: '1 GiB', type: String })
+    // @IsSafeNaturalNumber()
+    @IsBetterBytesString()
     @IsOptional()
-    maxSize?: number
+    maxSize?: number | string
 
     @SetAclCrudField({
         labelWidth: 125,
+        type: 'input',
+        value: '',
     })
-    @ApiProperty({ title: '磁盘最小空间(B)', description: '保留磁盘空间的最小值，小于这个值是将不会下载资源。单位为 B (字节)。设置为 0 禁用', example: 114514 })
-    @IsSafeNaturalNumber()
+    @ApiProperty({ title: '磁盘最小空间(B)', description: '保留磁盘空间的最小值，小于这个值是将不会下载资源。单位为 B (字节)。支持带单位，例如：1 GiB。设置为空禁用', example: '1 GiB', type: String })
+    // @IsSafeNaturalNumber()
+    @IsBetterBytesString()
     @IsOptional()
-    minDiskSize?: number
+    minDiskSize?: number | string
 }

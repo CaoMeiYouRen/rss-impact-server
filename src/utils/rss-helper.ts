@@ -7,8 +7,7 @@ import { isURL } from 'class-validator'
 import XRegExp from 'xregexp'
 import { get, camelCase } from 'lodash'
 import opml, { Opml } from 'opml'
-import * as betterBytes from 'better-bytes'
-import { collapseWhitespace, deepTrim, htmlToMarkdown, isHttpURL, timeFormat, uuid } from './helper'
+import { collapseWhitespace, deepTrim, htmlToMarkdown, isHttpURL, parseDataSize, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Filter, FilterOut } from '@/db/models/hook.entity'
 import { DataItem } from '@/interfaces/data'
@@ -287,10 +286,7 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
                 }
                 if (field === 'enclosure.length') {
                     // 保留体积，只下载体积小于 enclosureLength 的资源
-                    if (typeof filter.enclosureLength === 'number') {
-                        return filter.enclosureLength > article.enclosure?.length
-                    }
-                    return betterBytes.parse(filter.enclosureLength) > article.enclosure?.length
+                    return parseDataSize(filter.enclosureLength) > article.enclosure?.length
                 }
                 return XRegExp(get(filter, camelCase(field)), 'ig').test(get(article, field))
             }

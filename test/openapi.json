@@ -4510,16 +4510,16 @@
                         "example": "服务器上的地址，要保存到的路径。留空则为 BT 下载器的默认设置"
                     },
                     "maxSize": {
-                        "type": "number",
+                        "type": "string",
                         "title": "最大体积(B)",
-                        "description": "过滤资源体积，超过体积的资源不会下载。单位为 B (字节)。设置为 0 禁用",
-                        "example": 114514
+                        "description": "过滤资源体积，超过体积的资源不会下载。单位为 B (字节)。支持带单位，例如：1 GiB。设置为空禁用",
+                        "example": "1 GiB"
                     },
                     "minDiskSize": {
-                        "type": "number",
+                        "type": "string",
                         "title": "磁盘最小空间(B)",
-                        "description": "保留磁盘空间的最小值，小于这个值是将不会下载资源。单位为 B (字节)。设置为 0 禁用",
-                        "example": 114514
+                        "description": "保留磁盘空间的最小值，小于这个值是将不会下载资源。单位为 B (字节)。支持带单位，例如：1 GiB。设置为空禁用",
+                        "example": "1 GiB"
                     }
                 },
                 "required": [
@@ -4718,7 +4718,7 @@
                     "enclosureLength": {
                         "type": "string",
                         "title": "过滤附件体积(B)",
-                        "description": "单位为 B，支持带单位，例如：1 GiB。设置为 空 禁用",
+                        "description": "单位为 B(字节)。支持带单位，例如：1 GiB。设置为空禁用",
                         "example": "1 GiB"
                     }
                 }

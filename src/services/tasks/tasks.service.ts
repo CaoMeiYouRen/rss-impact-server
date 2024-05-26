@@ -22,7 +22,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -578,7 +578,9 @@ export class TasksService implements OnApplicationBootstrap {
         }
         switch (type) {
             case 'qBittorrent': {
-                const { baseUrl, username, password, downloadPath, maxSize, minDiskSize } = config
+                const { baseUrl, username, password, downloadPath } = config
+                const maxSize = parseDataSize(config.maxSize) // 附件的最大值
+                const minDiskSize = parseDataSize(config.minDiskSize) // 保留磁盘的最小值
                 const qBittorrent = new QBittorrent({
                     baseUrl,
                     username,
@@ -595,9 +597,10 @@ export class TasksService implements OnApplicationBootstrap {
                     let magnet: Instance & { xl?: number }
                     // 判读磁盘空间
                     const mainData = await qBittorrent.getMainData()
-                    // const minDisk = minDiskSize || betterBytes.parse('1 GiB') // 保留磁盘的最小值
-                    if (minDiskSize && mainData.server_state.free_space_on_disk < minDiskSize) { // 如果 bt 服务器的磁盘空间不足，则停止下载
-                        return
+                    if (minDiskSize) { // 如果 bt 服务器的磁盘空间不足，则停止下载
+                        if (mainData.server_state.free_space_on_disk < minDiskSize) {
+                            return
+                        }
                     }
                     // 如果是 magnet，则直接添加 磁力链接
                     if (/^magnet:/.test(url)) {
@@ -736,8 +739,8 @@ export class TasksService implements OnApplicationBootstrap {
      */
     private async updateTorrentInfo(qBittorrent: QBittorrent, config: BitTorrentConfig, resource: Resource, article: Article) {
         const { url } = article.enclosure
-        const { maxSize } = config
         const { hash } = resource
+        const maxSize = parseDataSize(config.maxSize)
         const shoutUrl = url?.slice(0, 128)
         const [error, torrentInfo] = await to(qBittorrent.getTorrent(hash))
         if (error) {

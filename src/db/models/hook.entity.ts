@@ -90,7 +90,7 @@ export class Filter {
         type: 'input',
         value: '',
     }) // 如果源 RSS 未设置附件体积，则该项不会生效
-    @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B，支持带单位，例如：1 GiB。设置为 空 禁用', example: '1 GiB', type: String })
+    @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B(字节)。支持带单位，例如：1 GiB。设置为空禁用', example: '1 GiB', type: String })
     // @IsSafeNaturalNumber()
     @IsBetterBytesString()
     @IsOptional()

@@ -3,7 +3,7 @@ import { PARAMTYPES_METADATA } from '@nestjs/common/constants'
 import dayjs from 'dayjs'
 import { Logger } from '@nestjs/common'
 import { FindOneOptions, FindOptionsOrder, getMetadataArgsStorage } from 'typeorm'
-import { getMetadataStorage } from 'class-validator'
+import { getMetadataStorage, ValidationTypes } from 'class-validator'
 import { Props } from '@cao-mei-you-ren/avue-types'
 import { AvueCrudConfig, CrudOptionsWithModel, Field } from '@/interfaces/avue'
 import { AclCrudController } from '@/controllers/acl-crud/acl-crud.controller'
@@ -75,7 +75,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
         let value: any = options?.default
         let extra: any = {
             ...setAclCrudFieldOption,
-            nullable: options?.nullable,
+            nullable: options?.nullable ?? validatorOptions.some((e) => e.type === ValidationTypes.CONDITIONAL_VALIDATION), // 如果 nullable ，或者是 可选的
         }
         const label = swaggerOption?.title || upperFirst(prop)
         const tip = swaggerOption?.description
