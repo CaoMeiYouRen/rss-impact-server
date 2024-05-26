@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace } from './helper';
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize } from './helper';
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {
@@ -239,6 +239,21 @@ describe('dataFormat', () => {
         expect(() => dataFormat(-1024n)).toThrow('Data must be greater than or equal to 0');
     });
 })
+
+describe('parseDataSize', () => {
+    it('should return the input number as is', () => {
+        expect(parseDataSize(1024)).toBe(1024);
+    });
+
+    it('should be able to parse KiB', () => {
+        expect(parseDataSize('1 KiB')).toBe(1024);
+    });
+
+    it('should be able to parse KB', () => {
+        expect(parseDataSize('1 KB')).toBe(1000);
+    });
+});
+
 
 describe('splitString', () => {
     it('should split a string into chunks of specified length', () => {

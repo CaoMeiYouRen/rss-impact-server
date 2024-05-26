@@ -176,8 +176,8 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
             }
         }
         let rules: any[]
-        // 如果有 isNotEmpty 则为必填
-        if (validatorOptions.find((e) => e.name === 'isNotEmpty')) {
+        // 如果有 isDefined/isNotEmpty 则为必填
+        if (validatorOptions.some((e) => e.name === 'isDefined' || e.name === 'isNotEmpty')) {
             rules = [
                 {
                     required: true,
@@ -187,7 +187,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
             ]
         }
         // 如果有 isUrl 则为 url
-        if (validatorOptions.find((e) => e.name === 'isUrl')) {
+        if (validatorOptions.some((e) => e.name === 'isUrl')) {
             extra.type = 'url' // url 默认为数组
             if (isImageUrl(Array.isArray(swaggerOption.example) ? swaggerOption.example[0] : swaggerOption.example)) { // 如果 example 是图片，则设置为 img
                 extra.type = 'img'

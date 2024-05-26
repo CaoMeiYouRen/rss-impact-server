@@ -1,7 +1,7 @@
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
 import { ApiExtraModels, ApiProperty, getSchemaPath, OmitType, PartialType } from '@nestjs/swagger'
-import { IsBoolean, IsObject, Length, ValidateNested, IsIn, IsNotEmpty, IsOptional } from 'class-validator'
-import { Type } from 'class-transformer'
+import { IsBoolean, IsObject, Length, ValidateNested, IsIn, IsNotEmpty, IsOptional, validate, IsDefined } from 'class-validator'
+import { plainToInstance, Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { ProxyConfig } from './proxy-config.entity'
@@ -20,6 +20,10 @@ import { IsId } from '@/decorators/is-id.decorator'
 import { AIConfig } from '@/models/ai-config'
 import { RegularConfig } from '@/models/regular-config'
 import { IsBetterBytesString } from '@/decorators/is-better-bytes-string'
+import { winstonLogger } from '@/middlewares/logger.middleware'
+import { HttpError } from '@/models/http-error'
+import { flattenValidationErrors } from '@/utils/helper'
+import { __DEV__ } from '@/app.config'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const hookConfig: Record<HookType, Function> = {
@@ -193,13 +197,29 @@ export class Hook extends AclBase {
     })
     @JsonStringLength(0, 2048)
     @IsObject()
-    @IsNotEmpty()
+    @IsDefined()
     @Column({
         type: 'simple-json',
         length: 2048,
         default: '{}',
     })
     config: HookConfig
+
+    @BeforeInsert()
+    @BeforeUpdate()
+    protected async insertConfigValidate() { // 插入/更新前校验
+        const obj: HookConfig = plainToInstance(hookConfig[this.type] as any, this.config)
+        const validationErrors = await validate(obj, {
+            whitelist: true,
+            skipMissingProperties: true,
+        })
+        const errors = flattenValidationErrors(validationErrors)
+        if (errors?.length) {
+            __DEV__ && winstonLogger.debug('插入/更新前校验', validationErrors)
+            throw new HttpError(400, errors.join(', '))
+        }
+        __DEV__ && winstonLogger.debug('通过插入/更新前校验', JSON.stringify(this.config, null, 4))
+    }
 
     @SetAclCrudField({
         // type: 'textarea',
@@ -209,7 +229,7 @@ export class Hook extends AclBase {
     @ValidateNested()
     @JsonStringLength(0, 2048)
     @IsObject()
-    @IsNotEmpty()
+    @IsDefined()
     @Column({
         type: 'simple-json',
         length: 2048,
@@ -225,7 +245,7 @@ export class Hook extends AclBase {
     @ValidateNested()
     @JsonStringLength(0, 2048)
     @IsObject()
-    @IsNotEmpty()
+    @IsDefined()
     @Column({
         type: 'simple-json',
         length: 2048,
@@ -266,16 +286,6 @@ export class Hook extends AclBase {
     //     default: 0,
     // })
     // reverseLimit?: number
-
-    // @SetAclCrudField({
-    //     labelWidth: 120,
-    // })
-    // @ApiProperty({ title: '是否启用代理', example: false })
-    // @IsBoolean({ message: '是否启用代理必须为 Boolean' })
-    // @Column({
-    //     default: false,
-    // })
-    // isEnableProxy: boolean
 
     @SetAclCrudField({
         search: true,

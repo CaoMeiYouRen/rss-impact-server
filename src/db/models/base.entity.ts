@@ -7,6 +7,7 @@ import { IsId } from '@/decorators/is-id.decorator'
 import { flattenValidationErrors } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
 import { winstonLogger } from '@/middlewares/logger.middleware'
+import { __DEV__ } from '@/app.config'
 
 export abstract class Base {
 
@@ -35,9 +36,10 @@ export abstract class Base {
 
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
-            winstonLogger.debug('插入前校验', validationErrors)
+            __DEV__ && winstonLogger.debug('插入前校验', validationErrors)
             throw new HttpError(400, errors.join(', '))
         }
+        // __DEV__ && winstonLogger.debug('通过插入前校验', this)
     }
 
     @BeforeUpdate()
@@ -46,13 +48,13 @@ export abstract class Base {
         const validationErrors = await validate(obj, {
             whitelist: true,
             skipMissingProperties: true, // 忽略 null 和 undefined
-            // skipUndefinedProperties: true, // 只忽略 undefined ，如果是 null 的话就会将字段设置为空
         })
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
-            winstonLogger.debug('更新前校验', validationErrors)
+            __DEV__ && winstonLogger.debug('更新前校验', validationErrors)
             throw new HttpError(400, errors.join(', '))
         }
+        // __DEV__ && winstonLogger.debug('通过更新前校验', this)
     }
 
 }

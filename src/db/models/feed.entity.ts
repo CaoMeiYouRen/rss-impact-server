@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsIn, IsNotEmpty, IsOptional, IsUrl, Length } from 'class-validator'
+import { IsArray, IsBoolean, IsDefined, IsIn, IsNotEmpty, IsOptional, IsUrl, Length } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
@@ -124,7 +124,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '分组', example: 1 })
     @IsId()
-    @IsNotEmpty()
+    @IsDefined()
     @Column({ nullable: true })
     categoryId: number
 
