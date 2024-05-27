@@ -34,7 +34,7 @@ const hookConfig: Record<HookType, Function> = {
     aiSummary: AIConfig,
     regular: RegularConfig,
 }
-
+// TODO 考虑改为嵌入式实体
 /**
  * 仅保留想要的，必须全部符合
  */
