@@ -7,7 +7,6 @@ import { Feed } from './feed.entity'
 import { ProxyConfig } from './proxy-config.entity'
 import { HookList, HookType } from '@/constant/hook'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
-import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { HookConfig } from '@/interfaces/hook'
@@ -19,11 +18,12 @@ import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { IsId } from '@/decorators/is-id.decorator'
 import { AIConfig } from '@/models/ai-config'
 import { RegularConfig } from '@/models/regular-config'
-import { IsBetterBytesString } from '@/decorators/is-better-bytes-string'
 import { winstonLogger } from '@/middlewares/logger.middleware'
 import { HttpError } from '@/models/http-error'
 import { flattenValidationErrors } from '@/utils/helper'
 import { __DEV__ } from '@/app.config'
+import { Filter } from '@/models/filter.dto'
+import { FilterOut } from '@/models/filter-out.dto'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const hookConfig: Record<HookType, Function> = {
@@ -35,121 +35,6 @@ const hookConfig: Record<HookType, Function> = {
     regular: RegularConfig,
 }
 // TODO 考虑改为嵌入式实体
-/**
- * 仅保留想要的，必须全部符合
- */
-export class Filter {
-
-    @ApiProperty({ title: '条数限制', description: '限制最大条数，主要用于排行榜类 RSS。默认值 20。', example: 20 })
-    @IsSafeNaturalNumber(10000)
-    @IsOptional()
-    limit?: number
-
-    @SetAclCrudField({
-        labelWidth: 105,
-    })
-    @ApiProperty({ title: '过滤时间(秒)', description: '过滤时间，返回指定时间范围内的内容。设置为 0 禁用', example: 3600 })
-    @IsSafeNaturalNumber()
-    @IsOptional()
-    time?: number
-
-    @ApiProperty({ title: '过滤标题', example: '标题1|标题2' })
-    @Length(0, 256)
-    @IsOptional()
-    title?: string
-
-    @ApiProperty({ title: '过滤总结', example: '总结1|总结2' })
-    @Length(0, 1024)
-    @IsOptional()
-    summary?: string
-
-    @ApiProperty({ title: '过滤作者', example: 'CaoMeiYouRen' })
-    @Length(0, 128)
-    @IsOptional()
-    author?: string
-
-    @ApiProperty({ title: '过滤分类', description: '分类正则中有一个对得上就保留', example: 'tag1|tag2' })
-    @Length(0, 256)
-    @IsOptional()
-    categories?: string
-
-    @SetAclCrudField({
-        labelWidth: 105,
-    })
-    @ApiProperty({ title: '过滤附件URL', example: 'url1|url2' })
-    @Length(0, 1024)
-    @IsOptional()
-    enclosureUrl?: string
-
-    @SetAclCrudField({
-        labelWidth: 116,
-    })
-    @ApiProperty({ title: '过滤附件类型', example: 'url1|url2' })
-    @Length(0, 128)
-    @IsOptional()
-    enclosureType?: string
-
-    @SetAclCrudField({
-        labelWidth: 125,
-        type: 'input',
-        value: '',
-    }) // 如果源 RSS 未设置附件体积，则该项不会生效
-    @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B(字节)。支持带单位，例如：1 GiB。设置为空禁用', example: '1 GiB', type: String })
-    // @IsSafeNaturalNumber()
-    @IsBetterBytesString()
-    @IsOptional()
-    enclosureLength?: number | string
-}
-/**
- * 排除不想要的，有一个符合就排除
- */
-export class FilterOut {
-
-    @ApiProperty({ title: '排除标题', example: '标题1|标题2' })
-    @Length(0, 256)
-    @IsOptional()
-    title?: string
-
-    @ApiProperty({ title: '排除总结', example: '总结1|总结2' })
-    @Length(0, 1024)
-    @IsOptional()
-    summary?: string
-
-    @ApiProperty({ title: '排除作者', example: 'CaoMeiYouRen' })
-    @Length(0, 128)
-    @IsOptional()
-    author?: string
-
-    @ApiProperty({ title: '排除分类', description: '分类正则中有一个对得上就排除', example: 'tag1|tag2' })
-    @Length(0, 256)
-    @IsOptional()
-    categories?: string
-
-    @SetAclCrudField({
-        labelWidth: 105,
-    })
-    @ApiProperty({ title: '排除附件URL', example: 'url1|url2' })
-    @Length(0, 1024)
-    @IsOptional()
-    enclosureUrl?: string
-
-    @SetAclCrudField({
-        labelWidth: 116,
-    })
-    @ApiProperty({ title: '排除附件类型', example: 'url1|url2' })
-    @Length(0, 128)
-    @IsOptional()
-    enclosureType?: string
-
-    // @SetAclCrudField({
-    //     labelWidth: 116,
-    // })
-    // @ApiProperty({ title: '排除附件体积(B)', description: '单位为 B。设置为 0 禁用', example: 114514 })
-    // @IsSafeNaturalNumber()
-    // @IsOptional()
-    // enclosureLength?: number
-}
-
 @ApiExtraModels(...Object.values(hookConfig))
 @Entity()
 export class Hook extends AclBase {

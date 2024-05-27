@@ -9,8 +9,9 @@ import { get, camelCase } from 'lodash'
 import opml, { Opml } from 'opml'
 import { collapseWhitespace, deepTrim, htmlToMarkdown, isHttpURL, parseDataSize, timeFormat, uuid } from './helper'
 import { Article, EnclosureImpl } from '@/db/models/article.entity'
-import { Filter, FilterOut } from '@/db/models/hook.entity'
 import { DataItem } from '@/interfaces/data'
+import { Filter } from '@/models/filter.dto'
+import { FilterOut } from '@/models/filter-out.dto'
 
 export const rssParser = new Parser()
 

@@ -3,7 +3,6 @@ import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn, IsArray, IsBoolean, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
-import { Filter, FilterOut } from './hook.entity'
 import { Feed } from './feed.entity'
 import { Category } from './category.entity'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
@@ -13,6 +12,8 @@ import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { getAccessToken } from '@/utils/helper'
 import { BASE_URL } from '@/app.config'
 import { IsId } from '@/decorators/is-id.decorator'
+import { Filter } from '@/models/filter.dto'
+import { FilterOut } from '@/models/filter-out.dto'
 
 /**
  * 自定义 RSS 查询

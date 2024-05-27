@@ -4691,7 +4691,7 @@
                         "minLength": 0,
                         "maxLength": 128,
                         "title": "过滤作者",
-                        "example": "CaoMeiYouRen"
+                        "example": "author1|author2"
                     },
                     "categories": {
                         "type": "string",
@@ -4713,7 +4713,7 @@
                         "minLength": 0,
                         "maxLength": 128,
                         "title": "过滤附件类型",
-                        "example": "url1|url2"
+                        "example": "type1|type2"
                     },
                     "enclosureLength": {
                         "type": "string",
@@ -4745,7 +4745,7 @@
                         "minLength": 0,
                         "maxLength": 128,
                         "title": "排除作者",
-                        "example": "CaoMeiYouRen"
+                        "example": "author1|author2"
                     },
                     "categories": {
                         "type": "string",
@@ -4767,7 +4767,7 @@
                         "minLength": 0,
                         "maxLength": 128,
                         "title": "排除附件类型",
-                        "example": "url1|url2"
+                        "example": "type1|type2"
                     }
                 }
             },
