@@ -12,6 +12,11 @@ export class FilterOut {
     @IsOptional()
     title?: string
 
+    @ApiProperty({ title: '排除正文', example: '正文1|正文2' })
+    @Length(0, 2048)
+    @IsOptional()
+    content?: string
+
     @ApiProperty({ title: '排除总结', example: '总结1|总结2' })
     @Length(0, 1024)
     @IsOptional()

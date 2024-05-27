@@ -101,6 +101,9 @@ export class Article extends AclBase {
     title?: string
 
     /** 正文 content/content:encoded */
+    @SetAclCrudField({
+        search: true,
+    })
     @ApiProperty({ title: '正文', example: '这是一段正文' })
     @Length(0, 2 ** 20)
     @IsOptional()
@@ -110,20 +113,6 @@ export class Article extends AclBase {
         nullable: true,
     })
     content?: string
-
-    /**
-     *发布日期 pubDate/isoDate
-     */
-    // @SetAclCrudField({
-    //     hide: true,
-    // })
-    // @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
-    // @Type(() => Date)
-    // @IsDate()
-    // @Column({
-    //     nullable: true,
-    // })
-    // publishDate?: Date
 
     /**
    *发布日期 pubDate/isoDate

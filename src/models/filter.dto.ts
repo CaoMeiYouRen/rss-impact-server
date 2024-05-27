@@ -28,6 +28,11 @@ export class Filter {
     @IsOptional()
     title?: string
 
+    @ApiProperty({ title: '过滤正文', example: '正文1|正文2' })
+    @Length(0, 2048)
+    @IsOptional()
+    content?: string
+
     @ApiProperty({ title: '过滤总结', example: '总结1|总结2' })
     @Length(0, 1024)
     @IsOptional()

@@ -4679,6 +4679,13 @@
                         "title": "过滤标题",
                         "example": "标题1|标题2"
                     },
+                    "content": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "过滤正文",
+                        "example": "正文1|正文2"
+                    },
                     "summary": {
                         "type": "string",
                         "minLength": 0,
@@ -4732,6 +4739,13 @@
                         "maxLength": 256,
                         "title": "排除标题",
                         "example": "标题1|标题2"
+                    },
+                    "content": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "排除正文",
+                        "example": "正文1|正文2"
                     },
                     "summary": {
                         "type": "string",
