@@ -82,6 +82,7 @@ export class UserService implements OnApplicationBootstrap {
         await this.userRepository.update({
             id,
         }, user)
+        //   await  this.userRepository.save(this.userRepository.create(user))
         return this.userRepository.findOne({
             where: {
                 id,

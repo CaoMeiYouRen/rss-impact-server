@@ -3,7 +3,7 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags, OmitType } from '@nestjs/
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { ICrudQuery } from '../acl-crud/acl-crud.controller'
-import { CreateUser, FindUser, UpdateUser, User } from '@/db/models/user.entity'
+import { CreateUser, FindUser, UpdateMe, UpdateUser, User } from '@/db/models/user.entity'
 import { CrudQuery } from '@/decorators/crud-query.decorator'
 import { UserService } from '@/services/user/user.service'
 import { CurrentUser } from '@/decorators/current-user.decorator'
@@ -14,6 +14,7 @@ import { __DEV__, PAGE_LIMIT_MAX } from '@/app.config'
 import { AvueCrudConfig, DicData, AvueCrudOption } from '@/models/avue.dto'
 import { transformQueryOperator } from '@/utils/helper'
 import { Role } from '@/constant/role'
+import { HttpError } from '@/models/http-error'
 
 @UseSession()
 @AclCrud({
@@ -91,14 +92,15 @@ export class UserController {
     async meOption(@CurrentUser() user: User) {
         return {
             title: '个人信息',
-            submitBtn: false,
+            submitBtn: true,
             emptyBtn: false,
             column: initAvueCrudColumn(OmitType(User, ['createdAt', 'updatedAt', 'password', 'accessToken'] as const)).map((col) => {
                 const hide = ['roles'].includes(col.prop) && !user.roles.includes(Role.admin)
-                const disabled = ['roles'].includes(col.prop)
+                const disabled = ['id', 'roles'].includes(col.prop)
+                const readonly = ['id', 'roles'].includes(col.prop)
                 return {
                     ...col,
-                    readonly: true,
+                    readonly,
                     hide,
                     disabled,
                     span: 24,
@@ -113,6 +115,20 @@ export class UserController {
     @Get('me')
     async me(@CurrentUser() user: User) {
         return user
+    }
+
+    @ApiOperation({ summary: '更新个人信息' })
+    @ApiResponse({ status: 201, type: User })
+    @Post('me')
+    async updateMe(@Body() body: UpdateMe, @CurrentUser() user: User) {
+        if (body.username && body.username !== user.username && await this.userService.findOne({ username: body.username })) {
+            throw new HttpError(400, '用户名已存在！')
+        }
+        if (body.email && body.email !== user.email && await this.userService.findOne({ email: body.email })) {
+            throw new HttpError(400, '邮箱已存在！')
+        }
+        const newUser = await this.userService.update(body)
+        return newUser
     }
 
     @ApiResponse({ status: 200, type: [DicData] })

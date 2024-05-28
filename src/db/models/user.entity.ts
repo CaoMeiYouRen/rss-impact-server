@@ -2,7 +2,7 @@
 import { Entity, Column, BeforeInsert, BeforeUpdate, Index } from 'typeorm'
 import { hash } from 'bcryptjs'
 import { IsEmail, IsNotEmpty, Length } from 'class-validator'
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
+import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
 
 import { Base } from './base.entity'
 import { Role } from '@/constant/role'
@@ -108,6 +108,8 @@ export class User extends Base {
 export class CreateUser extends OmitType(User, ['id', 'createdAt', 'updatedAt', 'accessToken'] as const) { }
 
 export class UpdateUser extends PartialType(OmitType(User, ['createdAt', 'updatedAt', 'accessToken'] as const)) { }
+
+export class UpdateMe extends PartialType(PickType(User, ['id', 'username', 'email'] as const)) { }
 
 export class FindUser extends FindPlaceholderDto<User> {
     @ApiProperty({ type: () => [User] })

@@ -96,7 +96,7 @@ export class Hook extends AclBase {
         const obj: HookConfig = plainToInstance(hookConfig[this.type] as any, this.config)
         const validationErrors = await validate(obj, {
             whitelist: true,
-            skipMissingProperties: true,
+            skipUndefinedProperties: true, // 忽略 undefined。如果是 undefined ，表明该字段没有更新
         })
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {

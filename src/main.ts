@@ -67,6 +67,8 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe({
         transform: true,
         whitelist: true,
+        skipUndefinedProperties: true, // 忽略 undefined。如果是 undefined ，表明该字段没有更新
+        // skipMissingProperties: true,
         // forbidNonWhitelisted: true,
         enableDebugMessages: __DEV__,
     }))

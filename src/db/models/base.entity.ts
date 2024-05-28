@@ -47,7 +47,8 @@ export abstract class Base {
         const obj = plainToInstance(this.constructor as any, this) as any // 解决 部分情况下子字段无法校验的问题
         const validationErrors = await validate(obj, {
             whitelist: true,
-            skipMissingProperties: true, // 忽略 null 和 undefined
+            // skipMissingProperties: true, // 忽略 null 和 undefined
+            skipUndefinedProperties: true, // 忽略 undefined。如果是 undefined ，表明该字段没有更新
         })
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
