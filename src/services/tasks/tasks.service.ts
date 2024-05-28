@@ -579,8 +579,8 @@ export class TasksService implements OnApplicationBootstrap {
         switch (type) {
             case 'qBittorrent': {
                 const { baseUrl, username, password, downloadPath } = config
-                const maxSize = parseDataSize(config.maxSize) // 附件的最大值
-                const minDiskSize = parseDataSize(config.minDiskSize) // 保留磁盘的最小值
+                const maxSize = parseDataSize(config.maxSize || 0) // 附件的最大值
+                const minDiskSize = parseDataSize(config.minDiskSize || 0) // 保留磁盘的最小值
                 const qBittorrent = new QBittorrent({
                     baseUrl,
                     username,
@@ -597,10 +597,8 @@ export class TasksService implements OnApplicationBootstrap {
                     let magnet: Instance & { xl?: number }
                     // 判读磁盘空间
                     const mainData = await qBittorrent.getMainData()
-                    if (minDiskSize) { // 如果 bt 服务器的磁盘空间不足，则停止下载
-                        if (mainData.server_state.free_space_on_disk < minDiskSize) {
-                            return
-                        }
+                    if (minDiskSize && mainData.server_state.free_space_on_disk < minDiskSize) { // 如果 bt 服务器的磁盘空间不足，则停止下载
+                        return
                     }
                     // 如果是 magnet，则直接添加 磁力链接
                     if (/^magnet:/.test(url)) {
@@ -638,7 +636,7 @@ export class TasksService implements OnApplicationBootstrap {
                         name = magnet.name || magnet.dn as string
 
                         if (magnet.length) {
-                            size = magnet.length
+                            size = Number(magnet.length)
                         } else if (magnet.xl) {
                             size = Number(magnet.xl)
                         }
@@ -866,7 +864,11 @@ The content to be summarized is:`
                 await Promise.allSettled(aiArticles.map((article) => aiLimit(async () => {
                     const articleContent = getArticleContent(article, isSnippet, isIncludeTitle)
                     const articleContentLiat = isSplit ? splitStringByToken(articleContent, reservedTokens) : [limitToken(articleContent, reservedTokens)]
-                    this.logger.log(`正在总结文章(id: ${article.id})：${article.title}`)
+                    if (__DEV__) {
+                        this.logger.debug(`正在总结文章(id: ${article.id})：${article.title}`)
+                    } else {
+                        this.logger.log(`正在总结文章 id: ${article.id}`)
+                    }
                     const aiSummaries: string[] = []
                     for await (const content of articleContentLiat) { // 串行请求
                         const [error, chatCompletion] = await to(openai.chat.completions.create({
@@ -883,8 +885,11 @@ The content to be summarized is:`
                         }
                     }
                     const aiSummary = aiSummaries.join('')
-                    this.logger.log(`文章(id: ${article.id}) ${article.title} 总结完成`)
-                    // __DEV__ && this.logger.debug(`AI 总结为：${aiSummary}`)
+                    if (__DEV__) {
+                        this.logger.debug(`文章(id: ${article.id}) ${article.title} 总结完成`)
+                    } else {
+                        this.logger.log(`文章 id: ${article.id} 总结完成`)
+                    }
                     article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                     article.aiSummary = aiSummary
                     await this.articleRepository.save(article)
