@@ -9,7 +9,7 @@ RUN git clone https://github.com/CaoMeiYouRen/rss-impact-web.git /frontend --dep
 
 RUN npm config set registry https://registry.npmjs.org/ && \
     pnpm config set registry https://registry.npmjs.org/ && \
-    npm i -g pnpm@9 && pnpm i --frozen-lockfile
+    npm i -g pnpm@8.11 && pnpm i --frozen-lockfile
 
 RUN pnpm run build
 # 构建阶段
@@ -21,7 +21,7 @@ COPY package.json .npmrc pnpm-lock.yaml /app/
 
 RUN npm config set registry https://registry.npmjs.org/ && \
     pnpm config set registry https://registry.npmjs.org/ && \
-    npm i -g pnpm@9 && pnpm i --frozen-lockfile
+    npm i -g pnpm@8.11 && pnpm i --frozen-lockfile
 
 COPY . /app
 
