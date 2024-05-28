@@ -18,6 +18,7 @@ import parseTorrent, { Instance, toMagnetURI } from 'parse-torrent'
 import Parser from 'rss-parser'
 import OpenAI from 'openai'
 import ms from 'ms'
+import { isMagnetURI } from 'class-validator'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
@@ -600,12 +601,21 @@ export class TasksService implements OnApplicationBootstrap {
                     if (minDiskSize && mainData.server_state.free_space_on_disk < minDiskSize) { // 如果 bt 服务器的磁盘空间不足，则停止下载
                         return
                     }
-                    // 如果是 magnet，则直接添加 磁力链接
-                    if (/^magnet:/.test(url)) {
+                    if (article.enclosure.length === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
+                        article.enclosure.length = 0
+                    }
+                    // 如果是 magnet，则直接添加 磁力链接 /^magnet:/.test
+                    if (isMagnetURI(url)) {
                         magnet = parseTorrent(url) as Instance
                         hash = magnet.infoHash?.toLowerCase()
-                        if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
+                        const resource: Resource = await this.resourceRepository.findOne({ where: { hash, userId } })
+                        if (resource) {
                             __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
+
+                            if (resource.url !== url && isHttpURL(resource.url) && !article.enclosure.length) { // 如果是不同的 url
+                                article.enclosure.length = resource.size // 更新附件大小
+                                await this.articleRepository.save(article)
+                            }
                             return
                         }
                         this.logger.log(`正在下载资源：${shoutUrl}`)
@@ -624,8 +634,14 @@ export class TasksService implements OnApplicationBootstrap {
                         const torrent = Buffer.from(resp.data)
                         magnet = parseTorrent(torrent) as Instance
                         hash = magnet.infoHash?.toLowerCase() // hash
-                        if (await this.resourceRepository.findOne({ where: { hash, userId } })) {
+                        const resource: Resource = await this.resourceRepository.findOne({ where: { hash, userId } })
+                        if (resource) {
                             __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
+                            // 解决存在不同源的相同资源缺少 size 的问题
+                            if (resource.url !== url && isMagnetURI(resource.url) && !article.enclosure.length) { // 如果是不同的 url
+                                article.enclosure.length = resource.size // 更新附件大小
+                                await this.articleRepository.save(article)
+                            }
                             return
                         }
                         this.logger.log(`正在下载资源：${shoutUrl}`)
@@ -635,15 +651,12 @@ export class TasksService implements OnApplicationBootstrap {
                     if (/^(https?:\/\/|magnet:)/.test(url)) {
                         name = magnet.name || magnet.dn as string
 
-                        if (magnet.length) {
+                        if (article.enclosure.length) {
+                            size = article.enclosure.length
+                        } else if (magnet.length) {
                             size = Number(magnet.length)
                         } else if (magnet.xl) {
                             size = Number(magnet.xl)
-                        }
-
-                        if (article.enclosure.length === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
-                            size = 0
-                            article.enclosure.length = 0
                         }
 
                         const tracker = magnet.announce?.[0] // 仅保留第一个 tracker
