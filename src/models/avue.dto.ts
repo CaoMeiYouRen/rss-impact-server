@@ -37,7 +37,7 @@ export class Column implements Field {
     })
     dicData?: DicData[]
 }
-export class Option implements AvueCrudOption {
+class Option implements AvueCrudOption {
     index?: boolean
     align?: string
     border?: boolean
@@ -124,9 +124,15 @@ export class Option implements AvueCrudOption {
 
 }
 
-export class AvueCrudConfigImpl implements AvueCrudConfig {
+export class Config implements AvueCrudConfig {
     @ApiProperty({
         type: () => Option,
     })
-    option: Option
+    option?: Option
 }
+
+export {
+    Option as AvueCrudOption,
+    Config as AvueCrudConfig,
+}
+

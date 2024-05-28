@@ -13,7 +13,7 @@ import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger'
 import { Request } from 'express'
 import { Repository } from 'typeorm'
 import { merge } from 'lodash'
-import { AvueCrudConfig, CrudRouteForFind } from '@/interfaces/avue'
+import { CrudRouteForFind } from '@/interfaces/avue'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { HttpError } from '@/models/http-error'
@@ -25,7 +25,7 @@ import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
 import { AclOptions } from '@/decorators/acl-crud.decorator'
 import { isId } from '@/decorators/is-id.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
-import { AvueCrudConfigImpl, DicData } from '@/models/avue.dto'
+import { AvueCrudConfig, DicData } from '@/models/avue.dto'
 import { transformQueryOperator } from '@/utils/helper'
 
 export class ICrudQuery implements CrudRouteForFind {
@@ -79,7 +79,7 @@ export class AclCrudController {
     ) {
     }
 
-    @ApiResponse({ status: 200, type: AvueCrudConfigImpl })
+    @ApiResponse({ status: 200, type: AvueCrudConfig })
     @ApiOperation({ summary: '获取 config' })
     @Get('config')
     async config(@CurrentUser() user: User): Promise<AvueCrudConfig> {

@@ -9,6 +9,7 @@ import { dataFormat, timeFromNow } from '@/utils/helper'
 import { DatabaseInfoDto } from '@/models/database-info.dto'
 import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { OsInfoDto } from '@/models/os-info.dto'
+import { AvueCrudOption } from '@/models/avue.dto'
 
 @UseAdmin()
 @ApiTags('system')
@@ -17,6 +18,7 @@ export class SystemController {
 
     private readonly logger: Logger = new Logger(SystemController.name)
 
+    @ApiResponse({ status: 200, type: AvueCrudOption })
     @ApiOperation({ summary: '获取数据库信息 option' })
     @Get('getDatabaseInfo/option')
     async getDatabaseInfoOption() {
@@ -42,6 +44,7 @@ export class SystemController {
         return info
     }
 
+    @ApiResponse({ status: 200, type: AvueCrudOption })
     @ApiOperation({ summary: '获取系统信息 option' })
     @Get('getOsInfo/option')
     async getOsInfoOption() {

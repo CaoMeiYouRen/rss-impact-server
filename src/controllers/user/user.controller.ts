@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common'
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags, OmitType } from '@nestjs/swagger'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { ICrudQuery } from '../acl-crud/acl-crud.controller'
@@ -9,11 +9,11 @@ import { UserService } from '@/services/user/user.service'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { UseSession } from '@/decorators/use-session.decorator'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
-import { AclCrud } from '@/decorators/acl-crud.decorator'
-import { AvueCrudConfig } from '@/interfaces/avue'
+import { AclCrud, initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { __DEV__, PAGE_LIMIT_MAX } from '@/app.config'
-import { AvueCrudConfigImpl, DicData } from '@/models/avue.dto'
+import { AvueCrudConfig, DicData, AvueCrudOption } from '@/models/avue.dto'
 import { transformQueryOperator } from '@/utils/helper'
+import { Role } from '@/constant/role'
 
 @UseSession()
 @AclCrud({
@@ -40,12 +40,12 @@ export class UserController {
         private readonly userService: UserService,
     ) { }
 
-    @ApiResponse({ status: 200, type: AvueCrudConfigImpl })
+    @ApiResponse({ status: 200, type: AvueCrudConfig })
     @UseAdmin()
     @ApiOperation({ summary: '获取 config' })
     @Get('config')
     async config(): Promise<AvueCrudConfig> {
-        return UserController.prototype.__AVUE_CRUD_CONFIG__ || {}
+        return UserController.prototype.__AVUE_CRUD_CONFIG__ || {} as any
     }
 
     @ApiQuery({
@@ -82,6 +82,29 @@ export class UserController {
             data,
             lastPage: Math.ceil(total / limit),
             currentPage: page,
+        }
+    }
+
+    @ApiResponse({ status: 200, type: AvueCrudOption })
+    @ApiOperation({ summary: '获取个人信息 option' })
+    @Get('me/option')
+    async meOption(@CurrentUser() user: User) {
+        return {
+            title: '个人信息',
+            submitBtn: false,
+            emptyBtn: false,
+            column: initAvueCrudColumn(OmitType(User, ['createdAt', 'updatedAt', 'password', 'accessToken'] as const)).map((col) => {
+                const hide = ['roles'].includes(col.prop) && !user.roles.includes(Role.admin)
+                const disabled = ['roles'].includes(col.prop)
+                return {
+                    ...col,
+                    readonly: true,
+                    hide,
+                    disabled,
+                    span: 24,
+                    labelWidth: 120,
+                }
+            }),
         }
     }
 

@@ -46,7 +46,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -226,6 +226,58 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            }
+        },
+        "/api/user/me/option": {
+            "get": {
+                "operationId": "User_meOption",
+                "summary": "获取个人信息 option",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Option"
                                 }
                             }
                         }
@@ -589,7 +641,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Option"
                                 }
                             }
                         }
@@ -703,7 +755,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Option"
                                 }
                             }
                         }
@@ -1219,7 +1271,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -1507,7 +1559,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -1679,7 +1731,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -1967,7 +2019,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -2488,7 +2540,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -2602,7 +2654,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -2890,7 +2942,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -3397,7 +3449,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/AvueCrudConfigImpl"
+                                    "$ref": "#/components/schemas/Config"
                                 }
                             }
                         }
@@ -3475,7 +3527,14 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Option"
+                                }
+                            }
+                        }
                     },
                     "201": {
                         "description": "创建成功"
@@ -3572,7 +3631,14 @@
                 "parameters": [],
                 "responses": {
                     "200": {
-                        "description": ""
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Option"
+                                }
+                            }
+                        }
                     },
                     "201": {
                         "description": "创建成功"
@@ -4048,16 +4114,13 @@
                     "column"
                 ]
             },
-            "AvueCrudConfigImpl": {
+            "Config": {
                 "type": "object",
                 "properties": {
                     "option": {
                         "$ref": "#/components/schemas/Option"
                     }
-                },
-                "required": [
-                    "option"
-                ]
+                }
             },
             "User": {
                 "type": "object",

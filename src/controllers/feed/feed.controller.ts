@@ -21,6 +21,7 @@ import { FileUploadDto } from '@/models/file-upload.dto'
 import { Category } from '@/db/models/category.entity'
 import { to } from '@/utils/helper'
 import { __DEV__ } from '@/app.config'
+import { AvueCrudOption } from '@/models/avue.dto'
 
 @UseSession()
 @AclCrud({
@@ -61,7 +62,7 @@ export class FeedController {
     ) {
     }
 
-    @ApiResponse({ status: 200, type: Object })
+    @ApiResponse({ status: 200, type: AvueCrudOption })
     @ApiOperation({ summary: '快速添加订阅的配置项' })
     @Get('quickCreate/option')
     async quickCreateOption(): Promise<AvueFormOption> {
@@ -99,7 +100,7 @@ export class FeedController {
         return feed
     }
 
-    @ApiResponse({ status: 200, type: Object })
+    @ApiResponse({ status: 200, type: AvueCrudOption })
     @ApiOperation({ summary: '导入 OPML 文件的配置项' })
     @Get('import/option')
     async importByOpmlOption(): Promise<AvueFormOption> {
