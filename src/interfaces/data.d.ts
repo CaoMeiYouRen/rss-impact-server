@@ -8,6 +8,7 @@ export type DataItem = {
     doi?: string
     guid?: string
     id?: string
+    summary?: string
     content?: {
         html: string
         text: string

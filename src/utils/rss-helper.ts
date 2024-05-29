@@ -326,7 +326,7 @@ ${article.contentSnippet}`
     }
 
     content = content.replace(/\n/g, '<br>') // 替换换行符为 <br>
-    const dataItem = {
+    const dataItem: DataItem = {
         ...article,
         title: article.title || '',
         id: article.guid,
@@ -336,6 +336,7 @@ ${article.contentSnippet}`
         },
         description: content,
         summary: useAiSummary && article.aiSummary || article.summary || article.contentSnippet?.slice(0, 256), // 如果没有总结，则使用 contentSnippet 填充
+        category: article.categories,
         pubDate: article.pubDate.toUTCString(),
         updated: article.pubDate.toUTCString(),
         enclosure_url: article.enclosure?.url,

@@ -13,7 +13,7 @@ export class CacheService {
     ) {
     }
 
-    async tryGet<T = unknown>(key: string, cb: () => T | Promise<T>, ttl: Milliseconds = CACHE_EXPIRE * 1000, refresh = true) {
+    async tryGet<T = unknown>(key: string, cb: () => T | Promise<T>, ttl: Milliseconds = CACHE_EXPIRE * 1000, refresh = false) {
         const cacheKey = `rss-impact:${key}`
         let cacheData = await this.cacheManager.get<T>(cacheKey)
         if (cacheData) {
