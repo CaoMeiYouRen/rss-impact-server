@@ -12,6 +12,7 @@ import { ValidationError } from 'class-validator'
 import { CQImage } from 'go-cqwebsocket/out/tags'
 import { encode, decode } from 'gpt-3-encoder'
 import * as betterBytes from 'better-bytes'
+import ms from 'ms'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 // TODO 考虑支持国际化
@@ -29,10 +30,13 @@ dayjs.locale('zh-cn')
  * @author CaoMeiYouRen
  * @date 2019-08-26
  * @export
- * @param {number} time
+ * @param time 如果是 string ，则用 ms 解析为 number
  * @returns
  */
-export async function sleep(time: number) {
+export async function sleep(time: number | string) {
+    if (typeof time === 'string') {
+        time = ms(time)
+    }
     return new Promise((resolve) => setTimeout(resolve, time))
 }
 
@@ -45,7 +49,13 @@ export async function sleep(time: number) {
  * @param [min=1000] 延时最小值
  * @param [max=10000] 延时最大值
  */
-export async function randomSleep(min = 1000, max = 10000) {
+export async function randomSleep(min: number | string = 1000, max: number | string = 10000) {
+    if (typeof min === 'string') {
+        min = ms(min)
+    }
+    if (typeof max === 'string') {
+        max = ms(max)
+    }
     const time = _.random(min, max, false)
     await sleep(time)
 }
