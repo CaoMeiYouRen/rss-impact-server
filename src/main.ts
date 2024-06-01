@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/order
-import { PORT, RESOURCE_DOWNLOAD_PATH, __DEV__ } from './app.config'
+import { CI, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias from 'module-alias'
 moduleAlias.addAlias('@', path.join(__dirname, './'))
@@ -11,14 +11,15 @@ import { ValidationPipe } from '@nestjs/common'
 import history from 'connect-history-api-fallback'
 import fs from 'fs-extra'
 import artTemplate from 'art-template'
-import { setRequestId } from './middlewares/request.middleware'
-import { sessionMiddleware } from './middlewares/session.middleware'
-import { jsonLogger, logger } from './middlewares/logger.middleware'
-import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
-import { limiter } from './middlewares/limit.middleware'
-import { AllExceptionsFilter } from './filters/all-exceptions.filter'
-import { AppModule } from './app.module'
+import ms from 'ms'
 import { DATABASE_DIR } from './db/database.module'
+import { AppModule } from './app.module'
+import { AllExceptionsFilter } from './filters/all-exceptions.filter'
+import { limiter } from './middlewares/limit.middleware'
+import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
+import { jsonLogger, logger } from './middlewares/logger.middleware'
+import { sessionMiddleware } from './middlewares/session.middleware'
+import { setRequestId } from './middlewares/request.middleware'
 
 artTemplate.defaults.onerror = (error) => logger.error(error)
 
@@ -31,7 +32,7 @@ async function bootstrap() {
     }
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         // logger: __DEV__ ? ['error', 'warn', 'log', 'debug', 'verbose'] : ['error', 'warn', 'log'],
-        logger,
+        logger: __BENCHMARKS_TEST__ ? false : logger, // 如果是基准测试，关闭日志
     })
 
     app.set('trust proxy', true)
@@ -43,7 +44,7 @@ async function bootstrap() {
             .setDescription('RSS Impact server docs')
             .setVersion('0.1.0')
             // .addBearerAuth()
-            // .addCookieAuth()
+            .addCookieAuth('connect.sid')
             // .setBasePath('/api')
             .build()
         const options: SwaggerDocumentOptions = {
@@ -57,10 +58,12 @@ async function bootstrap() {
         await fs.writeFile('test/openapi.json', JSON.stringify(document, null, 4))
     }
 
-    app.use(limiter)
+    if (!__BENCHMARKS_TEST__) { // 如果不是基准测试，则启用限流器/RequestId/日志
+        app.use(limiter)
+        app.use(setRequestId)
+        app.use(jsonLogger)
+    }
     app.use(helmet({}))
-    app.use(setRequestId)
-    app.use(jsonLogger)
     // app.use(consoleLogger)
     app.useGlobalFilters(new AllExceptionsFilter())
     app.useGlobalInterceptors(new TimeoutInterceptor())
@@ -94,6 +97,11 @@ async function bootstrap() {
         logger.debug(`Docs http://127.0.0.1:${PORT}/docs`)
     }
 
+    if (CI && __BENCHMARKS_TEST__) {
+        setTimeout(() => {
+            logger.log('基准测试服务器已停止')
+        }, ms('30 s'))
+    }
 }
 
 bootstrap()

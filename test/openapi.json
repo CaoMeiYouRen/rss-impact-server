@@ -3798,6 +3798,13 @@
     "tags": [],
     "servers": [],
     "components": {
+        "securitySchemes": {
+            "cookie": {
+                "type": "apiKey",
+                "in": "cookie",
+                "name": "connect.sid"
+            }
+        },
         "schemas": {
             "ResponseDto": {
                 "type": "object",

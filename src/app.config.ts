@@ -4,14 +4,14 @@ const modes = [
     '.env.local',
     '.env',
 ]
+const result = dotenv.config({
+    path: modes,
+})
 let envObj: Record<string, string> = {}
-for (let i = 0; i < modes.length; i++) {
-    const mode = modes[i]
-    const result = dotenv.config({ path: mode })
-    if (result.parsed) {
-        envObj = Object.assign(result.parsed, envObj)
-    }
+if (result.parsed) {
+    envObj = Object.assign(result.parsed, envObj)
 }
+
 const env = process.env
 
 export const NODE_ENV = env.NODE_ENV
@@ -21,6 +21,10 @@ export const __PROD__ = NODE_ENV === 'production'
 export const __DEV__ = NODE_ENV === 'development'
 
 export const __TEST__ = NODE_ENV === 'test'
+
+export const __BENCHMARKS_TEST__ = env.BENCHMARKS_TEST === 'true'
+
+export const CI = env.CI
 
 if (__DEV__) {
     console.log('envObj', envObj)

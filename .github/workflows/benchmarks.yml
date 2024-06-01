@@ -1,0 +1,40 @@
+name: Benchmarks Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: Benchmarks Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: "8.11"
+      - name: Setup Node.js@lts environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+      - name: Cache Dependency
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ~/.yarn
+            ~/.cache/pnpm
+            ~/cache
+            !~/cache/exclude
+            **/node_modules
+          key: pnpm-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: pnpm-${{ runner.os }}
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm run build
+      - run: |
+          pnpm run start:benchmarks &
+          pnpm run test:benchmarks
