@@ -31,6 +31,18 @@ module.exports = {
                     "package.json"
                 ]
             }
-        ]
-    ]
+        ],
+        [
+            '@semantic-release/exec', // build docker 镜像
+            {
+                prepareCmd: `docker build -t caomeiyouren/${name} .`,
+            },
+        ],
+        [
+            'semantic-release-docker', // 发布到 docker
+            {
+                name: `caomeiyouren/${name}`,
+            },
+        ],
+    ],
 }
