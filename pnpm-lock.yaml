@@ -190,8 +190,8 @@ dependencies:
     specifier: ^5.1.7
     version: 5.1.7
   swagger-ui-express:
-    specifier: ^5.0.0
-    version: 5.0.0
+    specifier: ^5.0.1
+    version: 5.0.1
   tslib:
     specifier: ^2.6.2
     version: 2.6.2
@@ -10473,9 +10473,6 @@ packages:
   /sqlite3@5.1.7:
     resolution: {integrity: sha512-GGIyOiFaG+TUra3JIfkI/zGP8yZYLPQ0pl1bH+ODjiX57sPhrLU5sQJn1y9bDKZUFYkX1crlrPfSYt0BKKdkog==}
     requiresBuild: true
-    peerDependenciesMeta:
-      node-gyp:
-        optional: true
     dependencies:
       bindings: 1.5.0
       node-addon-api: 7.1.0
@@ -10763,8 +10760,8 @@ packages:
     resolution: {integrity: sha512-dyR3HAjwjK9oTd5ELzFh7rJEoMUyqfgaAQEwn0NGhLpOwg7IEbee17qjp50QIVE3sUA8J2d6ySw4IF50nUrKog==}
     dev: false
 
-  /swagger-ui-express@5.0.0:
-    resolution: {integrity: sha512-tsU9tODVvhyfkNSvf03E6FAk+z+5cU3lXAzMy6Pv4av2Gt2xA0++fogwC4qo19XuFf6hdxevPuVCSKFuMHJhFA==}
+  /swagger-ui-express@5.0.1:
+    resolution: {integrity: sha512-SrNU3RiBGTLLmFU8GIJdOdanJTl4TOmT27tt3bWWHppqYmAZ6IDuEuBvMU6nZq0zLEe6b/1rACXCgLZqO6ZfrA==}
     engines: {node: '>= v0.10.32'}
     peerDependencies:
       express: '>=4.0.0 || >=5.0.0-beta'
