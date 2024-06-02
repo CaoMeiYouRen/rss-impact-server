@@ -15,9 +15,9 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: "8.11"
       - name: Setup Node.js@lts environment
@@ -26,7 +26,7 @@ jobs:
           node-version: "lts/*"
           cache: "pnpm"
       - name: Cache Dependency
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm
@@ -46,7 +46,7 @@ jobs:
     needs: test # 等待 test 执行成功
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false
       - name: Lowercase the repo name
