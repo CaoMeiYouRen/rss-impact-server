@@ -95,7 +95,7 @@
     "socks-proxy-agent": "^8.0.3",
     "sqlite3": "^5.1.7",
     "swagger-ui-express": "^5.0.1",
-    "tslib": "^2.6.2",
+    "tslib": "^2.6.3",
     "turndown": "^7.2.0",
     "typeorm": "^0.3.20",
     "validator": "^13.12.0",
