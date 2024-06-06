@@ -45,7 +45,7 @@ jobs:
   build:
     needs: test # 等待 test 执行成功
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     permissions:
       packages: write
       contents: read
@@ -58,6 +58,10 @@ jobs:
         run: echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
       - name: Get short commit hash
         run: echo "TAG=sha-${GITHUB_SHA::7}" >>${GITHUB_ENV}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
@@ -90,7 +94,8 @@ jobs:
           push: true
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
       - name: Deploy demo
-        run: curl -X GET -L --user ${{ secrets.JENKINS_DEMO_TOKEN }} "${{ secrets.JENKINS_DEMO_URL }}/buildWithParameters?token=${{ secrets.JENKINS_DEMO_JOB_TOKEN }}&DOCKER_IMAGE=${{ env.REPO }}:${{ env.TAG }}"
+        run: curl -X GET -L --user ${{ secrets.JENKINS_DEMO_TOKEN }} "${{ secrets.JENKINS_DEMO_URL }}/buildWithParameters?token=${{ secrets.JENKINS_DEMO_JOB_TOKEN }}&DOCKER_IMAGE=ghcr.io/${{ env.REPO }}:${{ env.TAG }}"
       - name: Deploy to Jenkins
-        run: curl -X GET -L --user ${{ secrets.JENKINS_TOKEN }} "${{ secrets.JENKINS_URL }}/buildWithParameters?token=${{ secrets.JENKINS_JOB_TOKEN }}&DOCKER_IMAGE=${{ env.REPO }}:${{ env.TAG }}"
+        run: curl -X GET -L --user ${{ secrets.JENKINS_TOKEN }} "${{ secrets.JENKINS_URL }}/buildWithParameters?token=${{ secrets.JENKINS_JOB_TOKEN }}&DOCKER_IMAGE=ghcr.io/${{ env.REPO }}:${{ env.TAG }}"
