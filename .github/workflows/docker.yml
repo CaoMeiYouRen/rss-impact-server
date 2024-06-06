@@ -79,7 +79,6 @@ jobs:
           push: true
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
       - name: Deploy demo
         run: curl -X GET -L --user ${{ secrets.JENKINS_DEMO_TOKEN }} "${{ secrets.JENKINS_DEMO_URL }}/buildWithParameters?token=${{ secrets.JENKINS_DEMO_JOB_TOKEN }}&DOCKER_IMAGE=${{ env.REPO }}:${{ env.TAG }}"
       - name: Deploy to Jenkins
