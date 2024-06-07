@@ -142,8 +142,8 @@ dependencies:
     specifier: ^1.10.0
     version: 1.10.0(@nestjs/common@10.3.9)(winston@3.13.0)
   openai:
-    specifier: ^4.48.2
-    version: 4.48.2
+    specifier: ^4.49.0
+    version: 4.49.0
   opml:
     specifier: ^0.5.5
     version: 0.5.5
@@ -372,8 +372,8 @@ devDependencies:
     specifier: ^4.2.0
     version: 4.2.0
   tsx:
-    specifier: ^4.11.2
-    version: 4.11.2
+    specifier: ^4.12.0
+    version: 4.12.0
   typescript:
     specifier: ^5.4.5
     version: 5.4.5
@@ -8919,8 +8919,8 @@ packages:
       mimic-fn: 4.0.0
     dev: true
 
-  /openai@4.48.2:
-    resolution: {integrity: sha512-3z4JEipIzwFtLvDC3KigZEWH4ALWDHPr6XCq/xYi8O1AQ5lAtu6Ib6FO8KeQ8RdjwfIqHWOWk/zopW5g780s/w==}
+  /openai@4.49.0:
+    resolution: {integrity: sha512-/UkrBSej5ejZ4vnOFoeFefX7erjp4k3+xoLKkswjLEvgBU9QtCnOUgsfpvHkzTzgDXpqPMCzyQHQXWsgiq2xPw==}
     hasBin: true
     dependencies:
       '@types/node': 18.19.33
@@ -11147,8 +11147,8 @@ packages:
   /tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
-  /tsx@4.11.2:
-    resolution: {integrity: sha512-V5DL5v1BuItjsQ2FN9+4OjR7n5cr8hSgN+VGmm/fd2/0cgQdBIWHcQ3bFYm/5ZTmyxkTDBUIaRuW2divgfPe0A==}
+  /tsx@4.12.0:
+    resolution: {integrity: sha512-642NAWAbDqPZINjmL32Lh/B+pd8vbVj6LHPsWm09IIHqQuWhCrNfcPTjRlHFWvv3FfM4vt9NLReBIjUNj5ZhDg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     dependencies:
