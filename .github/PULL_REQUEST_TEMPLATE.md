@@ -1,9 +1,10 @@
 ## 描述 / Description
 
 简要说明此 Pull Request 的目的和做了哪些更改
+
 Briefly describe the purpose of this Pull Request and what changes were made.
 
-## 该 PR 相关 Issue / Involved Issue /
+## 该 PR 相关 Issue / Involved Issue
 
 如果此 PR 与某个 Issue 相关,请列出 Issue 编号。
 
@@ -22,5 +23,6 @@ Close #
 
 ## 其他信息 / Additional Information
 
- 如有任何其他需要说明的地方,请在此补充
+如有任何其他需要说明的地方,请在此补充
+
 If there is any other information that needs to be explained, please supplement it here.
