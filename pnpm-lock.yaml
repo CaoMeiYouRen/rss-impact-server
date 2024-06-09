@@ -97,8 +97,8 @@ dependencies:
     specifier: ^16.4.5
     version: 16.4.5
   express-rate-limit:
-    specifier: ^7.3.0
-    version: 7.3.0
+    specifier: ^7.3.1
+    version: 7.3.1
   express-session:
     specifier: ^1.18.0
     version: 1.18.0
@@ -170,7 +170,7 @@ dependencies:
     version: 7.1.3
   rate-limit-redis:
     specifier: ^4.2.0
-    version: 4.2.0(express-rate-limit@7.3.0)
+    version: 4.2.0(express-rate-limit@7.3.1)
   reflect-metadata:
     specifier: ^0.2.1
     version: 0.2.2
@@ -5225,8 +5225,8 @@ packages:
       jest-util: 29.7.0
     dev: true
 
-  /express-rate-limit@7.3.0:
-    resolution: {integrity: sha512-ZPfWlcQQ1PsZonB/vqksOsBQV74z5osi/QcdoBCyKJXl/wOVjS1yRDmvkpMM52KJeLbiF2+djwVEnEgVCDdvtw==}
+  /express-rate-limit@7.3.1:
+    resolution: {integrity: sha512-BbaryvkY4wEgDqLgD18/NSy2lDO2jTuT9Y8c1Mpx0X63Yz0sYd5zN6KPe7UvpuSVvV33T6RaE1o1IVZQjHMYgw==}
     engines: {node: '>= 16'}
     peerDependencies:
       express: 4 || 5 || ^5.0.0-beta.1
@@ -9589,13 +9589,13 @@ packages:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
 
-  /rate-limit-redis@4.2.0(express-rate-limit@7.3.0):
+  /rate-limit-redis@4.2.0(express-rate-limit@7.3.1):
     resolution: {integrity: sha512-wV450NQyKC24NmPosJb2131RoczLdfIJdKCReNwtVpm5998U8SgKrAZrIHaN/NfQgqOHaan8Uq++B4sa5REwjA==}
     engines: {node: '>= 16'}
     peerDependencies:
       express-rate-limit: '>= 6'
     dependencies:
-      express-rate-limit: 7.3.0
+      express-rate-limit: 7.3.1
     dev: false
 
   /raw-body@2.5.2:
