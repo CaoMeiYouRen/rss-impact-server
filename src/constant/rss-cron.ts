@@ -3,6 +3,10 @@ export const RssCron = {
     //     label: '自定义时间',
     //     cron: '',
     // },
+    EVERY_5_MINUTES: {
+        label: '每5分钟',
+        cron: '0 */5 * * * *',
+    },
     EVERY_10_MINUTES: {
         label: '每10分钟',
         cron: '0 */10 * * * *',
