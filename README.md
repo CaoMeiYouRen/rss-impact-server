@@ -45,16 +45,19 @@ https://rss-demo.cmyr.ltd/
 
 ## ✨功能亮点
 
-- 项目的核心在于 Hook ，本项目支持 推送通知、Webhook 、下载、BitTorrent、AI 大模型 等多种形式的 Hook ，还支持反转触发（即 RSS 源出错的时候触发）
+- 项目的核心在于 Hook ，本项目支持 推送通知、Webhook 、下载、BitTorrent、AI 大模型 等多种形式的 Hook ，还支持反转触发（即 RSS 源出错的时候触发）。
 - 推送通知 Hook 基于 [push-all-in-one](https://github.com/CaoMeiYouRen/push-all-in-one) 开发，支持 Server 酱、自定义邮件、钉钉机器人、企业微信机器人 等多种推送方式。支持 markdown 格式推送。
-- BitTorrent Hook 支持调用 qBitTorrent 接口来自动下载 BitTorrent ，也支持按体积过滤 BitTorrent ，解决部分 BitTorrent RSS 源没有提供 `enclosure.length` 的问题
+- BitTorrent Hook 支持调用 qBitTorrent 接口来自动下载 BitTorrent ，也支持按体积过滤 BitTorrent ，解决部分 BitTorrent RSS 源没有提供 `enclosure.length` 的问题。支持 `<mediaContent/>` tag。
 - Webhook 支持 GET/POST 等全部 HTTP 方法进行调用
 - 下载 Hook 支持按 md5 过滤资源，支持按后缀名过滤资源。
 - AI Hook 支持调用 OpenAI（或兼容 OpenAI 接口）的大模型，支持 AI 总结。支持在 AI 总结后推送。
-- 支持 自定义查询，并转换为 RSS 输出。
+- 支持正则替换 Hook，可对正文内容进行替换，可用于替换链接为代理地址。
+- 支持自定义查询，并将查询结果转换为 RSS。自定义查询支持将 AI 总结输出到正文中。
+- 支持从 OPML 文件导入订阅，也支持导出订阅为 OPML 文件。
 - 支持 Docker 一键部署
 - 支持 Redis 缓存
 - 支持 SQLite 作为数据库
+- 支持配置代理
 
 ## 📦 依赖要求
 
