@@ -136,7 +136,7 @@
     "@types/turndown": "^5.0.4",
     "@types/validator": "^13.11.10",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
-    "@typescript-eslint/parser": "^7.12.0",
+    "@typescript-eslint/parser": "^7.13.0",
     "autocannon": "^7.15.0",
     "commitizen": "^4.2.3",
     "conventional-changelog-cmyr-config": "^2.1.2",
