@@ -1,8 +1,11 @@
 name: Release
 on:
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
+  workflow_dispatch:
+  # schedule: 每周六 UTC+0 20:00
+  #   - cron: "0 12 * * 6"
 # 仅取消针对当前工作流正在进行的作业或运行
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
