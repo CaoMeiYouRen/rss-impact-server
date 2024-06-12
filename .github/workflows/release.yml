@@ -18,6 +18,8 @@ jobs:
     permissions:
       packages: write
       contents: write
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,6 +54,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm run release
       # 发布到 docker
+      - name: Get git tag
+        run: echo "GIT_TAG=$(git describe --tags --abbrev=0)" >> ${GITHUB_ENV}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -83,13 +87,15 @@ jobs:
             ghcr.io/${{ github.repository }}
             registry.cn-hangzhou.aliyuncs.com/${{ github.repository }}
           tags: |
-            type=semver,pattern={{version}},priority=1100,enable=true
+            type=match,priority=1100,pattern=\d.\d.\d,value=${{env.GIT_TAG}},enable=true
             type=raw,value=latest,enable=true
             type=raw,value={{date 'YYYY-MM-DD' tz='Asia/Shanghai'}},enable=true
             type=sha,format=short,prefix=sha-,enable=true
           flavor: latest=false
       - name: Build and push Docker images
         uses: docker/build-push-action@v5
+        # 如果有 GIT_TAG ，就发布
+        if: ${{ env.GIT_TAG }}
         with:
           context: .
           file: ./Dockerfile
