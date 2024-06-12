@@ -1,4 +1,4 @@
-const { name } = require('./package.json')
+const { name, author } = require('./package.json')
 module.exports = {
     plugins: [
         [
@@ -26,23 +26,31 @@ module.exports = {
             "@semantic-release/git",
             {
                 "assets": [
-                    "src",
+                    // "src",
                     "CHANGELOG.md",
                     "package.json"
                 ]
             }
         ],
-        [
-            '@semantic-release/exec', // build docker 镜像
-            {
-                prepareCmd: `docker build -t caomeiyouren/${name} .`,
-            },
-        ],
-        [
-            'semantic-release-docker', // 发布到 docker
-            {
-                name: `caomeiyouren/${name}`,
-            },
-        ],
+        // ['@codedependant/semantic-release-docker', {
+        //     dockerTags: ['{{version}}'],
+        //     dockerImage: name,
+        //     dockerFile: 'Dockerfile',
+        //     dockerRegistry: 'docker.io',
+        //     dockerProject: author.toLowerCase(),
+        //     dockerPlatform: ['linux/amd64', 'linux/arm/v7', 'linux/arm64']
+        // }]
+        // [
+        //     '@semantic-release/exec', // build docker 镜像
+        //     {
+        //         prepareCmd: `docker build -t caomeiyouren/${name} .`,
+        //     },
+        // ],
+        // [
+        //     'semantic-release-docker', // 发布到 docker
+        //     {
+        //         name: `caomeiyouren/${name}`,
+        //     },
+        // ],
     ],
 }

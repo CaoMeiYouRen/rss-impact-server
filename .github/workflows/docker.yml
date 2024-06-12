@@ -86,7 +86,7 @@ jobs:
         with:
           # 发布到 docker.io / ghcr.io / registry.cn-hangzhou.aliyuncs.com
           images: |
-            ${{ env.REPO }}
+            ${{ github.repository }}
             ghcr.io/${{ github.repository }}
             registry.cn-hangzhou.aliyuncs.com/${{ github.repository }}
           tags: |
@@ -95,7 +95,7 @@ jobs:
             type=sha,format=short,prefix=sha-,enable=true
           flavor: latest=false
       - name: Build and push Docker images
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
