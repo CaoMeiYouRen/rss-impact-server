@@ -354,8 +354,8 @@ devDependencies:
     specifier: ^0.14.2
     version: 0.14.2(debug@4.3.5)
   lint-staged:
-    specifier: ^15.2.6
-    version: 15.2.6
+    specifier: ^15.2.7
+    version: 15.2.7
   semantic-release:
     specifier: 21.0.1
     version: 21.0.1(typescript@5.4.5)
@@ -7508,8 +7508,8 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
 
-  /lint-staged@15.2.6:
-    resolution: {integrity: sha512-M/3PdijFXT/A5lnbSK3EQNLbIIrkE00JZaD39r7t4kfFOqT1Ly9LgSZSMMtvQ3p2/C8Nyj/ou0vkNHmEwqoB8g==}
+  /lint-staged@15.2.7:
+    resolution: {integrity: sha512-+FdVbbCZ+yoh7E/RosSdqKJyUM2OEjTciH0TFNkawKgvFp1zbGlEC39RADg+xKBG1R4mhoH2j85myBQZ5wR+lw==}
     engines: {node: '>=18.12.0'}
     hasBin: true
     dependencies:
