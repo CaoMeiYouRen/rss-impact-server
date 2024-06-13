@@ -65,23 +65,23 @@ export class WebhookLog extends AclBase {
     statusText: string
 
     @ApiProperty({ title: '响应体', example: { message: 'OK' } })
-    @JsonStringLength(0, 2048)
+    @JsonStringLength(0, 65536)
     // @IsObject()
     @IsOptional()
     @Column({
         type: 'simple-json',
-        length: 2048,
+        length: 65536,
         nullable: true,
     })
     data?: any
 
     @ApiProperty({ title: '响应头', example: {} })
-    @JsonStringLength(0, 2048)
+    @JsonStringLength(0, 65536)
     @IsObject()
     @IsOptional()
     @Column({
         type: 'simple-json',
-        length: 2048,
+        length: 65536,
         nullable: true,
     })
     headers?: RawAxiosResponseHeaders | AxiosResponseHeaders
