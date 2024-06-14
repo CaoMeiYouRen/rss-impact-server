@@ -33,6 +33,22 @@ export class DatabaseInfoDto {
         editDisabled: true,
         span: 24,
     })
-    @ApiProperty({ title: '实体类数量', description: 'typeorm 的实体类数量，即 SQL 表数量', example: 10 })
+    @ApiProperty({ title: '实体类数量', description: 'typeorm 的实体类数量', example: 10 })
     entitiesLength: number
+
+    @SetAclCrudField({
+        readonly: true,
+        editDisabled: true,
+        span: 24,
+    })
+    @ApiProperty({ title: '表格数量', description: 'SQL 表数量', example: 10 })
+    tableCount: number
+
+    @SetAclCrudField({
+        readonly: true,
+        editDisabled: true,
+        span: 24,
+    })
+    @ApiProperty({ title: '索引数量', description: 'SQL 索引数量', example: 10 })
+    indexCount: number
 }

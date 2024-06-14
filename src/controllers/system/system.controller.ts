@@ -2,6 +2,7 @@ import os from 'os'
 import fs from 'fs-extra'
 import { Controller, Get, Logger } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import sqlite3 from 'sqlite3'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
 import { DATABASE_TYPE } from '@/app.config'
 import { DATABASE_PATH, entities } from '@/db/database.module'
@@ -34,13 +35,55 @@ export class SystemController {
     @ApiOperation({ summary: '获取数据库信息' })
     @Get('getDatabaseInfo')
     async getDatabaseInfo() {
-        const size = (await fs.stat(DATABASE_PATH))?.size
         const info: DatabaseInfoDto = {
             type: DATABASE_TYPE,
-            size,
-            sizeFormat: dataFormat(size),
+            size: 0,
+            sizeFormat: dataFormat(0),
             entitiesLength: entities.length,
+            tableCount: 0,
+            indexCount: 0,
         }
+        if (DATABASE_TYPE === 'sqlite') {
+
+            info.size = (await fs.stat(DATABASE_PATH))?.size
+            info.sizeFormat = dataFormat(info.size)
+
+            const db = new sqlite3.Database(DATABASE_PATH, (error) => {
+                if (error) {
+                    this.logger.error(error?.message, error?.stack)
+                }
+            })
+
+            const { count: tableCount } = await new Promise<{ count: number }>((resolve, reject) => {
+                db.get<{ count: number }>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "table"', (error, row) => {
+                    if (error) {
+                        reject(error)
+                        return
+                    }
+                    resolve(row)
+                })
+            })
+            info.tableCount = tableCount
+
+            const { count: indexCount } = await new Promise<{ count: number }>((resolve, reject) => {
+                db.get<{ count: number }>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "index"', (error, row) => {
+                    if (error) {
+                        reject(error)
+                        return
+                    }
+                    resolve(row)
+                })
+            })
+            info.indexCount = indexCount
+
+            db.close((error) => {
+                if (error) {
+                    this.logger.error(error?.message, error?.stack)
+                }
+            })
+
+        }
+
         return info
     }
 
