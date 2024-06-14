@@ -221,7 +221,7 @@ export class Article extends AclBase {
         type: 'simple-json',
         length: 65536,
         nullable: true,
-        default: '{}',
+        // default: '{}',
     })
     enclosure?: EnclosureImpl
 
@@ -242,6 +242,9 @@ export class Article extends AclBase {
 
     @SetAclCrudField({
         search: true,
+        type: 'select',
+        dicUrl: 'article/typeDicData',
+        minWidth: 180,
     })
     @ApiProperty({ title: '附件类型', example: 'application/x-bittorrent' })
     @Length(0, 128)
@@ -255,6 +258,7 @@ export class Article extends AclBase {
     @SetAclCrudField({
         labelWidth: 105,
         type: 'input',
+        hide: true,
     })
     @ApiProperty({ title: '附件体积(B)', description: '单位为 B(字节)', example: 114514 })
     @IsSafeNaturalNumber()
