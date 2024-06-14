@@ -76,6 +76,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
         let extra: any = {
             ...setAclCrudFieldOption,
             nullable: options?.nullable ?? validatorOptions.some((e) => e.type === ValidationTypes.CONDITIONAL_VALIDATION), // 如果 nullable ，或者是 可选的
+            minWidth: 100,
         }
         const label = swaggerOption?.title || upperFirst(prop)
         const tip = swaggerOption?.description

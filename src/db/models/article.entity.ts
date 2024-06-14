@@ -14,9 +14,7 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
 import { __PROD__ } from '@/app.config'
 import { dataFormat } from '@/utils/helper'
-import { IsBetterBytesString } from '@/decorators/is-better-bytes-string'
 
-// TODO 考虑改为嵌入式实体
 export class EnclosureImpl implements Enclosure {
 
     @ApiProperty({ title: 'URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
@@ -33,7 +31,6 @@ export class EnclosureImpl implements Enclosure {
     type?: string
 
     @SetAclCrudField({
-        width: 100,
         labelWidth: 105,
         type: 'input',
     })
@@ -43,11 +40,10 @@ export class EnclosureImpl implements Enclosure {
     length?: number
 
     @SetAclCrudField({
-        width: 100,
         labelWidth: 105,
         type: 'input',
     })
-    @ApiProperty({ title: '文件体积', description: '单位为 B', example: '114.51 MiB' })
+    @ApiProperty({ title: '文件体积', description: '单位为 B(字节)', example: '114.51 MiB' })
     lengthFormat?: string
 
 }
@@ -122,6 +118,7 @@ export class Article extends AclBase {
     @SetAclCrudField({
         search: true,
         searchRange: true,
+        width: 160,
     })
     @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     @Type(() => Date)
@@ -211,6 +208,9 @@ export class Article extends AclBase {
     categories?: string[]
 
     /** 附件 enclosure/mediaContent */
+    @SetAclCrudField({
+        hide: true,
+    })
     @ApiProperty({ title: '附件', type: () => EnclosureImpl })
     @Type(() => EnclosureImpl)
     @ValidateNested()
@@ -226,34 +226,54 @@ export class Article extends AclBase {
     enclosure?: EnclosureImpl
 
     @SetAclCrudField({
-        labelWidth: 105,
+        search: true,
     })
-    @ApiProperty({ title: '过滤附件URL', example: 'url1|url2' })
-    @Length(0, 1024)
+    @ApiProperty({ title: '附件URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
+    @IsUrlOrMagnetUri({}, {
+        require_tld: __PROD__,   // 是否要顶级域名
+    })
+    @Length(0, 65000)
     @IsOptional()
+    @Column({
+        nullable: true,
+        length: 65000,
+    })
     enclosureUrl?: string
 
     @SetAclCrudField({
-        labelWidth: 116,
+        search: true,
     })
-    @ApiProperty({ title: '过滤附件类型', example: 'type1|type2' })
+    @ApiProperty({ title: '附件类型', example: 'application/x-bittorrent' })
     @Length(0, 128)
     @IsOptional()
+    @Column({
+        nullable: true,
+        length: 128,
+    })
     enclosureType?: string
 
     @SetAclCrudField({
-        labelWidth: 125,
+        labelWidth: 105,
         type: 'input',
-        value: '',
-    }) // 如果源 RSS 未设置附件体积，则该项不会生效
-    @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B(字节)。支持带单位，例如：1 GiB。设置为空禁用', example: '1 GiB', type: String })
-    // @IsSafeNaturalNumber()
-    @IsBetterBytesString()
+    })
+    @ApiProperty({ title: '附件体积(B)', description: '单位为 B(字节)', example: 114514 })
+    @IsSafeNaturalNumber()
     @IsOptional()
-    enclosureLength?: number | string
+    @Column({ nullable: true })
+    enclosureLength?: number
+
+    @SetAclCrudField({
+        labelWidth: 105,
+        type: 'input',
+    })
+    @ApiProperty({ title: '附件体积', description: '单位为 B(字节)', example: '114.51 MiB' })
+    enclosureLengthFormat?: string
 
     @AfterLoad()
     protected updateEnclosure() {
+        if (typeof this.enclosureLength === 'number') {
+            this.enclosureLengthFormat = dataFormat(this.enclosureLength)
+        }
         if (!this.enclosure) {
             this.enclosure = plainToInstance(EnclosureImpl, {})
             return

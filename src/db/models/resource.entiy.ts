@@ -64,6 +64,7 @@ export class Resource extends AclBase {
         search: true,
         type: 'select',
         dicUrl: 'resource/typeDicData',
+        minWidth: 180,
     })
     @ApiProperty({ title: '文件类型', example: 'image/png' })
     @IsNotEmpty()
@@ -74,7 +75,6 @@ export class Resource extends AclBase {
     type: string
 
     @SetAclCrudField({
-        width: 100,
         labelWidth: 105,
         type: 'input',
         hide: true,
@@ -85,7 +85,6 @@ export class Resource extends AclBase {
     size: number
 
     @SetAclCrudField({
-        width: 100,
         labelWidth: 105,
         type: 'input',
     })

@@ -3,7 +3,7 @@ import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In, LessThan, MoreThanOrEqual } from 'typeorm'
+import { Repository, In, LessThan, MoreThanOrEqual, IsNull, Raw } from 'typeorm'
 import { CronJob } from 'cron'
 import { differenceWith, flattenDeep, pick, random } from 'lodash'
 import XRegExp from 'xregexp'
@@ -78,24 +78,28 @@ export class TasksService implements OnApplicationBootstrap {
     }
 
     private async fixDatabase() {
-        // try {
-        //     // 修复 支持多个订阅的更改
-        //     const customQueries = await this.customQueryRepository.find({
-        //         where: {
-        //             scope: 'feed',
-        //             feedId: Not(IsNull()),
-        //             // feeds: IsNull(),
-        //         },
-        //         relations: ['feed', 'feeds'],
-        //     })
-        //     this.logger.debug(`customQueries ${customQueries.length}`)
-        //     await this.customQueryRepository.save(customQueries.map((e) => {
-        //         e.feeds = [e.feed]
-        //         return e
-        //     }))
-        // } catch (error) {
-        //     this.logger.error(error?.message, error?.stack)
-        // }
+        try {
+            // 修复 Article 的 enclosure 字段相关改动
+            const articles = await this.articleRepository.find({
+                where: {
+                    // enclosure: And(Not({})), // And() Not(IsNull()) , Not({})
+                    // "enclosure" != '{}' AND "enclosure" IS NOT NULL
+                    enclosure: Raw((alias) => `${alias} != '{}' AND ${alias} IS NOT NULL`),
+                    enclosureUrl: IsNull(),
+                },
+            })
+            this.logger.log(`待同步 Article 数量：${articles.length}`)
+            const newArticles = articles.map((article) => {
+                article.enclosureUrl = article.enclosure?.url
+                article.enclosureType = article.enclosure?.type
+                article.enclosureLength = article.enclosure?.length
+                return article
+            })
+            await this.articleRepository.save(newArticles)
+            this.logger.log('Article 同步完毕')
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        }
     }
 
     private getAllFeeds() {

@@ -8,20 +8,30 @@ import { flattenValidationErrors } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
 import { winstonLogger } from '@/middlewares/logger.middleware'
 import { __DEV__ } from '@/app.config'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 export abstract class Base {
 
+    @SetAclCrudField({
+        width: 70,
+    })
     @ApiProperty({ title: 'ID', example: 1 })
     @PrimaryGeneratedColumn()
     @IsId()
     @IsOptional()
     id: number
 
+    @SetAclCrudField({
+        width: 160,
+    })
     @ApiProperty({ title: '创建时间', example: dayjs('2024-01-01').toDate() })
     @Index()
     @CreateDateColumn()
     createdAt: Date
 
+    @SetAclCrudField({
+        width: 160,
+    })
     @ApiProperty({ title: '更新时间', example: dayjs('2024-01-01').toDate() })
     @Index()
     @UpdateDateColumn()

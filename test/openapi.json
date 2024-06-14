@@ -4980,7 +4980,7 @@
                     "author": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 128,
+                        "maxLength": 256,
                         "title": "过滤作者",
                         "example": "author1|author2"
                     },
@@ -4995,14 +4995,14 @@
                     "enclosureUrl": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 1024,
+                        "maxLength": 2048,
                         "title": "过滤附件URL",
                         "example": "url1|url2"
                     },
                     "enclosureType": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 128,
+                        "maxLength": 256,
                         "title": "过滤附件类型",
                         "example": "type1|type2"
                     },
@@ -5041,7 +5041,7 @@
                     "author": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 128,
+                        "maxLength": 256,
                         "title": "排除作者",
                         "example": "author1|author2"
                     },
@@ -5056,14 +5056,14 @@
                     "enclosureUrl": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 1024,
+                        "maxLength": 2048,
                         "title": "排除附件URL",
                         "example": "url1|url2"
                     },
                     "enclosureType": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 128,
+                        "maxLength": 256,
                         "title": "排除附件类型",
                         "example": "type1|type2"
                     }
@@ -5219,7 +5219,7 @@
                     "lengthFormat": {
                         "type": "string",
                         "title": "文件体积",
-                        "description": "单位为 B",
+                        "description": "单位为 B(字节)",
                         "example": "114.51 MiB"
                     }
                 },
@@ -5340,6 +5340,32 @@
                                 "$ref": "#/components/schemas/EnclosureImpl"
                             }
                         ]
+                    },
+                    "enclosureUrl": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 65000,
+                        "title": "附件URL",
+                        "example": "http://bt.example.com"
+                    },
+                    "enclosureType": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 128,
+                        "title": "附件类型",
+                        "example": "application/x-bittorrent"
+                    },
+                    "enclosureLength": {
+                        "type": "number",
+                        "title": "附件体积(B)",
+                        "description": "单位为 B(字节)",
+                        "example": 114514
+                    },
+                    "enclosureLengthFormat": {
+                        "type": "string",
+                        "title": "附件体积",
+                        "description": "单位为 B(字节)",
+                        "example": "114.51 MiB"
                     },
                     "feedId": {
                         "type": "number",
