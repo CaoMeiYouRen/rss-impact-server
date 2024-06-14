@@ -5,7 +5,7 @@ import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, In, LessThan, MoreThanOrEqual } from 'typeorm'
 import { CronJob } from 'cron'
-import { differenceWith, flattenDeep, pick } from 'lodash'
+import { differenceWith, flattenDeep, pick, random } from 'lodash'
 import XRegExp from 'xregexp'
 import dayjs from 'dayjs'
 import fs from 'fs-extra'
@@ -597,9 +597,13 @@ export class TasksService implements OnApplicationBootstrap {
                     let size = 0
                     let magnet: Instance & { xl?: number }
                     // 判读磁盘空间
-                    const mainData = await qBittorrent.getMainData()
-                    if (minDiskSize && mainData.server_state.free_space_on_disk < minDiskSize) { // 如果 bt 服务器的磁盘空间不足，则停止下载
-                        return
+                    if (minDiskSize) {
+                        const mainData = await qBittorrent.getMainData(random(0, 1e8, false))
+                        // 如果 bt 服务器的磁盘空间不足，则停止下载
+                        if (mainData?.server_state?.free_space_on_disk && mainData.server_state.free_space_on_disk < minDiskSize) {
+                            this.logger.warn(`bt 服务器的磁盘空间小于 ${config.minDiskSize} ，停止下载`)
+                            return
+                        }
                     }
                     if (article.enclosure.length === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
                         article.enclosure.length = 0

@@ -39,7 +39,7 @@ export class Filter {
     summary?: string
 
     @ApiProperty({ title: '过滤作者', example: 'author1|author2' })
-    @Length(0, 128)
+    @Length(0, 256)
     @IsOptional()
     author?: string
 
@@ -52,7 +52,7 @@ export class Filter {
         labelWidth: 105,
     })
     @ApiProperty({ title: '过滤附件URL', example: 'url1|url2' })
-    @Length(0, 1024)
+    @Length(0, 2048)
     @IsOptional()
     enclosureUrl?: string
 
@@ -60,7 +60,7 @@ export class Filter {
         labelWidth: 116,
     })
     @ApiProperty({ title: '过滤附件类型', example: 'type1|type2' })
-    @Length(0, 128)
+    @Length(0, 256)
     @IsOptional()
     enclosureType?: string
 

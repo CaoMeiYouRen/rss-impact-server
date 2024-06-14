@@ -14,7 +14,9 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
 import { __PROD__ } from '@/app.config'
 import { dataFormat } from '@/utils/helper'
+import { IsBetterBytesString } from '@/decorators/is-better-bytes-string'
 
+// TODO 考虑改为嵌入式实体
 export class EnclosureImpl implements Enclosure {
 
     @ApiProperty({ title: 'URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
@@ -222,6 +224,33 @@ export class Article extends AclBase {
         default: '{}',
     })
     enclosure?: EnclosureImpl
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '过滤附件URL', example: 'url1|url2' })
+    @Length(0, 1024)
+    @IsOptional()
+    enclosureUrl?: string
+
+    @SetAclCrudField({
+        labelWidth: 116,
+    })
+    @ApiProperty({ title: '过滤附件类型', example: 'type1|type2' })
+    @Length(0, 128)
+    @IsOptional()
+    enclosureType?: string
+
+    @SetAclCrudField({
+        labelWidth: 125,
+        type: 'input',
+        value: '',
+    }) // 如果源 RSS 未设置附件体积，则该项不会生效
+    @ApiProperty({ title: '过滤附件体积(B)', description: '单位为 B(字节)。支持带单位，例如：1 GiB。设置为空禁用', example: '1 GiB', type: String })
+    // @IsSafeNaturalNumber()
+    @IsBetterBytesString()
+    @IsOptional()
+    enclosureLength?: number | string
 
     @AfterLoad()
     protected updateEnclosure() {
