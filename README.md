@@ -104,6 +104,8 @@ wget https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/docker-compos
 vim docker-compose.yml  # 也可以是你喜欢的编辑器
 ```
 
+> 在公网部署时请务必修改 ADMIN_PASSWORD、SESSION_SECRET 环境变量
+
 启动
 
 ```sh

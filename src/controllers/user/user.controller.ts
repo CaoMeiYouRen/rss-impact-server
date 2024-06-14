@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags, OmitType } from '@nestjs/swagger'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
+import { compare } from 'bcryptjs'
 import { ICrudQuery } from '../acl-crud/acl-crud.controller'
 import { CreateUser, FindUser, UpdateMe, UpdateUser, User } from '@/db/models/user.entity'
 import { CrudQuery } from '@/decorators/crud-query.decorator'
@@ -15,6 +16,8 @@ import { AvueCrudConfig, DicData, AvueCrudOption } from '@/models/avue.dto'
 import { transformQueryOperator } from '@/utils/helper'
 import { Role } from '@/constant/role'
 import { HttpError } from '@/models/http-error'
+import { ResponseDto } from '@/models/response.dto'
+import { ResetPasswordDto } from '@/models/reset-password.dto'
 
 @UseSession()
 @AclCrud({
@@ -95,7 +98,7 @@ export class UserController {
             submitBtn: true,
             emptyBtn: false,
             column: initAvueCrudColumn(OmitType(User, ['createdAt', 'updatedAt', 'password', 'accessToken'] as const)).map((col) => {
-                const hide = ['roles'].includes(col.prop) && !user.roles.includes(Role.admin)
+                const hide = ['roles'].includes(col.prop) && !user?.roles?.includes(Role.admin)
                 const disabled = ['id', 'roles'].includes(col.prop)
                 const readonly = ['id', 'roles'].includes(col.prop)
                 return {
@@ -129,6 +132,54 @@ export class UserController {
         }
         const newUser = await this.userService.update(body)
         return newUser
+    }
+
+    @ApiResponse({ status: 200, type: AvueCrudOption })
+    @ApiOperation({ summary: '获取重置密码 option' })
+    @Get('resetPassword/option')
+    async resetPasswordOption() {
+        const column = [...initAvueCrudColumn(ResetPasswordDto), {
+            label: '确认密码',
+            prop: 'checkPassword',
+            type: 'password',
+        }].map((col) => ({
+                ...col,
+                span: 24,
+                labelWidth: 120,
+            }))
+
+        return {
+            title: '重置密码',
+            submitBtn: true,
+            emptyBtn: true,
+            column,
+        }
+
+    }
+
+    @UseSession()
+    @Post('resetPassword')
+    @ApiOperation({ summary: '重置密码' })
+    @ApiResponse({ status: 201, type: ResponseDto })
+    async resetPassword(@Body() body: ResetPasswordDto, @CurrentUser() currentUser: User) {
+        const user = await this.repository
+            .createQueryBuilder('user')
+            .where({
+                id: currentUser.id,
+            })
+            .addSelect('user.password')
+            .getOne()
+        if (!user) {
+            throw new HttpError(400, '该用户名对应的用户不存在')
+        }
+        if (!await compare(body.oldPassword, user.password)) {
+            throw new HttpError(400, '旧密码错误')
+        }
+        user.password = body.newPassword
+        await this.repository.save(user)
+        return new ResponseDto({
+            message: '修改密码成功！',
+        })
     }
 
     @ApiResponse({ status: 200, type: [DicData] })

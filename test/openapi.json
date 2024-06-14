@@ -430,6 +430,113 @@
                 ]
             }
         },
+        "/api/user/resetPassword/option": {
+            "get": {
+                "operationId": "User_resetPasswordOption",
+                "summary": "获取重置密码 option",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Option"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            }
+        },
+        "/api/user/resetPassword": {
+            "post": {
+                "operationId": "User_resetPassword",
+                "summary": "重置密码",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPasswordDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "响应成功"
+                    },
+                    "201": {
+                        "description": "创建成功"
+                    },
+                    "400": {
+                        "description": "数据格式有误"
+                    },
+                    "401": {
+                        "description": "没有权限访问"
+                    },
+                    "403": {
+                        "description": "该用户没有权限访问"
+                    },
+                    "404": {
+                        "description": "找不到要访问的接口"
+                    },
+                    "408": {
+                        "description": "请求超时"
+                    },
+                    "409": {
+                        "description": "请求时发生了冲突"
+                    },
+                    "429": {
+                        "description": "请求次数超限"
+                    },
+                    "500": {
+                        "description": "服务器内部错误"
+                    },
+                    "502": {
+                        "description": "代理服务器错误"
+                    }
+                },
+                "tags": [
+                    "user"
+                ]
+            }
+        },
         "/api/user/dicData": {
             "get": {
                 "operationId": "User_dicData",
@@ -4309,6 +4416,29 @@
                     }
                 }
             },
+            "ResetPasswordDto": {
+                "type": "object",
+                "properties": {
+                    "oldPassword": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 256,
+                        "title": "旧密码",
+                        "example": "123456"
+                    },
+                    "newPassword": {
+                        "type": "string",
+                        "minLength": 6,
+                        "maxLength": 256,
+                        "title": "新密码",
+                        "example": "654123"
+                    }
+                },
+                "required": [
+                    "oldPassword",
+                    "newPassword"
+                ]
+            },
             "CreateUser": {
                 "type": "object",
                 "properties": {
@@ -5300,6 +5430,7 @@
                     "cron": {
                         "type": "string",
                         "enum": [
+                            "EVERY_5_MINUTES",
                             "EVERY_10_MINUTES",
                             "EVERY_20_MINUTES",
                             "EVERY_30_MINUTES",
@@ -5538,6 +5669,7 @@
                     "cron": {
                         "type": "string",
                         "enum": [
+                            "EVERY_5_MINUTES",
                             "EVERY_10_MINUTES",
                             "EVERY_20_MINUTES",
                             "EVERY_30_MINUTES",
@@ -5640,6 +5772,7 @@
                     "cron": {
                         "type": "string",
                         "enum": [
+                            "EVERY_5_MINUTES",
                             "EVERY_10_MINUTES",
                             "EVERY_20_MINUTES",
                             "EVERY_30_MINUTES",
@@ -5775,6 +5908,7 @@
                     "cron": {
                         "type": "string",
                         "enum": [
+                            "EVERY_5_MINUTES",
                             "EVERY_10_MINUTES",
                             "EVERY_20_MINUTES",
                             "EVERY_30_MINUTES",
