@@ -103,11 +103,11 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
         }
     }
     if (article.enclosure) {
-        if (isHttpURL(article.enclosure.url)) { // 如果以 http 开头，则尝试规范化 URL。例如 bangumi.moe
-            article.enclosure.url = new URL(article.enclosure.url).toString()
+        if (isHttpURL(article.enclosureUrl)) { // 如果以 http 开头，则尝试规范化 URL。例如 bangumi.moe
+            article.enclosureUrl = new URL(article.enclosureUrl).toString()
         }
-        if (typeof article.enclosure.length === 'string') { // 如果解析出来的 length 是 string ，则需要转换成 number
-            article.enclosure.length = Number(article.enclosure.length)
+        if (typeof article.enclosureLength === 'string') { // 如果解析出来的 length 是 string ，则需要转换成 number
+            article.enclosureLength = Number(article.enclosureLength)
         }
         article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
     } else {
@@ -242,7 +242,7 @@ type Condition = {
     filterout: FilterOut
 }
 
-const filterFields = ['title', 'content', 'summary', 'author', 'categories', 'enclosure.url', 'enclosure.type', 'enclosure.length']
+const filterFields = ['title', 'content', 'summary', 'author', 'categories', 'enclosureUrl', 'enclosureType', 'enclosureLength']
 
 /**
  * 按条件过滤文章
@@ -264,12 +264,6 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         })
         // 先判断 filterout
         .filter((article) => filterFields.every((field) => { // 所有条件为 并集，即 有一个 不符合 就排除
-            if (field.startsWith('enclosure')) {
-                if (!get(filterout, camelCase(field)) || !get(article, field)) { // 如果缺少 filterout enclosure 或 article.enclosure 对应的项就跳过该过滤条件
-                    return true
-                }
-                return !XRegExp(get(filterout, camelCase(field)), 'ig').test(get(article, field))
-            }
             if (!filterout[field] || !article[field]) { // 如果缺少 filterout 或 article 对应的项就跳过该过滤条件
                 return true
             }
@@ -281,15 +275,9 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         }))
         // 再判断 filter
         .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部条件 符合
-            if (field.startsWith('enclosure')) {
-                if (!get(filter, camelCase(field)) || !get(article, field)) { // 如果缺少 filter enclosure 或 article.enclosure 对应的项就跳过该过滤条件
-                    return true
-                }
-                if (field === 'enclosure.length') {
-                    // 保留体积，只下载体积小于 enclosureLength 的资源
-                    return parseDataSize(filter.enclosureLength) > article.enclosure?.length
-                }
-                return XRegExp(get(filter, camelCase(field)), 'ig').test(get(article, field))
+            if (field === 'enclosureLength') {
+                // 保留体积，只下载体积小于 enclosureLength 的资源
+                return parseDataSize(filter.enclosureLength) > article.enclosureLength
             }
             if (!filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
                 return true

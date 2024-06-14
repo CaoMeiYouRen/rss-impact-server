@@ -25,7 +25,7 @@ import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
 import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
-import { Article, EnclosureImpl } from '@/db/models/article.entity'
+import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
 import { ajax, getHttpAgent } from '@/utils/ajax'
 import { Resource } from '@/db/models/resource.entiy'
@@ -577,7 +577,7 @@ export class TasksService implements OnApplicationBootstrap {
         const config = hook.config as BitTorrentConfig
         const proxyUrl = hook.proxyConfig?.url
         const { type } = config
-        const btArticles = articles.filter((article) => article.enclosure?.type === 'application/x-bittorrent' && article.enclosure?.url) // 排除BT以外的
+        const btArticles = articles.filter((article) => article.enclosureType === 'application/x-bittorrent' && article.enclosureUrl) // 排除BT以外的
         if (!btArticles?.length) {
             return
         }
@@ -593,7 +593,7 @@ export class TasksService implements OnApplicationBootstrap {
                     timeout: 60 * 1000,
                 })
                 await Promise.allSettled(btArticles.map((article) => bitTorrentLimit(async () => {
-                    const url = article.enclosure.url
+                    const url = article.enclosureUrl
                     const shoutUrl = url?.slice(0, 128)
                     let hash = ''
                     let magnetUri = ''
@@ -609,8 +609,8 @@ export class TasksService implements OnApplicationBootstrap {
                             return
                         }
                     }
-                    if (article.enclosure.length === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
-                        article.enclosure.length = 0
+                    if (article.enclosureLength === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
+                        article.enclosureLength = 0
                     }
                     // 如果是 magnet，则直接添加 磁力链接 /^magnet:/.test
                     if (isMagnetURI(url)) {
@@ -620,8 +620,8 @@ export class TasksService implements OnApplicationBootstrap {
                         if (resource) {
                             __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
 
-                            if (resource.url !== url && isHttpURL(resource.url) && !article.enclosure.length) { // 如果是不同的 url
-                                article.enclosure.length = resource.size // 更新附件大小
+                            if (resource.url !== url && isHttpURL(resource.url) && !article.enclosureLength) { // 如果是不同的 url
+                                article.enclosureLength = resource.size // 更新附件大小
                                 await this.articleRepository.save(article)
                             }
                             return
@@ -646,8 +646,8 @@ export class TasksService implements OnApplicationBootstrap {
                         if (resource) {
                             __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
                             // 解决存在不同源的相同资源缺少 size 的问题
-                            if (resource.url !== url && isMagnetURI(resource.url) && !article.enclosure.length) { // 如果是不同的 url
-                                article.enclosure.length = resource.size // 更新附件大小
+                            if (resource.url !== url && isMagnetURI(resource.url) && !article.enclosureLength) { // 如果是不同的 url
+                                article.enclosureLength = resource.size // 更新附件大小
                                 await this.articleRepository.save(article)
                             }
                             return
@@ -659,8 +659,8 @@ export class TasksService implements OnApplicationBootstrap {
                     if (/^(https?:\/\/|magnet:)/.test(url)) {
                         name = magnet.name || magnet.dn as string
 
-                        if (article.enclosure.length) {
-                            size = article.enclosure.length
+                        if (article.enclosureLength) {
+                            size = article.enclosureLength
                         } else if (magnet.length) {
                             size = Number(magnet.length)
                         } else if (magnet.xl) {
@@ -685,9 +685,8 @@ export class TasksService implements OnApplicationBootstrap {
                             userId,
                         })
                         const newResource = await this.resourceRepository.save(resource)
-                        if (newResource.size > 0 && !article.enclosure.length) {
-                            article.enclosure.length = newResource.size // 更新附件大小
-                            article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
+                        if (newResource.size > 0 && !article.enclosureLength) {
+                            article.enclosureLength = newResource.size // 更新附件大小
                             await this.articleRepository.save(article)
                         }
                         if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
@@ -779,9 +778,8 @@ export class TasksService implements OnApplicationBootstrap {
         resource.url = isHttpURL(url) ? url : magnetUri // 保存 http url，避免每次都下载
         resource.name = torrentInfo.name
         resource.size = torrentInfo.totalSize // 总大小
-        if (resource.size > 0 && !article.enclosure.length) {
-            article.enclosure.length = resource.size // 更新附件大小
-            article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
+        if (resource.size > 0 && !article.enclosureLength) {
+            article.enclosureLength = resource.size // 更新附件大小
             await this.articleRepository.save(article)
         }
         if (isSafePositiveInteger(maxSize) && maxSize > 0 && resource.size > 0 && maxSize <= resource.size) {
@@ -911,7 +909,6 @@ The content to be summarized is:`
                     } else {
                         this.logger.log(`文章 id: ${article.id} 总结完成`)
                     }
-                    article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
                     article.aiSummary = aiSummary
                     await this.articleRepository.save(article)
                 })))

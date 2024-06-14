@@ -1,7 +1,7 @@
 import { Entity, Column, Index, ManyToOne, AfterLoad } from 'typeorm'
 import { Enclosure } from 'rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsDate, IsNotEmpty, IsObject, IsOptional, IsString, IsUrl, Length, ValidateNested } from 'class-validator'
+import { IsArray, IsDate, IsNotEmpty, IsObject, IsOptional, IsString, IsUrl, Length } from 'class-validator'
 import dayjs from 'dayjs'
 import { plainToInstance, Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
@@ -212,8 +212,8 @@ export class Article extends AclBase {
         hide: true,
     })
     @ApiProperty({ title: '附件', type: () => EnclosureImpl })
-    @Type(() => EnclosureImpl)
-    @ValidateNested()
+    // @Type(() => EnclosureImpl)
+    // @ValidateNested()
     @JsonStringLength(0, 65536) // 2 ** 16
     @IsObject()
     @IsOptional()
