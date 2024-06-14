@@ -1,14 +1,12 @@
 import { promisify } from 'util'
-import Parser, { Output, Item } from 'rss-parser'
+import Parser, { Output, Item, Enclosure } from 'rss-parser'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
-import { plainToInstance } from 'class-transformer'
 import { isURL } from 'class-validator'
 import XRegExp from 'xregexp'
-import { get, camelCase } from 'lodash'
 import opml, { Opml } from 'opml'
 import { collapseWhitespace, deepTrim, htmlToMarkdown, isHttpURL, parseDataSize, timeFormat, uuid } from './helper'
-import { Article, EnclosureImpl } from '@/db/models/article.entity'
+import { Article } from '@/db/models/article.entity'
 import { DataItem } from '@/interfaces/data'
 import { Filter } from '@/models/filter.dto'
 import { FilterOut } from '@/models/filter-out.dto'
@@ -95,23 +93,22 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     article.contentSnippet = item['content:encodedSnippet'] || item.contentSnippet
     article.summary = item.summary
     article.categories = item.categories
-    article.enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
-    if (!article.enclosure && /^(https?:\/\/).*(\.torrent$)/.test(article.link)) {  // 检测 link 后缀是否为 .torrent。例如 nyaa.si
-        article.enclosure = {
+
+    let enclosure: Enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
+    if (!enclosure && /^(https?:\/\/).*(\.torrent$)/.test(article.link)) {  // 检测 link 后缀是否为 .torrent。例如 nyaa.si
+        enclosure = {
             url: article.link,
             type: 'application/x-bittorrent',
         }
     }
-    if (article.enclosure) {
-        if (isHttpURL(article.enclosureUrl)) { // 如果以 http 开头，则尝试规范化 URL。例如 bangumi.moe
-            article.enclosureUrl = new URL(article.enclosureUrl).toString()
+    if (enclosure) {
+        article.enclosureType = enclosure.type
+        if (isHttpURL(enclosure.url)) { // 如果以 http 开头，则尝试规范化 URL。例如 bangumi.moe
+            article.enclosureUrl = new URL(enclosure.url).toString()
         }
-        if (typeof article.enclosureLength === 'string') { // 如果解析出来的 length 是 string ，则需要转换成 number
-            article.enclosureLength = Number(article.enclosureLength)
+        if (typeof enclosure.length === 'string') { // 如果解析出来的 length 是 string ，则需要转换成 number
+            article.enclosureLength = Number(enclosure.length)
         }
-        article.enclosure = plainToInstance(EnclosureImpl, article.enclosure)
-    } else {
-        article.enclosure = plainToInstance(EnclosureImpl, {})
     }
     return article
 }
@@ -166,11 +163,11 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
     if (item.author) {
         text += `作者：${item.author}\n`
     }
-    if (item.enclosure?.url) {
+    if (item.enclosureUrl) {
         if (isMarkdown) {
-            text += `资源链接：[${item.enclosure?.url}](${item.enclosure?.url})\n`
+            text += `资源链接：[${item.enclosureUrl}](${item.enclosureUrl})\n`
         } else {
-            text += `资源链接：${item.enclosure?.url}\n`
+            text += `资源链接：${item.enclosureUrl}\n`
         }
     }
     if (item.link) {
@@ -275,12 +272,12 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         }))
         // 再判断 filter
         .filter((article) => filterFields.every((field) => { // 所有条件为 交集，即 需要全部条件 符合
+            if (!filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
+                return true
+            }
             if (field === 'enclosureLength') {
                 // 保留体积，只下载体积小于 enclosureLength 的资源
                 return parseDataSize(filter.enclosureLength) > article.enclosureLength
-            }
-            if (!filter[field] || !article[field]) { // 如果缺少 filter 或 article 对应的项就跳过该过滤条件
-                return true
             }
             if (field === 'categories') {
                 // 有一个 category 对的上就为 true
@@ -327,9 +324,9 @@ ${article.contentSnippet}`
         category: article.categories,
         pubDate: article.pubDate.toUTCString(),
         updated: article.pubDate.toUTCString(),
-        enclosure_url: article.enclosure?.url,
-        enclosure_type: article.enclosure?.type,
-        enclosure_length: article.enclosure?.length,
+        enclosure_url: article.enclosureUrl,
+        enclosure_type: article.enclosureType,
+        enclosure_length: article.enclosureLength,
     }
     return dataItem
 }

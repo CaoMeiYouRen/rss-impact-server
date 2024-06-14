@@ -61,11 +61,14 @@ describe('rssItemToArticle', () => {
         expectedArticle.contentSnippet = 'Article snippet';
         expectedArticle.summary = 'Article summary';
         expectedArticle.categories = ['Category 1', 'Category 2'];
-        expectedArticle.enclosure = plainToInstance(EnclosureImpl, {
-            url: 'https://example.com/file.torrent',
-            type: 'application/x-bittorrent',
-            length: 1024
-        });
+        // expectedArticle.enclosure = plainToInstance(EnclosureImpl, {
+        //     url: 'https://example.com/file.torrent',
+        //     type: 'application/x-bittorrent',
+        //     length: 1024
+        // });
+        expectedArticle.enclosureType = 'application/x-bittorrent'
+        expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
+        expectedArticle.enclosureLength = 1024
 
         const article = rssItemToArticle(rssItem);
         expect(article).toEqual(expectedArticle);
@@ -86,7 +89,6 @@ describe('rssItemToArticle', () => {
         expectedArticle.title = 'Article Title';
         expectedArticle.content = 'Article content';
         expectedArticle.contentSnippet = 'Article content';
-        expectedArticle.enclosure = plainToInstance(EnclosureImpl, {})
 
         const article = rssItemToArticle(rssItem);
         expect(article).toEqual(expectedArticle);
@@ -110,14 +112,11 @@ describe('rssItemToArticle', () => {
         expectedArticle.link = 'https://example.com/article';
         expectedArticle.title = 'Article Title';
         expectedArticle.content = 'Article content';
-        expectedArticle.enclosure = plainToInstance(EnclosureImpl, {
-            url: 'http://example.com/file.torrent',
-            type: 'application/x-bittorrent',
-            length: 1024
-        });
-
+        expectedArticle.enclosureType = 'application/x-bittorrent'
+        expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
+        expectedArticle.enclosureLength = 1024
         const article = rssItemToArticle(rssItem);
-        expect(article.enclosure?.url).toBe('http://example.com/file.torrent');
+        expect(article.enclosureUrl).toBe('http://example.com/file.torrent');
     });
 
     it('should handle enclosure with length as string', () => {
@@ -138,14 +137,11 @@ describe('rssItemToArticle', () => {
         expectedArticle.link = 'https://example.com/article';
         expectedArticle.title = 'Article Title';
         expectedArticle.content = 'Article content';
-        expectedArticle.enclosure = plainToInstance(EnclosureImpl, {
-            url: 'https://example.com/file.torrent',
-            type: 'application/x-bittorrent',
-            length: 1024
-        });
-
+        expectedArticle.enclosureType = 'application/x-bittorrent'
+        expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
+        expectedArticle.enclosureLength = 1024
         const article = rssItemToArticle(rssItem);
-        expect(article.enclosure?.length).toBe(1024);
+        expect(article.enclosureLength).toBe(1024);
     });
 
     it('should handle link as enclosure for torrent files', () => {
@@ -161,11 +157,8 @@ describe('rssItemToArticle', () => {
         expectedArticle.link = 'https://example.com/file.torrent';
         expectedArticle.title = 'Article Title';
         expectedArticle.content = 'Article content';
-        expectedArticle.enclosure = plainToInstance(EnclosureImpl, {
-            url: 'https://example.com/file.torrent',
-            type: 'application/x-bittorrent'
-        });
-
+        expectedArticle.enclosureType = 'application/x-bittorrent'
+        expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
         const article = rssItemToArticle(rssItem);
         expect(article.enclosure).toEqual(expectedArticle.enclosure);
     });
