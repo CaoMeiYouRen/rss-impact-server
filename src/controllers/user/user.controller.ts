@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Session } from '@nestjs/common'
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags, OmitType } from '@nestjs/swagger'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -18,6 +18,7 @@ import { Role } from '@/constant/role'
 import { HttpError } from '@/models/http-error'
 import { ResponseDto } from '@/models/response.dto'
 import { ResetPasswordDto } from '@/models/reset-password.dto'
+import { ISession } from '@/interfaces/session'
 
 @UseSession()
 @AclCrud({
@@ -143,10 +144,10 @@ export class UserController {
             prop: 'checkPassword',
             type: 'password',
         }].map((col) => ({
-                ...col,
-                span: 24,
-                labelWidth: 120,
-            }))
+            ...col,
+            span: 24,
+            labelWidth: 120,
+        }))
 
         return {
             title: '重置密码',
@@ -161,7 +162,7 @@ export class UserController {
     @Post('resetPassword')
     @ApiOperation({ summary: '重置密码' })
     @ApiResponse({ status: 201, type: ResponseDto })
-    async resetPassword(@Body() body: ResetPasswordDto, @CurrentUser() currentUser: User) {
+    async resetPassword(@Body() body: ResetPasswordDto, @CurrentUser() currentUser: User, @Session() session: ISession) {
         const user = await this.repository
             .createQueryBuilder('user')
             .where({
@@ -177,6 +178,11 @@ export class UserController {
         }
         user.password = body.newPassword
         await this.repository.save(user)
+        session?.destroy((error) => {
+            if (error) {
+                this.logger.error(error?.message, error?.stack)
+            }
+        })
         return new ResponseDto({
             message: '修改密码成功！',
         })

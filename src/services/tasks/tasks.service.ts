@@ -924,7 +924,7 @@ The content to be summarized is:`
                 article.contentSnippet = article.contentSnippet.replace(reg, contentReplace)
                 return article
             } catch (error) {
-                this.logger.error(error)
+                this.logger.error(error?.message, error?.stack)
                 return article
             }
         }).map((article) => plainToInstance(Article, article))
