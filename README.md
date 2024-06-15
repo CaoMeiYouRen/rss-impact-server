@@ -1,6 +1,7 @@
 <h1 align="center">rss-impact-server </h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/github/package-json/v/CaoMeiYouRen/rss-impact-server
+" />
   <a href="https://hub.docker.com/r/caomeiyouren/rss-impact-server" target="_blank">
   <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/caomeiyouren/rss-impact-server">
   </a>
@@ -23,11 +24,10 @@
 </p>
 
 
+
 > RSS + Hook = RSS Impact
 >
 > 一个基于 RSS 的 Hook 系统。本项目为后端部分。
-
-**温馨提示：本项目还在开发阶段，功能还不完善，暂时还不建议在生产环境使用。**
 
 ## 🏠 主页
 
@@ -105,6 +105,8 @@ vim docker-compose.yml  # 也可以是你喜欢的编辑器
 ```
 
 > 在公网部署时请务必修改 ADMIN_PASSWORD、SESSION_SECRET 环境变量
+>
+> 如果要使用自定义查询功能，请修改 BASE_URL 环境变量
 
 启动
 
@@ -114,31 +116,9 @@ docker-compose up -d
 
 在浏览器中打开 `http://{Server IP}:3000` 即可查看结果
 
-### 手动部署
+### 更多部署方式
 
-部署 `RSS Impact` 最直接的方式，您可以按照以下步骤将 `RSS Impact` 部署在您的电脑、服务器或者其他任何地方
-
-```sh
-# 构建后端部分
-git clone https://github.com/CaoMeiYouRen/rss-impact-server.git  --depth=1
-cd rss-impact-server
-pnpm i --frozen-lockfile
-pnpm build
-# 构建前端部分
-cd ../
-git clone https://github.com/CaoMeiYouRen/rss-impact-web.git --depth=1
-cd rss-impact-web
-pnpm i --frozen-lockfile
-pnpm build
-# 复制前端部分到后端
-cd ../
-cp -rp "rss-impact-web/dist" "rss-impact-server/public"
-# 启动项目
-cd rss-impact-server
-pnpm start
-```
-
-在浏览器中打开 `http://{Server IP}:3000` 即可查看结果
+更多部署方式请查看 [部署文档](./docs/deploy.md)
 
 ## 👨‍💻 使用
 
