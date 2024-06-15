@@ -22,6 +22,7 @@ import { Category } from '@/db/models/category.entity'
 import { to } from '@/utils/helper'
 import { __DEV__ } from '@/app.config'
 import { AvueCrudOption } from '@/models/avue.dto'
+import { CategoryService } from '@/services/category/category.service'
 
 @UseSession()
 @AclCrud({
@@ -57,20 +58,30 @@ export class FeedController {
 
     constructor(
         @InjectRepository(Feed) private readonly repository: Repository<Feed>,
-        @InjectRepository(Category) private readonly categoryRepository: Repository<Category>,
         private readonly tasksService: TasksService,
+        private readonly categoryService: CategoryService,
     ) {
     }
 
     @ApiResponse({ status: 200, type: AvueCrudOption })
     @ApiOperation({ summary: '快速添加订阅的配置项' })
     @Get('quickCreate/option')
-    async quickCreateOption(): Promise<AvueFormOption> {
+    async quickCreateOption(@CurrentUser() user: User): Promise<AvueFormOption> {
+        //  直接用 QuickCreateFeed 会获取不到 SetAclCrudField
+        const uncategorizedId = (await this.categoryService.findOrCreateUncategorizedCategory(user))?.id
+        const column = initAvueCrudColumn(Feed)
+            .filter((col) => ['url', 'cron', 'isEnabled', 'categoryId', 'hooks', 'isEnableProxy', 'proxyConfigId'].includes(col.prop))
+            .map((col) => {
+                if (col.prop === 'categoryId') {
+                    col.value = uncategorizedId
+                    return col
+                }
+                return col
+            })
         return {
             // title: '快速添加订阅',
-            submitText: '添加', // 直接用 QuickCreateFeed 会获取不到 SetAclCrudField
-            column: initAvueCrudColumn(Feed).filter((col) => ['url', 'cron', 'isEnabled', 'categoryId', 'hooks', 'isEnableProxy', 'proxyConfigId'].includes(col.prop),
-            ),
+            submitText: '添加',
+            column,
         }
     }
 
@@ -119,7 +130,6 @@ export class FeedController {
                     span: 24,
                     tip: '只能上传xml/opml文件，且不超过10M',
                     action: '/feed/import',
-
                 },
             ],
         }
@@ -142,12 +152,12 @@ export class FeedController {
         const categories: Pick<Category, 'id' | 'name'>[] = []
         const feeds: Feed[] = []
         // 创建 未分类 项 Uncategorized
-        const uncategorizedId = (await this.findOrCreateCategory('未分类', user))?.id
+        const uncategorizedId = (await this.categoryService.findOrCreateUncategorizedCategory(user))?.id
 
         for await (const sub of subs) {
             if (!sub.xmlUrl && sub.text) { // 如果在第一层，且没有 xmlUrl，则为分类
                 const categoryName = sub.text
-                const categoryId = (await this.findOrCreateCategory(categoryName, user)).id
+                const categoryId = (await this.categoryService.findOrCreateCategory(categoryName, user)).id
                 categories.push({
                     name: categoryName,
                     id: categoryId,
@@ -193,23 +203,6 @@ export class FeedController {
             }
         }
         return feeds
-    }
-
-    private async findOrCreateCategory(name: string, user: User) {
-        const category = await this.categoryRepository.findOne({
-            where: {
-                userId: user.id,
-                name,
-            },
-        })
-        if (category) {
-            return category
-        }
-        return this.categoryRepository.save(this.categoryRepository.create({
-            name,
-            description: name,
-            userId: user.id,
-        }))
     }
 
     /**

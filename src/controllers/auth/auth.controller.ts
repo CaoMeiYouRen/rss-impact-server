@@ -13,12 +13,14 @@ import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
 import { ENABLE_REGISTER } from '@/app.config'
+import { CategoryService } from '@/services/category/category.service'
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
 
     constructor(@InjectRepository(User) private readonly repository: Repository<User>,
+        private readonly categoryService: CategoryService,
     ) { }
 
     private readonly logger: Logger = new Logger(AuthController.name)
@@ -80,6 +82,8 @@ export class AuthController {
             accessToken: getAccessToken('rss-impact'),
         }))
         delete user.password
+        // 创建默认的未分类项
+        await this.categoryService.findOrCreateUncategorizedCategory(user)
         return user
     }
 

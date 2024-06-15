@@ -16,7 +16,7 @@ import { __DEV__ } from '@/app.config'
     model: Category,
     config: {
         option: {
-            title: '分组管理',
+            title: '分类管理',
             column: [],
         },
     },
@@ -54,7 +54,7 @@ export class CategoryController {
         const userId = user.id
         const { name } = body
         if (await this.repository.count({ where: { name, userId } })) {
-            throw new HttpError(400, '已存在相同名称的分组！')
+            throw new HttpError(400, '已存在相同名称的分类！')
         }
         delete body.user  // 以 userId 字段为准
         body.userId = user.id  // 以 userId 字段为准
@@ -96,7 +96,7 @@ export class CategoryController {
             },
         })
         if (oldCategory && oldCategory.id !== id) {
-            throw new HttpError(400, '已存在相同名称的分组！')
+            throw new HttpError(400, '已存在相同名称的分类！')
         }
         const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
         return updatedDocument

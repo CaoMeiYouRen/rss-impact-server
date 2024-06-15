@@ -22,6 +22,8 @@ import { ProxyConfigController } from './controllers/proxy-config/proxy-config.c
 import { CustomQueryController } from './controllers/custom-query/custom-query.controller'
 import { CacheService } from './services/cache/cache.service'
 import { SystemController } from './controllers/system/system.controller'
+import { FeedService } from './services/feed/feed.service'
+import { CategoryService } from './services/category/category.service'
 
 @Global()
 @Module({
@@ -33,8 +35,14 @@ import { SystemController } from './controllers/system/system.controller'
         AppService,
         UserService,
         AuthService,
-        ResourceService,
+        LocalStrategy,
+        SessionStrategy,
+        TokenStrategy,
         TasksService,
+        ResourceService,
+        CacheService,
+        FeedService,
+        CategoryService,
     ],
     controllers: [
         AppController,
@@ -60,6 +68,8 @@ import { SystemController } from './controllers/system/system.controller'
         TasksService,
         ResourceService,
         CacheService,
+        FeedService,
+        CategoryService,
     ],
 })
 export class AppModule { }

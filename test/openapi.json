@@ -5376,8 +5376,8 @@
                         "example": "这是一段 AI 总结"
                     },
                     "categories": {
-                        "title": "分类列表",
-                        "description": "RSS 源定义的分类，和 本地RSS 的分组不是同一个",
+                        "title": "类别列表",
+                        "description": "RSS 源定义的分类，和 本地RSS 的分类不是同一个",
                         "example": [
                             "tag1",
                             "tag2"
@@ -5533,11 +5533,11 @@
                     },
                     "categoryId": {
                         "type": "number",
-                        "title": "分组",
+                        "title": "分类",
                         "example": 1
                     },
                     "category": {
-                        "title": "分组",
+                        "title": "分类",
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/Category"
@@ -5772,7 +5772,7 @@
                     },
                     "categoryId": {
                         "type": "number",
-                        "title": "分组",
+                        "title": "分类",
                         "example": 1
                     },
                     "hooks": {
@@ -5875,11 +5875,11 @@
                     },
                     "categoryId": {
                         "type": "number",
-                        "title": "分组",
+                        "title": "分类",
                         "example": 1
                     },
                     "category": {
-                        "title": "分组",
+                        "title": "分类",
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/Category"
@@ -6011,11 +6011,11 @@
                     },
                     "categoryId": {
                         "type": "number",
-                        "title": "分组",
+                        "title": "分类",
                         "example": 1
                     },
                     "category": {
-                        "title": "分组",
+                        "title": "分类",
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/Category"
@@ -6896,11 +6896,11 @@
                             "feed"
                         ],
                         "title": "查询范围",
-                        "description": "指定分组和指定订阅的配置互斥，只按照本项指定的范围查询",
+                        "description": "指定分类和指定订阅的配置互斥，只按照本项指定的范围查询",
                         "example": "all"
                     },
                     "categories": {
-                        "title": "指定分组",
+                        "title": "指定分类",
                         "description": "支持选择多个分类",
                         "example": [],
                         "type": "array",
@@ -7023,11 +7023,11 @@
                             "feed"
                         ],
                         "title": "查询范围",
-                        "description": "指定分组和指定订阅的配置互斥，只按照本项指定的范围查询",
+                        "description": "指定分类和指定订阅的配置互斥，只按照本项指定的范围查询",
                         "example": "all"
                     },
                     "categories": {
-                        "title": "指定分组",
+                        "title": "指定分类",
                         "description": "支持选择多个分类",
                         "example": [],
                         "type": "array",
@@ -7182,11 +7182,11 @@
                             "feed"
                         ],
                         "title": "查询范围",
-                        "description": "指定分组和指定订阅的配置互斥，只按照本项指定的范围查询",
+                        "description": "指定分类和指定订阅的配置互斥，只按照本项指定的范围查询",
                         "example": "all"
                     },
                     "categories": {
-                        "title": "指定分组",
+                        "title": "指定分类",
                         "description": "支持选择多个分类",
                         "example": [],
                         "type": "array",

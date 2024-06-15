@@ -13,7 +13,7 @@ export type OutputType = keyof typeof OutputMap
 
 export const ScopeMap = {
     all: '全部',
-    category: '指定分组',
+    category: '指定分类',
     feed: '指定订阅',
 } as const
 

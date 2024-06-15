@@ -183,7 +183,7 @@ export declare interface AvueFormOption {
      */
     column: Field[]
     /**
-     *分组表单,放入正常的column配置就行
+     *分类表单,放入正常的column配置就行
      *
      * @author CaoMeiYouRen
      * @date 2022-02-22

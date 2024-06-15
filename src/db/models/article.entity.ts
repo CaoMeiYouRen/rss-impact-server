@@ -189,13 +189,13 @@ export class Article extends AclBase {
     aiSummary?: string
 
     /**
-     * 分类列表，和 RSS 的分组不是同一个
+     * 分类列表，和 RSS 的分类不是同一个
      */
     @SetAclCrudField({
         type: 'array',
         search: true,
     })
-    @ApiProperty({ title: '分类列表', description: 'RSS 源定义的分类，和 本地RSS 的分组不是同一个', example: ['tag1', 'tag2'] })
+    @ApiProperty({ title: '类别列表', description: 'RSS 源定义的分类，和 本地RSS 的分类不是同一个', example: ['tag1', 'tag2'] })
     @JsonStringLength(0, 512)
     @IsArray()
     @IsString({ each: true })

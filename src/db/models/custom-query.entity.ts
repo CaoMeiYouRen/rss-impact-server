@@ -42,7 +42,7 @@ export class CustomQuery extends AclBase {
         dicData: ScopeList,
         value: 'all',
     })
-    @ApiProperty({ title: '查询范围', description: '指定分组和指定订阅的配置互斥，只按照本项指定的范围查询', example: 'all' })
+    @ApiProperty({ title: '查询范围', description: '指定分类和指定订阅的配置互斥，只按照本项指定的范围查询', example: 'all' })
     @IsIn(ScopeList.map((e) => e.value))
     @IsNotEmpty()
     @Column({
@@ -61,7 +61,7 @@ export class CustomQuery extends AclBase {
             value: 'id',
         },
     })
-    @ApiProperty({ title: '指定分组', description: '支持选择多个分类', example: [], type: [Category] })
+    @ApiProperty({ title: '指定分类', description: '支持选择多个分类', example: [], type: [Category] })
     @Type(() => Category)
     @IsArray()
     @IsOptional()

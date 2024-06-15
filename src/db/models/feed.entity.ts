@@ -122,7 +122,7 @@ export class Feed extends AclBase {
             value: 'id',
         },
     })
-    @ApiProperty({ title: '分组', example: 1 })
+    @ApiProperty({ title: '分类', example: 1 })
     @IsId()
     @IsDefined()
     @Column({ nullable: true })
@@ -131,7 +131,7 @@ export class Feed extends AclBase {
     @SetAclCrudField({
         hide: true,
     })
-    @ApiProperty({ title: '分组', type: () => Category })
+    @ApiProperty({ title: '分类', type: () => Category })
     @ManyToOne(() => Category, (category) => category.feeds)
     category: Category
 

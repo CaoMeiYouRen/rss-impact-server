@@ -100,7 +100,7 @@ export class CustomQueryController {
 
             } else if (scope === 'category') {
                 if (!categories?.length) {
-                    throw new HttpError(400, '指定分组时必须要选择分组！')
+                    throw new HttpError(400, '指定分类时必须要选择分类！')
                 }
                 feedId = In(categories.map((e) => e?.feeds?.map((f) => f?.id))?.flat()?.filter(Boolean))
             }
