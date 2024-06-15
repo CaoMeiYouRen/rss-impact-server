@@ -105,9 +105,13 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
         article.enclosureType = enclosure.type
         if (isHttpURL(enclosure.url)) { // 如果以 http 开头，则尝试规范化 URL。例如 bangumi.moe
             article.enclosureUrl = new URL(enclosure.url).toString()
+        } else {
+            article.enclosureUrl = enclosure.url
         }
         if (typeof enclosure.length === 'string') { // 如果解析出来的 length 是 string ，则需要转换成 number
             article.enclosureLength = Number(enclosure.length)
+        } else {
+            article.enclosureLength = enclosure.length
         }
     }
     return article
