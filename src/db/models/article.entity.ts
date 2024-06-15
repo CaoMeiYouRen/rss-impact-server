@@ -1,9 +1,9 @@
 import { Entity, Column, Index, ManyToOne, AfterLoad } from 'typeorm'
 import { Enclosure } from 'rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsDate, IsNotEmpty, IsObject, IsOptional, IsString, IsUrl, Length } from 'class-validator'
+import { IsArray, IsDate, IsNotEmpty, IsOptional, IsString, IsUrl, Length } from 'class-validator'
 import dayjs from 'dayjs'
-import { plainToInstance, Type } from 'class-transformer'
+import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
@@ -207,23 +207,23 @@ export class Article extends AclBase {
     })
     categories?: string[]
 
-    /** 附件 enclosure/mediaContent */
-    @SetAclCrudField({
-        hide: true,
-    })
-    @ApiProperty({ title: '附件', type: () => EnclosureImpl })
-    // @Type(() => EnclosureImpl)
-    // @ValidateNested()
-    @JsonStringLength(0, 65536) // 2 ** 16
-    @IsObject()
-    @IsOptional()
-    @Column({
-        type: 'simple-json',
-        length: 65536,
-        nullable: true,
-        // default: '{}',
-    })
-    enclosure?: EnclosureImpl
+    // /** 附件 enclosure/mediaContent */
+    // @SetAclCrudField({
+    //     hide: true,
+    // })
+    // @ApiProperty({ title: '附件', type: () => EnclosureImpl })
+    // // @Type(() => EnclosureImpl)
+    // // @ValidateNested()
+    // @JsonStringLength(0, 65536) // 2 ** 16
+    // @IsObject()
+    // @IsOptional()
+    // @Column({
+    //     type: 'simple-json',
+    //     length: 65536,
+    //     nullable: true,
+    //     // default: '{}',
+    // })
+    // enclosure?: EnclosureImpl
 
     @SetAclCrudField({
         search: true,
@@ -232,11 +232,11 @@ export class Article extends AclBase {
     @IsUrlOrMagnetUri({}, {
         require_tld: __PROD__,   // 是否要顶级域名
     })
-    @Length(0, 65000)
+    @Length(0, 65536)
     @IsOptional()
     @Column({
         nullable: true,
-        length: 65000,
+        length: 65536,
     })
     enclosureUrl?: string
 
@@ -278,14 +278,14 @@ export class Article extends AclBase {
         if (typeof this.enclosureLength === 'number') {
             this.enclosureLengthFormat = dataFormat(this.enclosureLength)
         }
-        if (!this.enclosure) {
-            this.enclosure = plainToInstance(EnclosureImpl, {})
-            return
-        }
-        if (typeof this.enclosure.length === 'number') {
-            this.enclosure.lengthFormat = dataFormat(this.enclosure.length)
-        }
-        this.enclosure = plainToInstance(EnclosureImpl, this.enclosure)
+        // if (!this.enclosure) {
+        //     this.enclosure = plainToInstance(EnclosureImpl, {})
+        //     return
+        // }
+        // if (typeof this.enclosure.length === 'number') {
+        //     this.enclosure.lengthFormat = dataFormat(this.enclosure.length)
+        // }
+        // this.enclosure = plainToInstance(EnclosureImpl, this.enclosure)
     }
 
     @SetAclCrudField({

@@ -5248,39 +5248,6 @@
                     "feeds"
                 ]
             },
-            "EnclosureImpl": {
-                "type": "object",
-                "properties": {
-                    "url": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 65000,
-                        "title": "URL",
-                        "example": "http://bt.example.com"
-                    },
-                    "type": {
-                        "type": "string",
-                        "minLength": 0,
-                        "maxLength": 128,
-                        "title": "媒体类型",
-                        "example": "application/x-bittorrent"
-                    },
-                    "length": {
-                        "type": "number",
-                        "title": "文件体积(B)",
-                        "example": 114514
-                    },
-                    "lengthFormat": {
-                        "type": "string",
-                        "title": "文件体积",
-                        "description": "单位为 B(字节)",
-                        "example": "114.51 MiB"
-                    }
-                },
-                "required": [
-                    "url"
-                ]
-            },
             "Article": {
                 "type": "object",
                 "properties": {
@@ -5387,18 +5354,10 @@
                             "type": "string"
                         }
                     },
-                    "enclosure": {
-                        "title": "附件",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/EnclosureImpl"
-                            }
-                        ]
-                    },
                     "enclosureUrl": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 65000,
+                        "maxLength": 65536,
                         "title": "附件URL",
                         "example": "http://bt.example.com"
                     },

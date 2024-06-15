@@ -160,7 +160,8 @@ describe('rssItemToArticle', () => {
         expectedArticle.enclosureType = 'application/x-bittorrent'
         expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
         const article = rssItemToArticle(rssItem);
-        expect(article.enclosure).toEqual(expectedArticle.enclosure);
+        expect(article.enclosureType).toEqual(expectedArticle.enclosureType);
+        expect(article.enclosureUrl).toEqual(expectedArticle.enclosureUrl);
     });
 });
 
@@ -178,11 +179,6 @@ describe('filterArticles', () => {
             summary: 'This is the summary of Article 1.',
             aiSummary: 'This is the AI summary of Article 1.',
             categories: ['category1', 'category2'],
-            enclosure: {
-                url: 'https://example.com/article1.mp3',
-                type: 'audio/mpeg',
-                length: 1024,
-            },
         },
         {
             guid: '2',
@@ -268,11 +264,7 @@ describe('filterArticles', () => {
                 summary: 'This is the summary of Article 4.',
                 aiSummary: 'This is the AI summary of Article 4.',
                 categories: ['category4', 'category5'],
-                enclosure: {
-                    url: 'https://example.com/article4.docx',
-                    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                    length: 8192,
-                },
+
             },
         ] as Article[];
 
