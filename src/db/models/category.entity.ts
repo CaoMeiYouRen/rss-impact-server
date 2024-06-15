@@ -7,7 +7,7 @@ import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 /**
- * 分组表
+ * 分类表
  *
  * @author CaoMeiYouRen
  * @date 2024-03-20
@@ -20,7 +20,7 @@ export class Category extends AclBase {
     @SetAclCrudField({
         search: true,
     })
-    @ApiProperty({ title: '名称', example: '分组A' })
+    @ApiProperty({ title: '名称', example: '分类A' })
     @IsNotEmpty({ message: '名称不能为空' })
     @Length(0, 256, { message: '名称的长度必须在 $constraint1 到 $constraint2 个字符！' })
     @Index({})
@@ -32,7 +32,7 @@ export class Category extends AclBase {
     @SetAclCrudField({
         search: true,
     })
-    @ApiProperty({ title: '简介', example: '分组A' })
+    @ApiProperty({ title: '简介', example: '分类A' })
     @Length(0, 2048, { message: '简介的长度必须在 $constraint1 到 $constraint2 个字符！' })
     @IsOptional()
     @Column({

@@ -5220,14 +5220,14 @@
                         "minLength": 0,
                         "maxLength": 256,
                         "title": "名称",
-                        "example": "分组A"
+                        "example": "分类A"
                     },
                     "description": {
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 2048,
                         "title": "简介",
-                        "example": "分组A"
+                        "example": "分类A"
                     },
                     "feeds": {
                         "title": "订阅链接",
@@ -5343,7 +5343,7 @@
                         "example": "这是一段 AI 总结"
                     },
                     "categories": {
-                        "title": "类别列表",
+                        "title": "分类列表",
                         "description": "RSS 源定义的分类，和 本地RSS 的分类不是同一个",
                         "example": [
                             "tag1",
@@ -6066,14 +6066,14 @@
                         "minLength": 0,
                         "maxLength": 256,
                         "title": "名称",
-                        "example": "分组A"
+                        "example": "分类A"
                     },
                     "description": {
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 2048,
                         "title": "简介",
-                        "example": "分组A"
+                        "example": "分类A"
                     },
                     "feeds": {
                         "title": "订阅链接",
@@ -6117,14 +6117,14 @@
                         "minLength": 0,
                         "maxLength": 256,
                         "title": "名称",
-                        "example": "分组A"
+                        "example": "分类A"
                     },
                     "description": {
                         "type": "string",
                         "minLength": 0,
                         "maxLength": 2048,
                         "title": "简介",
-                        "example": "分组A"
+                        "example": "分类A"
                     },
                     "feeds": {
                         "title": "订阅链接",

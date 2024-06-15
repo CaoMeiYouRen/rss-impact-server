@@ -38,13 +38,13 @@ export class CategoryService {
     }
 
     /**
-     * 获取 未分组项 Uncategorized
+     * 获取 未分类项 Uncategorized
      *
      * @author CaoMeiYouRen
      * @date 2024-06-15
      * @param user
      */
     public async findOrCreateUncategorizedCategory(user: User) {
-        return this.findOrCreateCategory('未分组', user)
+        return this.findOrCreateCategory('未分类', user)
     }
 }
