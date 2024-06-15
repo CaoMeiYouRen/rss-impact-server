@@ -40,6 +40,7 @@ jobs:
           restore-keys: pnpm-${{ runner.os }}
       - run: pnpm i --frozen-lockfile
       - run: pnpm run lint
+      - run: pnpm run lint:md
       - run: pnpm run build
       - run: pnpm run test
       - run: pnpm run test:e2e
