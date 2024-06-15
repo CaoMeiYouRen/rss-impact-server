@@ -193,7 +193,12 @@
     "url": "https://github.com/CaoMeiYouRen/rss-impact-server/issues"
   },
   "changelog": {
-    "language": "zh"
+    "language": "zh",
+    "settings": {
+      "test": {
+        "enable": true
+      }
+    }
   },
   "lint-staged": {
     "*.{js,ts}": [
