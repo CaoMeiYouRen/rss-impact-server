@@ -9,6 +9,8 @@ updates:
       timezone: Asia/Shanghai
     ignore:
       - dependency-name: semantic-release
+        versions:
+          - ">= 21.0.1"
       - dependency-name: "@commitlint/cli"
         versions:
           - ">= 19.0.0"
