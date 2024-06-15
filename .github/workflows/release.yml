@@ -5,7 +5,7 @@ on:
   #     - master
   workflow_dispatch:
   schedule:
-    # 每周六 UTC+0 20:00
+    # 每周六 UTC+0 12:00 即 UTC+8 20:00
     - cron: "0 12 * * 6"
 # 仅取消针对当前工作流正在进行的作业或运行
 concurrency:
