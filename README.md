@@ -1,7 +1,6 @@
 <h1 align="center">rss-impact-server </h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/github/package-json/v/CaoMeiYouRen/rss-impact-server
-" />
+  <img alt="Version" src="https://img.shields.io/github/package-json/v/CaoMeiYouRen/rss-impact-server" />
   <a href="https://hub.docker.com/r/caomeiyouren/rss-impact-server" target="_blank">
   <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/caomeiyouren/rss-impact-server">
   </a>
