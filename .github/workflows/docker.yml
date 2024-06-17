@@ -1,6 +1,7 @@
 name: Publish Docker Image
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -104,9 +105,11 @@ jobs:
           labels: ${{ steps.metadata.outputs.labels }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64
       - name: Docker Hub README & description sync
-        uses: meeDamian/sync-readme@v1.0.6
+        uses: meeDamian/sync-readme@v1
         with:
+          user: ${{ secrets.DOCKER_USERNAME }}
           pass: ${{ secrets.DOCKER_PASSWORD }}
+          slug: ${{ github.repository }}
           description: true
       - name: Deploy demo
         run: curl -X GET -L --user ${{ secrets.JENKINS_DEMO_TOKEN }} "${{ secrets.JENKINS_DEMO_URL }}/buildWithParameters?token=${{ secrets.JENKINS_DEMO_JOB_TOKEN }}&DOCKER_IMAGE=registry.cn-hangzhou.aliyuncs.com/${{ env.REPO }}:${{ env.TAG }}"
