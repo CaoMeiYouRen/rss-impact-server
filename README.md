@@ -26,7 +26,9 @@
 
 > RSS + Hook = RSS Impact
 >
-> 一个基于 RSS 的 Hook 系统。本项目为后端部分。
+> 一个基于 RSS 的 Hook 系统。
+>
+> 本项目为后端部分，前端部分请参考 [rss-impact-web](https://github.com/CaoMeiYouRen/rss-impact-web)。
 
 ## 🏠 主页
 
@@ -117,7 +119,7 @@ docker-compose up -d
 
 ### 更多部署方式
 
-更多部署方式请查看 [部署文档](./docs/deploy.md)
+更多部署方式请查看 [部署文档](https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/docs/deploy.md)
 
 ## 👨‍💻 使用
 
