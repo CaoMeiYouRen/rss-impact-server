@@ -1,9 +1,9 @@
-FROM caomeiyouren/alpine-nodejs:latest as nodejs
+FROM caomeiyouren/alpine-nodejs:latest AS nodejs
 
-FROM caomeiyouren/alpine-nodejs-minimize:latest as runtime
+FROM caomeiyouren/alpine-nodejs-minimize:latest AS runtime
 
 # 前端构建阶段
-FROM nodejs as frontend-builder
+FROM nodejs AS frontend-builder
 # 如果前端更新了，但后端没有更新，需要发版时，修改该变量
 ENV FRONTEND_VERSION='0.0.8'
 
@@ -17,7 +17,7 @@ RUN npm config set registry https://registry.npmjs.org/ && \
 
 RUN pnpm run build
 # 构建阶段
-FROM nodejs as builder
+FROM nodejs AS builder
 
 WORKDIR /app
 
@@ -32,7 +32,7 @@ COPY . /app
 RUN pnpm run build
 
 # 缩小阶段
-FROM nodejs as docker-minifier
+FROM nodejs AS docker-minifier
 
 WORKDIR /app
 
