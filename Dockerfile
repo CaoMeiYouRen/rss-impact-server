@@ -1,4 +1,5 @@
 FROM caomeiyouren/alpine-nodejs:latest as nodejs
+
 FROM caomeiyouren/alpine-nodejs-minimize:latest as runtime
 
 # 前端构建阶段

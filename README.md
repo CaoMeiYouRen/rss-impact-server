@@ -77,10 +77,9 @@ https://rss-demo.cmyr.ltd/
 支持以下架构：
 
 - `linux/amd64`
-- ~~`linux/arm/v7`~~
 - ~~`linux/arm64`~~
 
-> linux/arm/v7 和 linux/arm64 尚未进行测试
+> linux/arm64 尚未进行测试
 
 有以下几种 tags：
 
