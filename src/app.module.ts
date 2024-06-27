@@ -24,6 +24,7 @@ import { CacheService } from './services/cache/cache.service'
 import { SystemController } from './controllers/system/system.controller'
 import { FeedService } from './services/feed/feed.service'
 import { CategoryService } from './services/category/category.service'
+import { DailyCountController } from './controllers/daily-count/daily-count.controller'
 
 @Global()
 @Module({
@@ -57,6 +58,7 @@ import { CategoryService } from './services/category/category.service'
         ProxyConfigController,
         CustomQueryController,
         SystemController,
+        DailyCountController,
     ],
     providers: [
         AppService,

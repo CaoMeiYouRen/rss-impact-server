@@ -1113,11 +1113,13 @@ The content to be summarized is:`
         }
         const dailyCount = await this.dailyCountRepository.findOne({ where: { date } })
         const fields = ['articleCount', 'resourceCount', 'webhookLogCount']
-        if (dailyCount && !isEqual(pickBy(newDailyCount, fields), pickBy(dailyCount, fields))) { // 如果存在且值不相等，则更新
-            await this.dailyCountRepository.save(this.dailyCountRepository.create({
-                ...dailyCount,
-                ...newDailyCount,
-            }))
+        if (dailyCount) { // 如果存在且值不相等，则更新
+            if (!isEqual(pickBy(newDailyCount, fields), pickBy(dailyCount, fields))) {
+                await this.dailyCountRepository.save(this.dailyCountRepository.create({
+                    ...dailyCount,
+                    ...newDailyCount,
+                }))
+            }
             return null
         }
         return this.dailyCountRepository.save(this.dailyCountRepository.create(newDailyCount))

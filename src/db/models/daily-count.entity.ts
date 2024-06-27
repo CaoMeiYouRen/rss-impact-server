@@ -3,6 +3,7 @@ import { Length } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { Base } from './base.entity'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
+import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 
 /**
  * 每日计数：文章数/资源数/推送 webhook 数
@@ -45,3 +46,7 @@ export class DailyCount extends Base {
     webhookLogCount: number
 }
 
+export class FindDailyCount extends FindPlaceholderDto<DailyCount> {
+    @ApiProperty({ type: () => [DailyCount] })
+    declare data: DailyCount[]
+}
