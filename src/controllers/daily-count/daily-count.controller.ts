@@ -1,5 +1,7 @@
 import { Controller } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
 import { DailyCount, FindDailyCount } from '@/db/models/daily-count.entity'
 import { AclCrud } from '@/decorators/acl-crud.decorator'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
@@ -24,4 +26,9 @@ import { UseAdmin } from '@/decorators/use-admin.decorator'
 })
 @ApiTags('daily-count')
 @Controller('daily-count')
-export class DailyCountController { }
+export class DailyCountController {
+    constructor(
+        @InjectRepository(DailyCount) private readonly repository: Repository<DailyCount>,
+    ) {
+    }
+}

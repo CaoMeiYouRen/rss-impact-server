@@ -5,7 +5,7 @@ import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, In, LessThan, MoreThanOrEqual, Between } from 'typeorm'
 import { CronJob } from 'cron'
-import { differenceWith, flattenDeep, pick, random, isEqual, pickBy, isNumber } from 'lodash'
+import { differenceWith, flattenDeep, pick, random, isEqual, pickBy } from 'lodash'
 import XRegExp from 'xregexp'
 import dayjs, { Dayjs } from 'dayjs'
 import fs from 'fs-extra'
@@ -41,7 +41,6 @@ import { NotificationConfig } from '@/models/notification-config'
 import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
-import { CustomQuery } from '@/db/models/custom-query.entity'
 import { DailyCount } from '@/db/models/daily-count.entity'
 
 const rssLimit = pLimit(RSS_LIMIT_MAX) // RSS 请求并发数
@@ -87,6 +86,12 @@ export class TasksService implements OnApplicationBootstrap {
 
             for (let i = 0; i < maxDay; i++) {
                 const currentDay = startDay.add(i, 'days')
+                const date = currentDay.format('YYYY-MM-DD')
+                const dailyCounts = await this.dailyCountRepository.find({ where: { date } })
+                if (dailyCounts?.length > 1) { // 删除重复的日志
+                    dailyCounts.shift()// 排除第一个
+                    await this.dailyCountRepository.delete(dailyCounts.map((e) => e.id))
+                }
                 await this.dailyCountByDate(currentDay)
             }
             this.logger.log(`统计数据同步完毕，同步天数：${maxDay}`)
