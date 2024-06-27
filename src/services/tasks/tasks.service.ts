@@ -3,11 +3,11 @@ import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In, LessThan, MoreThanOrEqual } from 'typeorm'
+import { Repository, In, LessThan, MoreThanOrEqual, Between } from 'typeorm'
 import { CronJob } from 'cron'
-import { differenceWith, flattenDeep, pick, random } from 'lodash'
+import { differenceWith, flattenDeep, pick, random, isEqual, pickBy, isNumber } from 'lodash'
 import XRegExp from 'xregexp'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import fs from 'fs-extra'
 import pLimit from 'p-limit'
 import md5 from 'md5'
@@ -42,6 +42,7 @@ import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 import { CustomQuery } from '@/db/models/custom-query.entity'
+import { DailyCount } from '@/db/models/daily-count.entity'
 
 const rssLimit = pLimit(RSS_LIMIT_MAX) // RSS 请求并发数
 
@@ -69,7 +70,7 @@ export class TasksService implements OnApplicationBootstrap {
         @InjectRepository(Resource) private readonly resourceRepository: Repository<Resource>,
         @InjectRepository(WebhookLog) private readonly webhookLogRepository: Repository<WebhookLog>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
-        @InjectRepository(CustomQuery) private readonly customQueryRepository: Repository<CustomQuery>,
+        @InjectRepository(DailyCount) private readonly dailyCountRepository: Repository<DailyCount>,
     ) { }
 
     async onApplicationBootstrap() {
@@ -78,28 +79,20 @@ export class TasksService implements OnApplicationBootstrap {
     }
 
     private async fixDatabase() {
-        // try {
-        //     // 修复 Article 的 enclosure 字段相关改动
-        //     const articles = await this.articleRepository.find({
-        //         where: {
-        //             // enclosure: And(Not({})), // And() Not(IsNull()) , Not({})
-        //             // "enclosure" != '{}' AND "enclosure" IS NOT NULL
-        //             enclosure: Raw((alias) => `${alias} != '{}' AND ${alias} IS NOT NULL`),
-        //             enclosureUrl: IsNull(),
-        //         },
-        //     })
-        //     this.logger.log(`待同步 Article 数量：${articles.length}`)
-        //     const newArticles = articles.map((article) => {
-        //         article.enclosureUrl = article.enclosure?.url
-        //         article.enclosureType = article.enclosure?.type
-        //         article.enclosureLength = article.enclosure?.length
-        //         return article
-        //     })
-        //     await this.articleRepository.save(newArticles)
-        //     this.logger.log('Article 同步完毕')
-        // } catch (error) {
-        //     this.logger.error(error?.message, error?.stack)
-        // }
+        try {
+            // 修复 缺失的 统计数据
+            const maxDay = Math.max(ARTICLE_SAVE_DAYS, RESOURCE_SAVE_DAYS, LOG_SAVE_DAYS)
+            // 往前回溯的天数
+            const startDay = dayjs().add(-maxDay, 'days')
+
+            for (let i = 0; i < maxDay; i++) {
+                const currentDay = startDay.add(i, 'days')
+                await this.dailyCountByDate(currentDay)
+            }
+            this.logger.log(`统计数据同步完毕，同步天数：${maxDay}`)
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        }
     }
 
     private getAllFeeds() {
@@ -1087,6 +1080,56 @@ The content to be summarized is:`
             })
             this.logger.log('成功移除过时的日志')
             this.logger.log(removes)
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        }
+    }
+
+    private async dailyCountByDate(dateInput: string | Date | Dayjs) { // 'YYYY-MM-DD'
+        const defaultDate = dayjs(dateInput).tz().hour(0).minute(0).second(0).millisecond(0)
+        const start = defaultDate.toDate() // 从0点开始算
+        const end = defaultDate.add(1, 'day').add(-1, 'millisecond').toDate() // 到 23点59分59秒999毫秒
+        const date = defaultDate.format('YYYY-MM-DD')
+        const articleCount = await this.articleRepository.count({
+            where: {
+                createdAt: Between(start, end),
+            },
+        })
+        const resourceCount = await this.resourceRepository.count({
+            where: {
+                createdAt: Between(start, end),
+            },
+        })
+        const webhookLogCount = await this.webhookLogRepository.count({
+            where: {
+                createdAt: Between(start, end),
+            },
+        })
+        const newDailyCount: Partial<DailyCount> = {
+            date,
+            articleCount,
+            resourceCount,
+            webhookLogCount,
+        }
+        const dailyCount = await this.dailyCountRepository.findOne({ where: { date } })
+        const fields = ['articleCount', 'resourceCount', 'webhookLogCount']
+        if (dailyCount && !isEqual(pickBy(newDailyCount, fields), pickBy(dailyCount, fields))) { // 如果存在且值不相等，则更新
+            await this.dailyCountRepository.save(this.dailyCountRepository.create({
+                ...dailyCount,
+                ...newDailyCount,
+            }))
+            return null
+        }
+        return this.dailyCountRepository.save(this.dailyCountRepository.create(newDailyCount))
+    }
+
+    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'dailyCountTimer' }) // 每天统计一次
+    private async dailyCountTimer() {
+        try {
+            this.logger.log('开始统计 文章数、资源数、推送 webhook 数')
+            const defaultDate = dayjs().hour(0).minute(0).second(0).millisecond(0)
+            const start = defaultDate.add(-1, 'day').toDate() // 从前一天0点开始算
+            await this.dailyCountByDate(start)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }

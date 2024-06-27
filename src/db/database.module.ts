@@ -10,6 +10,7 @@ import { Resource } from './models/resource.entiy'
 import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
+import { DailyCount } from './models/daily-count.entity'
 import { __TEST__, DATA_PATH, DATABASE_TYPE } from '@/app.config'
 
 export const DATABASE_DIR = DATA_PATH
@@ -17,7 +18,7 @@ export const DATABASE_DIR = DATA_PATH
 export const DATABASE_PATH = __TEST__ ?
     path.join(DATABASE_DIR, 'database.test.sqlite') :
     path.join(DATABASE_DIR, 'database.sqlite')
-export const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig, CustomQuery]
+export const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig, CustomQuery, DailyCount]
 
 const repositories = TypeOrmModule.forFeature(entities)
 // 支持的数据库类型
