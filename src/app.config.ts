@@ -84,3 +84,5 @@ export const NOTIFICATION_LIMIT_MAX = Number(env.NOTIFICATION_LIMIT_MAX || 5)
 export const CACHE_EXPIRE = Number(env.CACHE_EXPIRE || 300)
 
 export const DATABASE_TYPE = env.DATABASE_TYPE || 'sqlite'
+
+export const SESSION_MAX_AGE = env.SESSION_MAX_AGE

@@ -3,7 +3,7 @@ import session, { SessionOptions, Store } from 'express-session'
 import ms from 'ms'
 import ConnectSqlite3 from 'connect-sqlite3'
 import RedisStore from 'connect-redis'
-import { REDIS_URL, SESSION_SECRET, __DEV__, __TEST__ } from '@/app.config'
+import { REDIS_URL, SESSION_MAX_AGE, SESSION_SECRET, __PROD__ } from '@/app.config'
 import { DATABASE_PATH } from '@/db/database.module'
 import { getRedisClient } from '@/utils/redis'
 let store: Store
@@ -27,14 +27,14 @@ const sessionOptions: SessionOptions = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: true,
-        maxAge: ms('30d'),
+        secure: false,
+        maxAge: ms(SESSION_MAX_AGE),
     },
     store,
 }
 
-if (__DEV__ || __TEST__) {
-    sessionOptions.cookie.secure = false
+if (__PROD__) {
+    sessionOptions.cookie.secure = true
 }
 
 export const sessionMiddleware = session(sessionOptions)
