@@ -1,5 +1,23 @@
 # rss-impact-server
 
+# [1.1.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.0.0...v1.1.0) (2024-06-29)
+
+
+### ♻ 代码重构
+
+* 优化 session 配置 ([3dd9d79](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3dd9d79))
+
+
+### ✨ 新功能
+
+* 新增 文章数等数据的统计 ([32fab34](https://github.com/CaoMeiYouRen/rss-impact-server/commit/32fab34))
+
+
+### 🐛 Bug 修复
+
+* 修复 日志存在重复的问题 ([b8996b2](https://github.com/CaoMeiYouRen/rss-impact-server/commit/b8996b2))
+* 修复 统计数据存在重复的问题；修复 DailyCount 接口的 bug ([960c2f1](https://github.com/CaoMeiYouRen/rss-impact-server/commit/960c2f1))
+
 # 1.0.0 (2024-06-15)
 
 
