@@ -13,7 +13,8 @@
   "type": "commonjs",
   "main": "dist/main.js",
   "engines": {
-    "node": ">=16"
+    "node": ">=16",
+    "pnpm": ">=9"
   },
   "scripts": {
     "lint": "cross-env NODE_ENV=production eslint src test --fix --ext .ts,.js",
@@ -60,7 +61,7 @@
     "connect-redis": "^7.1.1",
     "connect-sqlite3": "^0.9.13",
     "cron": "3.1.7",
-    "crypto-hash": "git+https://github.com/CaoMeiYouRen/crypto-hash.git#main",
+    "crypto-hash": "github:CaoMeiYouRen/crypto-hash",
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
     "express-rate-limit": "^7.3.1",
@@ -90,7 +91,7 @@
     "rate-limit-redis": "^4.2.0",
     "reflect-metadata": "^0.2.1",
     "rimraf": "^5.0.7",
-    "rss-parser": "git+https://github.com/CaoMeiYouRen/rss-parser.git#master",
+    "rss-parser": "github:CaoMeiYouRen/rss-parser",
     "rxjs": "^7.8.1",
     "socks-proxy-agent": "^8.0.4",
     "sqlite3": "^5.1.7",
