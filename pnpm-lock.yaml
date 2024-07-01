@@ -8,7 +8,7 @@ overrides:
   '@types/methods': ^1.1.4
   '@types/superagent': ^8.1.0
   axios: ^1.7.2
-  crypto-hash: github:CaoMeiYouRen/crypto-hash
+  crypto-hash: git+https://github.com/CaoMeiYouRen/crypto-hash.git#main
   compare-func: 2.0.0
   cron: 3.1.7
   formidable: ^3.2.4
@@ -91,8 +91,8 @@ importers:
         specifier: 3.1.7
         version: 3.1.7
       crypto-hash:
-        specifier: github:CaoMeiYouRen/crypto-hash
-        version: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/695fd36d23bea4733c1bf863166b9ede880b5de9
+        specifier: git+https://github.com/CaoMeiYouRen/crypto-hash.git#main
+        version: '@cao-mei-you-ren/crypto-hash@https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/e7bb85e200f3eaac210f3584a6c03baba6d9280f'
       dayjs:
         specifier: ^1.11.11
         version: 1.11.11
@@ -181,7 +181,7 @@ importers:
         specifier: ^5.0.7
         version: 5.0.7
       rss-parser:
-        specifier: github:CaoMeiYouRen/rss-parser
+        specifier: git+https://github.com/CaoMeiYouRen/rss-parser.git#master
         version: https://codeload.github.com/CaoMeiYouRen/rss-parser/tar.gz/5a6601402d88976127f8b74e21775e6950de2be9
       rxjs:
         specifier: ^7.8.1
@@ -618,6 +618,16 @@ packages:
   '@cao-mei-you-ren/avue-types@1.1.0':
     resolution: {integrity: sha512-+ueuoY3qHiBIf6dTk4GA5QQ5Rg1YHE48r6VK4NL8ZsQ72K56c0WzJyDPgu8zQUT0xqkKRfyteQnz74ekmqlIiQ==}
     engines: {node: '>=16'}
+
+  '@cao-mei-you-ren/crypto-hash@git+https://git@github.com:CaoMeiYouRen/crypto-hash.git#e7bb85e200f3eaac210f3584a6c03baba6d9280f':
+    resolution: {commit: e7bb85e200f3eaac210f3584a6c03baba6d9280f, repo: git@github.com:CaoMeiYouRen/crypto-hash.git, type: git}
+    version: 3.0.0
+    engines: {node: '>=18'}
+
+  '@cao-mei-you-ren/crypto-hash@https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/e7bb85e200f3eaac210f3584a6c03baba6d9280f':
+    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/e7bb85e200f3eaac210f3584a6c03baba6d9280f}
+    version: 3.0.0
+    engines: {node: '>=18'}
 
   '@cao-mei-you-ren/qbittorrent@1.0.5':
     resolution: {integrity: sha512-lddfw9X/gMv05LZlBoAVn7v4YGaBQDGsNifpCLIousPoa3XZ7DFyokTLOvHEME84qqRmNubeyVAQ1eNIvoegmw==}
@@ -2593,11 +2603,6 @@ packages:
 
   crypt@0.0.2:
     resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
-
-  crypto-hash@https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/695fd36d23bea4733c1bf863166b9ede880b5de9:
-    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/695fd36d23bea4733c1bf863166b9ede880b5de9}
-    version: 3.0.0
-    engines: {node: '>=18'}
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
@@ -7414,6 +7419,10 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
+  '@cao-mei-you-ren/crypto-hash@git+https://git@github.com:CaoMeiYouRen/crypto-hash.git#e7bb85e200f3eaac210f3584a6c03baba6d9280f': {}
+
+  '@cao-mei-you-ren/crypto-hash@https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/e7bb85e200f3eaac210f3584a6c03baba6d9280f': {}
+
   '@cao-mei-you-ren/qbittorrent@1.0.5':
     dependencies:
       '@ctrl/magnet-link': 4.0.2
@@ -7598,7 +7607,7 @@ snapshots:
 
   '@ctrl/torrent-file@4.0.0':
     dependencies:
-      crypto-hash: https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/695fd36d23bea4733c1bf863166b9ede880b5de9
+      crypto-hash: '@cao-mei-you-ren/crypto-hash@git+https://git@github.com:CaoMeiYouRen/crypto-hash.git#e7bb85e200f3eaac210f3584a6c03baba6d9280f'
       uint8array-extras: 1.1.0
 
   '@dabh/diagnostics@2.0.3':
@@ -9888,8 +9897,6 @@ snapshots:
       which: 2.0.2
 
   crypt@0.0.2: {}
-
-  crypto-hash@https://codeload.github.com/CaoMeiYouRen/crypto-hash/tar.gz/695fd36d23bea4733c1bf863166b9ede880b5de9: {}
 
   crypto-js@4.2.0: {}
 
