@@ -36,7 +36,7 @@
 
 ## 🌰 Demo
 
-https://rss-demo.cmyr.ltd/
+https://rss-demo.cmyr.dev
 
 > Demo 站开放注册，可以随意体验。
 >
