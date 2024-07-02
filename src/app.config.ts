@@ -86,3 +86,5 @@ export const CACHE_EXPIRE = Number(env.CACHE_EXPIRE || 300)
 export const DATABASE_TYPE = env.DATABASE_TYPE || 'sqlite'
 
 export const SESSION_MAX_AGE = env.SESSION_MAX_AGE
+
+export const ENABLE_ORIGIN_LIST = env.ENABLE_ORIGIN_LIST?.split(',')?.map((e) => e?.trim())?.filter(Boolean)

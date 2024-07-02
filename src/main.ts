@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/order
-import { CI, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
+import { CI, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias from 'module-alias'
 moduleAlias.addAlias('@', path.join(__dirname, './'))
@@ -12,14 +12,15 @@ import history from 'connect-history-api-fallback'
 import fs from 'fs-extra'
 import artTemplate from 'art-template'
 import ms from 'ms'
-import { DATABASE_DIR } from './db/database.module'
-import { AppModule } from './app.module'
-import { AllExceptionsFilter } from './filters/all-exceptions.filter'
-import { limiter } from './middlewares/limit.middleware'
-import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
-import { jsonLogger, logger } from './middlewares/logger.middleware'
-import { sessionMiddleware } from './middlewares/session.middleware'
+import { Request } from 'express'
 import { setRequestId } from './middlewares/request.middleware'
+import { sessionMiddleware } from './middlewares/session.middleware'
+import { jsonLogger, logger } from './middlewares/logger.middleware'
+import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
+import { limiter } from './middlewares/limit.middleware'
+import { AllExceptionsFilter } from './filters/all-exceptions.filter'
+import { AppModule } from './app.module'
+import { DATABASE_DIR } from './db/database.module'
 
 artTemplate.defaults.onerror = (error) => logger.error(error)
 
@@ -34,9 +35,20 @@ async function bootstrap() {
         // logger: __DEV__ ? ['error', 'warn', 'log', 'debug', 'verbose'] : ['error', 'warn', 'log'],
         logger: __BENCHMARKS_TEST__ ? false : logger, // 如果是基准测试，关闭日志
     })
-
     app.set('trust proxy', true)
-    app.enableCors({})
+    app.enableCors((req: Request, cb) => {
+        if (!ENABLE_ORIGIN_LIST?.length) {
+            cb(null, {})
+            return
+        }
+        const enableOrigin = ENABLE_ORIGIN_LIST.includes(req.header('Origin'))
+        cb(null, {
+            origin: enableOrigin,
+            methods: ['GET', 'PUT', 'POST', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: enableOrigin, // 本项目中还需要启用 cookie
+        })
+    })
     app.setGlobalPrefix('/api')
     if (__DEV__) {
         const config = new DocumentBuilder()

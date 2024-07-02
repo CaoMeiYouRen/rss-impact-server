@@ -54,8 +54,8 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
         if (__DEV__ && e instanceof Error) {
             stack = e.stack
             this.logger.error(message, e?.stack)
-            this.logger.error('headers', request.headers)
-            this.logger.error('body', request.body)
+            this.logger.error('request.headers', request.headers)
+            this.logger.error('request.body', request.body)
         } else if (statusCode >= HttpStatusCode.INTERNAL_SERVER_ERROR) { // 500
             this.logger.error(message, e?.stack)
         }

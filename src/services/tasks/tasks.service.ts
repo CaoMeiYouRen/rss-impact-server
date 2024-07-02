@@ -79,22 +79,22 @@ export class TasksService implements OnApplicationBootstrap {
 
     private async fixDatabase() {
         try {
-            // 修复 缺失的 统计数据
-            const maxDay = Math.max(ARTICLE_SAVE_DAYS, RESOURCE_SAVE_DAYS, LOG_SAVE_DAYS)
-            // 往前回溯的天数
-            const startDay = dayjs().add(-maxDay, 'days')
+            // // 修复 缺失的 统计数据
+            // const maxDay = Math.max(ARTICLE_SAVE_DAYS, RESOURCE_SAVE_DAYS, LOG_SAVE_DAYS)
+            // // 往前回溯的天数
+            // const startDay = dayjs().add(-maxDay, 'days')
 
-            for (let i = 0; i < maxDay; i++) {
-                const currentDay = startDay.add(i, 'days')
-                const date = currentDay.format('YYYY-MM-DD')
-                const dailyCounts = await this.dailyCountRepository.find({ where: { date } })
-                if (dailyCounts?.length > 1) { // 删除重复的日志
-                    dailyCounts.shift()// 排除第一个
-                    await this.dailyCountRepository.delete(dailyCounts.map((e) => e.id))
-                }
-                await this.dailyCountByDate(currentDay)
-            }
-            this.logger.log(`统计数据同步完毕，同步天数：${maxDay}`)
+            // for (let i = 0; i < maxDay; i++) {
+            //     const currentDay = startDay.add(i, 'days')
+            //     const date = currentDay.format('YYYY-MM-DD')
+            //     const dailyCounts = await this.dailyCountRepository.find({ where: { date } })
+            //     if (dailyCounts?.length > 1) { // 删除重复的日志
+            //         dailyCounts.shift()// 排除第一个
+            //         await this.dailyCountRepository.delete(dailyCounts.map((e) => e.id))
+            //     }
+            //     await this.dailyCountByDate(currentDay)
+            // }
+            // this.logger.log(`统计数据同步完毕，同步天数：${maxDay}`)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
