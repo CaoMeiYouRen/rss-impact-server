@@ -598,15 +598,16 @@ export class TasksService implements OnApplicationBootstrap {
                     let name = ''
                     let size = 0
                     let magnet: Instance & { xl?: number }
-                    // 判读磁盘空间
-                    if (minDiskSize) {
-                        const mainData = await qBittorrent.getMainData(random(0, 1e8, false))
-                        // 如果 bt 服务器的磁盘空间不足，则停止下载
-                        if (mainData?.server_state?.free_space_on_disk && mainData.server_state.free_space_on_disk < minDiskSize) {
-                            this.logger.warn(`bt 服务器的磁盘空间小于 ${config.minDiskSize} ，停止下载`)
-                            return
-                        }
-                    }
+                    // // 判读磁盘空间
+                    // if (minDiskSize) {
+                    //     const mainData = await qBittorrent.getMainData(random(0, 1e8, false))
+                    //     // 如果 bt 服务器的磁盘空间不足，则停止下载
+                    //     if (mainData?.server_state?.free_space_on_disk && mainData.server_state.free_space_on_disk < minDiskSize) {
+                    //         this.logger.warn(`bt 服务器的磁盘空间小于 ${config.minDiskSize} ，停止下载`)
+
+                    //         return
+                    //     }
+                    // }
                     if (article.enclosureLength === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
                         article.enclosureLength = 0
                     }
@@ -687,6 +688,21 @@ export class TasksService implements OnApplicationBootstrap {
                             article.enclosureLength = newResource.size // 更新附件大小
                             await this.articleRepository.save(article)
                         }
+                        // 判读磁盘空间
+                        if (minDiskSize) {
+                            const mainData = await qBittorrent.getMainData(random(0, 1e8, false))
+                            // 如果 bt 服务器的磁盘空间不足，则停止下载
+                            if (mainData?.server_state?.free_space_on_disk && mainData.server_state.free_space_on_disk < minDiskSize) {
+                                this.logger.warn(`bt 服务器的磁盘空间小于 ${config.minDiskSize} ，停止下载`)
+                                newResource.status = 'skip'
+                                await this.resourceRepository.save(newResource)
+                                // 移除超过限制的资源
+                                // 校验是否真的删除了
+                                this.tryRemoveTorrent(qBittorrent, hash)
+                                return
+                            }
+                        }
+                        // 判断附件大小
                         if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
                             this.logger.warn(`资源 ${shoutUrl} 的大小超过限制，跳过该资源下载`)
                             newResource.status = 'skip'
