@@ -581,7 +581,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
         switch (type) {
             case 'qBittorrent': {
-                const { baseUrl, username, password, downloadPath } = config
+                const { baseUrl, username, password, downloadPath, autoRemove = false } = config
                 const maxSize = parseDataSize(config.maxSize || 0) // 附件的最大值
                 const minDiskSize = parseDataSize(config.minDiskSize || 0) // 保留磁盘的最小值
                 const qBittorrent = new QBittorrent({
@@ -598,16 +598,12 @@ export class TasksService implements OnApplicationBootstrap {
                     let name = ''
                     let size = 0
                     let magnet: Instance & { xl?: number }
-                    // // 判读磁盘空间
-                    // if (minDiskSize) {
-                    //     const mainData = await qBittorrent.getMainData(random(0, 1e8, false))
-                    //     // 如果 bt 服务器的磁盘空间不足，则停止下载
-                    //     if (mainData?.server_state?.free_space_on_disk && mainData.server_state.free_space_on_disk < minDiskSize) {
-                    //         this.logger.warn(`bt 服务器的磁盘空间小于 ${config.minDiskSize} ，停止下载`)
-
-                    //         return
-                    //     }
-                    // }
+                    // 判读磁盘空间不足时，是否自动删除
+                    if (minDiskSize && autoRemove) {
+                        // 判断 bt 服务器的磁盘空间 是否充足
+                        await this.removeMaxSizeTorrent(qBittorrent, minDiskSize)
+                        // return
+                    }
                     if (article.enclosureLength === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
                         article.enclosureLength = 0
                     }
@@ -739,6 +735,43 @@ export class TasksService implements OnApplicationBootstrap {
             default:
                 throw new Error(`不支持的BT下载器类型: ${type}`)
         }
+    }
+
+    /**
+     * 移除体积最大的 Torrent
+     *
+     * @author CaoMeiYouRen
+     * @date 2024-07-07
+     * @private
+     */
+    private async removeMaxSizeTorrent(qBittorrent: QBittorrent, minDiskSize: number) {
+        await retryBackoff(async () => {
+            // 判断 bt 服务器的磁盘空间是否不足，如果是，则删除
+            // 为了防止并发造成的问题，每次删除前都需要再查询一次
+            const mainData = await qBittorrent.getMainData(random(0, 1e8, false))
+            const freeSpaceOnDisk = mainData?.server_state?.free_space_on_disk
+            // 如果服务器磁盘空间足够，则跳过本次删除
+            if (freeSpaceOnDisk && freeSpaceOnDisk >= minDiskSize) {
+                return
+            }
+            // 如果 bt 服务器的磁盘空间不足，则自动删除
+            this.logger.warn(`bt 服务器当前的磁盘空间 ${freeSpaceOnDisk} 小于 保留磁盘的最小值 ${minDiskSize} ，正在自动删除中`)
+            const allData = await qBittorrent.getAllData()
+            const { torrents } = allData
+            // 按 总下载体积降序
+            torrents.sort((a, b) => b.totalDownloaded - a.totalDownloaded)
+            const torrent = torrents.at(0)
+            if (torrent?.totalDownloaded) { // 如果 torrent 存在且下载的体积大于 0，则删除
+                await qBittorrent.removeTorrent(torrent.id)
+                if (freeSpaceOnDisk + torrent.totalDownloaded < minDiskSize) { // 如果删除了这个文件还不够，则继续删除
+                    throw new Error('bt 服务器当前的磁盘空间不足，继续删除文件！')
+                }
+            }
+        }, {
+            maxRetries: 3,
+            initialInterval: ms('10 s'),
+            maxInterval: ms('10 m'),
+        })
     }
 
     private async tryRemoveTorrent(qBittorrent: QBittorrent, hash: string) {

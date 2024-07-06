@@ -5033,6 +5033,12 @@
                         "title": "磁盘最小空间(B)",
                         "description": "保留磁盘空间的最小值，小于这个值是将不会下载资源。单位为 B (字节)。支持带单位，例如：1 GiB。设置为空禁用",
                         "example": "1 GiB"
+                    },
+                    "autoRemove": {
+                        "type": "boolean",
+                        "title": "自动删除文件",
+                        "description": "当磁盘空间不足时，是否自动删除最大的文件。如果未设置磁盘最小空间或禁用本项均不会生效",
+                        "example": true
                     }
                 },
                 "required": [

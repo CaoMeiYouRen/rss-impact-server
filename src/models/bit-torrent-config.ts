@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Length, IsIn, IsNotEmpty, IsUrl, IsOptional } from 'class-validator'
+import { Length, IsIn, IsNotEmpty, IsUrl, IsOptional, IsBoolean } from 'class-validator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { BitTorrentList, BitTorrentType } from '@/constant/hook'
 import { __PROD__ } from '@/app.config'
@@ -69,4 +69,13 @@ export class BitTorrentConfig {
     @IsBetterBytesString()
     @IsOptional()
     minDiskSize?: number | string
+
+    @SetAclCrudField({
+        labelWidth: 116,
+        value: false,
+    })
+    @ApiProperty({ title: '自动删除文件', description: '当磁盘空间不足时，是否自动删除最大的文件。如果未设置磁盘最小空间或禁用本项均不会生效', example: true })
+    @IsBoolean()
+    @IsOptional()
+    autoRemove?: boolean
 }
