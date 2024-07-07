@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@cao-mei-you-ren/qbittorrent": "^1.1.0",
+    "@cao-mei-you-ren/rss-parser": "^3.14.0",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.3.9",
     "@nestjs/config": "^3.2.0",
@@ -90,7 +91,6 @@
     "rate-limit-redis": "^4.2.0",
     "reflect-metadata": "^0.2.1",
     "rimraf": "^5.0.7",
-    "rss-parser": "github:CaoMeiYouRen/rss-parser",
     "rxjs": "^7.8.1",
     "socks-proxy-agent": "^8.0.4",
     "sqlite3": "^5.1.7",

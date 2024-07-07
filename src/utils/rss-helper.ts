@@ -1,5 +1,5 @@
 import { promisify } from 'util'
-import Parser, { Output, Item, Enclosure } from 'rss-parser'
+import Parser, { Output, Item, Enclosure } from '@cao-mei-you-ren/rss-parser'
 import queryString from 'query-string'
 import dayjs from 'dayjs'
 import { isURL } from 'class-validator'

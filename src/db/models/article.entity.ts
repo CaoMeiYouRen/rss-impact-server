@@ -1,5 +1,5 @@
 import { Entity, Column, Index, ManyToOne, AfterLoad } from 'typeorm'
-import { Enclosure } from 'rss-parser'
+import { Enclosure } from '@cao-mei-you-ren/rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsArray, IsDate, IsNotEmpty, IsOptional, IsString, IsUrl, Length } from 'class-validator'
 import dayjs from 'dayjs'

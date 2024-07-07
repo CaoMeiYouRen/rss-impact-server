@@ -20,6 +20,9 @@ importers:
       '@cao-mei-you-ren/qbittorrent':
         specifier: ^1.1.0
         version: 1.1.0
+      '@cao-mei-you-ren/rss-parser':
+        specifier: ^3.14.0
+        version: 3.14.0
       '@nestjs/cache-manager':
         specifier: ^2.2.2
         version: 2.2.2(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.6.1)(rxjs@7.8.1)
@@ -176,9 +179,6 @@ importers:
       rimraf:
         specifier: ^5.0.7
         version: 5.0.7
-      rss-parser:
-        specifier: github:CaoMeiYouRen/rss-parser
-        version: https://codeload.github.com/CaoMeiYouRen/rss-parser/tar.gz/5a6601402d88976127f8b74e21775e6950de2be9
       rxjs:
         specifier: ^7.8.1
         version: 7.8.1
@@ -622,6 +622,9 @@ packages:
   '@cao-mei-you-ren/qbittorrent@1.1.0':
     resolution: {integrity: sha512-LDbiDpKWWE7PCmRaQQi0Aq56IldPGLwsD2exWTXdzg2B4hfbhnhsbtfzWFIu7liZQYzLLT/SvPry8IQEyuofHw==}
     engines: {node: '>=18'}
+
+  '@cao-mei-you-ren/rss-parser@3.14.0':
+    resolution: {integrity: sha512-IVvsCXjRyxBR4+7t3CqqmasvEcAhrsL9ow0l4xJ/NJO/S3l5wIsdmSq4TEUgxKUS92vdbgUBozFpEsc7yGKAew==}
 
   '@cao-mei-you-ren/torrent-file@1.0.0':
     resolution: {integrity: sha512-UPSrDHEWA26oz4HGOneGWdOxLnZ3WAvzQECC1LWbiuLYed1E9mgGijrQT0HS+MzhmzUHwZ3FhEgrU7PC7kTXCA==}
@@ -5881,10 +5884,6 @@ packages:
     engines: {node: '>=14.18'}
     hasBin: true
 
-  rss-parser@https://codeload.github.com/CaoMeiYouRen/rss-parser/tar.gz/5a6601402d88976127f8b74e21775e6950de2be9:
-    resolution: {tarball: https://codeload.github.com/CaoMeiYouRen/rss-parser/tar.gz/5a6601402d88976127f8b74e21775e6950de2be9}
-    version: 3.13.0
-
   run-async@2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
     engines: {node: '>=0.12.0'}
@@ -7413,6 +7412,20 @@ snapshots:
       ufo: 1.5.3
       uint8array-extras: 1.1.0
 
+  '@cao-mei-you-ren/rss-parser@3.14.0':
+    dependencies:
+      entities: 2.2.0
+      webpack: 5.91.0(webpack-cli@5.1.4)
+      webpack-cli: 5.1.4(webpack@5.90.1)
+      xml2js: 0.5.0
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@webpack-cli/generators'
+      - esbuild
+      - uglify-js
+      - webpack-bundle-analyzer
+      - webpack-dev-server
+
   '@cao-mei-you-ren/torrent-file@1.0.0':
     dependencies:
       '@cao-mei-you-ren/crypto-hash': 3.0.0
@@ -7987,7 +8000,7 @@ snapshots:
       chokidar: 3.6.0
       cli-table3: 0.6.3
       commander: 4.1.1
-      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.3.3)(webpack@5.90.1(webpack-cli@5.1.4(webpack@5.91.0)))
+      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.3.3)(webpack@5.90.1(webpack-cli@5.1.4))
       glob: 10.3.10
       inquirer: 8.2.6
       node-emoji: 1.11.0
@@ -7999,7 +8012,7 @@ snapshots:
       tsconfig-paths: 4.2.0
       tsconfig-paths-webpack-plugin: 4.1.0
       typescript: 5.3.3
-      webpack: 5.90.1(webpack-cli@5.1.4(webpack@5.91.0))
+      webpack: 5.90.1(webpack-cli@5.1.4)
       webpack-node-externals: 3.0.0
     transitivePeerDependencies:
       - esbuild
@@ -8885,20 +8898,20 @@ snapshots:
       '@webassemblyjs/ast': 1.12.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))':
+  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.90.1(webpack-cli@5.1.4))':
     dependencies:
-      webpack: 5.91.0(webpack-cli@5.1.4)
-      webpack-cli: 5.1.4(webpack@5.91.0)
+      webpack: 5.90.1(webpack-cli@5.1.4)
+      webpack-cli: 5.1.4(webpack@5.90.1)
 
-  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))':
+  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.90.1(webpack-cli@5.1.4))':
     dependencies:
-      webpack: 5.91.0(webpack-cli@5.1.4)
-      webpack-cli: 5.1.4(webpack@5.91.0)
+      webpack: 5.90.1(webpack-cli@5.1.4)
+      webpack-cli: 5.1.4(webpack@5.90.1)
 
-  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))':
+  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.90.1(webpack-cli@5.1.4))':
     dependencies:
-      webpack: 5.91.0(webpack-cli@5.1.4)
-      webpack-cli: 5.1.4(webpack@5.91.0)
+      webpack: 5.90.1(webpack-cli@5.1.4)
+      webpack-cli: 5.1.4(webpack@5.90.1)
 
   '@xtuc/ieee754@1.2.0': {}
 
@@ -10863,7 +10876,7 @@ snapshots:
 
   forever-agent@0.6.1: {}
 
-  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.3.3)(webpack@5.90.1(webpack-cli@5.1.4(webpack@5.91.0))):
+  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.3.3)(webpack@5.90.1(webpack-cli@5.1.4)):
     dependencies:
       '@babel/code-frame': 7.24.6
       chalk: 4.1.2
@@ -10878,7 +10891,7 @@ snapshots:
       semver: 7.6.2
       tapable: 2.2.1
       typescript: 5.3.3
-      webpack: 5.90.1(webpack-cli@5.1.4(webpack@5.91.0))
+      webpack: 5.90.1(webpack-cli@5.1.4)
 
   form-data-encoder@1.7.2: {}
 
@@ -13856,20 +13869,6 @@ snapshots:
     dependencies:
       glob: 10.4.1
 
-  rss-parser@https://codeload.github.com/CaoMeiYouRen/rss-parser/tar.gz/5a6601402d88976127f8b74e21775e6950de2be9:
-    dependencies:
-      entities: 2.2.0
-      webpack: 5.91.0(webpack-cli@5.1.4)
-      webpack-cli: 5.1.4(webpack@5.91.0)
-      xml2js: 0.5.0
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@webpack-cli/generators'
-      - esbuild
-      - uglify-js
-      - webpack-bundle-analyzer
-      - webpack-dev-server
-
   run-async@2.4.1: {}
 
   run-async@3.0.0: {}
@@ -14426,14 +14425,14 @@ snapshots:
       type-fest: 2.19.0
       unique-string: 3.0.0
 
-  terser-webpack-plugin@5.3.10(webpack@5.90.1(webpack-cli@5.1.4(webpack@5.91.0))):
+  terser-webpack-plugin@5.3.10(webpack@5.90.1(webpack-cli@5.1.4)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 3.3.0
       serialize-javascript: 6.0.2
       terser: 5.31.0
-      webpack: 5.90.1(webpack-cli@5.1.4(webpack@5.91.0))
+      webpack: 5.90.1(webpack-cli@5.1.4)
 
   terser-webpack-plugin@5.3.10(webpack@5.91.0(webpack-cli@5.1.4)):
     dependencies:
@@ -14912,12 +14911,12 @@ snapshots:
 
   webidl-conversions@3.0.1: {}
 
-  webpack-cli@5.1.4(webpack@5.91.0):
+  webpack-cli@5.1.4(webpack@5.90.1):
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
-      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))
-      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))
-      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))
+      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.90.1(webpack-cli@5.1.4))
+      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.90.1(webpack-cli@5.1.4))
+      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.90.1(webpack-cli@5.1.4))
       colorette: 2.0.20
       commander: 10.0.1
       cross-spawn: 7.0.3
@@ -14926,7 +14925,7 @@ snapshots:
       import-local: 3.1.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.91.0(webpack-cli@5.1.4)
+      webpack: 5.90.1(webpack-cli@5.1.4)
       webpack-merge: 5.10.0
 
   webpack-merge@5.10.0:
@@ -14939,7 +14938,7 @@ snapshots:
 
   webpack-sources@3.2.3: {}
 
-  webpack@5.90.1(webpack-cli@5.1.4(webpack@5.91.0)):
+  webpack@5.90.1(webpack-cli@5.1.4):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.5
@@ -14962,11 +14961,11 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.10(webpack@5.90.1(webpack-cli@5.1.4(webpack@5.91.0)))
+      terser-webpack-plugin: 5.3.10(webpack@5.90.1(webpack-cli@5.1.4))
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack-cli: 5.1.4(webpack@5.91.0)
+      webpack-cli: 5.1.4(webpack@5.90.1)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
@@ -14999,7 +14998,7 @@ snapshots:
       watchpack: 2.4.1
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack-cli: 5.1.4(webpack@5.91.0)
+      webpack-cli: 5.1.4(webpack@5.90.1)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
