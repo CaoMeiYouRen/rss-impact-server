@@ -44,7 +44,7 @@
     "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.3.10",
     "@nestjs/passport": "^10.0.3",
-    "@nestjs/platform-express": "^10.3.9",
+    "@nestjs/platform-express": "^10.3.10",
     "@nestjs/schedule": "^4.1.0",
     "@nestjs/serve-static": "^4.0.2",
     "@nestjs/swagger": "^7.4.0",
