@@ -23,7 +23,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -755,7 +755,7 @@ export class TasksService implements OnApplicationBootstrap {
                 return
             }
             // 如果 bt 服务器的磁盘空间不足，则自动删除
-            this.logger.warn(`bt 服务器当前的磁盘空间 ${freeSpaceOnDisk} 小于 保留磁盘的最小值 ${minDiskSize} ，正在自动删除中`)
+            this.logger.warn(`bt 服务器当前的磁盘空间 ${dataFormat(freeSpaceOnDisk)} 小于 保留磁盘的最小值 ${dataFormat(minDiskSize)} ，正在自动删除中`)
             // 按 下载体积降序
             const torrents = await qBittorrent.listTorrents({ sort: 'downloaded', reverse: true })
             // torrents.sort((a, b) => b?.downloaded - a?.downloaded)
