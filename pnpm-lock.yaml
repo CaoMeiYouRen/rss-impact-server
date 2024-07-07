@@ -42,8 +42,8 @@ importers:
         specifier: ^10.3.9
         version: 10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9)
       '@nestjs/schedule':
-        specifier: ^4.0.2
-        version: 4.0.2(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))
+        specifier: ^4.1.0
+        version: 4.1.0(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))
       '@nestjs/serve-static':
         specifier: ^4.0.2
         version: 4.0.2(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(express@4.19.2)
@@ -1133,8 +1133,8 @@ packages:
       '@nestjs/common': ^10.0.0
       '@nestjs/core': ^10.0.0
 
-  '@nestjs/schedule@4.0.2':
-    resolution: {integrity: sha512-po9oauE7fO0CjhDKvVC2tzEgjOUwhxYoIsXIVkgfu+xaDMmzzpmXY2s1LT4oP90Z+PaTtPoAHmhslnYmo4mSZg==}
+  '@nestjs/schedule@4.1.0':
+    resolution: {integrity: sha512-WEc96WTXZW+VI/Ng+uBpiBUwm6TWtAbQ4RKWkfbmzKvmbRGzA/9k/UyAWDS9k0pp+ZcbC+MaZQtt7TjQHrwX6g==}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -6792,6 +6792,10 @@ packages:
   uuid-parse@1.1.0:
     resolution: {integrity: sha512-OdmXxA8rDsQ7YpNVbKSJkNzTw2I+S5WsbMDnCtIWSQaosNAcWtFuI/YK1TjzUI6nbkgiqEyh8gWngfcv8Asd9A==}
 
+  uuid@10.0.0:
+    resolution: {integrity: sha512-8XkAphELsDnEGrDxUOHB3RGvXz6TeuYSGEZBOjtTtPm2lwhGBjLgOzLHB63IUWfBpNucQjND6d3AOudO+H3RWQ==}
+    hasBin: true
+
   uuid@3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
@@ -8096,12 +8100,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nestjs/schedule@4.0.2(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))':
+  '@nestjs/schedule@4.1.0(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))':
     dependencies:
       '@nestjs/common': 10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.9(@nestjs/common@10.3.9(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       cron: 3.1.7
-      uuid: 9.0.1
+      uuid: 10.0.0
 
   '@nestjs/schematics@10.1.1(chokidar@3.6.0)(typescript@5.3.3)':
     dependencies:
@@ -14846,6 +14850,8 @@ snapshots:
   utils-merge@1.0.1: {}
 
   uuid-parse@1.1.0: {}
+
+  uuid@10.0.0: {}
 
   uuid@3.4.0: {}
 
