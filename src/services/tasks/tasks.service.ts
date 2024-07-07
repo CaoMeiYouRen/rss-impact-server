@@ -756,14 +756,13 @@ export class TasksService implements OnApplicationBootstrap {
             }
             // 如果 bt 服务器的磁盘空间不足，则自动删除
             this.logger.warn(`bt 服务器当前的磁盘空间 ${freeSpaceOnDisk} 小于 保留磁盘的最小值 ${minDiskSize} ，正在自动删除中`)
-            const allData = await qBittorrent.getAllData()
-            const { torrents } = allData
-            // 按 总下载体积降序
-            torrents.sort((a, b) => b.totalDownloaded - a.totalDownloaded)
+            // 按 下载体积降序
+            const torrents = await qBittorrent.listTorrents({ sort: 'downloaded', reverse: true })
+            // torrents.sort((a, b) => b?.downloaded - a?.downloaded)
             const torrent = torrents.at(0)
-            if (torrent?.totalDownloaded) { // 如果 torrent 存在且下载的体积大于 0，则删除
-                await qBittorrent.removeTorrent(torrent.id)
-                if (freeSpaceOnDisk + torrent.totalDownloaded < minDiskSize) { // 如果删除了这个文件还不够，则继续删除
+            if (torrent?.downloaded) { // 如果 torrent 存在且下载的体积大于 0，则删除
+                await qBittorrent.removeTorrent(torrent.hash, true)
+                if (freeSpaceOnDisk + torrent.downloaded < minDiskSize) { // 如果删除了这个文件还不够，则继续删除
                     throw new Error('bt 服务器当前的磁盘空间不足，继续删除文件！')
                 }
             }
@@ -776,7 +775,7 @@ export class TasksService implements OnApplicationBootstrap {
 
     private async tryRemoveTorrent(qBittorrent: QBittorrent, hash: string) {
         await retryBackoff(async () => {
-            const [error, flag] = await to(qBittorrent.removeTorrent(hash))
+            const [error, flag] = await to(qBittorrent.removeTorrent(hash, true))
             if (error || !flag) { // 删除失败
                 this.logger.error(error?.message, error?.stack)
             }
@@ -831,7 +830,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
         if (isSafePositiveInteger(maxSize) && maxSize > 0 && resource.size > 0 && maxSize <= resource.size) {
             this.logger.warn(`资源 ${shoutUrl} 的大小超过限制，跳过该资源下载`)
-            await qBittorrent.removeTorrent(hash) // 移除超过限制的资源
+            await qBittorrent.removeTorrent(hash, true) // 移除超过限制的资源
             resource.status = 'skip'
             await this.resourceRepository.save(resource)
             // 移除超过限制的资源
