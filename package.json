@@ -37,7 +37,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@cao-mei-you-ren/qbittorrent": "^1.0.5",
+    "@cao-mei-you-ren/qbittorrent": "^1.1.0",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.3.9",
     "@nestjs/config": "^3.2.0",
@@ -61,7 +61,6 @@
     "connect-redis": "^7.1.1",
     "connect-sqlite3": "^0.9.13",
     "cron": "3.1.7",
-    "crypto-hash": "github:CaoMeiYouRen/crypto-hash",
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
     "express-rate-limit": "^7.3.1",
@@ -166,7 +165,6 @@
       "@types/methods": "^1.1.4",
       "@types/superagent": "^8.1.0",
       "axios": "$axios",
-      "crypto-hash": "$crypto-hash",
       "compare-func": "$compare-func",
       "cron": "$cron",
       "formidable": "^3.2.4",
