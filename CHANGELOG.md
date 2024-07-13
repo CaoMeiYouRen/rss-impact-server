@@ -1,5 +1,24 @@
 # rss-impact-server
 
+# [1.2.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.1.0...v1.2.0) (2024-07-13)
+
+
+### ♻ 代码重构
+
+* 优化 log 的 dataFormat ([ac376ef](https://github.com/CaoMeiYouRen/rss-impact-server/commit/ac376ef))
+
+
+### ✨ 新功能
+
+* 新增 当 bt 服务器的磁盘空间不足时，自动删除文件功能 ([192114e](https://github.com/CaoMeiYouRen/rss-impact-server/commit/192114e))
+
+
+### 🐛 Bug 修复
+
+* 修复 removeTorrent 未删除文件的 bug；优化 查询 Torrent 列表的逻辑 ([d9f1671](https://github.com/CaoMeiYouRen/rss-impact-server/commit/d9f1671))
+* 修复 前后端不在同一个域名下的跨域问题 ([c3f749d](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c3f749d)), closes [#188](https://github.com/CaoMeiYouRen/rss-impact-server/issues/188)
+* 修改 bt 服务器磁盘空间不足时的逻辑 ([bb6477c](https://github.com/CaoMeiYouRen/rss-impact-server/commit/bb6477c))
+
 # [1.1.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.0.0...v1.1.0) (2024-06-29)
 
 
