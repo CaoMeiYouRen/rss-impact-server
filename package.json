@@ -64,7 +64,7 @@
     "cron": "3.1.7",
     "dayjs": "^1.11.12",
     "dotenv": "^16.4.5",
-    "express-rate-limit": "^7.3.1",
+    "express-rate-limit": "^7.4.0",
     "express-session": "^1.18.0",
     "file-type": "16.5.4",
     "fs-extra": "^11.2.0",
