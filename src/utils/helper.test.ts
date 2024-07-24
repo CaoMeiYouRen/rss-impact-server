@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize } from './helper';
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown } from './helper';
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {
@@ -170,11 +170,11 @@ describe('mdToCqcode', () => {
         expect(mdToCqcode(markdown)).toBe(expected);
     });
 
-    // it('should convert HTML <img> tag to CQImage', () => {
-    //     const markdown = '<img src="https://example.com/image.png" alt="Alt Text">';
-    //     const expected = '[CQ:image,file=https://example.com/image.png]';
-    //     expect(mdToCqcode(markdown)).toBe(expected);
-    // });
+    it('should convert HTML <img> tag to CQImage', () => {
+        const markdown = '<img src="https://example.com/image.png" alt="Alt Text">';
+        const expected = '[CQ:image,file=https://example.com/image.png]';
+        expect(mdToCqcode(htmlToMarkdown(markdown))).toBe(expected);
+    });
 
     it('should handle multiple images', () => {
         const markdown = '![Alt Text 1](https://example.com/image1.jpg)\n\n![Alt Text 2](https://example.com/image2.png)';
@@ -187,6 +187,8 @@ describe('mdToCqcode', () => {
         const expected = 'This is some text.\n\n[CQ:image,file=https://example.com/image.jpg]\n\nMore text.';
         expect(mdToCqcode(markdown)).toBe(expected);
     });
+
+
 });
 
 describe('dataFormat', () => {

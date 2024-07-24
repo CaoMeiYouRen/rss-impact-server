@@ -337,10 +337,17 @@ function prependConstraintsWithParentProp(
 }
 
 const imageRegex = /!\[(.*?)\]\((.*?)\)/g
+const urlRegex = /\[(.*?)\]\((.*?)\)/g
 
 export function mdToCqcode(md: string) {
-    const result = md.replace(imageRegex, (match, altText, imageUrl) => new CQImage('image', { file: imageUrl }).toString())
-    return result
+    let result = md.replace(imageRegex, (match, altText, imageUrl) => new CQImage('image', { file: imageUrl }).toString())
+    result = result.replace(urlRegex, (match, u1, u2) => {
+        if (u1 === u2) { // 如果两个 url 相同，则只保留一个
+            return u1
+        }
+        return `[${u1}](${u2})`
+    })
+    return result.replace(/(\n[\s|\t]*\r*\n)/g, '\n')  // 去除多余换行符
 }
 
 /**
