@@ -109,7 +109,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
             if (isMarkdown) {
                 desp = mdToCqcode(desp)
             }
-            const cqContent = desp?.startsWith(title) ? desp : `${title}"\n"${desp}`
+            const cqContent = (desp?.startsWith(title) ? desp : `${title}"\n"${desp}`).replace(/(\n[\s|\t]*\r*\n)/g, '\n')  // 去除多余换行符
             const response = await oneBot.send(cqContent, ONE_BOT_MSG_TYPE, Number(ONE_BOT_RECIEVER_ID))
             return response
         }
