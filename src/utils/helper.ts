@@ -340,7 +340,8 @@ const imageRegex = /!\[(.*?)\]\((.*?)\)/g
 const urlRegex = /\[(.*?)\]\((.*?)\)/g
 
 export function mdToCqcode(md: string) {
-    let result = md.replace(imageRegex, (match, altText, imageUrl) => new CQImage('image', { file: imageUrl }).toString())
+    // CQImage 禁用缓存，否则 onebot-mirai 插件会发送失败
+    let result = md.replace(imageRegex, (match, altText, imageUrl) => new CQImage('image', { file: imageUrl, cache: 0 }).toString())
     // 如果两个 url 相同，则只保留一个
     result = result.replace(urlRegex, (match, u1, u2) => (u1 === u2 ? u1 : match))
     return result
