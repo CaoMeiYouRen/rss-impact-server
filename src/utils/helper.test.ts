@@ -166,25 +166,25 @@ describe('deepTrim', () => {
 describe('mdToCqcode', () => {
     it('should convert Markdown image syntax to CQImage', () => {
         const markdown = '![Alt Text](https://example.com/image.jpg)';
-        const expected = '[CQ:image,file=https://example.com/image.jpg]';
+        const expected = '[CQ:image,file=https://example.com/image.jpg,cache=0]';
         expect(mdToCqcode(markdown)).toBe(expected);
     });
 
     it('should convert HTML <img> tag to CQImage', () => {
         const markdown = '<img src="https://example.com/image.png" alt="Alt Text">';
-        const expected = '[CQ:image,file=https://example.com/image.png]';
+        const expected = '[CQ:image,file=https://example.com/image.png,cache=0]';
         expect(mdToCqcode(htmlToMarkdown(markdown))).toBe(expected);
     });
 
     it('should handle multiple images', () => {
         const markdown = '![Alt Text 1](https://example.com/image1.jpg)\n\n![Alt Text 2](https://example.com/image2.png)';
-        const expected = '[CQ:image,file=https://example.com/image1.jpg]\n\n[CQ:image,file=https://example.com/image2.png]';
+        const expected = '[CQ:image,file=https://example.com/image1.jpg,cache=0]\n\n[CQ:image,file=https://example.com/image2.png,cache=0]';
         expect(mdToCqcode(markdown)).toBe(expected);
     });
 
     it('should preserve non-image text', () => {
         const markdown = 'This is some text.\n\n![Alt Text](https://example.com/image.jpg)\n\nMore text.';
-        const expected = 'This is some text.\n\n[CQ:image,file=https://example.com/image.jpg]\n\nMore text.';
+        const expected = 'This is some text.\n\n[CQ:image,file=https://example.com/image.jpg,cache=0]\n\nMore text.';
         expect(mdToCqcode(markdown)).toBe(expected);
     });
 
