@@ -1,5 +1,20 @@
 # rss-impact-server
 
+## [1.2.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.2.0...v1.2.1) (2024-07-27)
+
+
+### ✅ 测试
+
+* 修复 mdToCqcode 逻辑改动后的测试用例失败 ([89f8a31](https://github.com/CaoMeiYouRen/rss-impact-server/commit/89f8a31))
+
+
+### 🐛 Bug 修复
+
+* 优化 CQ 码的转义 ([3f75be5](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3f75be5))
+* 修复 mdToCqcode 逻辑改动导致的测试用例错误 ([3702534](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3702534))
+* 修复 OneBot 推送渠道的 CQCode 解析问题；修复 husky 路径问题 ([0c1c376](https://github.com/CaoMeiYouRen/rss-impact-server/commit/0c1c376))
+* 修复 push-all-in-one 的 onebot 推送渠道无法解析 CQ 码的问题；修复图片发送失败的问题 ([a6997ab](https://github.com/CaoMeiYouRen/rss-impact-server/commit/a6997ab))
+
 # [1.2.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.1.0...v1.2.0) (2024-07-13)
 
 
