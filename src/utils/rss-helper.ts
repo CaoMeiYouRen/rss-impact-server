@@ -132,7 +132,7 @@ export type ArticleFormatoption = {
 
 export function articleItemFormat(item: Article, option: ArticleFormatoption = {}) {
     const { isMarkdown = false, isSnippet = false, onlySummary = false, useAiSummary = false, appendAiSummary = false } = option
-    const title: string = item.title?.replace(/\.\.\.$/, '') // 移除句末省略号
+    const title: string = collapseWhitespace(item.title?.replace(/\.\.\.$/, '').replaceAll('<br>', '\n')) // 移除句末省略号
     let text = ''
     let content = ''
     if (onlySummary) {
@@ -154,7 +154,7 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
     }
 
     // 排除内容和标题重复
-    if (title && !collapseWhitespace(content)?.includes(collapseWhitespace(title))) {
+    if (title && !collapseWhitespace(content.replaceAll('<br>', '\n'))?.includes(title)) {
         text += `${title}\n`
     }
 
