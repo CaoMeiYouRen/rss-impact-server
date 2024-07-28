@@ -13,6 +13,8 @@ import { CQImage } from 'go-cqwebsocket/out/tags'
 import { encode, decode } from 'gpt-3-encoder'
 import * as betterBytes from 'better-bytes'
 import ms from 'ms'
+import PostlightParser from '@postlight/parser'
+import { decodeXML } from 'entities'
 import { ajax } from './ajax'
 import { TZ } from '@/app.config'
 // TODO 考虑支持国际化
@@ -569,4 +571,37 @@ export function timeFromNow(time: number) {
         time /= arr[i].len
     }
     return `${time.toFixed(2)} days`
+}
+
+type FullText = {
+    title?: string | null      // 文章标题
+    content?: string | null    // 文章主要内容
+    author?: string | null     // 文章作者
+    date_published?: string | null // 文章发布日期
+    lead_image_url?: string | null // 文章主要图片的 URL
+    dek?: string | null        // 文章的短描述(dek)
+    next_page_url?: string | null // 文章下一页的 URL
+    url?: string | null        // 文章的 URL
+    domain?: string | null     // 文章 URL 的域名
+    excerpt?: string | null    // 文章的摘要或简介
+    word_count?: number | null // 文章的总字数
+    direction?: string | null  // 文章的文本方向(如"ltr"表示从左到右)
+    total_pages?: number | null // 文章的总页数
+    rendered_pages?: number | null // 实际渲染的页数
+}
+
+/**
+ * 抓取网页全文
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-07-28
+ * @export
+ * @param url
+ */
+export async function getFullText(url: string, proxyUrl?: string) {
+    const resp = await ajax<string>({ url, proxyUrl, timeout: ms('2 m') })
+    const html = resp.data
+    const result: FullText = await PostlightParser.parse(url, { html })
+    result.content = decodeXML(result.content)
+    return result
 }

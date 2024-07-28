@@ -135,15 +135,16 @@ export class Feed extends AclBase {
     @ManyToOne(() => Category, (category) => category.feeds)
     category: Category
 
-    // @SetAclCrudField({
-    //     labelWidth: 120,
-    // })
-    // @ApiProperty({ title: '是否启用代理', example: false })
-    // @IsBoolean({ message: '是否启用代理必须为 Boolean' })
-    // @Column({
-    //     default: false,
-    // })
-    // isEnableProxy: boolean
+    @SetAclCrudField({
+        labelWidth: 120,
+    })
+    @ApiProperty({ title: '是否抓取全文', description: '启用后，将用抓取到的结果替换文章中的正文部分。抓取全文功能为自动抓取，文本质量不做保证。', example: false })
+    @IsBoolean({ message: '是否抓取全文必须为 Boolean' })
+    @Column({
+        default: false,
+        nullable: true,
+    })
+    isFullText: boolean
 
     @SetAclCrudField({
         search: true,

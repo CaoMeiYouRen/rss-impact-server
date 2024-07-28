@@ -23,7 +23,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat } from '@/utils/helper'
+import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -114,7 +114,7 @@ export class TasksService implements OnApplicationBootstrap {
             const feeds = await this.getAllFeeds()
             feeds.forEach((feed) => {
                 this.enableFeedTask(feed)
-                // this.getRssContent(feed)
+                __DEV__ && this.getRssContent(feed)
             })
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
@@ -130,11 +130,8 @@ export class TasksService implements OnApplicationBootstrap {
      * @param [rss]
      */
     async getRssContent(feed: Feed, rss?: Record<string, any> & Parser.Output<Record<string, any>>) {
-        const fid = feed.id
-        const uid = feed.userId
-        const url = feed.url
+        const { id: fid, url, userId: uid, isFullText = false } = feed
         let proxyUrl = feed.proxyConfig?.url
-
         try {
             if (!rss) {
                 if (feed.proxyConfigId && !feed.proxyConfig) {
@@ -159,7 +156,6 @@ export class TasksService implements OnApplicationBootstrap {
                     },
                 )
                 const resp = response.data
-                // TODO 增加抓取全文功能，例如 少数派
                 if (resp) {
                     rss = await rssParserString(resp)
                 }
@@ -182,13 +178,32 @@ export class TasksService implements OnApplicationBootstrap {
                     },
                     select: ['guid'],
                 })
-                const diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid).map((item) => {
+                let diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid).map((item) => {
                     const article = rssItemToArticle(item)
                     article.feedId = fid
                     article.userId = uid
                     article.author = article.author || rss.author
                     return this.articleRepository.create(article)
                 })
+                // 抓取网页全文
+                if (isFullText) {
+                    diffArticles = await Promise.all(diffArticles.map(async (article) => {
+                        const { link } = article
+                        if (isHttpURL(link)) {
+                            const [error, fullText] = await to(getFullText(link, proxyUrl))
+                            if (error) {
+                                this.logger.error(error?.message, error?.stack)
+                                return article
+                            }
+                            article.content = fullText.content || article.content // 仅正文优先使用抓取的内容
+                            article.author = article.author || fullText.author
+                            article.summary = article.summary || fullText.excerpt
+                            // 如果 pubDate 不存在，且 date_published 是有效日期，则填补日期
+                            article.pubDate = article.pubDate || (dayjs(fullText.date_published).isValid() ? dayjs(fullText.date_published).toDate() : undefined)
+                        }
+                        return article
+                    }))
+                }
                 if (diffArticles?.length) {
                     const newArticles = await this.articleRepository.save(diffArticles)
                     this.triggerHooks(feed, newArticles)
@@ -768,7 +783,7 @@ export class TasksService implements OnApplicationBootstrap {
             }
         }, {
             maxRetries: 3,
-            initialInterval: ms('10 s'),
+            initialInterval: ms('30 s'),
             maxInterval: ms('10 m'),
         })
     }
