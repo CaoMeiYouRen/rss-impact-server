@@ -103,6 +103,7 @@ export class FeedController {
             imageUrl: image?.url,
             ...body,
             userId: user.id,
+            isFullText: false,
         }))
         if (feed.isEnabled) {
             await this.tasksService.enableFeedTask(feed, true)

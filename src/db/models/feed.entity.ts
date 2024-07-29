@@ -140,6 +140,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '是否抓取全文', description: '启用后，将用抓取到的结果替换文章中的正文部分。抓取全文功能为自动抓取，文本质量不做保证。', example: false })
     @IsBoolean({ message: '是否抓取全文必须为 Boolean' })
+    @IsOptional()
     @Column({
         default: false,
         nullable: true,
