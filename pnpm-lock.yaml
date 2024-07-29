@@ -18,8 +18,8 @@ importers:
   .:
     dependencies:
       '@cao-mei-you-ren/postlight_parser':
-        specifier: ^3.0.0
-        version: 3.0.0(encoding@0.1.13)(moment-timezone@0.5.45)
+        specifier: ^3.0.1
+        version: 3.0.1(encoding@0.1.13)(moment-timezone@0.5.45)
       '@cao-mei-you-ren/qbittorrent':
         specifier: ^1.1.0
         version: 1.1.0
@@ -632,8 +632,8 @@ packages:
     resolution: {integrity: sha512-wUGqtwFA6uqhwJvHY134ZreQ9eUQBc2h1qsWrCYu54SHEn5F9INTiodGzS+XLCtk8oB8HidZriEt6sz5geVkiw==}
     engines: {node: '>=18'}
 
-  '@cao-mei-you-ren/postlight_parser@3.0.0':
-    resolution: {integrity: sha512-lsQmxAISCttjEuzb0uGm+WjsIuA5RQFZ7x6N2MrguZLzBj71zaExOu52FmD+wMSzMD1h5w1/HBhFoyZRjyZSzQ==}
+  '@cao-mei-you-ren/postlight_parser@3.0.1':
+    resolution: {integrity: sha512-dvKvYnp2N3gmlhEi8LoDk1vkt/4TBT7EG7ZS/qNTUMO7XipCC3Zn5D0cG1/NX3qAo6yggQHuQDrrISdjX+KHHg==}
     engines: {node: '>=10'}
     hasBin: true
     peerDependencies:
@@ -7591,7 +7591,7 @@ snapshots:
 
   '@cao-mei-you-ren/crypto-hash@3.0.0': {}
 
-  '@cao-mei-you-ren/postlight_parser@3.0.0(encoding@0.1.13)(moment-timezone@0.5.45)':
+  '@cao-mei-you-ren/postlight_parser@3.0.1(encoding@0.1.13)(moment-timezone@0.5.45)':
     dependencies:
       '@babel/runtime-corejs2': 7.25.0
       '@postlight/ci-failed-test-reporter': 1.0.26(encoding@0.1.13)
