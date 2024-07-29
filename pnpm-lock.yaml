@@ -28,7 +28,7 @@ importers:
         version: 3.14.0
       '@nestjs/cache-manager':
         specifier: ^2.2.2
-        version: 2.2.2(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.7.3)(rxjs@7.8.1)
+        version: 2.2.2(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.7.4)(rxjs@7.8.1)
       '@nestjs/common':
         specifier: ^10.3.10
         version: 10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -56,9 +56,6 @@ importers:
       '@nestjs/typeorm':
         specifier: ^10.0.2
         version: 10.0.2(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(ioredis@5.4.1)(sqlite3@5.1.7)(ts-node@10.9.2(@types/node@20.14.12)(typescript@5.5.4)))
-      '@postlight/parser':
-        specifier: ^2.2.3
-        version: 2.2.3(encoding@0.1.13)
       art-template:
         specifier: ^4.13.2
         version: 4.13.2
@@ -72,8 +69,8 @@ importers:
         specifier: ^1.2.4
         version: 1.2.4
       cache-manager:
-        specifier: ^5.7.3
-        version: 5.7.3
+        specifier: ^5.7.4
+        version: 5.7.4
       cache-manager-ioredis-yet:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1324,15 +1321,6 @@ packages:
     resolution: {integrity: sha512-xfXzxyOiKhco7Gx2OLTe9b66b0dFJw0elg94KGHoQXf5F8JqqFvdo35J8wayGOor64CSMvn+4Bjlu2NKV+yTGA==}
     hasBin: true
 
-  '@postlight/parser@2.2.3':
-    resolution: {integrity: sha512-4/syRvqJARgLN4yH8qtl634WO0+KINjkijU/SmhCJqqh8/aOfv5uQf+SquFpA+JwsAsbGzYQkIxSum29riOreg==}
-    engines: {node: '>=10'}
-    hasBin: true
-    bundledDependencies:
-      - jquery
-      - moment-timezone
-      - browser-request
-
   '@postman/form-data@3.1.1':
     resolution: {integrity: sha512-vjh8Q2a8S6UCm/KKs31XFJqEEgmbjBmpPNVV2eVav6905wyFAwaUOBGA1NPBI4ERH9MMZc6w0umFgM6WbEPMdg==}
     engines: {node: '>= 6'}
@@ -2226,8 +2214,8 @@ packages:
     resolution: {integrity: sha512-i4taQCesUa66Op2v3DQiF2oXHIeGyGAbOrwyVklN1TECyvKFgxd3JDP1MwkxvdpeKkPZh8dH4USFL9/wbmQp/Q==}
     engines: {node: '>= 18'}
 
-  cache-manager@5.7.3:
-    resolution: {integrity: sha512-Vp2gd2aDm/MXdEWD0FLdOflvcVj4rdJ1FFmPUeOKq+fuL7MEUcezbTWxQmVB1TTN5Ig92CabMfi5z+HyQwVg9A==}
+  cache-manager@5.7.4:
+    resolution: {integrity: sha512-7B29xK1D8hOVdrP0SAy2DGJ/QZxy2TqxS8s2drlLGYI/xOTSJmXfatks7aKKNHvXN6SnKnPtYCi0T82lslB3Fw==}
     engines: {node: '>= 18'}
 
   cachedir@2.3.0:
@@ -2863,10 +2851,6 @@ packages:
   diff@5.2.0:
     resolution: {integrity: sha512-uIFDxqpRZGZ6ThOk84hEfqWoHx2devRFvpTZcTHur85vImfaxUbTW9Ryh4CpCuDnToOP1CEtXKIgytHBPVff5A==}
     engines: {node: '>=0.3.1'}
-
-  difflib@https://codeload.github.com/postlight/difflib.js/tar.gz/32e8e38c7fcd935241b9baab71bb432fd9b166ed:
-    resolution: {tarball: https://codeload.github.com/postlight/difflib.js/tar.gz/32e8e38c7fcd935241b9baab71bb432fd9b166ed}
-    version: 0.2.6
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -3791,9 +3775,6 @@ packages:
   he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
-
-  heap@0.2.7:
-    resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
 
   helmet@7.1.0:
     resolution: {integrity: sha512-g+HZqgfbpXdCkme/Cd/mZkV0aV3BZZZSugecH03kl38m/Kmdx8jKjBikpDj2cr+Iynv4KpYEviojNdTJActJAg==}
@@ -8211,11 +8192,11 @@ snapshots:
 
   '@mixmark-io/domino@2.2.0': {}
 
-  '@nestjs/cache-manager@2.2.2(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.7.3)(rxjs@7.8.1)':
+  '@nestjs/cache-manager@2.2.2(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(cache-manager@5.7.4)(rxjs@7.8.1)':
     dependencies:
       '@nestjs/common': 10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.3.10(@nestjs/common@10.3.10(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.3.10)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      cache-manager: 5.7.3
+      cache-manager: 5.7.4
       rxjs: 7.8.1
 
   '@nestjs/cli@10.4.2(webpack-cli@5.1.4(webpack@5.91.0))':
@@ -8495,25 +8476,6 @@ snapshots:
     dependencies:
       dotenv: 6.2.0
       node-fetch: 2.7.0(encoding@0.1.13)
-    transitivePeerDependencies:
-      - encoding
-
-  '@postlight/parser@2.2.3(encoding@0.1.13)':
-    dependencies:
-      '@babel/runtime-corejs2': 7.25.0
-      '@postlight/ci-failed-test-reporter': 1.0.26(encoding@0.1.13)
-      cheerio: 0.22.0
-      difflib: https://codeload.github.com/postlight/difflib.js/tar.gz/32e8e38c7fcd935241b9baab71bb432fd9b166ed
-      ellipsize: 0.1.0
-      iconv-lite: 0.5.0
-      moment: 2.30.1
-      moment-parseformat: 3.0.0
-      postman-request: 2.88.1-postman.36
-      string-direction: 0.1.2
-      turndown: 7.2.0
-      valid-url: 1.0.9
-      wuzzy: 0.1.8
-      yargs-parser: 15.0.3
     transitivePeerDependencies:
       - encoding
 
@@ -9685,13 +9647,13 @@ snapshots:
 
   cache-manager-ioredis-yet@2.1.1:
     dependencies:
-      cache-manager: 5.7.3
+      cache-manager: 5.7.4
       ioredis: 5.4.1
       telejson: 7.2.0
     transitivePeerDependencies:
       - supports-color
 
-  cache-manager@5.7.3:
+  cache-manager@5.7.4:
     dependencies:
       eventemitter3: 5.0.1
       lodash.clonedeep: 4.5.0
@@ -10353,10 +10315,6 @@ snapshots:
   diff@4.0.2: {}
 
   diff@5.2.0: {}
-
-  difflib@https://codeload.github.com/postlight/difflib.js/tar.gz/32e8e38c7fcd935241b9baab71bb432fd9b166ed:
-    dependencies:
-      heap: 0.2.7
 
   dir-glob@3.0.1:
     dependencies:
@@ -11569,8 +11527,6 @@ snapshots:
   hdr-histogram-percentiles-obj@3.0.0: {}
 
   he@1.2.0: {}
-
-  heap@0.2.7: {}
 
   helmet@7.1.0: {}
 
