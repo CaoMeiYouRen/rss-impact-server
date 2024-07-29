@@ -17,6 +17,9 @@ importers:
 
   .:
     dependencies:
+      '@cao-mei-you-ren/postlight_parser':
+        specifier: ^3.0.0
+        version: 3.0.0(encoding@0.1.13)(moment-timezone@0.5.45)
       '@cao-mei-you-ren/qbittorrent':
         specifier: ^1.1.0
         version: 1.1.0
@@ -140,6 +143,9 @@ importers:
       module-alias:
         specifier: ^2.2.3
         version: 2.2.3
+      moment-timezone:
+        specifier: ^0.5.45
+        version: 0.5.45
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -628,6 +634,19 @@ packages:
   '@cao-mei-you-ren/crypto-hash@3.0.0':
     resolution: {integrity: sha512-wUGqtwFA6uqhwJvHY134ZreQ9eUQBc2h1qsWrCYu54SHEn5F9INTiodGzS+XLCtk8oB8HidZriEt6sz5geVkiw==}
     engines: {node: '>=18'}
+
+  '@cao-mei-you-ren/postlight_parser@3.0.0':
+    resolution: {integrity: sha512-lsQmxAISCttjEuzb0uGm+WjsIuA5RQFZ7x6N2MrguZLzBj71zaExOu52FmD+wMSzMD1h5w1/HBhFoyZRjyZSzQ==}
+    engines: {node: '>=10'}
+    hasBin: true
+    peerDependencies:
+      jquery: ^3.5.0
+      moment-timezone: 0.5.37
+    peerDependenciesMeta:
+      jquery:
+        optional: true
+      moment-timezone:
+        optional: true
 
   '@cao-mei-you-ren/qbittorrent@1.1.0':
     resolution: {integrity: sha512-LDbiDpKWWE7PCmRaQQi0Aq56IldPGLwsD2exWTXdzg2B4hfbhnhsbtfzWFIu7liZQYzLLT/SvPry8IQEyuofHw==}
@@ -5110,6 +5129,9 @@ packages:
   moment-parseformat@3.0.0:
     resolution: {integrity: sha512-dVgXe6b6DLnv4CHG7a1zUe5mSXaIZ3c6lSHm/EKeVeQI2/4pwe0VRde8OyoCE1Ro2lKT5P6uT9JElF7KDLV+jw==}
 
+  moment-timezone@0.5.45:
+    resolution: {integrity: sha512-HIWmqA86KcmCAhnMAN0wuDOARV/525R2+lOLotuGFzn4HO+FH+/645z2wx0Dt3iDv6/p61SIvKnDstISainhLQ==}
+
   moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
 
@@ -7585,6 +7607,27 @@ snapshots:
       tslib: 2.6.3
 
   '@cao-mei-you-ren/crypto-hash@3.0.0': {}
+
+  '@cao-mei-you-ren/postlight_parser@3.0.0(encoding@0.1.13)(moment-timezone@0.5.45)':
+    dependencies:
+      '@babel/runtime-corejs2': 7.25.0
+      '@postlight/ci-failed-test-reporter': 1.0.26(encoding@0.1.13)
+      cheerio: 0.22.0
+      ellipsize: 0.1.0
+      iconv-lite: 0.5.0
+      moment: 2.30.1
+      moment-parseformat: 3.0.0
+      postman-request: 2.88.1-postman.36
+      string-direction: 0.1.2
+      tslib: 2.6.3
+      turndown: 7.2.0
+      valid-url: 1.0.9
+      wuzzy: 0.1.8
+      yargs-parser: 15.0.3
+    optionalDependencies:
+      moment-timezone: 0.5.45
+    transitivePeerDependencies:
+      - encoding
 
   '@cao-mei-you-ren/qbittorrent@1.1.0':
     dependencies:
@@ -13256,6 +13299,10 @@ snapshots:
   module-alias@2.2.3: {}
 
   moment-parseformat@3.0.0: {}
+
+  moment-timezone@0.5.45:
+    dependencies:
+      moment: 2.30.1
 
   moment@2.30.1: {}
 
