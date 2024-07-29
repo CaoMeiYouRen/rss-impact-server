@@ -59,6 +59,7 @@ https://rss-demo.cmyr.dev
 - 支持 Redis 缓存
 - 支持 SQLite 作为数据库
 - 支持配置代理
+- 支持自动抓取全文。无需配置 css 查询器。
 
 ## 📦 依赖要求
 
