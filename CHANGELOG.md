@@ -1,5 +1,20 @@
 # rss-impact-server
 
+# [1.3.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.2.1...v1.3.0) (2024-08-03)
+
+
+### ✨ 新功能
+
+* 新增 抓取网页全文 功能 ([2ac6492](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2ac6492))
+
+
+### 🐛 Bug 修复
+
+* 修复 @postlight/parser 依赖的问题 ([88c0b4f](https://github.com/CaoMeiYouRen/rss-impact-server/commit/88c0b4f))
+* 修复 OneBot 推送渠道存在多余的引号的 bug ([355683e](https://github.com/CaoMeiYouRen/rss-impact-server/commit/355683e))
+* 修复 是否抓取全文为必填的 bug ([96e598b](https://github.com/CaoMeiYouRen/rss-impact-server/commit/96e598b))
+* 修复 部分情况下标题和内容重复判断错误的 bug ([04c9ff6](https://github.com/CaoMeiYouRen/rss-impact-server/commit/04c9ff6))
+
 ## [1.2.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.2.0...v1.2.1) (2024-07-27)
 
 
