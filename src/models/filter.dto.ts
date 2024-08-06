@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsOptional, Length } from 'class-validator'
-import { IsBetterBytesString } from '@/decorators/is-better-bytes-string'
+import { IsBetterBytesString } from '@/decorators/is-better-bytes-string.decorator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { ARTICLE_SAVE_DAYS } from '@/app.config'

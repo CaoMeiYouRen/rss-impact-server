@@ -3,7 +3,7 @@ import { Length, IsIn, IsNotEmpty, IsUrl, IsOptional, IsBoolean } from 'class-va
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { BitTorrentList, BitTorrentType } from '@/constant/hook'
 import { __PROD__ } from '@/app.config'
-import { IsBetterBytesString } from '@/decorators/is-better-bytes-string'
+import { IsBetterBytesString } from '@/decorators/is-better-bytes-string.decorator'
 
 export class BitTorrentConfig {
 
