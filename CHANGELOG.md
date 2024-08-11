@@ -1,5 +1,12 @@
 # rss-impact-server
 
+## [1.3.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.3.0...v1.3.1) (2024-08-10)
+
+
+### 🐛 Bug 修复
+
+* 修改 id 判断范围 ([c218d52](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c218d52))
+
 # [1.3.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.2.1...v1.3.0) (2024-08-03)
 
 
