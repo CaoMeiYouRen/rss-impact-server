@@ -7,7 +7,7 @@ import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { StatusList, StatusType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
-import { __PROD__ } from '@/app.config'
+import { __PROD__, DATABASE_TYPE } from '@/app.config'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
 import { dataFormat } from '@/utils/helper'
 
@@ -34,9 +34,10 @@ export class Resource extends AclBase {
         require_tld: __PROD__,   // 是否要顶级域名
     })
     @Length(0, 65000)
-    @Index({})
+    // @Index()
     @Column({
-        length: 65000,
+        type: 'text',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65000,
     })
     url: string
 

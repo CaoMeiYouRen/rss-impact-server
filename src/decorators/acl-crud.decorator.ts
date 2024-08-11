@@ -151,6 +151,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
                             column: initAvueCrudColumn(Clazz),
                         },
                         // defaultValue: '{}',
+                        value: typeof value === 'undefined' ? '{}' : value,
                     },
                     ...extra,
                 }

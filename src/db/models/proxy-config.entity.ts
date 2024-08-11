@@ -5,6 +5,7 @@ import { AclBase } from './acl-base.entity'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsHttpHttpsSocksSocks5Url } from '@/decorators/is-http-https-socks-socks5-url.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { DATABASE_TYPE } from '@/app.config'
 
 /**
  * 代理配置
@@ -23,7 +24,7 @@ export class ProxyConfig extends AclBase {
     @ApiProperty({ title: '代理名称', example: '代理A' })
     @IsNotEmpty({})
     @Length(0, 256, {})
-    @Index({})
+    // @Index({})
     @Column({
         length: 256,
     })
@@ -40,7 +41,7 @@ export class ProxyConfig extends AclBase {
     @Length(0, 2048, {})
     @Index({})
     @Column({
-        length: 2048,
+        length: ['mysql'].includes(DATABASE_TYPE) ? 1024 : 2048,
     })
     url: string
 

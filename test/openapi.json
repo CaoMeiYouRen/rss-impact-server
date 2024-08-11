@@ -5504,7 +5504,7 @@
                     "contentSnippet": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 65536,
+                        "maxLength": 65535,
                         "title": "摘要",
                         "description": "纯文本格式，无 HTML",
                         "example": "这是一段内容摘要"
@@ -5519,7 +5519,7 @@
                     "aiSummary": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 65536,
+                        "maxLength": 65535,
                         "title": "AI 总结",
                         "example": "这是一段 AI 总结"
                     },
@@ -5538,7 +5538,7 @@
                     "enclosureUrl": {
                         "type": "string",
                         "minLength": 0,
-                        "maxLength": 65536,
+                        "maxLength": 65535,
                         "title": "附件URL",
                         "example": "http://bt.example.com"
                     },

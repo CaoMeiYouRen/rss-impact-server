@@ -21,7 +21,7 @@ import { RegularConfig } from '@/models/regular-config'
 import { winstonLogger } from '@/middlewares/logger.middleware'
 import { HttpError } from '@/models/http-error'
 import { flattenValidationErrors } from '@/utils/helper'
-import { __DEV__ } from '@/app.config'
+import { __DEV__, DATABASE_TYPE } from '@/app.config'
 import { Filter } from '@/models/filter.dto'
 import { FilterOut } from '@/models/filter-out.dto'
 
@@ -71,7 +71,9 @@ export class Hook extends AclBase {
                 emptyBtn: false,
                 column: initAvueCrudColumn(value),
             })),
+            value: '{}',
         },
+        // value: '{}',
     })
     @ApiProperty({
         title: '配置',
@@ -85,8 +87,8 @@ export class Hook extends AclBase {
     @IsDefined()
     @Column({
         type: 'simple-json',
-        length: 2048,
-        default: '{}',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     config: HookConfig
 
@@ -117,8 +119,8 @@ export class Hook extends AclBase {
     @IsDefined()
     @Column({
         type: 'simple-json',
-        length: 2048,
-        default: '{}',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     filter: Filter
 
@@ -133,8 +135,8 @@ export class Hook extends AclBase {
     @IsDefined()
     @Column({
         type: 'simple-json',
-        length: 2048,
-        default: '{}',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     filterout: FilterOut
 

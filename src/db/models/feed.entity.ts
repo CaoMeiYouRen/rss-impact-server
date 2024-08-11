@@ -11,7 +11,7 @@ import { IsId } from '@/decorators/is-id.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
-import { __PROD__ } from '@/app.config'
+import { __PROD__, DATABASE_TYPE } from '@/app.config'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 
 /**
@@ -38,7 +38,7 @@ export class Feed extends AclBase {
         // unique: true,
     })
     @Column({
-        length: 2048,
+        length: ['mysql'].includes(DATABASE_TYPE) ? 1024 : 2048,
         // unique: true,
     })
     url: string

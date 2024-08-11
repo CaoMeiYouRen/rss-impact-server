@@ -12,7 +12,7 @@ import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
-import { __PROD__ } from '@/app.config'
+import { __PROD__, DATABASE_TYPE } from '@/app.config'
 import { dataFormat } from '@/utils/helper'
 
 export class EnclosureImpl implements Enclosure {
@@ -66,11 +66,9 @@ export class Article extends AclBase {
     @ApiProperty({ title: '全局索引', example: '499d4cee' })
     @IsNotEmpty()
     @Index({
-        // unique: true,
     })
     @Column({
-        length: 2048,
-        // unique: true,
+        length: ['mysql'].includes(DATABASE_TYPE) ? 1024 : 2048,
     })
     guid: string
 
@@ -107,7 +105,7 @@ export class Article extends AclBase {
     @IsOptional()
     @Column({
         type: 'text',
-        length: 2 ** 20, // 1048576   varchar 上限 2147483647
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2 ** 20, // 1048576   varchar 上限 2147483647
         nullable: true,
     })
     content?: string
@@ -148,11 +146,11 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '摘要', description: '纯文本格式，无 HTML', example: '这是一段内容摘要' })
-    @Length(0, 65536) // 65536
+    @Length(0, 65535) // 65535
     @IsOptional()
     @Column({
-        // type: 'text',
-        length: 65536,
+        type: 'text',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     contentSnippet?: string
@@ -180,10 +178,11 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: 'AI 总结', example: '这是一段 AI 总结' })
-    @Length(0, 65536)
+    @Length(0, 65535)
     @IsOptional()
     @Column({
-        length: 65536,
+        type: 'text',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     aiSummary?: string
@@ -202,28 +201,10 @@ export class Article extends AclBase {
     @IsOptional()
     @Column({
         type: 'simple-json', // 用 json 来避免逗号问题
-        length: 512,
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 512,
         nullable: true,
     })
     categories?: string[]
-
-    // /** 附件 enclosure/mediaContent */
-    // @SetAclCrudField({
-    //     hide: true,
-    // })
-    // @ApiProperty({ title: '附件', type: () => EnclosureImpl })
-    // // @Type(() => EnclosureImpl)
-    // // @ValidateNested()
-    // @JsonStringLength(0, 65536) // 2 ** 16
-    // @IsObject()
-    // @IsOptional()
-    // @Column({
-    //     type: 'simple-json',
-    //     length: 65536,
-    //     nullable: true,
-    //     // default: '{}',
-    // })
-    // enclosure?: EnclosureImpl
 
     @SetAclCrudField({
         search: true,
@@ -232,11 +213,12 @@ export class Article extends AclBase {
     @IsUrlOrMagnetUri({}, {
         require_tld: __PROD__,   // 是否要顶级域名
     })
-    @Length(0, 65536)
+    @Length(0, 65535)
     @IsOptional()
     @Column({
+        type: 'text',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
-        length: 65536,
     })
     enclosureUrl?: string
 

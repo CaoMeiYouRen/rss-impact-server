@@ -85,6 +85,20 @@ export const CACHE_EXPIRE = Number(env.CACHE_EXPIRE || 300)
 
 export const DATABASE_TYPE = env.DATABASE_TYPE || 'sqlite'
 
+export const DATABASE_HOST = env.DATABASE_HOST || 'localhost'
+
+export const DATABASE_PORT = Number(env.DATABASE_PORT || 3306)
+
+export const DATABASE_USERNAME = env.DATABASE_USERNAME || 'root'
+
+export const DATABASE_PASSWORD = env.DATABASE_PASSWORD
+// 数据库名
+export const DATABASE_DATABASE = env.DATABASE_DATABASE || 'rss-impact'
+
+export const DATABASE_CHARSET = env.DATABASE_CHARSET || 'utf8_general_ci'
+
+export const DATABASE_TIMEZONE = env.DATABASE_TIMEZONE || 'local'
+
 export const SESSION_MAX_AGE = env.SESSION_MAX_AGE
 
 export const ENABLE_ORIGIN_LIST = env.ENABLE_ORIGIN_LIST?.split(',')?.map((e) => e?.trim())?.filter(Boolean)

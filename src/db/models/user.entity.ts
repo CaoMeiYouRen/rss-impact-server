@@ -9,6 +9,7 @@ import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { DATABASE_TYPE } from '@/app.config'
 
 @Entity()
 export class User extends Base {
@@ -74,7 +75,7 @@ export class User extends Base {
     @IsNotEmpty()
     @Length(0, 256, { each: true })
     @Column({
-        length: 256,
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 256,
         type: 'simple-array',
     })
     roles: string[]

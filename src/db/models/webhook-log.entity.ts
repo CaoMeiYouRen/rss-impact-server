@@ -10,6 +10,7 @@ import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { LogStatusList, LogStatusType, LogType, LogTypeList } from '@/constant/hook'
+import { DATABASE_TYPE } from '@/app.config'
 
 /**
  * webhook 执行结果
@@ -65,23 +66,23 @@ export class WebhookLog extends AclBase {
     statusText: string
 
     @ApiProperty({ title: '响应体', example: { message: 'OK' } })
-    @JsonStringLength(0, 65536)
+    @JsonStringLength(0, 65535)
     // @IsObject()
     @IsOptional()
     @Column({
         type: 'simple-json',
-        length: 65536,
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     data?: any
 
     @ApiProperty({ title: '响应头', example: {} })
-    @JsonStringLength(0, 65536)
+    @JsonStringLength(0, 65535)
     @IsObject()
     @IsOptional()
     @Column({
         type: 'simple-json',
-        length: 65536,
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     headers?: RawAxiosResponseHeaders | AxiosResponseHeaders

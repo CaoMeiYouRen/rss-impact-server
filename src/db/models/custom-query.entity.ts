@@ -10,7 +10,7 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { OutputType, OutputList, ScopeType, ScopeList } from '@/constant/custom-query'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { getAccessToken } from '@/utils/helper'
-import { BASE_URL } from '@/app.config'
+import { BASE_URL, DATABASE_TYPE } from '@/app.config'
 import { IsId } from '@/decorators/is-id.decorator'
 import { Filter } from '@/models/filter.dto'
 import { FilterOut } from '@/models/filter-out.dto'
@@ -190,8 +190,8 @@ export class CustomQuery extends AclBase {
     @IsNotEmpty()
     @Column({
         type: 'simple-json',
-        length: 2048,
-        default: '{}',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     filter: Filter
 
@@ -205,8 +205,8 @@ export class CustomQuery extends AclBase {
     @IsNotEmpty()
     @Column({
         type: 'simple-json',
-        length: 2048,
-        default: '{}',
+        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     filterout: FilterOut
 }
