@@ -87,8 +87,8 @@ export class Hook extends AclBase {
     @IsDefined()
     @Column({
         type: 'simple-json',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     config: HookConfig
 
@@ -119,8 +119,8 @@ export class Hook extends AclBase {
     @IsDefined()
     @Column({
         type: 'simple-json',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     filter: Filter
 
@@ -135,8 +135,8 @@ export class Hook extends AclBase {
     @IsDefined()
     @Column({
         type: 'simple-json',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     filterout: FilterOut
 

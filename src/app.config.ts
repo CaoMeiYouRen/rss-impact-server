@@ -99,6 +99,9 @@ export const DATABASE_CHARSET = env.DATABASE_CHARSET || 'utf8_general_ci'
 
 export const DATABASE_TIMEZONE = env.DATABASE_TIMEZONE || 'local'
 
+export const DATABASE_SCHEMA = env.DATABASE_SCHEMA || 'public'
+
 export const SESSION_MAX_AGE = env.SESSION_MAX_AGE
 
 export const ENABLE_ORIGIN_LIST = env.ENABLE_ORIGIN_LIST?.split(',')?.map((e) => e?.trim())?.filter(Boolean)
+

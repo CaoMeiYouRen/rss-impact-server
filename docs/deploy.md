@@ -131,16 +131,14 @@ BASE_URL='http://localhost:3000'
 ENABLE_ORIGIN_LIST=''
 # 超时时间(ms)
 TIMEOUT=30000
-
 # 数据库类型。参考 typeorm 支持的数据库类型
 DATABASE_TYPE='sqlite'
 # 如果是 sqlite，则无需其他数据库相关配置
-# 如果是 mysql，则需要配置 MySQL 相关配置
-
-# MySQL 相关配置如下
+# 如果是 mysql/postgres，则需要配置 MySQL/Postgres 相关配置
+# MySQL/Postgres 相关配置如下
 # 数据库 host
 DATABASE_HOST='localhost'
-# 数据库端口。mysql 默认的端口是3306.
+# 数据库端口。mysql 默认的端口是3306，postgres 默认端口是 5432。
 DATABASE_PORT=3306
 # 数据库用户名
 DATABASE_USERNAME='root'
@@ -148,10 +146,12 @@ DATABASE_USERNAME='root'
 DATABASE_PASSWORD=''
 # 数据库名
 DATABASE_DATABASE='rss-impact'
-# 连接的字符集 例如 utf8_unicode_ci/utf8_general_ci 等
+# 连接的字符集 utf8_unicode_ci/utf8_general_ci
 DATABASE_CHARSET='utf8_general_ci'
 # MySQL 服务器上配置的时区 （默认：local）
 DATABASE_TIMEZONE='local'
+# Postgre Schema 名称，默认是 "public".
+DATABASE_SCHEMA='public'
 
 # 每页最大查询条数
 PAGE_LIMIT_MAX=1000

@@ -68,7 +68,7 @@ export class Article extends AclBase {
     @Index({
     })
     @Column({
-        length: ['mysql'].includes(DATABASE_TYPE) ? 1024 : 2048,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? 1024 : 2048,
     })
     guid: string
 
@@ -105,7 +105,7 @@ export class Article extends AclBase {
     @IsOptional()
     @Column({
         type: 'text',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2 ** 20, // 1048576   varchar 上限 2147483647
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2 ** 20, // 1048576   varchar 上限 2147483647
         nullable: true,
     })
     content?: string
@@ -150,7 +150,7 @@ export class Article extends AclBase {
     @IsOptional()
     @Column({
         type: 'text',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     contentSnippet?: string
@@ -182,7 +182,7 @@ export class Article extends AclBase {
     @IsOptional()
     @Column({
         type: 'text',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     aiSummary?: string
@@ -201,7 +201,7 @@ export class Article extends AclBase {
     @IsOptional()
     @Column({
         type: 'simple-json', // 用 json 来避免逗号问题
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 512,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 512,
         nullable: true,
     })
     categories?: string[]
@@ -217,7 +217,7 @@ export class Article extends AclBase {
     @IsOptional()
     @Column({
         type: 'text',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     enclosureUrl?: string

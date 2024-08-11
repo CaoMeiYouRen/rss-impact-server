@@ -57,7 +57,7 @@ https://rss-demo.cmyr.dev
 - 支持从 OPML 文件导入订阅，也支持导出订阅为 OPML 文件。
 - 支持 Docker 一键部署
 - 支持 Redis 缓存
-- 支持 SQLite/MySQL 作为数据库
+- 支持 SQLite/MySQL/Postgres 作为数据库
 - 支持配置代理
 - 支持自动抓取全文。无需配置 css 查询器。
 

@@ -38,7 +38,7 @@ export class Feed extends AclBase {
         // unique: true,
     })
     @Column({
-        length: ['mysql'].includes(DATABASE_TYPE) ? 1024 : 2048,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? 1024 : 2048,
         // unique: true,
     })
     url: string

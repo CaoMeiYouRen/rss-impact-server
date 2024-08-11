@@ -41,7 +41,7 @@ export class ProxyConfig extends AclBase {
     @Length(0, 2048, {})
     @Index({})
     @Column({
-        length: ['mysql'].includes(DATABASE_TYPE) ? 1024 : 2048,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? 1024 : 2048,
     })
     url: string
 

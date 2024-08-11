@@ -75,7 +75,7 @@ export class User extends Base {
     @IsNotEmpty()
     @Length(0, 256, { each: true })
     @Column({
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 256,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 256,
         type: 'simple-array',
     })
     roles: string[]

@@ -71,7 +71,7 @@ export class WebhookLog extends AclBase {
     @IsOptional()
     @Column({
         type: 'simple-json',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     data?: any
@@ -82,7 +82,7 @@ export class WebhookLog extends AclBase {
     @IsOptional()
     @Column({
         type: 'simple-json',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65535,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
         nullable: true,
     })
     headers?: RawAxiosResponseHeaders | AxiosResponseHeaders

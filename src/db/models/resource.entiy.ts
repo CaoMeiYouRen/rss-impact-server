@@ -37,7 +37,7 @@ export class Resource extends AclBase {
     // @Index()
     @Column({
         type: 'text',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 65000,
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65000,
     })
     url: string
 

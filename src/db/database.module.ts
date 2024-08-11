@@ -12,7 +12,7 @@ import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
-import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
+import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 
 export const DATABASE_DIR = DATA_PATH
 
@@ -23,7 +23,7 @@ export const entities = [User, Feed, Category, Article, Hook, Resource, WebhookL
 
 const repositories = TypeOrmModule.forFeature(entities)
 // 支持的数据库类型
-const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql']
+const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
 
 @Global()
 @Module({
@@ -51,11 +51,20 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql']
                             // debug: __DEV__,
                         }
                         break
+                    case 'postgres':
+                        options = {
+                            host: DATABASE_HOST,
+                            port: DATABASE_PORT,
+                            username: DATABASE_USERNAME,
+                            password: DATABASE_PASSWORD,
+                            database: DATABASE_DATABASE,
+                            schema: DATABASE_SCHEMA,
+                        }
+                        break
                     default:
                         break
                 }
                 return {
-                    // TODO Postgres 支持
                     ...options,
                     type: DATABASE_TYPE as any,
                     entities,

@@ -190,8 +190,8 @@ export class CustomQuery extends AclBase {
     @IsNotEmpty()
     @Column({
         type: 'simple-json',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     filter: Filter
 
@@ -205,8 +205,8 @@ export class CustomQuery extends AclBase {
     @IsNotEmpty()
     @Column({
         type: 'simple-json',
-        length: ['mysql'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
+        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
     })
     filterout: FilterOut
 }
