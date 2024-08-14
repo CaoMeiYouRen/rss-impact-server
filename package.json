@@ -104,7 +104,7 @@
     "turndown": "^7.2.0",
     "typeorm": "^0.3.20",
     "validator": "^13.12.0",
-    "winston": "^3.14.1",
+    "winston": "^3.14.2",
     "winston-daily-rotate-file": "^5.0.0",
     "xregexp": "^5.1.1"
   },
