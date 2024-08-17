@@ -1,5 +1,13 @@
 # rss-impact-server
 
+# [1.4.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.3.1...v1.4.0) (2024-08-17)
+
+
+### ✨ 新功能
+
+* 新增 MySQL 支持 ([70f1fa2](https://github.com/CaoMeiYouRen/rss-impact-server/commit/70f1fa2))
+* 新增 Postgres 连接支持 ([7567dbf](https://github.com/CaoMeiYouRen/rss-impact-server/commit/7567dbf))
+
 ## [1.3.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.3.0...v1.3.1) (2024-08-10)
 
 
