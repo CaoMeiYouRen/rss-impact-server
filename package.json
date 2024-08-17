@@ -104,7 +104,7 @@
     "turndown": "^7.2.0",
     "typeorm": "^0.3.20",
     "validator": "^13.12.0",
-    "winston": "^3.14.1",
+    "winston": "^3.14.2",
     "winston-daily-rotate-file": "^5.0.0",
     "xregexp": "^5.1.1"
   },
@@ -135,7 +135,7 @@
     "@types/morgan": "^1.9.9",
     "@types/ms": "^0.7.34",
     "@types/multer": "^1.4.11",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.3.0",
     "@types/parse-torrent": "^5.8.7",
     "@types/passport-local": "^1.0.38",
     "@types/passport-strategy": "^0.2.38",
