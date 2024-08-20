@@ -153,7 +153,7 @@
     "eslint": "^8.57.0",
     "eslint-config-cmyr": "^1.1.31",
     "eslint-plugin-import": "^2.28.1",
-    "husky": "^9.1.4",
+    "husky": "^9.1.5",
     "jest": "^29.7.0",
     "jest-openapi": "^0.14.2",
     "lint-staged": "^15.2.9",
