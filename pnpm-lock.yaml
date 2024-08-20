@@ -96,8 +96,8 @@ importers:
         specifier: 3.1.7
         version: 3.1.7
       dayjs:
-        specifier: ^1.11.12
-        version: 1.11.12
+        specifier: ^1.11.13
+        version: 1.11.13
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -2727,8 +2727,8 @@ packages:
   daveutils@0.4.65:
     resolution: {integrity: sha512-OfR33yzbJsarKJ2wchckWeSaM1OI4iI1gjMqhccwnsfABBfKz2D4aAtQD4gX5WwQhq41usnPfjfkgx53uXnQSQ==}
 
-  dayjs@1.11.12:
-    resolution: {integrity: sha512-Rt2g+nTbLlDWZTwwrIXjy9MeiZmSDI375FvZs72ngxx8PDC6YXOeR3q5LAuPzjZQxhiWdRKac7RKV+YyQYfYIg==}
+  dayjs@1.11.13:
+    resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -10326,7 +10326,7 @@ snapshots:
     dependencies:
       request: 2.88.2
 
-  dayjs@1.11.12: {}
+  dayjs@1.11.13: {}
 
   debug@2.6.9:
     dependencies:
@@ -15267,7 +15267,7 @@ snapshots:
       buffer: 6.0.3
       chalk: 4.1.2
       cli-highlight: 2.1.11
-      dayjs: 1.11.12
+      dayjs: 1.11.13
       debug: 4.3.6
       dotenv: 16.4.5
       glob: 10.4.1
