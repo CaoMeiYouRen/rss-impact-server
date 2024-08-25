@@ -207,8 +207,8 @@ importers:
         specifier: ^5.0.1
         version: 5.0.1(express@4.19.2)
       tslib:
-        specifier: ^2.6.3
-        version: 2.6.3
+        specifier: ^2.7.0
+        version: 2.7.0
       turndown:
         specifier: ^7.2.0
         version: 7.2.0
@@ -6774,6 +6774,9 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
+  tslib@2.7.0:
+    resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
+
   tsutils@3.21.0:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
     engines: {node: '>= 6'}
@@ -7681,7 +7684,7 @@ snapshots:
 
   '@cao-mei-you-ren/avue-types@1.1.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   '@cao-mei-you-ren/crypto-hash@3.0.0': {}
 
@@ -7696,7 +7699,7 @@ snapshots:
       moment-parseformat: 3.0.0
       postman-request: 2.88.1-postman.36
       string-direction: 0.1.2
-      tslib: 2.6.3
+      tslib: 2.7.0
       turndown: 7.2.0
       valid-url: 1.0.9
       wuzzy: 0.1.8
@@ -9629,7 +9632,7 @@ snapshots:
 
   better-bytes@1.2.4:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   bignumber.js@9.0.0: {}
 
@@ -14446,7 +14449,7 @@ snapshots:
 
   rxjs@7.8.1:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   sade@1.8.1:
     dependencies:
@@ -14951,7 +14954,7 @@ snapshots:
 
   synckit@0.6.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.7.0
 
   tapable@2.2.1: {}
 
@@ -15160,6 +15163,8 @@ snapshots:
 
   tslib@2.6.3: {}
 
+  tslib@2.7.0: {}
+
   tsutils@3.21.0(typescript@5.5.4):
     dependencies:
       tslib: 1.14.1
@@ -15274,7 +15279,7 @@ snapshots:
       mkdirp: 2.1.6
       reflect-metadata: 0.2.2
       sha.js: 2.4.11
-      tslib: 2.6.3
+      tslib: 2.7.0
       uuid: 9.0.1
       yargs: 17.7.2
     optionalDependencies:
