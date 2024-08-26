@@ -12,6 +12,7 @@ export abstract class AclBase extends Base {
 
     @SetAclCrudField({
         dicUrl: '/user/dicData',
+        search: true,
     })
     @ApiProperty({ title: '所属用户', example: 1 })
     @IsId()
