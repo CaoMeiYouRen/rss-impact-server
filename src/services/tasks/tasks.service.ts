@@ -19,6 +19,7 @@ import Parser from '@cao-mei-you-ren/rss-parser'
 import OpenAI from 'openai'
 import ms from 'ms'
 import { isMagnetURI } from 'class-validator'
+import rssParserUtils from '@cao-mei-you-ren/rss-parser/lib/utils'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
@@ -196,6 +197,7 @@ export class TasksService implements OnApplicationBootstrap {
                                 return article
                             }
                             article.content = fullText.content || article.content // 仅正文优先使用抓取的内容
+                            article.contentSnippet = rssParserUtils.getSnippet(article.content) || article.contentSnippet // 更新 纯文本格式
                             article.author = article.author || fullText.author
                             article.summary = article.summary || fullText.excerpt
                             // 如果 pubDate 不存在，且 date_published 是有效日期，则填补日期
