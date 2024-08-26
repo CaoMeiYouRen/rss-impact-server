@@ -1,5 +1,12 @@
 # rss-impact-server
 
+## [1.4.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.4.0...v1.4.1) (2024-08-24)
+
+
+### 🐛 Bug 修复
+
+* 新增 CustomColumn 装饰器 ([7ad9797](https://github.com/CaoMeiYouRen/rss-impact-server/commit/7ad9797))
+
 # [1.4.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.3.1...v1.4.0) (2024-08-17)
 
 
