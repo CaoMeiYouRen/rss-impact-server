@@ -891,8 +891,9 @@ export class TasksService implements OnApplicationBootstrap {
         const proxyUrl = hook.proxyConfig?.url
         const { type, isOnlySummaryEmpty, contentType, isIncludeTitle, apiKey, model, prompt, endpoint, timeout, isSplit } = config
         const isSnippet = contentType === 'text'
-        let { minContentLength, maxTokens, temperature } = config
+        let { minContentLength, maxTokens, temperature, maxContextLength } = config
         maxTokens = maxTokens || 2048
+        maxContextLength = maxContextLength || 4096
         minContentLength = minContentLength ?? 1024
         temperature = temperature ?? 0
         const aiArticles = articles.filter((article) => {
@@ -939,7 +940,7 @@ The content to be summarized is:`
                 } as const
                 const systemPromptLength = getTokenLength(system.content)
                 // 保留给回复的 token
-                const reservedTokens = maxTokens - systemPromptLength
+                const reservedTokens = maxContextLength - systemPromptLength // 最大上下文长度 减去 提示语的长度 为保留给回复的 token 长度
                 if (reservedTokens <= 0) {
                     throw new HttpError(400, '最大 token 数过小！请修改配置！')
                 }
@@ -958,7 +959,7 @@ The content to be summarized is:`
                             model: model || 'gpt-3.5-turbo',
                             n: 1,
                             temperature,
-                            max_tokens: reservedTokens,
+                            max_tokens: maxTokens,
                         }))
                         if (error) {
                             this.logger.error(error?.message, error?.stack)

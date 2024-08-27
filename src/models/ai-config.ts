@@ -63,6 +63,14 @@ export class AIConfig {
     temperature?: number
 
     @SetAclCrudField({
+        labelWidth: 116,
+    })
+    @ApiProperty({ title: '最大上下文长度', description: 'OpenAI 最大上下文长度。即一次提交多少 token 的字符。注意：提示文本加上"最大 token 数"的 token 数量不能超过模型的上下文长度。默认值 4096', example: 4096 })
+    @IsSafeNaturalNumber()
+    @IsOptional()
+    maxContextLength?: number
+
+    @SetAclCrudField({
         labelWidth: 105,
     })
     @ApiProperty({ title: '最大 token 数', description: 'OpenAI 最大 token 数。注意一定要比模型的 最大上下文 小，否则可能会总结失败。默认值 2048', example: 2048 })
@@ -77,11 +85,6 @@ export class AIConfig {
     @IsSafeNaturalNumber()
     @IsOptional()
     minContentLength?: number
-
-    // @ApiProperty({ title: '最大正文长度', description: '最多向 ChatGPT 提交多少正文，有可能会超过 token 数。默认值 4096' })
-    // @IsSafeNaturalNumber()
-    // @IsOptional()
-    // maxContentLength?: number
 
     @SetAclCrudField({
         value: true,
