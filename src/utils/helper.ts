@@ -221,6 +221,7 @@ export function htmlToMarkdown(html: string): string {
     const turndownService = new Turndown({
         headingStyle: 'atx',
         bulletListMarker: '-',
+        hr: '---',
     })
     const markdown = turndownService.turndown(html)
     return markdown
@@ -345,6 +346,8 @@ export function mdToCqcode(md: string) {
     let result = md
     // 反转义 []
     result = result.replaceAll('\\[', '&#91;').replaceAll('\\]', '&#93;')
+    // 需要反转义 markdown 字符
+    result = unescapeMarkdown(result)
     // CQImage 禁用缓存，否则 onebot-mirai 插件会发送失败
     result = result.replace(imageRegex, (match, altText, imageUrl) => new CQImage('image', { file: imageUrl, cache: 0 }).toString())
     // 如果两个 url 相同，则只保留一个
@@ -604,4 +607,65 @@ export async function getFullText(url: string, proxyUrl?: string) {
     const result: FullText = await PostlightParser.parse(url, { html })
     result.content = decodeXML(result.content)
     return result
+}
+
+/**
+ *
+ * 转义 markdown 特殊字符
+ * @author CaoMeiYouRen
+ * @date 2024-08-27
+ * @param text
+ */
+export function escapeMarkdown(text: string) {
+    const escapeChars = {
+        '`': '\\`',
+        '*': '\\*',
+        _: '\\_',
+        '#': '\\#',
+        '\\': '\\\\',
+        '[': '\\[',
+        ']': '\\]',
+        '(': '\\(',
+        ')': '\\)',
+        '!': '\\!',
+        '{': '\\{',
+        '}': '\\}',
+        '|': '\\|',
+        '<': '&lt;',
+        '>': '&gt;',
+        '&': '&amp;',
+    }
+
+    return text.replace(/[`*_#\\[\]()!{}|<>&]/g, (match) => escapeChars[match])
+}
+
+/**
+ * 反转义 markdown 特殊字符
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-08-27
+ * @export
+ * @param text
+ */
+export function unescapeMarkdown(text: string) {
+    const unescapeChars = {
+        '\\`': '`',
+        '\\*': '*',
+        '\\_': '_',
+        '\\#': '#',
+        '\\\\': '\\',
+        '\\[': '[',
+        '\\]': ']',
+        '\\(': '(',
+        '\\)': ')',
+        '\\!': '!',
+        '\\{': '{',
+        '\\}': '}',
+        '\\|': '|',
+        '&lt;': '<',
+        '&gt;': '>',
+        '&amp;': '&',
+    }
+
+    return text.replace(/\\[`*_#\\[\]()!{}|<>&]|&lt;|&gt;|&amp;/g, (match) => unescapeChars[match])
 }

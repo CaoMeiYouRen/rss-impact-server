@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown } from './helper';
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown, escapeMarkdown, unescapeMarkdown } from './helper';
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {
@@ -344,5 +344,105 @@ describe('collapseWhitespace', () => {
         expect(collapseWhitespace('')).toBe('');
         expect(collapseWhitespace(null)).toBeNull();
         expect(collapseWhitespace(undefined)).toBeUndefined();
+    });
+});
+
+describe('escapeMarkdown', () => {
+    it('should escape backticks', () => {
+        expect(escapeMarkdown('`code`')).toBe('\\`code\\`');
+    });
+
+    it('should escape asterisks', () => {
+        expect(escapeMarkdown('*italic*')).toBe('\\*italic\\*');
+    });
+
+    it('should escape underscores', () => {
+        expect(escapeMarkdown('_italic_')).toBe('\\_italic\\_');
+    });
+
+    it('should escape hashes', () => {
+        expect(escapeMarkdown('# Title')).toBe('\\# Title');
+    });
+
+    it('should escape backslashes', () => {
+        expect(escapeMarkdown('\\backslash')).toBe('\\\\backslash');
+    });
+
+    it('should escape square brackets', () => {
+        expect(escapeMarkdown('[link]')).toBe('\\[link\\]');
+    });
+
+    it('should escape parentheses', () => {
+        expect(escapeMarkdown('(url)')).toBe('\\(url\\)');
+    });
+
+    it('should escape exclamation marks', () => {
+        expect(escapeMarkdown('!image')).toBe('\\!image');
+    });
+
+    it('should escape curly braces', () => {
+        expect(escapeMarkdown('{content}')).toBe('\\{content\\}');
+    });
+
+    it('should escape pipes', () => {
+        expect(escapeMarkdown('|table|')).toBe('\\|table\\|');
+    });
+
+    it('should escape less than and greater than signs', () => {
+        expect(escapeMarkdown('<tag>')).toBe('&lt;tag&gt;');
+    });
+
+    it('should escape ampersands', () => {
+        expect(escapeMarkdown('AT&T')).toBe('AT&amp;T');
+    });
+});
+
+describe('unescapeMarkdown', () => {
+    it('should unescape backticks', () => {
+        expect(unescapeMarkdown('\\`code\\`')).toBe('`code`');
+    });
+
+    it('should unescape asterisks', () => {
+        expect(unescapeMarkdown('\\*italic\\*')).toBe('*italic*');
+    });
+
+    it('should unescape underscores', () => {
+        expect(unescapeMarkdown('\\_italic\\_')).toBe('_italic_');
+    });
+
+    it('should unescape hashes', () => {
+        expect(unescapeMarkdown('\\# Title')).toBe('# Title');
+    });
+
+    it('should unescape backslashes', () => {
+        expect(unescapeMarkdown('\\\\backslash')).toBe('\\backslash');
+    });
+
+    it('should unescape square brackets', () => {
+        expect(unescapeMarkdown('\\[link\\]')).toBe('[link]');
+    });
+
+    it('should unescape parentheses', () => {
+        expect(unescapeMarkdown('\\(url\\)')).toBe('(url)');
+    });
+
+    it('should unescape exclamation marks', () => {
+        expect(unescapeMarkdown('\\!image')).toBe('!image');
+    });
+
+    it('should unescape curly braces', () => {
+        expect(unescapeMarkdown('\\{content\\}')).toBe('{content}');
+    });
+
+    it('should unescape pipes', () => {
+        expect(unescapeMarkdown('\\|table\\|')).toBe('|table|');
+    });
+
+    it('should unescape less than and greater than signs', () => {
+        expect(unescapeMarkdown('&lt;tag&gt;')).toBe('<tag>');
+    });
+
+    it('should unescape ampersands', () => {
+        expect(unescapeMarkdown('AT&amp;T')).toBe('AT&T');
     });
 });
