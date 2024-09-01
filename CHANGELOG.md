@@ -1,5 +1,19 @@
 # rss-impact-server
 
+## [1.4.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.4.1...v1.4.2) (2024-08-31)
+
+
+### ♻ 代码重构
+
+* 优化 turndown 对 html 字符的处理 ([b14155a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/b14155a)), closes [#287](https://github.com/CaoMeiYouRen/rss-impact-server/issues/287)
+
+
+### 🐛 Bug 修复
+
+* 优化 admin 用户可按所属用户查询数据 ([3c5e8d4](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3c5e8d4))
+* 修复 OpenAI 的 max_tokens 相关逻辑的错误 ([d742248](https://github.com/CaoMeiYouRen/rss-impact-server/commit/d742248)), closes [#290](https://github.com/CaoMeiYouRen/rss-impact-server/issues/290)
+* 修复 抓取全文时，未更新 纯文本格式的 bug ([1b71910](https://github.com/CaoMeiYouRen/rss-impact-server/commit/1b71910))
+
 ## [1.4.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.4.0...v1.4.1) (2024-08-24)
 
 
