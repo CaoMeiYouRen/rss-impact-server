@@ -5104,6 +5104,12 @@
                         "description": "OpenAI 温度参数，越高越随机，反之越稳定。默认值 0",
                         "example": 0.1
                     },
+                    "maxContextLength": {
+                        "type": "number",
+                        "title": "最大上下文长度",
+                        "description": "OpenAI 最大上下文长度。即一次提交多少 token 的字符。注意：提示文本加上\"最大 token 数\"的 token 数量不能超过模型的上下文长度。默认值 4096",
+                        "example": 4096
+                    },
                     "maxTokens": {
                         "type": "number",
                         "title": "最大 token 数",

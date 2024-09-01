@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 import { ServerChanTurbo, CustomEmail, Dingtalk, WechatRobot, WechatApp, PushPlus, IGot, Qmsg, XiZhi, PushDeer, Discord, OneBot, Telegram } from 'push-all-in-one'
-import { mdToCqcode, unescapeMarkdown } from './helper'
+import { mdToCqcode } from './helper'
 import { NotificationConfig } from '@/models/notification-config'
 
 /**

@@ -13,6 +13,7 @@ export const MAX_ID = 2147483647 // 2 ** 31 - 1
  */
 export function IsId(validationOptions?: ValidationOptions) {
     return applyDecorators(
+        (target: object, propertyKey: string | symbol) => Reflect.defineMetadata('IS_ID', true, target, propertyKey),
         IsInt(validationOptions),
         Min(1, validationOptions),
         Max(MAX_ID, validationOptions),
