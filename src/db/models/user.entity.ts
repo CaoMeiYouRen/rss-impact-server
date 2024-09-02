@@ -83,6 +83,7 @@ export class User extends Base {
         index: true,
         unique: true,
         length: 128,
+        nullable: true,
     })
     accessToken: string
 
