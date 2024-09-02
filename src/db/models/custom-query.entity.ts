@@ -10,7 +10,6 @@ import { OutputType, OutputList, ScopeType, ScopeList } from '@/constant/custom-
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { getAccessToken } from '@/utils/helper'
 import { BASE_URL } from '@/app.config'
-import { IsId } from '@/decorators/is-id.decorator'
 import { Filter } from '@/models/filter.dto'
 import { FilterOut } from '@/models/filter-out.dto'
 import { CustomColumn } from '@/decorators/custom-column.decorator'
