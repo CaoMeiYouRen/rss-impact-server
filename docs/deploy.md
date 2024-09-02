@@ -119,7 +119,7 @@ pnpm start
 
 在浏览器中打开 `http://{Server IP}:3000` 即可查看结果
 
-# ⚙配置
+# ⚙ 配置
 
 更多参数请参考 `.env` 文件中的说明
 
@@ -216,3 +216,67 @@ CACHE_EXPIRE=300
 # RSS 内存缓存时间，单位：秒
 CACHE_CONTENT_EXPIRE=3600
 ```
+
+# 🗄️ 数据库配置
+
+## 使用 SQLite 数据库
+
+无需特别配置
+
+数据库文件默认保存在 `data/database.sqlite` 路径下。
+
+## 使用 MySQL  数据库
+
+在环境变量中进行如下配置
+
+```ini
+# 指定数据库类型为 MySQL
+DATABASE_TYPE='mysql'
+# 数据库 host
+DATABASE_HOST='localhost'
+# 数据库端口。mysql 默认的端口是3306
+DATABASE_PORT=3306
+# 数据库用户名
+DATABASE_USERNAME='root'
+# 数据库密码
+DATABASE_PASSWORD=''
+# 数据库名
+DATABASE_DATABASE='rss-impact'
+# 连接的字符集 默认为 utf8_general_ci
+DATABASE_CHARSET='utf8_general_ci'
+# MySQL 服务器上配置的时区 （默认：local）
+DATABASE_TIMEZONE='local'
+```
+
+注意：首次连接时会创建数据表。在  `data/database.lock.json` 文件存在时不会同步数据表结构。
+
+如果希望更新数据表结构，请删除 `data/database.lock.json` 文件。
+
+**特别提醒：更新数据表结构可能会导致数据丢失，请提前做好备份！**
+
+## 使用 PostgreSQL 数据库
+
+在环境变量中进行如下配置
+
+```ini
+# 指定数据库类型为 Postgres
+DATABASE_TYPE='postgres'
+# 数据库 host
+DATABASE_HOST='localhost'
+# 数据库端口。postgres 默认端口是 5432。
+DATABASE_PORT=5432
+# 数据库用户名
+DATABASE_USERNAME=postgres
+# 数据库密码
+DATABASE_PASSWORD=postgres
+# 数据库名
+DATABASE_DATABASE=rss-impact
+# Postgre Schema 名称，默认是 "public".
+DATABASE_SCHEMA='public'
+```
+
+注意：首次连接时会创建数据表。在  `data/database.lock.json` 文件存在时不会同步数据表结构。
+
+如果希望更新数据表结构，请删除 `data/database.lock.json` 文件。
+
+**特别提醒：更新数据表结构可能会导致数据丢失，请提前做好备份！**

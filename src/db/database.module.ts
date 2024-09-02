@@ -2,6 +2,7 @@ import path from 'path'
 import { Global, Module } from '@nestjs/common'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import ms from 'ms'
+import fs from 'fs-extra'
 import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
 import { Category } from './models/category.entity'
@@ -21,6 +22,8 @@ export const DATABASE_PATH = __TEST__ ?
     path.join(DATABASE_DIR, 'database.sqlite')
 export const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig, CustomQuery, DailyCount]
 
+const lockFilePath = path.join(DATABASE_DIR, 'database.lock.json')
+
 const repositories = TypeOrmModule.forFeature(entities)
 // 支持的数据库类型
 const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
@@ -34,9 +37,12 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                     throw new Error('不支持的数据库类型')
                 }
                 let options: TypeOrmModuleOptions = {}
+                // 是否在每次应用程序启动时自动创建数据库架构。
+                let synchronize: boolean = false
                 switch (DATABASE_TYPE) {
                     case 'sqlite':
                         options = { database: DATABASE_PATH } //  数据库路径。
+                        synchronize = true // 在数据库为 sqlite 的时候固定同步
                         break
                     case 'mysql':
                         options = {
@@ -52,6 +58,12 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             supportBigNumbers: true, // 处理数据库中的大数字
                             bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
                         }
+                        // mysql 仅在第一次加载时同步，否则会丢失数据
+                        if (!await fs.pathExists(lockFilePath)) {
+                            synchronize = true
+                            await fs.writeJSON(lockFilePath, { synchronize: false })
+                        }
+
                         break
                     case 'postgres':
                         options = {
@@ -62,15 +74,21 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             database: DATABASE_DATABASE,
                             schema: DATABASE_SCHEMA,
                         }
+                        // postgres 仅在第一次加载时同步，否则会丢失数据
+                        if (!await fs.pathExists(lockFilePath)) {
+                            synchronize = true
+                            await fs.writeJSON(lockFilePath, { synchronize: false })
+                        }
                         break
                     default:
                         break
                 }
+
                 return {
                     ...options,
                     type: DATABASE_TYPE as any,
                     entities,
-                    synchronize: true, // 开发环境固定同步；如果数据库文件不存在，则同步
+                    synchronize,
                     autoLoadEntities: true,
                 }
             },
