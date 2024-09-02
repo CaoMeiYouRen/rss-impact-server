@@ -4,6 +4,7 @@ import { AIList, AIType, ContentList, ContentType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { __PROD__ } from '@/app.config'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
+import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 
 export class AIConfig {
 
@@ -28,11 +29,9 @@ export class AIConfig {
     @IsOptional()
     model?: string
 
-    @ApiProperty({ title: 'API 地址', description: 'OpenAI API 地址', example: 'https://api.openai.com/v1' })
+    @ApiProperty({ title: 'API 地址', description: 'OpenAI API 地址。注意需要带有版本号。默认 https://api.openai.com/v1', example: 'https://api.openai.com/v1' })
     @Length(0, 2048)
-    @IsUrl({
-        require_tld: __PROD__, // 是否要顶级域名
-    })
+    @IsCustomURL()
     @IsOptional()
     endpoint?: string
 

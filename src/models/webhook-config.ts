@@ -6,6 +6,7 @@ import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { __PROD__ } from '@/app.config'
+import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 
 const methodOptions: { label: string, value: Method }[] = [
     { label: 'GET', value: 'GET' },
@@ -24,9 +25,7 @@ export class WebhookConfig implements AjaxConfig {
 
     @ApiProperty({ title: '请求链接', example: 'http://127.0.0.1:3000' })
     @IsNotEmpty()
-    @IsUrl({
-        require_tld: __PROD__, // 是否要顶级域名
-    })
+    @IsCustomURL()
     @Length(0, 1024)
     url: string
 

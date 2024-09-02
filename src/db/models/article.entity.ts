@@ -14,13 +14,12 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
 import { __PROD__, DATABASE_TYPE } from '@/app.config'
 import { dataFormat } from '@/utils/helper'
+import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 
 export class EnclosureImpl implements Enclosure {
 
     @ApiProperty({ title: 'URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
-    @IsUrlOrMagnetUri({}, {
-        require_tld: __PROD__,   // 是否要顶级域名
-    })
+    @IsUrlOrMagnetUri()
     @Length(0, 65000)
     @IsOptional()
     url: string
@@ -73,9 +72,7 @@ export class Article extends AclBase {
     guid: string
 
     @ApiProperty({ title: '链接', example: 'https://blog.cmyr.ltd/archives/499d4cee.html' })
-    @IsUrl({
-        require_tld: __PROD__, // 是否要顶级域名
-    })
+    @IsCustomURL()
     @Length(0, 2048)
     @IsOptional()
     @Column({
@@ -210,9 +207,7 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '附件URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
-    @IsUrlOrMagnetUri({}, {
-        require_tld: __PROD__,   // 是否要顶级域名
-    })
+    @IsUrlOrMagnetUri()
     @Length(0, 65535)
     @IsOptional()
     @Column({

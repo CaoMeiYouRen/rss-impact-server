@@ -30,9 +30,7 @@ export class Resource extends AclBase {
     })
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/images/favicon-16x16-next.png' })
     @IsNotEmpty()
-    @IsUrlOrMagnetUri({}, {
-        require_tld: __PROD__,   // 是否要顶级域名
-    })
+    @IsUrlOrMagnetUri()
     @Length(0, 65000)
     // @Index()
     @Column({

@@ -4,6 +4,7 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { BitTorrentList, BitTorrentType } from '@/constant/hook'
 import { __PROD__ } from '@/app.config'
 import { IsBetterBytesString } from '@/decorators/is-better-bytes-string.decorator'
+import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 
 export class BitTorrentConfig {
 
@@ -23,9 +24,7 @@ export class BitTorrentConfig {
         labelWidth: 110,
     })
     @ApiProperty({ title: '服务器地址', description: 'BT服务器地址，例如 http://localhost:8080/', example: 'http://localhost:8080/' })
-    @IsUrl({
-        require_tld: __PROD__, // 是否要顶级域名
-    })
+    @IsCustomURL()
     @IsNotEmpty()
     @Length(0, 1024)
     baseUrl: string
