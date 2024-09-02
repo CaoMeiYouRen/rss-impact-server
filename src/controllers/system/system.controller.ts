@@ -5,8 +5,9 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import sqlite3 from 'sqlite3'
 import mysql, { ConnectionOptions } from 'mysql2/promise'
 import ms from 'ms'
+import { Client } from 'pg'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
-import { DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
+import { DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 import { DATABASE_PATH, entities } from '@/db/database.module'
 import { dataFormat, timeFromNow } from '@/utils/helper'
 import { DatabaseInfoDto } from '@/models/database-info.dto'
@@ -55,35 +56,37 @@ export class SystemController {
                     this.logger.error(error?.message, error?.stack)
                 }
             })
-
-            const { count: tableCount } = await new Promise<{ count: number }>((resolve, reject) => {
-                db.get<{ count: number }>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "table"', (error, row) => {
-                    if (error) {
-                        reject(error)
-                        return
-                    }
-                    resolve(row)
+            try {
+                const { count: tableCount } = await new Promise<{ count: number }>((resolve, reject) => {
+                    db.get<{ count: number }>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "table"', (error, row) => {
+                        if (error) {
+                            reject(error)
+                            return
+                        }
+                        resolve(row)
+                    })
                 })
-            })
-            info.tableCount = tableCount
+                info.tableCount = tableCount
 
-            const { count: indexCount } = await new Promise<{ count: number }>((resolve, reject) => {
-                db.get<{ count: number }>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "index"', (error, row) => {
-                    if (error) {
-                        reject(error)
-                        return
-                    }
-                    resolve(row)
+                const { count: indexCount } = await new Promise<{ count: number }>((resolve, reject) => {
+                    db.get<{ count: number }>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "index"', (error, row) => {
+                        if (error) {
+                            reject(error)
+                            return
+                        }
+                        resolve(row)
+                    })
                 })
-            })
-            info.indexCount = indexCount
-
-            db.close((error) => {
-                if (error) {
-                    this.logger.error(error?.message, error?.stack)
-                }
-            })
-
+                info.indexCount = indexCount
+            } catch (error) {
+                this.logger.error(error?.message, error?.stack)
+            } finally {
+                db.close((error) => {
+                    if (error) {
+                        this.logger.error(error?.message, error?.stack)
+                    }
+                })
+            }
         } else if (DATABASE_TYPE === 'mysql') {
             const options: ConnectionOptions = {
                 host: DATABASE_HOST,
@@ -100,32 +103,70 @@ export class SystemController {
 
             const db = await mysql.createConnection(options)
 
-            const [databaseResults] = await db.query(`
-                SELECT table_schema AS \`database\`,
-                       SUM(data_length + index_length) AS \`size\`
-                FROM information_schema.TABLES
-                WHERE table_schema = ?
-                GROUP BY table_schema;
-              `, [DATABASE_DATABASE])
+            try {
+                const [databaseResults] = await db.query(`
+                   SELECT table_schema AS \`database\`,
+                          SUM(data_length + index_length) AS \`size\`
+                   FROM information_schema.TABLES
+                   WHERE table_schema = ?
+                   GROUP BY table_schema;
+                 `, [DATABASE_DATABASE])
 
-            info.size = Number(databaseResults?.[0]?.size) || 0 // 数据表数量
-            info.sizeFormat = dataFormat(info.size)
+                info.size = Number(databaseResults?.[0]?.size) || 0 // 数据库占用体积
+                info.sizeFormat = dataFormat(info.size)
 
-            const [tableResults] = await db.query(`
-                SELECT COUNT(*) AS \`tableCount\`
-                FROM information_schema.TABLES
-                WHERE table_schema = ?;
-              `, [DATABASE_DATABASE])
-            info.tableCount = Number(tableResults?.[0]?.tableCount) || 0  // 表数量
+                const [tableResults] = await db.query(`
+                   SELECT COUNT(*) AS \`tableCount\`
+                   FROM information_schema.TABLES
+                   WHERE table_schema = ?;
+                 `, [DATABASE_DATABASE])
+                info.tableCount = Number(tableResults?.[0]?.tableCount) || 0  // 表数量
 
-            const [indexResults] = await db.query(`
-                SELECT COUNT(*) AS \`indexCount\`
-                FROM information_schema.STATISTICS
-                WHERE table_schema = ?;
-              `, [DATABASE_DATABASE])
-            info.indexCount = Number(indexResults?.[0]?.indexCount) || 0 // 索引数量
+                const [indexResults] = await db.query(`
+                   SELECT COUNT(*) AS \`indexCount\`
+                   FROM information_schema.STATISTICS
+                   WHERE table_schema = ?;
+                 `, [DATABASE_DATABASE])
+                info.indexCount = Number(indexResults?.[0]?.indexCount) || 0 // 索引数量
 
-            await db.end()
+            } catch (error) {
+                this.logger.error(error?.message, error?.stack)
+            } finally {
+                await db.end()
+            }
+        } else if (DATABASE_TYPE === 'postgres') {
+            const options = {
+                host: DATABASE_HOST,
+                port: DATABASE_PORT,
+                user: DATABASE_USERNAME,
+                password: DATABASE_PASSWORD,
+                database: DATABASE_DATABASE,
+                schema: DATABASE_SCHEMA,
+            }
+            const db = new Client(options)
+            try {
+                await db.connect()
+                // 查询整个数据库的大小
+                const dbSizeQuery = 'SELECT pg_database_size($1)'
+                const dbSizeRes = await db.query(dbSizeQuery, [DATABASE_DATABASE])
+                info.size = Number(dbSizeRes?.rows?.[0]?.pg_database_size) || 0 // 数据库占用体积
+                info.sizeFormat = dataFormat(info.size)
+
+                // 查询表的数量
+                const tableCountQuery = 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = \'public\';'
+                const tableCountRes = await db.query(tableCountQuery)
+                info.tableCount = Number(tableCountRes.rows[0].count) || 0
+
+                // 查询索引的数量
+                const indexCountQuery = 'SELECT COUNT(*) FROM pg_indexes WHERE schemaname = \'public\';'
+                const indexCountRes = await db.query(indexCountQuery)
+                info.indexCount = Number(indexCountRes.rows[0].count) || 0
+
+            } catch (error) {
+                this.logger.error(error?.message, error?.stack)
+            } finally {
+                await db.end()
+            }
         }
 
         return info
