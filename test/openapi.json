@@ -6967,12 +6967,6 @@
                             "$ref": "#/components/schemas/Category"
                         }
                     },
-                    "feedId": {
-                        "type": "number",
-                        "title": "指定订阅",
-                        "description": "注意：订阅的查询是单选的",
-                        "example": 1
-                    },
                     "feeds": {
                         "title": "指定订阅",
                         "description": "支持选择多个订阅",
@@ -7083,12 +7077,6 @@
                         "items": {
                             "$ref": "#/components/schemas/Category"
                         }
-                    },
-                    "feedId": {
-                        "type": "number",
-                        "title": "指定订阅",
-                        "description": "注意：订阅的查询是单选的",
-                        "example": 1
                     },
                     "feeds": {
                         "title": "指定订阅",
@@ -7230,12 +7218,6 @@
                         "items": {
                             "$ref": "#/components/schemas/Category"
                         }
-                    },
-                    "feedId": {
-                        "type": "number",
-                        "title": "指定订阅",
-                        "description": "注意：订阅的查询是单选的",
-                        "example": 1
                     },
                     "feeds": {
                         "title": "指定订阅",

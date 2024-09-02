@@ -66,20 +66,20 @@ export class CustomQuery extends AclBase {
     @JoinTable()
     categories?: Category[]
 
-    @SetAclCrudField({
-        type: 'select',
-        dicUrl: '/feed/dicData',
-        props: {
-            label: 'title',
-            value: 'id',
-        },
-        value: null,
-        hide: true,
-    })
-    @ApiProperty({ title: '指定订阅', description: '注意：订阅的查询是单选的', example: 1 })
-    @IsId()
-    @CustomColumn({ nullable: true })
-    feedId?: number
+    // @SetAclCrudField({
+    //     type: 'select',
+    //     dicUrl: '/feed/dicData',
+    //     props: {
+    //         label: 'title',
+    //         value: 'id',
+    //     },
+    //     value: null,
+    //     hide: true,
+    // })
+    // @ApiProperty({ title: '指定订阅', description: '注意：订阅的查询是单选的', example: 1 })
+    // @IsId()
+    // @CustomColumn({ nullable: true })
+    // feedId?: number
 
     // @SetAclCrudField({
     //     hide: true,

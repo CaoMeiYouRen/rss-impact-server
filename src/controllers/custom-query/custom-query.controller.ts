@@ -76,7 +76,7 @@ export class CustomQueryController {
         }
         const cacheKey = `custom-query-rss:${id}`
         const cacheData = await this.cacheService.tryGet(cacheKey, async () => {
-            const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feed', 'feeds'] })
+            const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feeds'] })
             if (!custom) {
                 throw new HttpError(404, '该 Id 对应的资源不存在！')
             }
@@ -88,12 +88,10 @@ export class CustomQueryController {
             let feedId: number | FindOperator<number>
             const pubDate = time ? MoreThanOrEqual(dayjs().add(-time, 'seconds').toDate()) : undefined
             if (scope === 'feed') {
-                if (feeds?.length) {
-                    feedId = In(feeds.map((e) => e.id))
-                } else {
+                if (!feeds?.length) {
                     throw new HttpError(400, '指定订阅时必须要选择订阅！')
                 }
-
+                feedId = In(feeds.map((e) => e.id))
             } else if (scope === 'category') {
                 if (!categories?.length) {
                     throw new HttpError(400, '指定分类时必须要选择分类！')
