@@ -132,6 +132,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '摘要', description: '纯文本格式，无 HTML', example: '这是一段内容摘要' })
     @CustomColumn({
+        type: 'text',
         length: 65535,
         nullable: true,
     })
@@ -159,6 +160,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: 'AI 总结', example: '这是一段 AI 总结' })
     @CustomColumn({
+        type: 'text',
         length: 65535,
         nullable: true,
     })
@@ -187,6 +189,7 @@ export class Article extends AclBase {
     @ApiProperty({ title: '附件URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
     @IsUrlOrMagnetUri()
     @CustomColumn({
+        type: 'text',
         length: 65535,
         nullable: true,
     })

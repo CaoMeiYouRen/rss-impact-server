@@ -31,6 +31,7 @@ export class Resource extends AclBase {
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/images/favicon-16x16-next.png' })
     @IsUrlOrMagnetUri()
     @CustomColumn({
+        type: 'text',
         length: 65535,
     })
     url: string

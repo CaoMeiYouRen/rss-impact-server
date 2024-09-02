@@ -18,9 +18,9 @@ export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
         // mysql 不支持在 text 类型字段上设置 length
         if (['text', 'mediumtext', 'longtext', 'simple-json', 'simple-array'].includes(options.type as string) && options.length) {
             if (['text', 'mediumtext', 'longtext'].includes(options.type as string)) {
-                if (Number(options.length) > 16777215) { // 超过 MEDIUMTEXT 的范围
+                if (Number(options.length) > 5592405) { // 超过 MEDIUMTEXT 的范围。 16777215 B，5592405 个字符
                     options.type = 'longtext'
-                } else if (Number(options.length) > 65535) { // 超过 TEXT 的范围
+                } else if (Number(options.length) > 21845) { // 超过 TEXT 的范围。 65535 B，21845 个字符
                     options.type = 'mediumtext'
                 } else {
                     options.type = 'text'
