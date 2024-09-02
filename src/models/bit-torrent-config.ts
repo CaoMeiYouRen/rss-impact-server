@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Length, IsIn, IsNotEmpty, IsUrl, IsOptional, IsBoolean } from 'class-validator'
+import { Length, IsIn, IsNotEmpty, IsOptional, IsBoolean } from 'class-validator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { BitTorrentList, BitTorrentType } from '@/constant/hook'
-import { __PROD__ } from '@/app.config'
 import { IsBetterBytesString } from '@/decorators/is-better-bytes-string.decorator'
 import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 

@@ -1,6 +1,7 @@
 import { applyDecorators } from '@nestjs/common'
 import { Column, ColumnOptions, Index } from 'typeorm'
-import { IsOptional, Length } from 'class-validator'
+import { IsNotEmpty, IsOptional, Length } from 'class-validator'
+import { JsonStringLength } from './json-string-length.decorator'
 import { DATABASE_TYPE } from '@/app.config'
 
 export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
@@ -28,7 +29,7 @@ export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
             delete options.length
         }
         // mysql 不支持在 simple-json 类型字段上设置 default
-        if (['simple-json'].includes(options.type as string) && typeof options.default !== 'undefined') {
+        if (['simple-json', 'simple-array'].includes(options.type as string) && typeof options.default !== 'undefined') {
             delete options.default
         }
     } else if (DATABASE_TYPE === 'postgres') { // 处理 PostgreSQL 不兼容的配置
@@ -41,19 +42,25 @@ export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
             delete options.length
         }
         // postgres 不支持在 simple-json 类型字段上设置 default
-        if (['simple-json'].includes(options.type as string) && typeof options.default !== 'undefined') {
+        if (['simple-json', 'simple-array'].includes(options.type as string) && typeof options.default !== 'undefined') {
             delete options.default
         }
     }
     length = options.length || length
     if (length) {
-        decorators.push(Length(0, Number(length)))
+        if (['simple-json', 'simple-array'].includes(options.type as string)) { // json 格式的长度限制
+            decorators.push(JsonStringLength(0, Number(length)))
+        } else {
+            decorators.push(Length(0, Number(length)))
+        }
     }
     if (options.index) { // 设置索引
         decorators.push(Index({ unique: options.unique }))
     }
     if (options.nullable) { // 如果支持 nullable，则是可选的
         decorators.push(IsOptional())
+    } else { // 否则是必选的
+        decorators.push(IsNotEmpty())
     }
     decorators.push(Column(options))
     // eslint-disable-next-line @typescript-eslint/ban-types

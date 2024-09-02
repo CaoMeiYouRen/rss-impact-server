@@ -1,12 +1,11 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
+import { BeforeInsert, BeforeUpdate, Entity, ManyToMany, ManyToOne } from 'typeorm'
 import { ApiExtraModels, ApiProperty, getSchemaPath, OmitType, PartialType } from '@nestjs/swagger'
-import { IsBoolean, IsObject, Length, ValidateNested, IsIn, IsNotEmpty, IsOptional, validate, IsDefined } from 'class-validator'
+import { IsBoolean, IsObject, ValidateNested, IsIn, validate, IsDefined } from 'class-validator'
 import { plainToInstance, Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { ProxyConfig } from './proxy-config.entity'
 import { HookList, HookType } from '@/constant/hook'
-import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { HookConfig } from '@/interfaces/hook'
@@ -21,9 +20,10 @@ import { RegularConfig } from '@/models/regular-config'
 import { winstonLogger } from '@/middlewares/logger.middleware'
 import { HttpError } from '@/models/http-error'
 import { flattenValidationErrors } from '@/utils/helper'
-import { __DEV__, DATABASE_TYPE } from '@/app.config'
+import { __DEV__ } from '@/app.config'
 import { Filter } from '@/models/filter.dto'
 import { FilterOut } from '@/models/filter-out.dto'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const hookConfig: Record<HookType, Function> = {
@@ -40,9 +40,8 @@ const hookConfig: Record<HookType, Function> = {
 export class Hook extends AclBase {
 
     @ApiProperty({ title: '名称', example: 'Hook1' })
-    @Length(0, 256)
-    @IsNotEmpty()
-    @Column({
+    @CustomColumn({
+        index: true,
         length: 256,
     })
     name: string
@@ -53,9 +52,8 @@ export class Hook extends AclBase {
         dicData: HookList,
     })
     @ApiProperty({ title: '类型', example: 'webhook', type: () => String })
-    @IsNotEmpty()
     @IsIn(HookList.map((e) => e.value))
-    @Column({
+    @CustomColumn({
         length: 128,
         type: 'varchar',
     })
@@ -82,13 +80,12 @@ export class Hook extends AclBase {
             ...Object.values(hookConfig).map((e) => ({ $ref: getSchemaPath(e) })),
         ],
     })
-    @JsonStringLength(0, 2048)
     @IsObject()
     @IsDefined()
-    @Column({
+    @CustomColumn({
         type: 'simple-json',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: 2048,
+        default: '{}',
     })
     config: HookConfig
 
@@ -114,13 +111,12 @@ export class Hook extends AclBase {
     @ApiProperty({ title: '过滤条件', description: '保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。', type: Filter })
     @Type(() => Filter)
     @ValidateNested()
-    @JsonStringLength(0, 2048)
     @IsObject()
     @IsDefined()
-    @Column({
+    @CustomColumn({
         type: 'simple-json',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: 2048,
+        default: '{}',
     })
     filter: Filter
 
@@ -130,13 +126,12 @@ export class Hook extends AclBase {
     @ApiProperty({ title: '排除条件', description: '去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。', type: FilterOut })
     @Type(() => FilterOut)
     @ValidateNested()
-    @JsonStringLength(0, 2048)
     @IsObject()
     @IsDefined()
-    @Column({
+    @CustomColumn({
         type: 'simple-json',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: 2048,
+        default: '{}',
     })
     filterout: FilterOut
 
@@ -145,7 +140,7 @@ export class Hook extends AclBase {
     })
     @ApiProperty({ title: '反转模式', description: '如果服务可访问，则认为是故障', example: false })
     @IsBoolean()
-    @Column({
+    @CustomColumn({
         default: false,
     })
     isReversed: boolean
@@ -185,8 +180,7 @@ export class Hook extends AclBase {
     })
     @ApiProperty({ title: '代理配置', description: '选择不代理后保存即可禁用代理', example: 1 })
     @IsId()
-    @IsOptional()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     proxyConfigId?: number
 
     @SetAclCrudField({

@@ -1,20 +1,19 @@
-import { Entity, Column, Index, ManyToOne, AfterLoad } from 'typeorm'
+import { Entity, ManyToOne, AfterLoad } from 'typeorm'
 import { Enclosure } from '@cao-mei-you-ren/rss-parser'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsDate, IsNotEmpty, IsOptional, IsString, IsUrl, Length } from 'class-validator'
+import { IsArray, IsDate, IsOptional, IsString, Length } from 'class-validator'
 import dayjs from 'dayjs'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
-import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
-import { __PROD__, DATABASE_TYPE } from '@/app.config'
 import { dataFormat } from '@/utils/helper'
 import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 export class EnclosureImpl implements Enclosure {
 
@@ -63,19 +62,15 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '全局索引', example: '499d4cee' })
-    @IsNotEmpty()
-    @Index({
-    })
-    @Column({
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? 1024 : 2048,
+    @CustomColumn({
+        index: true,
+        length: 2048,
     })
     guid: string
 
     @ApiProperty({ title: '链接', example: 'https://blog.cmyr.ltd/archives/499d4cee.html' })
     @IsCustomURL()
-    @Length(0, 2048)
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         length: 2048,
         nullable: true,
     })
@@ -85,9 +80,7 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '标题', example: '这是一个标题' })
-    @Length(0, 256)
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         length: 256,
         nullable: true,
     })
@@ -98,11 +91,9 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '正文', example: '这是一段正文' })
-    @Length(0, 2 ** 20)
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         type: 'text',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2 ** 20, // 1048576   varchar 上限 2147483647
+        length: 2 ** 20, // 1048576  (sqlite varchar 上限 2147483647)
         nullable: true,
     })
     content?: string
@@ -118,8 +109,7 @@ export class Article extends AclBase {
     @ApiProperty({ title: '发布日期', example: dayjs('2024-01-01').toDate() })
     @Type(() => Date)
     @IsDate()
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         nullable: true,
     })
     pubDate?: Date
@@ -129,9 +119,7 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '作者', example: 'CaoMeiYouRen' })
-    @Length(0, 128)
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         length: 128,
         nullable: true,
     })
@@ -143,11 +131,8 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '摘要', description: '纯文本格式，无 HTML', example: '这是一段内容摘要' })
-    @Length(0, 65535) // 65535
-    @IsOptional()
-    @Column({
-        type: 'text',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
+    @CustomColumn({
+        length: 65535,
         nullable: true,
     })
     contentSnippet?: string
@@ -159,9 +144,7 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '总结', example: '这是一段总结' })
-    @Length(0, 1024)
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         length: 1024,
         nullable: true,
     })
@@ -175,11 +158,8 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: 'AI 总结', example: '这是一段 AI 总结' })
-    @Length(0, 65535)
-    @IsOptional()
-    @Column({
-        type: 'text',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
+    @CustomColumn({
+        length: 65535,
         nullable: true,
     })
     aiSummary?: string
@@ -192,13 +172,11 @@ export class Article extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '分类列表', description: 'RSS 源定义的分类，和 本地RSS 的分类不是同一个', example: ['tag1', 'tag2'] })
-    @JsonStringLength(0, 512)
     @IsArray()
     @IsString({ each: true })
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         type: 'simple-json', // 用 json 来避免逗号问题
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 512,
+        length: 512,
         nullable: true,
     })
     categories?: string[]
@@ -208,11 +186,8 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '附件URL', example: 'http://bt.example.com' }) //  examples: ['http://bt.example.com', 'magnet:?xt=urn:btih:xxxxx']
     @IsUrlOrMagnetUri()
-    @Length(0, 65535)
-    @IsOptional()
-    @Column({
-        type: 'text',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
+    @CustomColumn({
+        length: 65535,
         nullable: true,
     })
     enclosureUrl?: string
@@ -224,9 +199,7 @@ export class Article extends AclBase {
         minWidth: 180,
     })
     @ApiProperty({ title: '附件类型', example: 'application/x-bittorrent' })
-    @Length(0, 128)
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         nullable: true,
         length: 128,
     })
@@ -239,8 +212,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '附件体积(B)', description: '单位为 B(字节)', example: 114514 })
     @IsSafeNaturalNumber()
-    @IsOptional()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     enclosureLength?: number
 
     @SetAclCrudField({
@@ -275,7 +247,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '订阅源', example: 1 })
     @IsId()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     feedId: number
 
     @SetAclCrudField({

@@ -1,10 +1,10 @@
-import { Column, ManyToOne } from 'typeorm'
+import { ManyToOne } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsOptional } from 'class-validator'
 import { Base } from './base.entity'
 import { User } from './user.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 export abstract class AclBase extends Base {
 
@@ -16,8 +16,7 @@ export abstract class AclBase extends Base {
     })
     @ApiProperty({ title: '所属用户', example: 1 })
     @IsId()
-    @IsOptional()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     userId: number
 
     @SetAclCrudField({

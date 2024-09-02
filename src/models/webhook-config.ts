@@ -1,11 +1,10 @@
 import { Method, AxiosRequestHeaders } from 'axios'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsIn, IsNotEmpty, IsObject, IsOptional, IsUrl, Length } from 'class-validator'
+import { IsIn, IsNotEmpty, IsObject, IsOptional, Length } from 'class-validator'
 import { AjaxConfig } from '@/utils/ajax'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { JsonStringLength } from '@/decorators/json-string-length.decorator'
-import { __PROD__ } from '@/app.config'
 import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 
 const methodOptions: { label: string, value: Method }[] = [

@@ -1,8 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Length, IsIn, IsNotEmpty, IsUrl, IsBoolean, Max, Min, IsOptional } from 'class-validator'
+import { Length, IsIn, IsNotEmpty, IsBoolean, Max, Min, IsOptional } from 'class-validator'
 import { AIList, AIType, ContentList, ContentType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
-import { __PROD__ } from '@/app.config'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 

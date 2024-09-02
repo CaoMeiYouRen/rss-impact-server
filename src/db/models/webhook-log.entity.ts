@@ -1,16 +1,15 @@
-import { Column, Entity, ManyToOne } from 'typeorm'
+import { Entity, ManyToOne } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsInt, IsNotEmpty, IsObject, IsOptional, Length, Max, Min } from 'class-validator'
+import { IsIn, IsInt, IsObject, Max, Min } from 'class-validator'
 import { AxiosResponseHeaders, RawAxiosResponseHeaders } from 'axios'
 import { AclBase } from './acl-base.entity'
 import { Hook } from './hook.entity'
 import { Feed } from './feed.entity'
 import { IsId } from '@/decorators/is-id.decorator'
-import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { LogStatusList, LogStatusType, LogType, LogTypeList } from '@/constant/hook'
-import { DATABASE_TYPE } from '@/app.config'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 /**
  * webhook 执行结果
@@ -24,11 +23,10 @@ import { DATABASE_TYPE } from '@/app.config'
 export class WebhookLog extends AclBase {
 
     @ApiProperty({ title: '状态码', example: 200 })
-    @IsNotEmpty()
     @IsInt()
     @Min(100)
     @Max(600)
-    @Column({})
+    @CustomColumn({})
     statusCode: number
 
     @SetAclCrudField({
@@ -37,9 +35,8 @@ export class WebhookLog extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '类型', description: 'webhook 或 notification', example: 'webhook' })
-    @IsNotEmpty()
-    @Length(0, 16)
-    @Column({
+    @IsIn(LogTypeList.map((e) => e.value))
+    @CustomColumn({
         length: 16,
     })
     type: LogType
@@ -50,39 +47,31 @@ export class WebhookLog extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '状态', example: 'success' })
-    @IsNotEmpty()
-    @Length(0, 16)
-    @Column({
+    @IsIn(LogStatusList.map((e) => e.value))
+    @CustomColumn({
         length: 16,
     })
     status: LogStatusType
 
     @ApiProperty({ title: '状态码名称', example: 'OK' })
-    @IsNotEmpty()
-    @Length(0, 128)
-    @Column({
+    @CustomColumn({
         length: 128,
     })
     statusText: string
 
     @ApiProperty({ title: '响应体', example: { message: 'OK' } })
-    @JsonStringLength(0, 65535)
-    // @IsObject()
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         type: 'simple-json',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
+        length: 65535,
         nullable: true,
     })
     data?: any
 
     @ApiProperty({ title: '响应头', example: {} })
-    @JsonStringLength(0, 65535)
     @IsObject()
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         type: 'simple-json',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 65535,
+        length: 65535,
         nullable: true,
     })
     headers?: RawAxiosResponseHeaders | AxiosResponseHeaders
@@ -97,7 +86,7 @@ export class WebhookLog extends AclBase {
     })
     @ApiProperty({ title: '订阅源', example: 1 })
     @IsId()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     feedId: number
 
     @SetAclCrudField({
@@ -117,7 +106,7 @@ export class WebhookLog extends AclBase {
     })
     @ApiProperty({ title: 'Hook', example: 1 })
     @IsId()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     hookId: number
 
     @SetAclCrudField({

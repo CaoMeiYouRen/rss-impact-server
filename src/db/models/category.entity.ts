@@ -1,10 +1,11 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm'
+import { Entity, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, Length } from 'class-validator'
+import { IsNotEmpty } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 /**
  * 分类表
@@ -22,9 +23,8 @@ export class Category extends AclBase {
     })
     @ApiProperty({ title: '名称', example: '分类A' })
     @IsNotEmpty({ message: '名称不能为空' })
-    @Length(0, 256, { message: '名称的长度必须在 $constraint1 到 $constraint2 个字符！' })
-    @Index({})
-    @Column({
+    @CustomColumn({
+        index: true,
         length: 256,
     })
     name: string
@@ -33,9 +33,7 @@ export class Category extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '简介', example: '分类A' })
-    @Length(0, 2048, { message: '简介的长度必须在 $constraint1 到 $constraint2 个字符！' })
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         nullable: true,
         length: 4096,
     })

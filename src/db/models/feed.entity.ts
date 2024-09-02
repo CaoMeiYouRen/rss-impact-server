@@ -1,6 +1,6 @@
-import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
+import { Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsDefined, IsIn, IsNotEmpty, IsOptional, IsUrl, Length } from 'class-validator'
+import { IsArray, IsBoolean, IsDefined, IsIn } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
@@ -11,9 +11,9 @@ import { IsId } from '@/decorators/is-id.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
-import { __PROD__, DATABASE_TYPE } from '@/app.config'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 /**
  * RSS 订阅表
@@ -30,15 +30,9 @@ export class Feed extends AclBase {
         search: true,
     })
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/atom.xml' })
-    @IsNotEmpty({ message: '$property 不能为空' })
     @IsCustomURL()
-    @Length(0, 2048, { message: '$property 的长度必须在 $constraint1 到 $constraint2 个字符！' })
-    @Index({
-        // unique: true,
-    })
-    @Column({
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? 1024 : 2048,
-        // unique: true,
+    @CustomColumn({
+        length: 2048,
     })
     url: string
 
@@ -46,9 +40,8 @@ export class Feed extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '标题', example: '这是一个标题' })
-    @IsNotEmpty({ message: '标题不能为空' })
-    @Length(0, 256, { message: '标题最大不能超过 $constraint2 个字符' })
-    @Column({
+    @CustomColumn({
+        index: true,
         length: 256,
     })
     title: string
@@ -57,9 +50,7 @@ export class Feed extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '简介', example: '这是一段简介' })
-    @Length(0, 4096, { message: '简介最大不能超过 $constraint2 个字符' })
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         length: 4096,
         nullable: true,
     })
@@ -71,9 +62,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
     @IsCustomURL({}, { message: '封面Url必须为标准URL格式' })
-    @Length(0, 2048, { message: '封面Url最大不能超过 $constraint2 个字符！' })
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         length: 2048,
         nullable: true,
     })
@@ -85,28 +74,19 @@ export class Feed extends AclBase {
         search: true,
     })
     @ApiProperty({ title: 'Cron', example: 'EVERY_10_MINUTES' })
-    // @Length(0, 256, { message: 'Cron最大不能超过256个字符' })
-    @IsNotEmpty()
     @IsIn(RssLabelList.map((e) => e.value))
-    @Column({
+    @CustomColumn({
         length: 256,
         default: 'EVERY_10_MINUTES',
     })
     cron: string
-
-    // @ApiProperty({ title: '是否活跃', example: true })
-    // @IsBoolean({ message: '是否活跃必须为 Boolean' })
-    // @Column({
-    //     default: true,
-    // })
-    // isActive: boolean
 
     @SetAclCrudField({
         search: true,
     })
     @ApiProperty({ title: '是否启用', example: true })
     @IsBoolean({ message: '是否启用必须为 Boolean' })
-    @Column({
+    @CustomColumn({
         default: true,
     })
     isEnabled: boolean
@@ -122,7 +102,7 @@ export class Feed extends AclBase {
     @ApiProperty({ title: '分类', example: 1 })
     @IsId()
     @IsDefined()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     categoryId: number
 
     @SetAclCrudField({
@@ -137,8 +117,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '是否抓取全文', description: '启用后，将用抓取到的结果替换文章中的正文部分。抓取全文功能为自动抓取，文本质量不做保证。', example: false })
     @IsBoolean({ message: '是否抓取全文必须为 Boolean' })
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         default: false,
         nullable: true,
     })
@@ -155,8 +134,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '代理配置', description: '选择不代理后保存即可禁用代理', example: 1 })
     @IsId()
-    @IsOptional()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     proxyConfigId?: number
 
     @SetAclCrudField({
@@ -171,8 +149,7 @@ export class Feed extends AclBase {
     })
     @ApiProperty({ title: '重试次数', description: '至多重试几次。默认为 0，即不重试。重试次数至多不超过 20', example: 3 })
     @IsSafeNaturalNumber(20)
-    @IsOptional()
-    @Column({
+    @CustomColumn({
         nullable: true,
         default: 0,
     })

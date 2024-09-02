@@ -1,19 +1,19 @@
-import { AfterLoad, BeforeInsert, Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
+import { AfterLoad, BeforeInsert, Entity, JoinTable, ManyToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { Length, IsNotEmpty, IsObject, ValidateNested, IsIn, IsArray, IsBoolean, IsOptional } from 'class-validator'
+import { IsObject, ValidateNested, IsIn, IsArray, IsBoolean, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { Category } from './category.entity'
-import { JsonStringLength } from '@/decorators/json-string-length.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { OutputType, OutputList, ScopeType, ScopeList } from '@/constant/custom-query'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { getAccessToken } from '@/utils/helper'
-import { BASE_URL, DATABASE_TYPE } from '@/app.config'
+import { BASE_URL } from '@/app.config'
 import { IsId } from '@/decorators/is-id.decorator'
 import { Filter } from '@/models/filter.dto'
 import { FilterOut } from '@/models/filter-out.dto'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 /**
  * 自定义 RSS 查询
@@ -29,9 +29,7 @@ export class CustomQuery extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '名称', example: '查询A' })
-    @Length(0, 256)
-    @IsNotEmpty()
-    @Column({
+    @CustomColumn({
         length: 256,
     })
     name: string
@@ -44,8 +42,7 @@ export class CustomQuery extends AclBase {
     })
     @ApiProperty({ title: '查询范围', description: '指定分类和指定订阅的配置互斥，只按照本项指定的范围查询', example: 'all' })
     @IsIn(ScopeList.map((e) => e.value))
-    @IsNotEmpty()
-    @Column({
+    @CustomColumn({
         length: 32,
         default: 'all',
         nullable: true,
@@ -81,16 +78,15 @@ export class CustomQuery extends AclBase {
     })
     @ApiProperty({ title: '指定订阅', description: '注意：订阅的查询是单选的', example: 1 })
     @IsId()
-    @IsOptional()
-    @Column({ nullable: true })
+    @CustomColumn({ nullable: true })
     feedId?: number
 
-    @SetAclCrudField({
-        hide: true,
-    })
-    @ApiProperty({ title: '订阅源', type: () => Feed })
-    @ManyToOne(() => Feed)
-    feed?: Feed
+    // @SetAclCrudField({
+    //     hide: true,
+    // })
+    // @ApiProperty({ title: '订阅源', type: () => Feed })
+    // @ManyToOne(() => Feed)
+    // feed?: Feed
 
     @SetAclCrudField({
         type: 'select',
@@ -117,8 +113,7 @@ export class CustomQuery extends AclBase {
     })
     @ApiProperty({ title: '输出格式', example: 'rss2.0' })
     @IsIn(OutputList.map((e) => e.value))
-    @IsNotEmpty()
-    @Column({
+    @CustomColumn({
         length: 32,
         default: 'rss2.0',
     })
@@ -129,7 +124,7 @@ export class CustomQuery extends AclBase {
     })
     @ApiProperty({ title: '使用 AI 总结', description: '如果是，则用 AI 总结替换原本的总结' })
     @IsBoolean()
-    @Column({
+    @CustomColumn({
         default: false,
         nullable: true,
     })
@@ -140,7 +135,7 @@ export class CustomQuery extends AclBase {
     })
     @ApiProperty({ title: '增加 AI 总结', description: '如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读' })
     @IsBoolean()
-    @Column({
+    @CustomColumn({
         default: false,
         nullable: true,
     })
@@ -151,11 +146,9 @@ export class CustomQuery extends AclBase {
         // editDisabled: true,
     })
     @ApiProperty({ title: '访问秘钥', description: '通过访问秘钥即可无需登录访问 RSS 订阅。一旦泄露，请立即修改！', example: 'custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200' })
-    @IsOptional()
-    @Length(0, 256)
-    // @IsNotEmpty()
-    @Column({
+    @CustomColumn({
         length: 256,
+        nullable: true,
     })
     key: string
 
@@ -185,13 +178,11 @@ export class CustomQuery extends AclBase {
     @ApiProperty({ title: '过滤条件', description: '保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。', type: Filter })
     @Type(() => Filter)
     @ValidateNested()
-    @JsonStringLength(0, 2048)
     @IsObject()
-    @IsNotEmpty()
-    @Column({
+    @CustomColumn({
         type: 'simple-json',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: 2048,
+        default: '{}',
     })
     filter: Filter
 
@@ -200,13 +191,11 @@ export class CustomQuery extends AclBase {
     @ApiProperty({ title: '排除条件', description: '去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。', type: FilterOut })
     @Type(() => FilterOut)
     @ValidateNested()
-    @JsonStringLength(0, 2048)
     @IsObject()
-    @IsNotEmpty()
-    @Column({
+    @CustomColumn({
         type: 'simple-json',
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 2048,
-        default: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : '{}',
+        length: 2048,
+        default: '{}',
     })
     filterout: FilterOut
 }

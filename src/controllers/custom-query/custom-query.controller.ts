@@ -83,17 +83,13 @@ export class CustomQueryController {
             if (key !== custom.key) {
                 throw new HttpError(403, '错误的 key，没有权限访问！')
             }
-            const { name, format, filter = {}, url, scope, categories = [], feed, feeds = [], useAiSummary, appendAiSummary } = custom
+            const { name, format, filter = {}, url, scope, categories = [], feeds = [], useAiSummary, appendAiSummary } = custom
             const { limit, time } = filter
             let feedId: number | FindOperator<number>
             const pubDate = time ? MoreThanOrEqual(dayjs().add(-time, 'seconds').toDate()) : undefined
             if (scope === 'feed') {
                 if (feeds?.length) {
                     feedId = In(feeds.map((e) => e.id))
-                } else if (feed?.id) {
-                    feedId = feed.id
-                    custom.feeds = [feed] // 修复 feed 格式改变的问题
-                    await this.repository.save(custom)
                 } else {
                     throw new HttpError(400, '指定订阅时必须要选择订阅！')
                 }

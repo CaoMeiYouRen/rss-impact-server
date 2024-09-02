@@ -1,11 +1,10 @@
-import { Column, Entity, Index } from 'typeorm'
+import { Entity } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsNotEmpty, Length } from 'class-validator'
 import { AclBase } from './acl-base.entity'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsHttpHttpsSocksSocks5Url } from '@/decorators/is-http-https-socks-socks5-url.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
-import { DATABASE_TYPE } from '@/app.config'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 /**
  * 代理配置
@@ -22,10 +21,8 @@ export class ProxyConfig extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '代理名称', example: '代理A' })
-    @IsNotEmpty({})
-    @Length(0, 256, {})
-    // @Index({})
-    @Column({
+    @CustomColumn({
+        index: true,
         length: 256,
     })
     name: string
@@ -34,14 +31,11 @@ export class ProxyConfig extends AclBase {
         search: true,
     })
     @ApiProperty({ title: '代理URL', description: '支持 http/https/socks/socks5 协议。例如 http://127.0.0.1:8080', example: 'http://127.0.0.1:8080' })
-    @IsNotEmpty({})
     @IsHttpHttpsSocksSocks5Url({}, {
         require_tld: false, // 是否要顶级域名
     })
-    @Length(0, 2048, {})
-    @Index({})
-    @Column({
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? 1024 : 2048,
+    @CustomColumn({
+        length: 2048,
     })
     url: string
 

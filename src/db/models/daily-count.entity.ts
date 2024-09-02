@@ -1,9 +1,9 @@
-import { Column, Entity, Index } from 'typeorm'
-import { Length } from 'class-validator'
+import { Entity } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
 import { Base } from './base.entity'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 /**
  * 每日计数：文章数/资源数/推送 webhook 数
@@ -17,30 +17,29 @@ import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 export class DailyCount extends Base {
 
     @ApiProperty({ title: '日期', example: '2024-01-01' })
-    @Length(0, 16)
-    @Index()
-    @Column({
+    @CustomColumn({
+        index: true,
         length: 16,
     })
     date: string
 
     @ApiProperty({ title: '文章数量', example: 114 })
     @IsSafeNaturalNumber()
-    @Column({
+    @CustomColumn({
         default: 0,
     })
     articleCount: number
 
     @ApiProperty({ title: '资源数量', example: 514 })
     @IsSafeNaturalNumber()
-    @Column({
+    @CustomColumn({
         default: 0,
     })
     resourceCount: number
 
     @ApiProperty({ title: 'Webhook和通知日志数量', example: 233 })
     @IsSafeNaturalNumber()
-    @Column({
+    @CustomColumn({
         default: 0,
     })
     webhookLogCount: number

@@ -1,7 +1,7 @@
 
-import { Entity, Column, BeforeInsert, BeforeUpdate, Index } from 'typeorm'
+import { Entity, BeforeInsert, BeforeUpdate } from 'typeorm'
 import { hash } from 'bcryptjs'
-import { IsEmail, IsNotEmpty, Length } from 'class-validator'
+import { IsEmail } from 'class-validator'
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
 
 import { Base } from './base.entity'
@@ -9,7 +9,7 @@ import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
-import { DATABASE_TYPE } from '@/app.config'
+import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 @Entity()
 export class User extends Base {
@@ -24,10 +24,8 @@ export class User extends Base {
         search: true,
     })
     @ApiProperty({ title: '用户名', example: 'admin' })
-    @IsNotEmpty()
-    @Length(0, 128)
-    @Index('USER_USERNAME_INDEX', { unique: true })
-    @Column({
+    @CustomColumn({
+        index: true,
         unique: true,
         length: 128,
     })
@@ -38,9 +36,8 @@ export class User extends Base {
         hide: true,
     })
     @ApiProperty({ title: '密码', example: '123456', required: false })
-    @IsNotEmpty()
-    @Length(0, 128)
-    @Column({
+    @CustomColumn({
+        index: true,
         length: 128,
         select: false,
     })
@@ -58,11 +55,9 @@ export class User extends Base {
         search: true,
     })
     @ApiProperty({ title: '邮箱', example: 'admin@example.com' })
-    @IsNotEmpty()
     @IsEmail({})
-    @Length(0, 128)
-    @Index('USER_EMAIL_INDEX', { unique: true })
-    @Column({
+    @CustomColumn({
+        index: true,
         unique: true,
         length: 128,
     })
@@ -72,10 +67,8 @@ export class User extends Base {
         search: true,
     })
     @ApiProperty({ title: '角色', example: [Role.admin] })
-    @IsNotEmpty()
-    @Length(0, 256, { each: true })
-    @Column({
-        length: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? undefined : 256,
+    @CustomColumn({
+        length: 256,
         type: 'simple-array',
     })
     roles: string[]
@@ -86,13 +79,10 @@ export class User extends Base {
         readonly: true,
     })
     @ApiProperty({ title: '接口访问令牌', description: '接口访问令牌，部分情况可替代账号密码', example: 'rss-impact:fef26d6e-040f-4a7b-8d6a-4e4f12e107b6' })
-    // @IsNotEmpty()
-    // @Length(0, 128)
-    @Index('USER_ACCESS_TOKEN_INDEX', { unique: true })
-    @Column({
+    @CustomColumn({
+        index: true,
         unique: true,
         length: 128,
-        // default: getAccessToken(),
     })
     accessToken: string
 
