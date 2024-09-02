@@ -49,6 +49,8 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             timezone: DATABASE_TIMEZONE,
                             connectTimeout: ms('60 s'), // 在连接到 MySQL 服务器期间发生超时之前的毫秒数
                             // debug: __DEV__,
+                            supportBigNumbers: true, // 处理数据库中的大数字
+                            bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
                         }
                         break
                     case 'postgres':
@@ -70,8 +72,6 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                     entities,
                     synchronize: true, // 开发环境固定同步；如果数据库文件不存在，则同步
                     autoLoadEntities: true,
-                    supportBigNumbers: true, // 处理数据库中的大数字
-                    bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
                 }
             },
         }),

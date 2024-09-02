@@ -3,8 +3,10 @@ import fs from 'fs-extra'
 import { Controller, Get, Logger } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import sqlite3 from 'sqlite3'
+import mysql, { ConnectionOptions } from 'mysql2/promise'
+import ms from 'ms'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
-import { DATABASE_TYPE } from '@/app.config'
+import { DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 import { DATABASE_PATH, entities } from '@/db/database.module'
 import { dataFormat, timeFromNow } from '@/utils/helper'
 import { DatabaseInfoDto } from '@/models/database-info.dto'
@@ -82,6 +84,48 @@ export class SystemController {
                 }
             })
 
+        } else if (DATABASE_TYPE === 'mysql') {
+            const options: ConnectionOptions = {
+                host: DATABASE_HOST,
+                port: DATABASE_PORT,
+                user: DATABASE_USERNAME,
+                password: DATABASE_PASSWORD,
+                database: DATABASE_DATABASE,
+                charset: DATABASE_CHARSET, // 连接的字符集。
+                timezone: DATABASE_TIMEZONE,
+                connectTimeout: ms('60 s'), // 在连接到 MySQL 服务器期间发生超时之前的毫秒数
+                supportBigNumbers: true, // 处理数据库中的大数字
+                bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
+            }
+
+            const db = await mysql.createConnection(options)
+
+            const [databaseResults] = await db.query(`
+                SELECT table_schema AS \`database\`,
+                       SUM(data_length + index_length) AS \`size\`
+                FROM information_schema.TABLES
+                WHERE table_schema = ?
+                GROUP BY table_schema;
+              `, [DATABASE_DATABASE])
+
+            info.size = Number(databaseResults?.[0]?.size) || 0 // 数据表数量
+            info.sizeFormat = dataFormat(info.size)
+
+            const [tableResults] = await db.query(`
+                SELECT COUNT(*) AS \`tableCount\`
+                FROM information_schema.TABLES
+                WHERE table_schema = ?;
+              `, [DATABASE_DATABASE])
+            info.tableCount = Number(tableResults?.[0]?.tableCount) || 0  // 表数量
+
+            const [indexResults] = await db.query(`
+                SELECT COUNT(*) AS \`indexCount\`
+                FROM information_schema.STATISTICS
+                WHERE table_schema = ?;
+              `, [DATABASE_DATABASE])
+            info.indexCount = Number(indexResults?.[0]?.indexCount) || 0 // 索引数量
+
+            await db.end()
         }
 
         return info
