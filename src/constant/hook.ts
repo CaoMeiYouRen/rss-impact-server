@@ -75,6 +75,18 @@ export const AIList = Object.entries(AIMap).map(([value, label]) => ({
 
 export type AIType = keyof typeof AIMap
 
+export const AIActionMap = {
+    summary: '总结',
+    generateCategory: '生成分类',
+}
+
+export const AIActionList = Object.entries(AIActionMap).map(([value, label]) => ({
+    label,
+    value,
+}))
+
+export type AIActionType = keyof typeof AIActionMap
+
 export const ContentMap = {
     text: '纯文本',
     html: 'HTML',

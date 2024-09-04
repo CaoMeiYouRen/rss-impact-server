@@ -5086,6 +5086,16 @@
                         "description": "AI 大模型。目前仅支持 OpenAI",
                         "example": "openAI"
                     },
+                    "action": {
+                        "type": "object",
+                        "enum": [
+                            "summary",
+                            "generateCategory"
+                        ],
+                        "title": "操作",
+                        "description": "要 AI 大模型进行的操作。默认为 总结正文。",
+                        "example": "summary"
+                    },
                     "apiKey": {
                         "type": "string",
                         "minLength": 0,
@@ -5176,6 +5186,7 @@
                 },
                 "required": [
                     "type",
+                    "action",
                     "apiKey",
                     "isOnlySummaryEmpty",
                     "isSplit",

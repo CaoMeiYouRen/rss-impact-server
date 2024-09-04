@@ -213,7 +213,7 @@ export function getArticleContent(item: Article, isSnippet: boolean = true, hasT
     const content = isSnippet ? item.contentSnippet : item.content
     // 排除内容和标题重复
     if (hasTitle && title && !content?.startsWith(title)) {
-        text += `${title}\n`
+        text = `${title}\n`
     }
     text += `${content}`
     text = text.replace(/(\n[\s|\t]*\r*\n)/g, '\n') // 去除多余换行符

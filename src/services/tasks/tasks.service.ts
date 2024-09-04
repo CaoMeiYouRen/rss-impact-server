@@ -5,7 +5,7 @@ import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, In, LessThan, MoreThanOrEqual, Between } from 'typeorm'
 import { CronJob } from 'cron'
-import { differenceWith, flattenDeep, pick, random, isEqual, pickBy } from 'lodash'
+import { differenceWith, flattenDeep, pick, random, isEqual, pickBy, union } from 'lodash'
 import XRegExp from 'xregexp'
 import dayjs, { Dayjs } from 'dayjs'
 import fs from 'fs-extra'
@@ -895,20 +895,25 @@ export class TasksService implements OnApplicationBootstrap {
         const proxyUrl = hook.proxyConfig?.url
         const { type, isOnlySummaryEmpty, contentType, isIncludeTitle, apiKey, model, prompt, endpoint, timeout, isSplit } = config
         const isSnippet = contentType === 'text'
-        let { minContentLength, maxTokens, temperature, maxContextLength } = config
+        let { minContentLength, maxTokens, temperature, maxContextLength, action } = config
+        action = action || 'summary'
         maxTokens = maxTokens || 2048
         maxContextLength = maxContextLength || 4096
         minContentLength = minContentLength ?? 1024
         temperature = temperature ?? 0
         const aiArticles = articles.filter((article) => {
-            if (isOnlySummaryEmpty && article.summary) { // 如果已经有 summary 了，则不再生成 AI summary
+            if (action === 'summary' && isOnlySummaryEmpty && article.summary) { // 如果已经有 summary 了，则不再生成 AI summary
                 return false
             }
             if (minContentLength === 0) { // 如果设置为 0 ，则不限制最小正文长度
                 return true
             }
             // 计算正文长度
-            const content = getArticleContent(article, isSnippet, isIncludeTitle)
+            let content = getArticleContent(article, isSnippet, isIncludeTitle)
+            // 如果为生成分类，则添加原有的分类到 content 中
+            if (action === 'generateCategory' && article.categories?.length) {
+                content += `\ncategories: ${article.categories.join(', ')}`
+            }
             const contentLength = content.length
             return contentLength >= minContentLength
         })
@@ -924,20 +929,72 @@ export class TasksService implements OnApplicationBootstrap {
                     baseURL: endpoint,
                     httpAgent: getHttpAgent(proxyUrl),
                 })
-                /**
-                你是一名文本摘要助理。您的任务是为给定的内容提供不超过1024个单词或汉字的简明摘要。摘要应：
-                1.涵盖原文的核心内容和要点，同时保持客观中立的语气。
-                2.不包含任何原始文本中没有的新内容或个人意见。
-                3.优先使用和原文相同的语言进行总结。
-                需要总结的内容是：
-                 */
-                const systemPrompt = `You are a text summarization assistant.
+
+                let systemPrompt = ''
+                if (action === 'summary') { // 总结
+                    /**
+                     你是一名文本摘要助理。您的任务是为给定的内容提供不超过1024个单词或汉字的简明摘要。摘要应：
+                    1.涵盖原文的核心内容和要点，同时保持客观中立的语气。
+                    2.不包含任何原始文本中没有的新内容或个人意见。
+                    3.优先使用和原文相同的语言进行总结。
+                    需要总结的内容是：
+                    */
+                    systemPrompt = `You are a text summarization assistant.
 Your task is to provide a concise summary of no more than 1024 words or Chinese characters for the given content.
 The summary should:
 1.Cover the core content and main points of the original text, while maintaining an objective and neutral tone.
 2.Not contain any new content or personal opinions that are not present in the original text.
 3.Prioritize summarizing in the same language as the original text.
 The content to be summarized is:`
+                } else if (action === 'generateCategory') { // 生成分类
+                    /** 你是一名 RSS 内容打标签助理。你的任务是为给定的内容生成若干个标签。生成的标签应符合如下要求：
+                    1.标签应覆盖原文的核心内容和要点，同时保持客观中立的语气。
+                    2.标签应该与原文高度相关，不包含原文不存在的内容
+                    3.标签应当精确，而不是宽泛的
+                    4.标签之间应当尽可能少的重合，避免同一个内容的多次提到
+                    5.优先使用和原文相同的语言生成标签
+                    6.生成标签时应当参考原本的分类列表、标题和正文
+                    7.请参考 EXAMPLE JSON OUTPUT ，并以 JSON 格式返回结果。
+                    8.如果你无法打标签，请参考 EXAMPLE JSON ERROR OUTPUT 给出错误信息。"reason" 替换为具体的错误原因，需要简短、明确。
+
+                    EXAMPLE INPUT:
+                    标题：[喵萌奶茶屋&amp;LoliHouse] 物语系列 / Monogatari Series: Off &amp; Monster Season - 08 业物语 [WebRip 1080p HEVC-10bit AAC ASSx2][简繁日内封字幕]
+                    分类列表：动画
+
+                    EXAMPLE JSON OUTPUT:
+                    {
+                        "tags":["动画","物语系列","Monogatari Series: Off & Monster Season","喵萌奶茶屋","LoliHouse"]
+                    }
+
+                    EXAMPLE JSON ERROR OUTPUT:
+                    {
+                        "error": "无法生成标签。Error: {reason}"
+                    } */
+                    systemPrompt = `You are an RSS content tagging assistant. Your task is to generate several tags for the given content. The generated tags should meet the following requirements:
+1. Tags should cover the core content and key points of the original text, while maintaining an objective and neutral tone.
+2. The tag should be highly relevant to the original text and not contain any content that does not exist in the original text
+3. Tags should be precise, not broad
+4. Tags should have as little overlap as possible to avoid multiple mentions of the same content
+5. Prioritize using the same language as the original text to generate tags
+6. When generating tags, reference should be made to the original classification list, title, and main text
+7. Please refer to EXAMPLE JSON OUTPUT and return the result in JSON format.
+8.If you are unable to tag, please refer to EXAMPLE JSON ERROR OUTPUT for error information. Replace 'reason' with a specific reason for the error, which needs to be brief and clear.
+
+EXAMPLE INPUT:
+[喵萌奶茶屋&amp;LoliHouse] 物语系列 / Monogatari Series: Off &amp; Monster Season - 08 业物语 [WebRip 1080p HEVC-10bit AAC ASSx2][简繁日内封字幕]
+categories: 动画
+
+EXAMPLE JSON OUTPUT:
+{
+    "tags":["动画","物语系列","Monogatari Series: Off & Monster Season","喵萌奶茶屋","LoliHouse"]
+}
+
+EXAMPLE JSON ERROR OUTPUT:
+{
+    "error": "无法生成标签。Error: {reason}"
+}
+`
+                }
                 const system = {
                     role: 'system',
                     content: prompt || systemPrompt,
@@ -950,35 +1007,80 @@ The content to be summarized is:`
                 }
                 await Promise.allSettled(aiArticles.map((article) => aiQueue.add(async () => {
                     const articleContent = getArticleContent(article, isSnippet, isIncludeTitle)
-                    const articleContentLiat = isSplit ? splitStringByToken(articleContent, reservedTokens) : [limitToken(articleContent, reservedTokens)]
-                    if (__DEV__) {
-                        this.logger.debug(`正在总结文章(id: ${article.id})：${article.title}`)
-                    } else {
-                        this.logger.log(`正在总结文章 id: ${article.id}`)
-                    }
-                    const aiSummaries: string[] = []
-                    for await (const content of articleContentLiat) { // 串行请求
-                        const [error, chatCompletion] = await to(openai.chat.completions.create({
-                            messages: [system, { role: 'user', content }],
-                            model: model || 'gpt-3.5-turbo',
-                            n: 1,
-                            temperature,
-                            max_tokens: maxTokens,
-                        }))
-                        if (error) {
-                            this.logger.error(error?.message, error?.stack)
+                    const articleContentList = isSplit ? splitStringByToken(articleContent, reservedTokens) : [limitToken(articleContent, reservedTokens)]
+                    if (action === 'summary') {
+                        if (__DEV__) {
+                            this.logger.debug(`正在总结文章(id: ${article.id})：${article.title}`)
                         } else {
-                            aiSummaries.push(chatCompletion?.choices?.[0]?.message?.content?.trim())
+                            this.logger.log(`正在总结文章 id: ${article.id}`)
                         }
+                        const aiSummaries: string[] = []
+                        for await (const content of articleContentList) { // 串行请求
+                            const [error, chatCompletion] = await to(openai.chat.completions.create({
+                                messages: [system, { role: 'user', content }],
+                                model: model || 'gpt-3.5-turbo',
+                                n: 1,
+                                temperature,
+                                max_tokens: maxTokens,
+                            }))
+                            if (error) {
+                                this.logger.error(error?.message, error?.stack)
+                            } else {
+                                aiSummaries.push(chatCompletion?.choices?.[0]?.message?.content?.trim())
+                            }
+                        }
+                        const aiSummary = aiSummaries.join('')
+                        if (__DEV__) {
+                            this.logger.debug(`文章(id: ${article.id}) ${article.title} 总结完成`)
+                        } else {
+                            this.logger.log(`文章 id: ${article.id} 总结完成`)
+                        }
+                        article.aiSummary = aiSummary
+                        await this.articleRepository.save(article)
+                        return
                     }
-                    const aiSummary = aiSummaries.join('')
-                    if (__DEV__) {
-                        this.logger.debug(`文章(id: ${article.id}) ${article.title} 总结完成`)
-                    } else {
-                        this.logger.log(`文章 id: ${article.id} 总结完成`)
+                    if (action === 'generateCategory') { // 生成分类
+                        if (__DEV__) {
+                            this.logger.debug(`正在分类文章(id: ${article.id})：${article.title}`)
+                        } else {
+                            this.logger.log(`正在分类文章 id: ${article.id}`)
+                        }
+                        const aiCategories: string[] = []
+                        for await (const content of articleContentList) { // 串行请求
+                            const [error, chatCompletion] = await to(openai.chat.completions.create({
+                                messages: [system, { role: 'user', content }],
+                                model: model || 'gpt-3.5-turbo',
+                                n: 1,
+                                temperature,
+                                max_tokens: maxTokens,
+                                response_format: {
+                                    type: 'json_object',
+                                },
+                            }))
+                            if (error) {
+                                this.logger.error(error?.message, error?.stack)
+                            } else {
+                                const respContent = chatCompletion?.choices?.[0]?.message?.content?.trim()
+                                try {
+                                    const respJson = JSON.parse(respContent)
+                                    if (respJson?.error) {
+                                        this.logger.error(respJson?.error)
+                                    } else if (Array.isArray(respJson?.tags)) {
+                                        aiCategories.push(...respJson.tags)
+                                    }
+                                } catch (error2) {
+                                    this.logger.error(error2?.message, error2?.stack)
+                                }
+                            }
+                        }
+                        if (__DEV__) {
+                            this.logger.debug(`文章(id: ${article.id}) ${article.title} 分类完成`)
+                        } else {
+                            this.logger.log(`文章 id: ${article.id} 分类完成`)
+                        }
+                        article.categories = union([...article.categories, ...aiCategories])
+                        await this.articleRepository.save(article)
                     }
-                    article.aiSummary = aiSummary
-                    await this.articleRepository.save(article)
                 })))
                 return
             }

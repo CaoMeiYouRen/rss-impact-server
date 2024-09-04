@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Length, IsIn, IsNotEmpty, IsBoolean, Max, Min, IsOptional } from 'class-validator'
-import { AIList, AIType, ContentList, ContentType } from '@/constant/hook'
+import { AIActionList, AIActionType, AIList, AIType, ContentList, ContentType } from '@/constant/hook'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
@@ -17,6 +17,16 @@ export class AIConfig {
     @IsIn(AIList.map((e) => e.value))
     @IsNotEmpty()
     type: AIType
+
+    @SetAclCrudField({
+        type: 'select',
+        dicData: AIActionList,
+        search: true,
+        value: 'summary',
+    })
+    @ApiProperty({ title: '操作', description: '要 AI 大模型进行的操作。默认为 总结正文。', example: 'summary' })
+    @IsIn(AIActionList.map((e) => e.value))
+    action: AIActionType
 
     @ApiProperty({ title: 'API Key', description: 'OpenAI API Key' })
     @Length(0, 128)
