@@ -12,7 +12,7 @@ import {
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger'
 import { Request } from 'express'
 import { Repository } from 'typeorm'
-import { merge } from 'lodash'
+import { merge, uniq } from 'lodash'
 import { CrudRouteForFind } from '@/interfaces/avue'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
@@ -107,15 +107,23 @@ export class AclCrudController {
 
     @ApiResponse({ status: 200, type: [DicData] })
     @Get('dicData')
-    async dicData(@CurrentUser() user: User) {
+    async dicData(@CrudQuery('query') query: ICrudQuery, @CurrentUser() user: User) {
         if (!this?.__OPTIONS__?.props) {
             throw new HttpError(400, '该路由未定义字典数据')
         }
+        const {
+            page = 1,
+        } = query
+        let { limit = 1000, skip = 0 } = query
+        limit = user?.roles?.includes(Role.admin) ? limit : Math.min(limit, PAGE_LIMIT_MAX)
+        skip = skip || (page - 1) * limit
         const conditions = getConditions(user)
         const data = await this.repository.find({
             where: {
                 ...conditions,
             },
+            skip,
+            take: limit,
             order: {
                 createdAt: 'DESC',
             },
@@ -155,7 +163,8 @@ export class AclCrudController {
             order: merge({
                 createdAt: 'DESC',
             }, this?.__OPTIONS__?.order, sort),
-            relations: merge(this?.__OPTIONS__?.relations, relations), // uniq([...relations, ...this?.__OPTIONS__?.relations || []]),
+            relations: uniq([...relations, ...this?.__OPTIONS__?.relations || []]),
+            select: uniq([...this?.__OPTIONS__?.select || []]) as any,
         })
         return {
             total,

@@ -30,3 +30,4 @@ export class WebhookLogController {
     constructor(@InjectRepository(WebhookLog) private readonly repository: Repository<WebhookLog>) {
     }
 }
+

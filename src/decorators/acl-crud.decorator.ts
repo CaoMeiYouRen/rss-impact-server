@@ -27,6 +27,7 @@ export interface AclOptions extends CrudOptionsWithModel, FindOneOptions {
     relations?: string[]
     order?: FindOptionsOrder<any>
     props?: Props
+    select?: string[]
 }
 
 function cloneDecorators(from: unknown, to: unknown) {
