@@ -1,10 +1,12 @@
-import { Entity, ManyToOne } from 'typeorm'
+import { Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsIn, IsInt, IsObject, Max, Min } from 'class-validator'
+import { IsArray, IsIn, IsInt, IsObject, IsOptional, Max, Min } from 'class-validator'
 import { AxiosResponseHeaders, RawAxiosResponseHeaders } from 'axios'
+import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Hook } from './hook.entity'
 import { Feed } from './feed.entity'
+import { Article } from './article.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
@@ -40,6 +42,38 @@ export class WebhookLog extends AclBase {
         length: 16,
     })
     type: LogType
+
+    // @ApiProperty({ title: '标题', example: '这是一个标题' })
+    // @CustomColumn({
+    //     length: 256,
+    //     nullable: true,
+    // })
+    // title?: string
+
+    // @ApiProperty({ title: '正文', example: '这是一个正文' })
+    // @CustomColumn({
+    //     type: 'text',
+    //     length: 65535,
+    //     nullable: true,
+    // })
+    // desp?: string
+
+    @SetAclCrudField({
+        type: 'select',
+        multiple: true,
+        dicUrl: '/article/dicData',
+        props: {
+            label: 'title',
+            value: 'id',
+        },
+    })
+    @ApiProperty({ title: '文章列表', example: [], type: () => [Article] })
+    @Type(() => Article)
+    @IsArray()
+    @IsOptional()
+    @ManyToMany(() => Article)
+    @JoinTable()
+    articles?: Article[]
 
     @SetAclCrudField({
         type: 'select',

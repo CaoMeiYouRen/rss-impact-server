@@ -295,24 +295,29 @@ export class TasksService implements OnApplicationBootstrap {
                 desp = desp.replace(link, link.replaceAll('.', '\u200d.\u200d')) // 在点号上添加零宽字符
             })
         }
-        await notificationLimit(() => this.notification(hook, feed, title, desp))
+        await notificationLimit(() => this.notification(hook, feed, [], title, desp))
     }
 
-    private async notification(hook: Hook, feed: Feed, title: string, desp: string) {
+    private async notification(hook: Hook, feed: Feed, articles: Article[], title: string, desp: string) {
         const userId = hook.userId
         const config = hook.config as NotificationConfig
         const proxyUrl = hook.proxyConfig?.url
         const { maxLength = 4096 } = config
+        title = title.slice(0, 256)
+        desp = desp.slice(0, maxLength || 4096)
         const webhookLog = this.webhookLogRepository.create({
             hookId: hook.id,
             userId,
             feedId: feed.id,
             status: 'unknown',
             type: 'notification',
+            // title,
+            // desp,
+            articles,
         })
         try {
             this.logger.log(`正在执行推送渠道 ${config.type}`)
-            const resp = await runPushAllInOne(title.slice(0, 256), desp.slice(0, maxLength || 4096), config, proxyUrl)
+            const resp = await runPushAllInOne(title, desp, config, proxyUrl)
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
                 ...webhookLog,
                 ...pick(resp, ['data', 'statusText', 'headers']),
@@ -393,7 +398,7 @@ export class TasksService implements OnApplicationBootstrap {
         const config = hook.config as NotificationConfig
         const { isMergePush = false, isMarkdown = false, isSnippet = false, onlySummary = false, maxLength = 4096, useAiSummary = false, appendAiSummary = false } = config
         const title = `检测到【 ${feed.title} 】有更新`
-        const notifications: { title: string, desp: string }[] = []
+        const notifications: { title: string, desp: string, articles: Article[] }[] = []
         const articleFormatoption: ArticleFormatoption = { isMarkdown, isSnippet, onlySummary, useAiSummary, appendAiSummary }
         // 如果要使用 AI 总结，则延后
         if (appendAiSummary || useAiSummary) {
@@ -425,6 +430,7 @@ export class TasksService implements OnApplicationBootstrap {
                 notifications.push({
                     title,
                     desp: chunk,
+                    articles,
                 })
             })
         } else {
@@ -437,13 +443,14 @@ export class TasksService implements OnApplicationBootstrap {
                     notifications.push({
                         title: itemTitle,
                         desp: chunk,
+                        articles: [article],
                     })
                 })
             })
         }
 
         await Promise.allSettled(notifications
-            .map((notification) => notificationLimit(async () => this.notification(hook, feed, notification.title, notification.desp))),
+            .map((notification) => notificationLimit(async () => this.notification(hook, feed, notification.articles, notification.title, notification.desp))),
         )
     }
 
@@ -456,6 +463,7 @@ export class TasksService implements OnApplicationBootstrap {
             feedId: feed.id,
             status: 'unknown',
             type: 'webhook',
+            articles: Array.isArray(data) ? data : null,
         })
         try {
             const config = hook.config as WebhookConfig

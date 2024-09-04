@@ -22,6 +22,7 @@ import { FindWebhookLog, WebhookLog } from '@/db/models/webhook-log.entity'
             column: [],
         },
     },
+    relations: ['articles'],
 })
 @ApiTags('webhook-log')
 @Controller('webhook-log')

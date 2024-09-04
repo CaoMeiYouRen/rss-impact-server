@@ -30,6 +30,10 @@ import { getConditions } from '@/utils/check'
     order: {
         pubDate: 'DESC',
     },
+    props: {
+        label: 'title',
+        value: 'id',
+    },
 })
 @ApiTags('article')
 @Controller('article')
