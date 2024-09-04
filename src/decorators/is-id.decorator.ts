@@ -1,5 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import { isInt, IsInt, max, Max, min, Min, ValidationOptions } from 'class-validator'
+import { IS_ID } from '@/constant/decorator'
 
 // 9007199254740991 2 ** 53 − 1.
 // 2147483647 2 ** 31 - 1
@@ -14,7 +15,7 @@ export const MAX_ID = Number.MAX_SAFE_INTEGER
  */
 export function IsId(validationOptions?: ValidationOptions) {
     return applyDecorators(
-        (target: object, propertyKey: string | symbol) => Reflect.defineMetadata('IS_ID', true, target, propertyKey),
+        (target: object, propertyKey: string | symbol) => Reflect.defineMetadata(IS_ID, true, target, propertyKey),
         IsInt(validationOptions),
         Min(1, validationOptions),
         Max(MAX_ID, validationOptions),

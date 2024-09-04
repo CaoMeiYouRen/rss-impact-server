@@ -70,12 +70,6 @@ export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
         decorators.push(IsNotEmpty())
     }
     decorators.push(Column(options))
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    // return function (target: object | Function, propertyKey?: string | symbol, descriptor?: any) {
-    //     return applyDecorators(
-    //         ...decorators,
-    //     )(target, propertyKey, descriptor) // 手动调用装饰器
-    // }
     return applyDecorators(
         ...decorators,
     )

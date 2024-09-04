@@ -7,7 +7,7 @@ import { getMetadataStorage, ValidationTypes } from 'class-validator'
 import { Props } from '@cao-mei-you-ren/avue-types'
 import { AvueCrudConfig, CrudOptionsWithModel, Field } from '@/interfaces/avue'
 import { AclCrudController } from '@/controllers/acl-crud/acl-crud.controller'
-import { SET_ACL_CRUD_FIELD_OPTION } from '@/constant/decorator'
+import { IS_ID, SET_ACL_CRUD_FIELD_OPTION } from '@/constant/decorator'
 import { CrudPlaceholderDto } from '@/models/crud-placeholder.dto'
 import { isImageUrl } from '@/utils/helper'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
@@ -77,7 +77,7 @@ export function initAvueCrudColumn(clazz: TFunction): Field[] {
             ...setAclCrudFieldOption,
             nullable: options?.nullable ?? validatorOptions.some((e) => e.type === ValidationTypes.CONDITIONAL_VALIDATION), // 如果 nullable ，或者是 可选的
             minWidth: 100,
-            isId: Reflect.getMetadata('IS_ID', prototype, prop),
+            isId: Reflect.getMetadata(IS_ID, prototype, prop),
         }
         const label = swaggerOption?.title || upperFirst(prop)
         const tip = swaggerOption?.description
