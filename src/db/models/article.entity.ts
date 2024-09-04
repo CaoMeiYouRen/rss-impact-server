@@ -250,7 +250,7 @@ export class Article extends AclBase {
     })
     @ApiProperty({ title: '订阅源', example: 1 })
     @IsId()
-    @CustomColumn({ nullable: true })
+    @CustomColumn({ type: 'bigint', nullable: true })
     feedId: number
 
     @SetAclCrudField({

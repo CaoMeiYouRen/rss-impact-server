@@ -1,8 +1,9 @@
 import { applyDecorators } from '@nestjs/common'
 import { isInt, IsInt, max, Max, min, Min, ValidationOptions } from 'class-validator'
 
-// Number.MAX_SAFE_INTEGER
-export const MAX_ID = 2147483647 // 2 ** 31 - 1
+// 9007199254740991 2 ** 53 − 1.
+// 2147483647 2 ** 31 - 1
+export const MAX_ID = Number.MAX_SAFE_INTEGER
 
 /**
  * 验证是否为整数 ID （integer 类型）。

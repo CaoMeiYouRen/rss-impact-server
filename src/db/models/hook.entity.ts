@@ -180,7 +180,7 @@ export class Hook extends AclBase {
     })
     @ApiProperty({ title: '代理配置', description: '选择不代理后保存即可禁用代理', example: 1 })
     @IsId()
-    @CustomColumn({ nullable: true })
+    @CustomColumn({ type: 'bigint', nullable: true })
     proxyConfigId?: number
 
     @SetAclCrudField({

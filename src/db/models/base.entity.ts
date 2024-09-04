@@ -7,7 +7,7 @@ import { IsId } from '@/decorators/is-id.decorator'
 import { flattenValidationErrors } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
 import { winstonLogger } from '@/middlewares/logger.middleware'
-import { __DEV__ } from '@/app.config'
+import { __DEV__, DATABASE_TYPE } from '@/app.config'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 export abstract class Base {
@@ -16,7 +16,9 @@ export abstract class Base {
         width: 70,
     })
     @ApiProperty({ title: 'ID', example: 1 })
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn({
+        type: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? 'bigint' : 'integer',
+    })
     @IsId()
     @IsOptional()
     id: number
@@ -46,6 +48,7 @@ export abstract class Base {
 
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
+            console.log(obj)
             __DEV__ && winstonLogger.debug('插入前校验', validationErrors)
             throw new HttpError(400, errors.join(', '))
         }

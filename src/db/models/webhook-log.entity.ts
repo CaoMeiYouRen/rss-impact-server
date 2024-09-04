@@ -86,7 +86,7 @@ export class WebhookLog extends AclBase {
     })
     @ApiProperty({ title: '订阅源', example: 1 })
     @IsId()
-    @CustomColumn({ nullable: true })
+    @CustomColumn({ type: 'bigint', nullable: true })
     feedId: number
 
     @SetAclCrudField({
@@ -106,7 +106,7 @@ export class WebhookLog extends AclBase {
     })
     @ApiProperty({ title: 'Hook', example: 1 })
     @IsId()
-    @CustomColumn({ nullable: true })
+    @CustomColumn({ type: 'bigint', nullable: true })
     hookId: number
 
     @SetAclCrudField({

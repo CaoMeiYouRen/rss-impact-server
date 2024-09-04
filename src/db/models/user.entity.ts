@@ -37,7 +37,6 @@ export class User extends Base {
     })
     @ApiProperty({ title: '密码', example: '123456', required: false })
     @CustomColumn({
-        index: true,
         length: 128,
         select: false,
     })

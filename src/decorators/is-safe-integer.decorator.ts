@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import { isInt, IsInt, max, Max, min, Min, ValidationOptions } from 'class-validator'
-
+export const MAX_VALUE = 2147483647 // 2 ** 31 - 1
 /**
  * 验证是否为安全整数
  *
@@ -56,7 +56,7 @@ export function isSafePositiveInteger(num: number, maxValue = Number.MAX_SAFE_IN
  * @param [maxValue=Number.MAX_SAFE_INTEGER]
  * @param [validationOptions]
  */
-export function IsSafeNaturalNumber(maxValue = Number.MAX_SAFE_INTEGER, validationOptions?: ValidationOptions) {
+export function IsSafeNaturalNumber(maxValue = MAX_VALUE, validationOptions?: ValidationOptions) {
     return applyDecorators(
         IsInt(validationOptions),
         Min(0, validationOptions),
@@ -73,6 +73,6 @@ export function IsSafeNaturalNumber(maxValue = Number.MAX_SAFE_INTEGER, validati
  * @param num
  * @param [maxValue=Number.MAX_SAFE_INTEGER]
  */
-export function isSafeNaturalNumber(num: number, maxValue = Number.MAX_SAFE_INTEGER) {
+export function isSafeNaturalNumber(num: number, maxValue = MAX_VALUE) {
     return isInt(num) && min(num, 0) && max(num, maxValue)
 }

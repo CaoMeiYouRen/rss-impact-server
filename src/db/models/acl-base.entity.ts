@@ -16,7 +16,7 @@ export abstract class AclBase extends Base {
     })
     @ApiProperty({ title: '所属用户', example: 1 })
     @IsId()
-    @CustomColumn({ nullable: true })
+    @CustomColumn({ type: 'bigint', nullable: true })
     userId: number
 
     @SetAclCrudField({

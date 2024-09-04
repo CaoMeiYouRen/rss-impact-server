@@ -6,11 +6,14 @@ import { DATABASE_TYPE } from '@/app.config'
 
 export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
     const decorators: PropertyDecorator[] = []
-    // if (DATABASE_TYPE === 'sqlite') { // sqlite 的话不修改配置
 
-    // } else
     let length = options.length
-    if (DATABASE_TYPE === 'mysql') { // 处理 MySQL 不兼容的配置
+    if (DATABASE_TYPE === 'sqlite') { // 处理 sqlite 不兼容的配置
+        // sqlite AUTOINCREMENT 仅支持 integer 类型，所以 id 设置为 integer
+        if (options.type === 'bigint') {
+            options.type = 'integer'
+        }
+    } else if (DATABASE_TYPE === 'mysql') { // 处理 MySQL 不兼容的配置
         // mysql 索引最大不超过 3072 字节，在 utf8 编码下不超过 1024 字符
         if (options.index && Number(options.length) > 1024) {
             options.length = 1024
@@ -56,6 +59,10 @@ export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
     }
     if (options.index) { // 设置索引
         decorators.push(Index({ unique: options.unique }))
+        delete options.index
+        if (options.unique) {
+            delete options.unique
+        }
     }
     if (options.nullable) { // 如果支持 nullable，则是可选的
         decorators.push(IsOptional())

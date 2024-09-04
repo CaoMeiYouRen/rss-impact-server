@@ -3,6 +3,9 @@ import { Global, Module } from '@nestjs/common'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import ms from 'ms'
 import fs from 'fs-extra'
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
+import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
 import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
 import { Category } from './models/category.entity'
@@ -13,7 +16,7 @@ import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
-import { __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
+import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 
 export const DATABASE_DIR = DATA_PATH
 
@@ -41,7 +44,7 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                 let synchronize: boolean = false
                 switch (DATABASE_TYPE) {
                     case 'sqlite':
-                        options = { database: DATABASE_PATH } //  数据库路径。
+                        options = { database: DATABASE_PATH } as SqliteConnectionOptions //  数据库路径。
                         synchronize = true // 在数据库为 sqlite 的时候固定同步
                         break
                     case 'mysql':
@@ -57,13 +60,15 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             // debug: __DEV__,
                             supportBigNumbers: true, // 处理数据库中的大数字
                             bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
-                        }
+                        } as MysqlConnectionOptions
                         // mysql 仅在第一次加载时同步，否则会丢失数据
                         if (!await fs.pathExists(lockFilePath)) {
                             synchronize = true
                             await fs.writeJSON(lockFilePath, { synchronize: false })
                         }
-
+                        if (__DEV__) { // 开发环境下固定同步
+                            synchronize = true
+                        }
                         break
                     case 'postgres':
                         options = {
@@ -73,11 +78,15 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             password: DATABASE_PASSWORD,
                             database: DATABASE_DATABASE,
                             schema: DATABASE_SCHEMA,
-                        }
+                            parseInt8: true,
+                        } as PostgresConnectionOptions
                         // postgres 仅在第一次加载时同步，否则会丢失数据
                         if (!await fs.pathExists(lockFilePath)) {
                             synchronize = true
                             await fs.writeJSON(lockFilePath, { synchronize: false })
+                        }
+                        if (__DEV__) { // 开发环境下固定同步
+                            synchronize = true
                         }
                         break
                     default:
