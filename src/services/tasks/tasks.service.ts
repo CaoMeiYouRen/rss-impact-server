@@ -9,7 +9,6 @@ import { differenceWith, flattenDeep, pick, random, isEqual, pickBy } from 'loda
 import XRegExp from 'xregexp'
 import dayjs, { Dayjs } from 'dayjs'
 import fs from 'fs-extra'
-import pLimit from 'p-limit'
 import md5 from 'md5'
 import FileType from 'file-type'
 import { QBittorrent } from '@cao-mei-you-ren/qbittorrent'
@@ -20,6 +19,7 @@ import OpenAI from 'openai'
 import ms from 'ms'
 import { isMagnetURI } from 'class-validator'
 import rssParserUtils from '@cao-mei-you-ren/rss-parser/lib/utils'
+import PQueue from 'p-queue'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
@@ -44,17 +44,13 @@ import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 import { DailyCount } from '@/db/models/daily-count.entity'
 
-const rssLimit = pLimit(RSS_LIMIT_MAX) // RSS 请求并发数
-
-const hookLimit = pLimit(HOOK_LIMIT_MAX) // Hook 并发数
-
-const downloadLimit = pLimit(DOWNLOAD_LIMIT_MAX) // 下载并发数限制
-
-const aiLimit = pLimit(AI_LIMIT_MAX) // AI 总结并发数
-
-const bitTorrentLimit = pLimit(BIT_TORRENT_LIMIT_MAX) // BitTorrent 并发数
-
-const notificationLimit = pLimit(NOTIFICATION_LIMIT_MAX) // 推送 并发数
+const removeQueue = new PQueue({ concurrency: Math.min(os.cpus().length, 8) }) // 删除文件并发数
+const rssQueue = new PQueue({ concurrency: RSS_LIMIT_MAX }) // RSS 请求并发数
+const hookQueue = new PQueue({ concurrency: HOOK_LIMIT_MAX }) // Hook 并发数
+const downloadQueue = new PQueue({ concurrency: DOWNLOAD_LIMIT_MAX }) // 下载并发数限制
+const aiQueue = new PQueue({ concurrency: AI_LIMIT_MAX }) // AI 总结并发数
+const bitTorrentQueue = new PQueue({ concurrency: BIT_TORRENT_LIMIT_MAX }) // BitTorrent 并发数
+const notificationQueue = new PQueue({ concurrency: NOTIFICATION_LIMIT_MAX }) // 推送 并发数
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -250,7 +246,7 @@ export class TasksService implements OnApplicationBootstrap {
         const user = await this.userRepository.findOne({ where: { id: userId } })
         const isAdmin = user?.roles?.includes(Role.admin) // 只有 admin 用户可以看到 堆栈
         await Promise.allSettled(hooks
-            .map((hook) => hookLimit(async () => {
+            .map((hook) => hookQueue.add(async () => {
                 switch (hook.type) {
                     case 'notification':
                         await this.reverseNotificationHook(hook, feed, error, isAdmin)
@@ -295,7 +291,7 @@ export class TasksService implements OnApplicationBootstrap {
                 desp = desp.replace(link, link.replaceAll('.', '\u200d.\u200d')) // 在点号上添加零宽字符
             })
         }
-        await notificationLimit(() => this.notification(hook, feed, [], title, desp))
+        await notificationQueue.add(() => this.notification(hook, feed, [], title, desp))
     }
 
     private async notification(hook: Hook, feed: Feed, articles: Article[], title: string, desp: string) {
@@ -355,7 +351,7 @@ export class TasksService implements OnApplicationBootstrap {
             return
         }
         await Promise.allSettled(hooks
-            .map((hook) => hookLimit(async () => {
+            .map((hook) => hookQueue.add(async () => {
                 __DEV__ && this.logger.debug(`正在触发 Hook ${hook.name}`)
                 const filteredArticles = filterArticles(articles, hook)
                 if (!filteredArticles?.length) {
@@ -450,7 +446,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
 
         await Promise.allSettled(notifications
-            .map((notification) => notificationLimit(async () => this.notification(hook, feed, notification.articles, notification.title, notification.desp))),
+            .map((notification) => notificationQueue.add(async () => this.notification(hook, feed, notification.articles, notification.title, notification.desp))),
         )
     }
 
@@ -510,7 +506,7 @@ export class TasksService implements OnApplicationBootstrap {
         if (!await fs.pathExists(dirPath)) {
             await fs.mkdir(dirPath)
         }
-        await Promise.allSettled(allUrls.map((url) => downloadLimit(async () => {
+        await Promise.allSettled(allUrls.map((url) => downloadQueue.add(async () => {
             const ext = path.extname(url)
             const hashname = md5(url)
             const filename = hashname + ext
@@ -615,7 +611,7 @@ export class TasksService implements OnApplicationBootstrap {
                     password,
                     timeout: 60 * 1000,
                 })
-                await Promise.allSettled(btArticles.map((article) => bitTorrentLimit(async () => {
+                await Promise.allSettled(btArticles.map((article) => bitTorrentQueue.add(async () => {
                     const url = article.enclosureUrl
                     const shoutUrl = url?.slice(0, 128)
                     let hash = ''
@@ -952,7 +948,7 @@ The content to be summarized is:`
                 if (reservedTokens <= 0) {
                     throw new HttpError(400, '最大 token 数过小！请修改配置！')
                 }
-                await Promise.allSettled(aiArticles.map((article) => aiLimit(async () => {
+                await Promise.allSettled(aiArticles.map((article) => aiQueue.add(async () => {
                     const articleContent = getArticleContent(article, isSnippet, isIncludeTitle)
                     const articleContentLiat = isSplit ? splitStringByToken(articleContent, reservedTokens) : [limitToken(articleContent, reservedTokens)]
                     if (__DEV__) {
@@ -1010,7 +1006,6 @@ The content to be summarized is:`
 
     async enableFeedTask(feed: Feed, throwError = false) {
         const name = `feed_${feed.id}`
-        // __DEV__ && this.logger.debug(JSON.stringify(feed, null, 4))
         try {
             if (!feed.isEnabled) {
                 this.logger.warn(`定时任务 ${name} 已关闭，请启用后重试`)
@@ -1035,7 +1030,7 @@ The content to be summarized is:`
                         this.logger.log(`rss ${feed.url} 已进入订阅队列`)
                         await randomSleep(0, maxDelay)
                         this.logger.log(`rss ${feed.url} 正在检测更新中……`)
-                        await rssLimit(() => this.getRssContent(feed))
+                        await rssQueue.add(() => this.getRssContent(feed))
                     } catch (error) {
                         this.logger.error(error?.message, error?.stack)
                         // 如果出现异常就停止 该 rss
@@ -1126,12 +1121,12 @@ The content to be summarized is:`
             // 清理真实的文件
             const dirPath = path.resolve(RESOURCE_DOWNLOAD_PATH) // 解析为绝对路径
             const files = await fs.readdir(dirPath)
-            const removeLimit = pLimit(Math.min(os.cpus().length, 8)) // 删除 limit
+
             await Promise.allSettled(files.map((file) => {
                 if (/\.(sqlite|db)$/.test(file)) { // 防止把 download 的 path 设置成跟 data 一样，把数据库删了
                     return null
                 }
-                return removeLimit(async () => {
+                return removeQueue.add(async () => {
                     const obj = await this.resourceRepository.findOne({
                         where: {
                             name: file,
