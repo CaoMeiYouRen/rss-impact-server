@@ -51,7 +51,7 @@ https://rss-demo.cmyr.dev
 - BitTorrent Hook 支持调用 qBitTorrent 接口来自动下载 BitTorrent ，也支持按体积过滤 BitTorrent ，解决部分 BitTorrent RSS 源没有提供 `enclosureLength` 的问题。支持 `<mediaContent/>` tag。
 - Webhook 支持 GET/POST 等全部 HTTP 方法进行调用。
 - 下载 Hook 支持按 md5 过滤资源，支持按后缀名过滤资源。
-- AI Hook 支持调用 OpenAI（或兼容 OpenAI 接口）的大模型，支持 AI 总结。支持在 AI 总结后推送。
+- AI Hook 支持调用 OpenAI（或兼容 OpenAI 接口）的大模型，支持 AI 总结。支持在 AI 总结后推送。支持生成/翻译 RSS 分类 。
 - 支持正则替换 Hook，可对正文内容进行替换，可用于替换链接为代理地址。
 - 支持自定义查询，并将查询结果转换为 RSS。自定义查询支持将 AI 总结输出到正文中。
 - 支持从 OPML 文件导入订阅，也支持导出订阅为 OPML 文件。
