@@ -95,14 +95,14 @@ export class AIConfig {
     minContentLength?: number
 
     @SetAclCrudField({
-        value: true,
+        value: false,
     })
     @ApiProperty({ title: '总结为空', description: '仅在总结为空时启用 AI 大模型' })
     @IsBoolean()
     isOnlySummaryEmpty: boolean
 
     @SetAclCrudField({
-        value: false,
+        value: true,
     })
     @ApiProperty({ title: '分段提交', description: '如果正文的长度超过 最大 token 数，是否分段提交给 AI 大模型。如果为否，则只提交不超过 最大 token 数 的内容' })
     @IsBoolean()

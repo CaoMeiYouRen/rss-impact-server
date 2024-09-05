@@ -893,9 +893,11 @@ export class TasksService implements OnApplicationBootstrap {
     private async aiHook(hook: Hook, feed: Feed, articles: Article[]) {
         const config = hook.config as AIConfig
         const proxyUrl = hook.proxyConfig?.url
-        const { type, isOnlySummaryEmpty, contentType, isIncludeTitle, apiKey, model, prompt, endpoint, timeout, isSplit } = config
+        const { type, isOnlySummaryEmpty, contentType, isIncludeTitle, apiKey, prompt, timeout, isSplit } = config
         const isSnippet = contentType === 'text'
-        let { minContentLength, maxTokens, temperature, maxContextLength, action } = config
+        let { minContentLength, maxTokens, temperature, maxContextLength, action, endpoint, model } = config
+        endpoint = endpoint || 'https://api.openai.com/v1'
+        model = model || 'gpt-3.5-turbo'
         action = action || 'summary'
         maxTokens = maxTokens || 2048
         maxContextLength = maxContextLength || 4096
@@ -1018,7 +1020,7 @@ EXAMPLE JSON ERROR OUTPUT:
                         for await (const content of articleContentList) { // 串行请求
                             const [error, chatCompletion] = await to(openai.chat.completions.create({
                                 messages: [system, { role: 'user', content }],
-                                model: model || 'gpt-3.5-turbo',
+                                model,
                                 n: 1,
                                 temperature,
                                 max_tokens: maxTokens,
