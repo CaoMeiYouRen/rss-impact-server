@@ -180,6 +180,7 @@ export class Article extends AclBase {
         type: 'simple-json', // 用 json 来避免逗号问题
         length: 512,
         nullable: true,
+        default: '[]',
     })
     categories?: string[]
 

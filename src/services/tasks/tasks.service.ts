@@ -5,7 +5,7 @@ import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository, In, LessThan, MoreThanOrEqual, Between } from 'typeorm'
 import { CronJob } from 'cron'
-import { differenceWith, flattenDeep, pick, random, isEqual, pickBy, union } from 'lodash'
+import { differenceWith, flattenDeep, pick, random, isEqual, pickBy, uniq } from 'lodash'
 import XRegExp from 'xregexp'
 import dayjs, { Dayjs } from 'dayjs'
 import fs from 'fs-extra'
@@ -991,7 +991,7 @@ EXAMPLE JSON OUTPUT:
 
 EXAMPLE JSON ERROR OUTPUT:
 {
-    "error": "无法生成标签。Error: {reason}"
+    "error": "生成标签失败。Error: {reason}"
 }
 `
                 }
@@ -1078,7 +1078,7 @@ EXAMPLE JSON ERROR OUTPUT:
                         } else {
                             this.logger.log(`文章 id: ${article.id} 分类完成`)
                         }
-                        article.categories = union([...article.categories, ...aiCategories])
+                        article.categories = uniq([...article.categories || [], ...aiCategories])
                         await this.articleRepository.save(article)
                     }
                 })))
