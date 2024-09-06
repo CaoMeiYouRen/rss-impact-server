@@ -30,17 +30,17 @@ export class CacheService {
     }
 
     async get<T = unknown>(key: string) {
-        const cacheKey = `cmyr-llm-server:${key}`
+        const cacheKey = `rss-impact:${key}`
         return this.cacheManager.get<T>(cacheKey)
     }
 
     async set<T = unknown>(key: string, value: T, ttl: Milliseconds = 300 * 1000) {
-        const cacheKey = `cmyr-llm-server:${key}`
+        const cacheKey = `rss-impact:${key}`
         return this.cacheManager.set(cacheKey, value, ttl)
     }
 
     async del(key: string) {
-        const cacheKey = `cmyr-llm-server:${key}`
+        const cacheKey = `rss-impact:${key}`
         return this.cacheManager.del(cacheKey)
     }
 
