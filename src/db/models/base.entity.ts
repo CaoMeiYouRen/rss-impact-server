@@ -48,7 +48,6 @@ export abstract class Base {
 
         const errors = flattenValidationErrors(validationErrors)
         if (errors?.length) {
-            console.log(obj)
             __DEV__ && winstonLogger.debug('插入前校验', validationErrors)
             throw new HttpError(400, errors.join(', '))
         }

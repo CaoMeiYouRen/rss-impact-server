@@ -78,7 +78,7 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             password: DATABASE_PASSWORD,
                             database: DATABASE_DATABASE,
                             schema: DATABASE_SCHEMA,
-                            parseInt8: true,
+                            parseInt8: true, // 解析 int8 到 number
                         } as PostgresConnectionOptions
                         // postgres 仅在第一次加载时同步，否则会丢失数据
                         if (!await fs.pathExists(lockFilePath)) {
