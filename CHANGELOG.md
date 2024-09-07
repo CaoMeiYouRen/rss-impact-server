@@ -1,5 +1,38 @@
 # rss-impact-server
 
+# [1.5.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.4.2...v1.5.0) (2024-09-07)
+
+
+### ♻ 代码重构
+
+* 优化 数据库信息查询；增加 postgres 数据库信息返回 ([8f8a9b4](https://github.com/CaoMeiYouRen/rss-impact-server/commit/8f8a9b4))
+* 更新 AIConfig 默认值；TasksService 使用新的配置值 ([6839fac](https://github.com/CaoMeiYouRen/rss-impact-server/commit/6839fac))
+* 更新 Article 实体设置类别的默认值，更新 TasksService 中的 lodash 导入，修改错误消息和类别分配逻辑 ([fdbfd8a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/fdbfd8a))
+* 更新了 ACL CRUD 控制器以使用 CrudQuery，添加了分页和选择选项，并对 WebhookLogController 和 ACL CRUD 装饰器进行了细微更改 ([7119663](https://github.com/CaoMeiYouRen/rss-impact-server/commit/7119663))
+* 添加新常量 IS_ID，更新装饰器逻辑 ([57362d8](https://github.com/CaoMeiYouRen/rss-impact-server/commit/57362d8))
+* 重构 Column 装饰器到 CustomColumn 装饰器；优化数据表字段定义 ([39b6f53](https://github.com/CaoMeiYouRen/rss-impact-server/commit/39b6f53))
+* 重构 CustomColumn 装饰器逻辑 ([2ea53b2](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2ea53b2))
+* 重构 使用 p-queue 替代 p-limit 来优化并发逻辑 ([f277651](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f277651)), closes [#293](https://github.com/CaoMeiYouRen/rss-impact-server/issues/293)
+* 重构 数据表同步逻辑；更新数据库配置文档 ([1654dc8](https://github.com/CaoMeiYouRen/rss-impact-server/commit/1654dc8))
+* 重构 迁移 mysql 驱动到 mysql2；增加 mysql 数据库信息输出 ([e3a6cf8](https://github.com/CaoMeiYouRen/rss-impact-server/commit/e3a6cf8))
+
+
+### ✨ 新功能
+
+* 优化 将 id 字段升级为 bigint 类型 ([24fd213](https://github.com/CaoMeiYouRen/rss-impact-server/commit/24fd213)), closes [#270](https://github.com/CaoMeiYouRen/rss-impact-server/issues/270)
+* 新增 AI 生成/翻译 RSS 分类 功能 ([fcd7adb](https://github.com/CaoMeiYouRen/rss-impact-server/commit/fcd7adb))
+* 新增 Webhook 和通知日志增加关联的文章 ([825115e](https://github.com/CaoMeiYouRen/rss-impact-server/commit/825115e)), closes [#251](https://github.com/CaoMeiYouRen/rss-impact-server/issues/251)
+
+
+### 🐛 Bug 修复
+
+* 优化 URL 相关的装饰器逻辑 ([adf7637](https://github.com/CaoMeiYouRen/rss-impact-server/commit/adf7637))
+* 修复 accessToken 不能为空的问题 ([17ba8a8](https://github.com/CaoMeiYouRen/rss-impact-server/commit/17ba8a8))
+* 修复 CacheService 的缓存 key 错误 ([31feb1c](https://github.com/CaoMeiYouRen/rss-impact-server/commit/31feb1c))
+* 修复 id 类型的字段逻辑处理 ([994de52](https://github.com/CaoMeiYouRen/rss-impact-server/commit/994de52))
+* 修复 MySQL 字段兼容性问题 ([93629e7](https://github.com/CaoMeiYouRen/rss-impact-server/commit/93629e7))
+* 修复 自定义查询中过时的 feed 字段 ([0c541c0](https://github.com/CaoMeiYouRen/rss-impact-server/commit/0c541c0))
+
 ## [1.4.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.4.1...v1.4.2) (2024-08-31)
 
 
