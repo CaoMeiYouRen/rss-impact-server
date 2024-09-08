@@ -59,7 +59,7 @@ export class WebhookConfig implements AjaxConfig {
         labelWidth: 105,
     })
     @ApiProperty({ title: '超时时间(秒)', description: '默认 60 秒。', example: 60 })
-    @IsSafeNaturalNumber(86400)
+    @IsSafeNaturalNumber(3600)
     @IsOptional()
     timeout?: number
 }

@@ -56,7 +56,7 @@ export class AIConfig {
         labelWidth: 105,
     })
     @ApiProperty({ title: '超时时间(秒)', description: '默认值 120 秒', example: 120 })
-    @IsSafeNaturalNumber()
+    @IsSafeNaturalNumber(3600)
     @IsOptional()
     timeout?: number
 

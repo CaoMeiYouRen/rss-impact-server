@@ -661,149 +661,159 @@ export class TasksService implements OnApplicationBootstrap {
                     password,
                     timeout: 60 * 1000,
                 })
-                await Promise.allSettled(btArticles.map((article) => bitTorrentQueue.add(async () => {
-                    const url = article.enclosureUrl
-                    const shoutUrl = url?.slice(0, 128)
-                    let hash = ''
-                    let magnetUri = ''
-                    let name = ''
-                    let size = 0
-                    let magnet: Instance & { xl?: number }
-                    // 判读磁盘空间不足时，是否自动删除
-                    if (minDiskSize && autoRemove) {
-                        // 判断 bt 服务器的磁盘空间 是否充足
-                        await this.removeMaxSizeTorrent(qBittorrent, minDiskSize)
-                        // return
-                    }
-                    if (article.enclosureLength === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
-                        article.enclosureLength = 0
-                    }
-                    // 如果是 magnet，则直接添加 磁力链接 /^magnet:/.test
-                    if (isMagnetURI(url)) {
-                        magnet = parseTorrent(url) as Instance
-                        hash = magnet.infoHash?.toLowerCase()
-                        const resource: Resource = await this.resourceRepository.findOne({ where: { hash, userId } })
-                        if (resource) {
-                            __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
+                await Promise.allSettled(btArticles.map((article) => {
+                    const priority = 1e5 + getPriority(1e4)
+                    return bitTorrentQueue.add(async () => {
+                        const url = article.enclosureUrl
+                        const shoutUrl = url?.slice(0, 128)
+                        let hash = ''
+                        let magnetUri = ''
+                        let name = ''
+                        let size = 0
+                        let magnet: Instance & { xl?: number }
+                        // 判读磁盘空间不足时，是否自动删除
+                        if (minDiskSize && autoRemove) {
+                            // 判断 bt 服务器的磁盘空间 是否充足
+                            await this.removeMaxSizeTorrent(qBittorrent, minDiskSize)
+                            // return
+                        }
+                        if (article.enclosureLength === 1) { // 如果 length 为 1 ，则重新获取真实大小。例如：动漫花园 rss
+                            article.enclosureLength = 0
+                        }
+                        // 如果是 magnet，则直接添加 磁力链接 /^magnet:/.test
+                        if (isMagnetURI(url)) {
+                            magnet = parseTorrent(url) as Instance
+                            hash = magnet.infoHash?.toLowerCase()
+                            const resource: Resource = await this.resourceRepository.findOne({ where: { hash, userId } })
+                            if (resource) {
+                                __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
 
-                            if (resource.url !== url && isHttpURL(resource.url) && !article.enclosureLength) { // 如果是不同的 url
-                                article.enclosureLength = resource.size // 更新附件大小
+                                if (resource.url !== url && isHttpURL(resource.url) && !article.enclosureLength) { // 如果是不同的 url
+                                    article.enclosureLength = resource.size // 更新附件大小
+                                    await this.articleRepository.save(article)
+                                }
+                                return
+                            }
+                            this.logger.log(`正在下载资源：${shoutUrl}`)
+                            await qBittorrent.addMagnet(url, { savepath: downloadPath })
+                        } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
+                            if (await this.resourceRepository.findOne({ where: { url, userId } })) {
+                                __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
+                                return
+                            }
+                            const resp = await ajax<ArrayBuffer>({
+                                url,
+                                proxyUrl,
+                                responseType: 'arraybuffer',
+                                timeout: 60 * 1000,
+                            })
+                            const torrent = Buffer.from(resp.data)
+                            magnet = parseTorrent(torrent) as Instance
+                            hash = magnet.infoHash?.toLowerCase() // hash
+                            const resource: Resource = await this.resourceRepository.findOne({ where: { hash, userId } })
+                            if (resource) {
+                                __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
+                                // 解决存在不同源的相同资源缺少 size 的问题
+                                if (resource.url !== url && isMagnetURI(resource.url) && !article.enclosureLength) { // 如果是不同的 url
+                                    article.enclosureLength = resource.size // 更新附件大小
+                                    await this.articleRepository.save(article)
+                                }
+                                return
+                            }
+                            this.logger.log(`正在下载资源：${shoutUrl}`)
+                            await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
+                        }
+
+                        if (/^(https?:\/\/|magnet:)/.test(url)) {
+                            name = magnet.name || magnet.dn as string
+
+                            if (article.enclosureLength) {
+                                size = article.enclosureLength
+                            } else if (magnet.length) {
+                                size = Number(magnet.length)
+                            } else if (magnet.xl) {
+                                size = Number(magnet.xl)
+                            }
+
+                            const tracker = magnet.announce?.[0] // 仅保留第一个 tracker
+                            magnetUri = toMagnetURI({
+                                infoHash: hash,
+                                dn: name || '',
+                                xl: size,
+                                tr: tracker,
+                            } as Instance)
+                            const resource = this.resourceRepository.create({
+                                url: isHttpURL(url) ? url : magnetUri,
+                                name, // 名称
+                                path: '', // 文件在服务器上的地址，没有必要，故统一留空
+                                status: size ? 'success' : 'unknown',
+                                size,  // 体积大小
+                                type: 'application/x-bittorrent',
+                                hash,
+                                userId,
+                            })
+                            const newResource = await this.resourceRepository.save(resource)
+                            if (newResource.size > 0 && !article.enclosureLength) {
+                                article.enclosureLength = newResource.size // 更新附件大小
                                 await this.articleRepository.save(article)
                             }
-                            return
-                        }
-                        this.logger.log(`正在下载资源：${shoutUrl}`)
-                        await qBittorrent.addMagnet(url, { savepath: downloadPath })
-                    } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
-                        if (await this.resourceRepository.findOne({ where: { url, userId } })) {
-                            __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
-                            return
-                        }
-                        const resp = await ajax<ArrayBuffer>({
-                            url,
-                            proxyUrl,
-                            responseType: 'arraybuffer',
-                            timeout: 60 * 1000,
-                        })
-                        const torrent = Buffer.from(resp.data)
-                        magnet = parseTorrent(torrent) as Instance
-                        hash = magnet.infoHash?.toLowerCase() // hash
-                        const resource: Resource = await this.resourceRepository.findOne({ where: { hash, userId } })
-                        if (resource) {
-                            __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
-                            // 解决存在不同源的相同资源缺少 size 的问题
-                            if (resource.url !== url && isMagnetURI(resource.url) && !article.enclosureLength) { // 如果是不同的 url
-                                article.enclosureLength = resource.size // 更新附件大小
-                                await this.articleRepository.save(article)
+                            // 判读磁盘空间
+                            if (minDiskSize) {
+                                const mainData = await qBittorrent.getMainData(random(0, 1e8, false))
+                                // 如果 bt 服务器的磁盘空间不足，则停止下载
+                                if (mainData?.server_state?.free_space_on_disk && mainData.server_state.free_space_on_disk < minDiskSize) {
+                                    this.logger.warn(`bt 服务器的磁盘空间小于 ${config.minDiskSize} ，停止下载`)
+                                    newResource.status = 'skip'
+                                    await this.resourceRepository.save(newResource)
+                                    // 移除超过限制的资源
+                                    // 校验是否真的删除了
+                                    // 加到队列末尾
+                                    bitTorrentQueue.add(async () => {
+                                        await this.tryRemoveTorrent(qBittorrent, hash)
+                                    }, { priority: -1, timeout: ms('10 m') })
+                                    return
+                                }
                             }
-                            return
-                        }
-                        this.logger.log(`正在下载资源：${shoutUrl}`)
-                        await qBittorrent.addTorrent(torrent, { savepath: downloadPath })
-                    }
-
-                    if (/^(https?:\/\/|magnet:)/.test(url)) {
-                        name = magnet.name || magnet.dn as string
-
-                        if (article.enclosureLength) {
-                            size = article.enclosureLength
-                        } else if (magnet.length) {
-                            size = Number(magnet.length)
-                        } else if (magnet.xl) {
-                            size = Number(magnet.xl)
-                        }
-
-                        const tracker = magnet.announce?.[0] // 仅保留第一个 tracker
-                        magnetUri = toMagnetURI({
-                            infoHash: hash,
-                            dn: name || '',
-                            xl: size,
-                            tr: tracker,
-                        } as Instance)
-                        const resource = this.resourceRepository.create({
-                            url: isHttpURL(url) ? url : magnetUri,
-                            name, // 名称
-                            path: '', // 文件在服务器上的地址，没有必要，故统一留空
-                            status: size ? 'success' : 'unknown',
-                            size,  // 体积大小
-                            type: 'application/x-bittorrent',
-                            hash,
-                            userId,
-                        })
-                        const newResource = await this.resourceRepository.save(resource)
-                        if (newResource.size > 0 && !article.enclosureLength) {
-                            article.enclosureLength = newResource.size // 更新附件大小
-                            await this.articleRepository.save(article)
-                        }
-                        // 判读磁盘空间
-                        if (minDiskSize) {
-                            const mainData = await qBittorrent.getMainData(random(0, 1e8, false))
-                            // 如果 bt 服务器的磁盘空间不足，则停止下载
-                            if (mainData?.server_state?.free_space_on_disk && mainData.server_state.free_space_on_disk < minDiskSize) {
-                                this.logger.warn(`bt 服务器的磁盘空间小于 ${config.minDiskSize} ，停止下载`)
+                            // 判断附件大小
+                            if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
+                                this.logger.warn(`资源 ${shoutUrl} 的大小超过限制，跳过该资源下载`)
                                 newResource.status = 'skip'
                                 await this.resourceRepository.save(newResource)
                                 // 移除超过限制的资源
                                 // 校验是否真的删除了
-                                this.tryRemoveTorrent(qBittorrent, hash)
+                                bitTorrentQueue.add(async () => {
+                                    await this.tryRemoveTorrent(qBittorrent, hash)
+                                }, { priority: -1, timeout: ms('10 m') })
                                 return
                             }
-                        }
-                        // 判断附件大小
-                        if (isSafePositiveInteger(maxSize) && maxSize > 0 && newResource.size > 0 && maxSize <= newResource.size) {
-                            this.logger.warn(`资源 ${shoutUrl} 的大小超过限制，跳过该资源下载`)
-                            newResource.status = 'skip'
-                            await this.resourceRepository.save(newResource)
-                            // 移除超过限制的资源
-                            // 校验是否真的删除了
-                            this.tryRemoveTorrent(qBittorrent, hash)
+                            // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
+                            // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
+                            if (!newResource.size || newResource.size <= 0) {
+                                // 加到队列末尾
+                                bitTorrentQueue.add(async () => {
+                                    await retryBackoff(async () => {
+                                        size = await this.updateTorrentInfo(qBittorrent, config, newResource, article)
+                                        if (size > 0 || size === -1) {
+                                            return
+                                        }
+                                        __DEV__ && this.logger.debug(`未解析出资源 ${shoutUrl} 的大小！即将重试。`)
+                                        throw new Error(`未解析出资源 ${shoutUrl} 的大小！`)
+                                    }, {
+                                        maxRetries: 10,
+                                        initialInterval: ms('10 s'),
+                                        maxInterval: ms('10 m'),
+                                    })
+                                }, { priority: priority - 1e5, timeout: ms('10 m') })
+                            }
                             return
                         }
-                        // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
-                        // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
-                        if (!newResource.size || newResource.size <= 0) {
-                            // bitTorrentQueue.add // 加到队列末尾
-                            setTimeout(async () => {
-                                await retryBackoff(async () => {
-                                    size = await this.updateTorrentInfo(qBittorrent, config, newResource, article)
-                                    if (size > 0 || size === -1) {
-                                        return
-                                    }
-                                    __DEV__ && this.logger.debug(`未解析出资源 ${shoutUrl} 的大小！即将重试。`)
-                                    throw new Error(`未解析出资源 ${shoutUrl} 的大小！`)
-                                }, {
-                                    maxRetries: 10,
-                                    initialInterval: ms('10 s'),
-                                    maxInterval: ms('10 m'),
-                                })
-                            }, 0)
-                        }
-                        return
-                    }
-                    this.logger.error(`不支持的 资源类型：${shoutUrl}`)
-                }, {
-                    timeout: ms('1 h'),
-                })))
+                        this.logger.error(`不支持的 资源类型：${shoutUrl}`)
+                    }, {
+                        priority,
+                        timeout: ms('1 h'),
+                    },
+                    )
+                }))
                 return
             }
             default:
@@ -854,10 +864,10 @@ export class TasksService implements OnApplicationBootstrap {
                 this.logger.error(error?.message, error?.stack)
             }
             const [error2, torrentInfo] = await to(qBittorrent.getTorrent(hash))
-            // if (error2) { // 如果报错，则说明删了
-            //     __DEV__ && this.logger.debug(error?.stack)
-            //     return
-            // }
+            if (error2) { // 如果报错，则说明删了
+                __DEV__ && this.logger.debug(error?.stack)
+                return
+            }
             if (!torrentInfo) { // 如果没有数据，说明删了
                 return
             }
@@ -909,7 +919,9 @@ export class TasksService implements OnApplicationBootstrap {
             await this.resourceRepository.save(resource)
             // 移除超过限制的资源
             // 校验是否真的删除了
-            this.tryRemoveTorrent(qBittorrent, hash)
+            bitTorrentQueue.add(async () => {
+                await this.tryRemoveTorrent(qBittorrent, hash)
+            }, { priority: -1, timeout: ms('10 m') })
             return -1
         }
         switch (torrentInfo.state) {
@@ -1136,6 +1148,8 @@ EXAMPLE JSON ERROR OUTPUT:
                         article.categories = uniq([...article.categories || [], ...aiCategories])
                         await this.articleRepository.save(article)
                     }
+                }, {
+                    timeout: ms('1 h'),
                 })))
                 return
             }
