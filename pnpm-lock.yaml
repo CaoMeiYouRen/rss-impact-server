@@ -159,8 +159,8 @@ importers:
         specifier: ^4.58.1
         version: 4.58.1(encoding@0.1.13)
       opml:
-        specifier: ^0.5.5
-        version: 0.5.5
+        specifier: ^0.5.6
+        version: 0.5.6
       p-queue:
         specifier: ^5.0.0
         version: 5.0.0
@@ -5523,8 +5523,8 @@ packages:
   openapi-validator@0.14.2:
     resolution: {integrity: sha512-bgRQLZoxmECTjRxfpyMorad1ll58biUdV+31ALsHW2gRzdtMscI4Qm/wuhG8HsDUMGQkVLQYzUgJijNGKD65Og==}
 
-  opml@0.5.5:
-    resolution: {integrity: sha512-ednYI/xcaTI6VtLq9tsgBOBRcurufhTXoQfpd6nnwJY0cT/3f7ne38jouyKHUcuT1WUjVmKUoUEs/+VJIydLtw==}
+  opml@0.5.6:
+    resolution: {integrity: sha512-bzQRZWJMUSGD7PHJkDpxCKXXfYPfAXl4ecyygzR7GIy0t3Urk0Q61wKwQh+0Akk06R1DdBzd/ksF5H9lMr2YkQ==}
 
   opmltojs@0.4.14:
     resolution: {integrity: sha512-pQACXvUPD1tar/L28Rf1OYJuJMNHXfs3/TL6NN96WnH9rNGl2JeZwAnDoywYY5nnV3cq1wrgoZwFxJC0GoDR8g==}
@@ -13806,7 +13806,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  opml@0.5.5:
+  opml@0.5.6:
     dependencies:
       daveutils: 0.4.65
       opmltojs: 0.4.14
