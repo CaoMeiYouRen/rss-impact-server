@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import _ from 'lodash'
+import _, { random } from 'lodash'
 import fs, { ReadStream } from 'fs-extra'
 import FileType from 'file-type'
 import Turndown from 'turndown'
@@ -58,7 +58,7 @@ export async function randomSleep(min: number | string = 1000, max: number | str
     if (typeof max === 'string') {
         max = ms(max)
     }
-    const time = _.random(min, max, false)
+    const time = random(min, max, false)
     await sleep(time)
 }
 
@@ -86,6 +86,17 @@ export function uuid() {
         const v = c === 'x' ? r : r & 0x3 | 0x8
         return v.toString(16)
     })
+}
+
+/**
+ * 生成优先级，优先级大的先执行
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-09-08
+ * @export
+ */
+export function getPriority(max = 1e8) {
+    return random(0, max, false)
 }
 
 type TokenType = 'rss-impact' | 'custom-query-key'

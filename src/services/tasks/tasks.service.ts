@@ -24,7 +24,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
-import { getAllUrls, randomSleep, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText } from '@/utils/helper'
+import { getAllUrls, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -109,9 +109,16 @@ export class TasksService implements OnApplicationBootstrap {
     private async initFeedTasks() {
         try {
             const feeds = await this.getAllFeeds()
-            feeds.forEach((feed) => {
+            feeds.forEach(async (feed) => {
                 this.enableFeedTask(feed)
-                __DEV__ && this.getRssContent(feed)
+                if (__DEV__) {
+                    const priority = getPriority()
+                    this.logger.log(`rss ${feed.url} 已进入订阅队列`)
+                    await rssQueue.add(async () => {
+                        this.logger.log(`rss ${feed.url} 正在检测更新中……`)
+                        await this.getRssContent(feed)
+                    }, { priority, timeout: ms('5 m') })
+                }
             })
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
@@ -149,7 +156,7 @@ export class TasksService implements OnApplicationBootstrap {
                     {
                         maxRetries,
                         initialInterval: ms('10 s'),
-                        maxInterval: ms('10 m'), // 不超过最小轮询间隔
+                        maxInterval: ms('5 m'), // 不超过最小轮询间隔
                     },
                 )
                 const resp = response.data
@@ -157,56 +164,59 @@ export class TasksService implements OnApplicationBootstrap {
                     rss = await rssParserString(resp)
                 }
             }
-            if (Array.isArray(rss?.items)) {
-                if (!feed.description && rss.description) { // 解决部分情况下未设置 description 的问题
-                    feed.description = rss.description?.trim()
-                    await this.feedRepository.save(feed)
-                }
-                if (!feed.imageUrl && rss?.image?.url) { // 解决部分情况下未设置 imageUrl 的问题
-                    feed.imageUrl = rss.image.url
-                    await this.feedRepository.save(feed)
-                }
-                // 根据 guid 去重复 | 每个 user 的 不重复
-                const guids = rss.items.map((e) => e.guid)
-                const existingArticles = await this.articleRepository.find({
-                    where: {
-                        guid: In(guids),
-                        userId: uid,
-                    },
-                    select: ['guid'],
-                })
-                let diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid).map((item) => {
+            if (!Array.isArray(rss?.items)) {
+                return
+            }
+            if (!feed.description && rss.description) { // 解决部分情况下未设置 description 的问题
+                feed.description = rss.description?.trim()
+                await this.feedRepository.save(feed)
+            }
+            if (!feed.imageUrl && rss?.image?.url) { // 解决部分情况下未设置 imageUrl 的问题
+                feed.imageUrl = rss.image.url
+                await this.feedRepository.save(feed)
+            }
+            // 根据 guid 去重复 | 每个 user 的 不重复
+            const guids = rss.items.map((e) => e.guid)
+            const existingArticles = await this.articleRepository.find({
+                where: {
+                    guid: In(guids),
+                    userId: uid,
+                },
+                select: ['guid'],
+            })
+            let diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid)
+                .map((item) => {
                     const article = rssItemToArticle(item)
                     article.feedId = fid
                     article.userId = uid
                     article.author = article.author || rss.author
                     return this.articleRepository.create(article)
                 })
-                // 抓取网页全文
-                if (isFullText) {
-                    diffArticles = await Promise.all(diffArticles.map(async (article) => {
-                        const { link } = article
-                        if (isHttpURL(link)) {
-                            const [error, fullText] = await to(getFullText(link, proxyUrl))
-                            if (error) {
-                                this.logger.error(error?.message, error?.stack)
-                                return article
-                            }
-                            article.content = fullText.content || article.content // 仅正文优先使用抓取的内容
-                            article.contentSnippet = rssParserUtils.getSnippet(article.content) || article.contentSnippet // 更新 纯文本格式
-                            article.author = article.author || fullText.author
-                            article.summary = article.summary || fullText.excerpt
-                            // 如果 pubDate 不存在，且 date_published 是有效日期，则填补日期
-                            article.pubDate = article.pubDate || (dayjs(fullText.date_published).isValid() ? dayjs(fullText.date_published).toDate() : undefined)
-                        }
-                        return article
-                    }))
-                }
-                if (diffArticles?.length) {
-                    const newArticles = await this.articleRepository.save(diffArticles)
-                    this.triggerHooks(feed, newArticles)
-                }
+            if (!diffArticles?.length) {
+                return
             }
+            // 抓取网页全文
+            if (isFullText) {
+                diffArticles = await Promise.all(diffArticles.map(async (article) => {
+                    const { link } = article
+                    if (isHttpURL(link)) {
+                        const [error, fullText] = await to(getFullText(link, proxyUrl))
+                        if (error) {
+                            this.logger.error(error?.message, error?.stack)
+                            return article
+                        }
+                        article.content = fullText.content || article.content // 仅正文优先使用抓取的内容
+                        article.contentSnippet = rssParserUtils.getSnippet(article.content) || article.contentSnippet // 更新 纯文本格式
+                        article.author = article.author || fullText.author
+                        article.summary = article.summary || fullText.excerpt
+                        // 如果 pubDate 不存在，且 date_published 是有效日期，则填补日期
+                        article.pubDate = article.pubDate || (dayjs(fullText.date_published).isValid() ? dayjs(fullText.date_published).toDate() : undefined)
+                    }
+                    return article
+                }))
+            }
+            const newArticles = await this.articleRepository.save(diffArticles)
+            this.triggerHooks(feed, newArticles)
         } catch (error) {
             this.logger.error(`url: ${url}\nproxyUrl: ${proxyUrl}\nmessage: ${error?.message}`, error?.stack)
             this.reverseTriggerHooks(feed, error)
@@ -265,6 +275,8 @@ export class TasksService implements OnApplicationBootstrap {
                     default:
                         this.logger.warn(`${hook.type} 类型的 Hook 无法反转触发！`)
                 }
+            }, {
+                timeout: ms('10 m'),
             }).catch((error2) => this.logger.error(error2?.message, error2?.stack))),
         )
     }
@@ -351,42 +363,76 @@ export class TasksService implements OnApplicationBootstrap {
             return
         }
         await Promise.allSettled(hooks
-            .map((hook) => hookQueue.add(async () => {
-                __DEV__ && this.logger.debug(`正在触发 Hook ${hook.name}`)
-                const filteredArticles = filterArticles(articles, hook)
-                if (!filteredArticles?.length) {
-                    return
-                }
+            .map((hook) => {
+                // 计算 Hook 优先级
+                let priority = getPriority(1e4)
                 switch (hook.type) {
+                    case 'regular': {
+                        priority += 1e10
+                        break
+                    }
                     case 'notification': {
-                        await this.notificationHook(hook, feed, filteredArticles)
-                        return
+                        priority += 1e9
+                        break
                     }
                     case 'webhook': {
-                        await this.webhook(hook, feed, filteredArticles)
-                        return
-                    }
-                    case 'download': {
-                        await this.downloadHook(hook, feed, filteredArticles)
-                        return
-                    }
-                    case 'bitTorrent': {
-                        await this.bitTorrentHook(hook, feed, filteredArticles)
-                        return
+                        priority += 1e8
+                        break
                     }
                     case 'aiSummary': {
-                        await this.aiHook(hook, feed, filteredArticles)
-                        return
+                        priority += 1e7
+                        break
                     }
-                    case 'regular': {
-                        await this.regularHook(hook, feed, filteredArticles)
-                        return
+                    case 'download': {
+                        priority += 1e6
+                        break
+                    }
+                    case 'bitTorrent': {
+                        priority += 1e5
+                        break
                     }
                     default:
-                        this.logger.warn('未匹配到任何类型的Hook！')
+                        break
                 }
-            }).catch((error) => this.logger.error(error?.message, error?.stack)),
-            ),
+                return hookQueue.add(async () => {
+                    __DEV__ && this.logger.debug(`正在触发 Hook ${hook.name}`)
+                    const filteredArticles = filterArticles(articles, hook)
+                    if (!filteredArticles?.length) {
+                        return
+                    }
+                    switch (hook.type) {
+                        case 'notification': {
+                            await this.notificationHook(hook, feed, filteredArticles)
+                            return
+                        }
+                        case 'webhook': {
+                            await this.webhook(hook, feed, filteredArticles)
+                            return
+                        }
+                        case 'download': {
+                            await this.downloadHook(hook, feed, filteredArticles)
+                            return
+                        }
+                        case 'bitTorrent': {
+                            await this.bitTorrentHook(hook, feed, filteredArticles)
+                            return
+                        }
+                        case 'aiSummary': {
+                            await this.aiHook(hook, feed, filteredArticles)
+                            return
+                        }
+                        case 'regular': {
+                            await this.regularHook(hook, feed, filteredArticles)
+                            return
+                        }
+                        default:
+                            this.logger.warn('未匹配到任何类型的Hook！')
+                    }
+                }, {
+                    priority,
+                    timeout: ms('10 m'),
+                })
+            }),
         )
     }
 
@@ -446,7 +492,9 @@ export class TasksService implements OnApplicationBootstrap {
         }
 
         await Promise.allSettled(notifications
-            .map((notification) => notificationQueue.add(async () => this.notification(hook, feed, notification.articles, notification.title, notification.desp))),
+            .map((notification) => notificationQueue.add(async () => this.notification(hook, feed, notification.articles, notification.title, notification.desp), {
+                timeout: ms('10 m'),
+            })),
         )
     }
 
@@ -588,6 +636,8 @@ export class TasksService implements OnApplicationBootstrap {
                 await this.resourceRepository.save(newResource)
             }
 
+        }, {
+            timeout: ms('10 m'),
         })))
     }
 
@@ -751,6 +801,8 @@ export class TasksService implements OnApplicationBootstrap {
                         return
                     }
                     this.logger.error(`不支持的 资源类型：${shoutUrl}`)
+                }, {
+                    timeout: ms('1 h'),
                 })))
                 return
             }
@@ -783,7 +835,7 @@ export class TasksService implements OnApplicationBootstrap {
             // torrents.sort((a, b) => b?.downloaded - a?.downloaded)
             const torrent = torrents.at(0)
             if (torrent?.downloaded) { // 如果 torrent 存在且下载的体积大于 0，则删除
-                await qBittorrent.removeTorrent(torrent.hash, true)
+                await this.tryRemoveTorrent(qBittorrent, torrent.hash)
                 if (freeSpaceOnDisk + torrent.downloaded < minDiskSize) { // 如果删除了这个文件还不够，则继续删除
                     throw new Error('bt 服务器当前的磁盘空间不足，继续删除文件！')
                 }
@@ -791,7 +843,7 @@ export class TasksService implements OnApplicationBootstrap {
         }, {
             maxRetries: 3,
             initialInterval: ms('30 s'),
-            maxInterval: ms('10 m'),
+            maxInterval: ms('30 m'),
         })
     }
 
@@ -802,10 +854,10 @@ export class TasksService implements OnApplicationBootstrap {
                 this.logger.error(error?.message, error?.stack)
             }
             const [error2, torrentInfo] = await to(qBittorrent.getTorrent(hash))
-            if (error2) { // 如果报错，则说明删了
-                __DEV__ && this.logger.debug(error?.stack)
-                return
-            }
+            // if (error2) { // 如果报错，则说明删了
+            //     __DEV__ && this.logger.debug(error?.stack)
+            //     return
+            // }
             if (!torrentInfo) { // 如果没有数据，说明删了
                 return
             }
@@ -813,7 +865,7 @@ export class TasksService implements OnApplicationBootstrap {
         }, {
             maxRetries: 10,
             initialInterval: ms('10 s'),
-            maxInterval: ms('1 h'),
+            maxInterval: ms('10 m'),
         })
     }
 
@@ -852,7 +904,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
         if (isSafePositiveInteger(maxSize) && maxSize > 0 && resource.size > 0 && maxSize <= resource.size) {
             this.logger.warn(`资源 ${shoutUrl} 的大小超过限制，跳过该资源下载`)
-            await qBittorrent.removeTorrent(hash, true) // 移除超过限制的资源
+            // await qBittorrent.removeTorrent(hash, true) // 移除超过限制的资源
             resource.status = 'skip'
             await this.resourceRepository.save(resource)
             // 移除超过限制的资源
@@ -1131,11 +1183,12 @@ EXAMPLE JSON ERROR OUTPUT:
                 start: true,
                 onTick: async () => {
                     try {
-                        const maxDelay = __DEV__ ? 1000 : 60 * 1000
+                        const priority = getPriority()
                         this.logger.log(`rss ${feed.url} 已进入订阅队列`)
-                        await randomSleep(0, maxDelay)
-                        this.logger.log(`rss ${feed.url} 正在检测更新中……`)
-                        await rssQueue.add(() => this.getRssContent(feed))
+                        await rssQueue.add(async () => {
+                            this.logger.log(`rss ${feed.url} 正在检测更新中……`)
+                            await this.getRssContent(feed)
+                        }, { priority, timeout: ms('5 m') })
                     } catch (error) {
                         this.logger.error(error?.message, error?.stack)
                         // 如果出现异常就停止 该 rss
@@ -1227,7 +1280,7 @@ EXAMPLE JSON ERROR OUTPUT:
             const dirPath = path.resolve(RESOURCE_DOWNLOAD_PATH) // 解析为绝对路径
             const files = await fs.readdir(dirPath)
 
-            await Promise.allSettled(files.map((file) => {
+            files.forEach((file) => {
                 if (/\.(sqlite|db)$/.test(file)) { // 防止把 download 的 path 设置成跟 data 一样，把数据库删了
                     return null
                 }
@@ -1242,7 +1295,7 @@ EXAMPLE JSON ERROR OUTPUT:
                         await fs.remove(path.join(dirPath, file))
                     }
                 })
-            }))
+            })
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
