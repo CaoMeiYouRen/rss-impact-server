@@ -732,7 +732,8 @@ export class TasksService implements OnApplicationBootstrap {
                         // 由于 磁力链接没有元数据，因此在 qBittorrent 解析前不知道其大小
                         // 如果从种子解析出的 size 为空，则应该在 qBittorrent 解析后再次校验大小
                         if (!newResource.size || newResource.size <= 0) {
-                            bitTorrentQueue.add(async () => { // 加到队列末尾
+                            // bitTorrentQueue.add // 加到队列末尾
+                            setTimeout(async () => {
                                 await retryBackoff(async () => {
                                     size = await this.updateTorrentInfo(qBittorrent, config, newResource, article)
                                     if (size > 0 || size === -1) {
@@ -745,7 +746,7 @@ export class TasksService implements OnApplicationBootstrap {
                                     initialInterval: ms('10 s'),
                                     maxInterval: ms('10 m'),
                                 })
-                            })
+                            }, 0)
                         }
                         return
                     }

@@ -49,6 +49,7 @@ export class Resource extends AclBase {
     @ApiProperty({ title: '文件路径', example: '/data/download/favicon-16x16-next.png' })
     @CustomColumn({
         length: 2048,
+        nullable: true,
     })
     path?: string
 
@@ -61,6 +62,7 @@ export class Resource extends AclBase {
     @ApiProperty({ title: '文件类型', example: 'image/png' })
     @CustomColumn({
         length: 128,
+        nullable: true,
     })
     type: string
 
@@ -71,7 +73,9 @@ export class Resource extends AclBase {
     })
     @ApiProperty({ title: '文件体积(B)', description: '单位为 B', example: 114514 })
     @IsSafeNaturalNumber()
-    @CustomColumn({})
+    @CustomColumn({
+        nullable: true,
+    })
     size: number
 
     @SetAclCrudField({
