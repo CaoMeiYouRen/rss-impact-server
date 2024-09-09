@@ -156,8 +156,8 @@ importers:
         specifier: ^1.10.0
         version: 1.10.0(@nestjs/common@10.4.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.14.2)
       openai:
-        specifier: ^4.58.1
-        version: 4.58.1(encoding@0.1.13)
+        specifier: ^4.58.2
+        version: 4.58.2(encoding@0.1.13)
       opml:
         specifier: ^0.5.6
         version: 0.5.6
@@ -5502,8 +5502,8 @@ packages:
     resolution: {integrity: sha512-VXJjc87FScF88uafS3JllDgvAm+c/Slfz06lorj2uAY34rlUu0Nt+v8wreiImcrgAjjIHp1rXpTDlLOGw29WwQ==}
     engines: {node: '>=18'}
 
-  openai@4.58.1:
-    resolution: {integrity: sha512-n9fN4RIjbj4PbZU6IN/FOBBbxHbHEcW18rDZ4nW2cDNfZP2+upm/FM20UCmRNMQTvhOvw/2Tw4vgioQyQb5nlA==}
+  openai@4.58.2:
+    resolution: {integrity: sha512-hIalypYELt7/PcryFpz4Gi1z/8ZDzukWyOhr+jKM6L/GVE+t4NseaENXKt+OxnkkIm/1R2EkdGxgnHrZ0kB5bQ==}
     hasBin: true
     peerDependencies:
       zod: ^3.23.8
@@ -13763,7 +13763,7 @@ snapshots:
     dependencies:
       mimic-function: 5.0.1
 
-  openai@4.58.1(encoding@0.1.13):
+  openai@4.58.2(encoding@0.1.13):
     dependencies:
       '@types/node': 18.19.33
       '@types/node-fetch': 2.6.11
