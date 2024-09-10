@@ -16,7 +16,7 @@ import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
-import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
+import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_SSL, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 
 export const DATABASE_DIR = DATA_PATH
 
@@ -60,6 +60,7 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             // debug: __DEV__,
                             supportBigNumbers: true, // 处理数据库中的大数字
                             bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
+                            ssl: DATABASE_SSL,
                         } as MysqlConnectionOptions
                         // mysql 仅在第一次加载时同步，否则会丢失数据
                         if (!await fs.pathExists(lockFilePath)) {
@@ -79,6 +80,8 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             database: DATABASE_DATABASE,
                             schema: DATABASE_SCHEMA,
                             parseInt8: true, // 解析 int8 到 number
+                            ssl: DATABASE_SSL,
+                            // logNotifications: __DEV__,
                         } as PostgresConnectionOptions
                         // postgres 仅在第一次加载时同步，否则会丢失数据
                         if (!await fs.pathExists(lockFilePath)) {
