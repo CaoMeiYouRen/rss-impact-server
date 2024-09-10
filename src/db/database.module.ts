@@ -43,11 +43,12 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                 // 是否在每次应用程序启动时自动创建数据库架构。
                 let synchronize: boolean = false
                 switch (DATABASE_TYPE) {
-                    case 'sqlite':
+                    case 'sqlite': {
                         options = { database: DATABASE_PATH } as SqliteConnectionOptions //  数据库路径。
                         synchronize = true // 在数据库为 sqlite 的时候固定同步
                         break
-                    case 'mysql':
+                    }
+                    case 'mysql': {
                         options = {
                             host: DATABASE_HOST,
                             port: DATABASE_PORT,
@@ -71,7 +72,8 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             synchronize = true
                         }
                         break
-                    case 'postgres':
+                    }
+                    case 'postgres': {
                         options = {
                             host: DATABASE_HOST,
                             port: DATABASE_PORT,
@@ -92,6 +94,7 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             synchronize = true
                         }
                         break
+                    }
                     default:
                         break
                 }

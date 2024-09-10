@@ -9,6 +9,7 @@ import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { DicData } from '@/models/avue.dto'
 import { getConditions } from '@/utils/check'
+import { DATABASE_TYPE } from '@/app.config'
 
 @UseSession()
 @AclCrud({
@@ -46,12 +47,16 @@ export class ArticleController {
     @Get('typeDicData')
     async typeDicData(@CurrentUser() user: User) {
         const conditions = getConditions(user)
+        let enclosureType = 'enclosureType'
+        if (DATABASE_TYPE === 'postgres') {
+            enclosureType = '"enclosureType"'
+        }
         const data = await this.repository
             .createQueryBuilder('article')
             .where({
                 ...conditions,
             })
-            .select('enclosureType', 'type')// 选择要 distinct 的列
+            .select(enclosureType, 'type')// 选择要 distinct 的列
             .distinct(true) // 启用 distinct
             .getRawMany() as { type: string }[]
         return data.filter((e) => e.type).map((e) => ({

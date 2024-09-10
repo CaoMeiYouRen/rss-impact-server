@@ -219,6 +219,10 @@ CACHE_CONTENT_EXPIRE=3600
 
 # 🗄️ 数据库配置
 
+注意：`SQLite` 数据库是优先支持的数据库（因为开发环境使用的是`SQLite`）。
+
+`MySQL`  和 `PostgreSQL` 数据库**不会**优先支持，可能存在兼容性问题。如果遇到此类问题，请提 [issue](https://github.com/CaoMeiYouRen/rss-impact-server/issues)。 
+
 ## 使用 SQLite 数据库
 
 无需特别配置
@@ -246,6 +250,8 @@ DATABASE_DATABASE='rss-impact'
 DATABASE_CHARSET='utf8_general_ci'
 # MySQL 服务器上配置的时区 （默认：local）
 DATABASE_TIMEZONE='local'
+# 带有 ssl 参数的对象
+DATABASE_SSL=false
 ```
 
 注意：首次连接时会创建数据表。在  `data/database.lock.json` 文件存在时不会同步数据表结构。
@@ -273,6 +279,8 @@ DATABASE_PASSWORD=postgres
 DATABASE_DATABASE=rss-impact
 # Postgre Schema 名称，默认是 "public".
 DATABASE_SCHEMA='public'
+# 带有 ssl 参数的对象
+DATABASE_SSL=false
 ```
 
 注意：首次连接时会创建数据表。在  `data/database.lock.json` 文件存在时不会同步数据表结构。

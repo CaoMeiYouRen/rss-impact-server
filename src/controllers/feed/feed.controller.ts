@@ -97,6 +97,7 @@ export class FeedController {
         }
         const rss = await rssParserURL(url)
         const { title, description, image } = rss || {}
+        // TODO 修复 postgres 数据库插入新数据时，bigserial 类型的 id 返回的是 string 类型
         const feed = await this.repository.save(this.repository.create({
             title,
             description: description || '',
