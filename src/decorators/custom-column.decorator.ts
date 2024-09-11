@@ -36,6 +36,10 @@ export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
             delete options.default
         }
     } else if (DATABASE_TYPE === 'postgres') { // 处理 PostgreSQL 不兼容的配置
+        // postgres 的 bigserial 类型的 id 在插入时返回的是 string 类型，存在 bug，所以设置为 integer
+        if (options.type === 'bigint') {
+            options.type = 'integer'
+        }
         // postgres 索引最大不超过 8191 字节，在 utf8 编码下不超过 2730 字符
         if (options.index && Number(options.length) > 2730) {
             options.length = 2730

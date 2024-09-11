@@ -16,8 +16,8 @@ export abstract class Base {
         width: 70,
     })
     @ApiProperty({ title: 'ID', example: 1 })
-    @PrimaryGeneratedColumn({
-        type: ['mysql', 'postgres'].includes(DATABASE_TYPE) ? 'bigint' : 'integer',
+    @PrimaryGeneratedColumn({ // , 'postgres'
+        type: ['mysql'].includes(DATABASE_TYPE) ? 'bigint' : 'integer',
     })
     @IsId()
     @IsOptional()
