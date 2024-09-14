@@ -229,7 +229,13 @@ CACHE_CONTENT_EXPIRE=3600
 
 数据库文件默认保存在 `data/database.sqlite` 路径下。
 
-## 使用 MySQL  数据库
+如果你修改了 `DATA_PATH`，则数据库文件在 `DATA_PATH + "/database.sqlite"` 路径下。
+
+## 使用 MySQL 数据库
+
+> 如果你需要一个免费的 MySQL 数据库，推荐使用 [Aiven for MySQL](https://aiven.io/pricing?product=mysql)。
+>
+> Aiven 提供一个 5 GB 的免费 MySQL 数据库。详见 [Free plans](https://aiven.io/docs/platform/concepts/free-plan)。
 
 在环境变量中进行如下配置
 
@@ -261,6 +267,14 @@ DATABASE_SSL=false
 **特别提醒：更新数据表结构可能会导致数据丢失，请提前做好备份！**
 
 ## 使用 PostgreSQL 数据库
+
+> 如果你需要一个免费的 PostgreSQL 数据库，推荐使用 [Supabase](https://supabase.com/) 、 [Vercel](https://vercel.com/) 或 [Aiven for PostgreSQL®](https://aiven.io/pricing?product=pg) 。
+>
+> Supabase 提供一个 500 MB 的免费数据库，并且对数据库运行时间没有限制，非常适合个人用户使用。详见 [pricing](https://supabase.com/pricing)
+>
+> Vercel 提供一个 256 MB 的免费数据库，但对数据库运行时间有限制。详见 [Vercel Postgres Pricing](https://vercel.com/docs/storage/vercel-postgres/usage-and-pricing#vercel-postgres-pricing)
+>
+> Aiven 提供一个 5 GB 的免费 PostgreSQL 数据库，可以无限期地免费使用。详见 [Free plans](https://aiven.io/docs/platform/concepts/free-plan)。
 
 在环境变量中进行如下配置
 

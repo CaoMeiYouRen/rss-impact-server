@@ -43,3 +43,6 @@ audit.json
 *.sqlite
 # 前端静态资源
 /public
+
+.vitepress/cache
+.vitepress/dist
