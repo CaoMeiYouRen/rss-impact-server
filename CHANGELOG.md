@@ -1,5 +1,22 @@
 # rss-impact-server
 
+## [1.5.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.5.0...v1.5.1) (2024-09-14)
+
+
+### ♻ 代码重构
+
+* 优化 增加了 SSL 连接选项 ([15538a6](https://github.com/CaoMeiYouRen/rss-impact-server/commit/15538a6))
+* 回退 postgres 的 id 为 integer 类型 ([ea0153d](https://github.com/CaoMeiYouRen/rss-impact-server/commit/ea0153d))
+* 重构 TasksService 和 helper；更新 订阅 队列逻辑；增加 Hook 队列执行优先级 ([91b8c46](https://github.com/CaoMeiYouRen/rss-impact-server/commit/91b8c46))
+* 重构 删除 Base 实体中的不必要的日志；将 TasksService 中的 setTimeout 更改为 bitTorrentQueue ([156b363](https://github.com/CaoMeiYouRen/rss-impact-server/commit/156b363))
+* 重构 队列增加超时时间；bitTorrentHook 增加优先级设置 ([07bed83](https://github.com/CaoMeiYouRen/rss-impact-server/commit/07bed83))
+
+
+### 🐛 Bug 修复
+
+* 修复 Resource 部分字段不能为 null 的 bug ([542c5ec](https://github.com/CaoMeiYouRen/rss-impact-server/commit/542c5ec))
+* 处理部分情况下，postgres 数据库的兼容性问题；更新文档 ([059b2a4](https://github.com/CaoMeiYouRen/rss-impact-server/commit/059b2a4))
+
 # [1.5.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.4.2...v1.5.0) (2024-09-07)
 
 
