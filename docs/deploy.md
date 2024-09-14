@@ -233,9 +233,10 @@ CACHE_CONTENT_EXPIRE=3600
 
 ## 使用 MySQL 数据库
 
-> 如果你需要一个免费的 MySQL 数据库，推荐使用 [Aiven for MySQL](https://aiven.io/pricing?product=mysql)。
+> 如果你需要一个免费的 MySQL 数据库，可以考虑使用 [clever cloud](https://www.clever-cloud.com) 或  [Aiven for MySQL](https://aiven.io/pricing?product=mysql)。
 >
-> Aiven 提供一个 5 GB 的免费 MySQL 数据库。详见 [Free plans](https://aiven.io/docs/platform/concepts/free-plan)。
+> clever cloud 提供一个 10 MiB 的免费 MySQL 数据库。详见 [pricing](https://www.clever-cloud.com/pricing/)。
+> Aiven 提供一个 5 GB 的免费 MySQL 数据库。详见 [Free plans](https://aiven.io/docs/platform/concepts/free-plan)。备注：在使用 aiven 之前，请先确保可以服务器可以访问 aivencloud.com，以免无法连接。
 
 在环境变量中进行如下配置
 
@@ -268,13 +269,12 @@ DATABASE_SSL=false
 
 ## 使用 PostgreSQL 数据库
 
-> 如果你需要一个免费的 PostgreSQL 数据库，推荐使用 [Supabase](https://supabase.com/) 、 [Vercel](https://vercel.com/) 或 [Aiven for PostgreSQL®](https://aiven.io/pricing?product=pg) 。
+> 如果你需要一个免费的 PostgreSQL 数据库，推荐使用 [Supabase](https://supabase.com/) 或 [Vercel](https://vercel.com/)。
 >
-> Supabase 提供一个 500 MB 的免费数据库，并且对数据库运行时间没有限制，非常适合个人用户使用。详见 [pricing](https://supabase.com/pricing)
+> Supabase 提供一个 500 MB 的免费 PostgreSQL 数据库，并且对数据库运行时间没有限制，非常适合个人用户使用。详见 [pricing](https://supabase.com/pricing)
 >
-> Vercel 提供一个 256 MB 的免费数据库，但对数据库运行时间有限制。详见 [Vercel Postgres Pricing](https://vercel.com/docs/storage/vercel-postgres/usage-and-pricing#vercel-postgres-pricing)
+> Vercel 提供一个 256 MB 的免费 PostgreSQL 数据库，但对数据库运行时间有限制。详见 [Vercel Postgres Pricing](https://vercel.com/docs/storage/vercel-postgres/usage-and-pricing#vercel-postgres-pricing)
 >
-> Aiven 提供一个 5 GB 的免费 PostgreSQL 数据库，可以无限期地免费使用。详见 [Free plans](https://aiven.io/docs/platform/concepts/free-plan)。
 
 在环境变量中进行如下配置
 
