@@ -6,7 +6,8 @@ export default defineConfig({
     title: 'RSS Impact',
     description: 'RSS Impact 是一个支持 Hook 的 RSS 订阅工具。',
     lang: 'zh-CN',
-    base: '/rss-impact-server',
+    // base: '/rss-impact-server',
+    base: '/',
     // 显示最后更新时间
     lastUpdated: true,
     // 删除 .html 后缀

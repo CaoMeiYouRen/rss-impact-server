@@ -110,7 +110,7 @@ jobs:
           user: ${{ secrets.DOCKER_USERNAME }}
           pass: ${{ secrets.DOCKER_PASSWORD }}
           slug: ${{ github.repository }}
-          description: true
+          description: "一个支持 Hook 的 RSS 订阅工具。本项目为后端部分。"
       - name: Deploy demo
         run: curl -X GET -L --user ${{ secrets.JENKINS_DEMO_TOKEN }} "${{ secrets.JENKINS_DEMO_URL }}/buildWithParameters?token=${{ secrets.JENKINS_DEMO_JOB_TOKEN }}&DOCKER_IMAGE=registry.cn-hangzhou.aliyuncs.com/${{ env.REPO }}:${{ env.TAG }}"
       - name: Deploy to Jenkins
