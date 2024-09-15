@@ -2,7 +2,7 @@
 
 <!-- TODO 完善用户使用文档 -->
 
-在开始使用前，请先阅读 [部署文档](./docs/usage.md)。
+在开始使用前，请先阅读 [部署文档](./deploy.md)。
 
 在浏览器中打开 `http://{Server IP}:3000` 访问 `RSS Impact Web` 页面。
 

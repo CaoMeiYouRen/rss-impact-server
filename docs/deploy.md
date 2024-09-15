@@ -236,6 +236,7 @@ CACHE_CONTENT_EXPIRE=3600
 > 如果你需要一个免费的 MySQL 数据库，可以考虑使用 [clever cloud](https://www.clever-cloud.com) 或  [Aiven for MySQL](https://aiven.io/pricing?product=mysql)。
 >
 > clever cloud 提供一个 10 MiB 的免费 MySQL 数据库。详见 [pricing](https://www.clever-cloud.com/pricing/)。
+>
 > Aiven 提供一个 5 GB 的免费 MySQL 数据库。详见 [Free plans](https://aiven.io/docs/platform/concepts/free-plan)。备注：在使用 aiven 之前，请先确保可以服务器可以访问 aivencloud.com，以免无法连接。
 
 在环境变量中进行如下配置
