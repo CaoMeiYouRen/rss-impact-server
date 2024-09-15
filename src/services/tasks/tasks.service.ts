@@ -23,7 +23,7 @@ import PQueue from 'p-queue'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, AI_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
+import { __DEV__, AI_LIMIT_MAX, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
 import { getAllUrls, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
@@ -76,22 +76,7 @@ export class TasksService implements OnApplicationBootstrap {
 
     private async fixDatabase() {
         try {
-            // // 修复 缺失的 统计数据
-            // const maxDay = Math.max(ARTICLE_SAVE_DAYS, RESOURCE_SAVE_DAYS, LOG_SAVE_DAYS)
-            // // 往前回溯的天数
-            // const startDay = dayjs().add(-maxDay, 'days')
-
-            // for (let i = 0; i < maxDay; i++) {
-            //     const currentDay = startDay.add(i, 'days')
-            //     const date = currentDay.format('YYYY-MM-DD')
-            //     const dailyCounts = await this.dailyCountRepository.find({ where: { date } })
-            //     if (dailyCounts?.length > 1) { // 删除重复的日志
-            //         dailyCounts.shift()// 排除第一个
-            //         await this.dailyCountRepository.delete(dailyCounts.map((e) => e.id))
-            //     }
-            //     await this.dailyCountByDate(currentDay)
-            // }
-            // this.logger.log(`统计数据同步完毕，同步天数：${maxDay}`)
+            //
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
@@ -1097,21 +1082,13 @@ EXAMPLE JSON ERROR OUTPUT:
                             }
                         }
                         const aiSummary = aiSummaries.join('')
-                        if (__DEV__) {
-                            this.logger.debug(`文章(id: ${article.id}) ${article.title} 总结完成`)
-                        } else {
-                            this.logger.log(`文章 id: ${article.id} 总结完成`)
-                        }
+                        this.logger.log(`文章 ${article.title}(id: ${article.id}) 总结完成`)
                         article.aiSummary = aiSummary
                         await this.articleRepository.save(article)
                         return
                     }
                     if (action === 'generateCategory') { // 生成分类
-                        if (__DEV__) {
-                            this.logger.debug(`正在分类文章(id: ${article.id})：${article.title}`)
-                        } else {
-                            this.logger.log(`正在分类文章 id: ${article.id}`)
-                        }
+                        this.logger.log(`正在分类文章 ${article.title}(id: ${article.id})`)
                         const aiCategories: string[] = []
                         for await (const content of articleContentList) { // 串行请求
                             const [error, chatCompletion] = await to(openai.chat.completions.create({
@@ -1140,11 +1117,7 @@ EXAMPLE JSON ERROR OUTPUT:
                                 }
                             }
                         }
-                        if (__DEV__) {
-                            this.logger.debug(`文章(id: ${article.id}) ${article.title} 分类完成`)
-                        } else {
-                            this.logger.log(`文章 id: ${article.id} 分类完成`)
-                        }
+                        this.logger.log(`文章(id: ${article.id}) ${article.title} 分类完成`)
                         article.categories = uniq([...article.categories || [], ...aiCategories])
                         await this.articleRepository.save(article)
                     }
@@ -1275,6 +1248,31 @@ EXAMPLE JSON ERROR OUTPUT:
             })
             this.logger.log('成功移除过时的文章')
             this.logger.log(removes)
+            const feeds = await this.feedRepository.find({
+                where: {
+                },
+            })
+            for await (const feed of feeds) {
+                // 1. 查询记录总数
+                const totalCount = await this.articleRepository.count({ where: { feedId: feed.id } })
+                // this.logger.log(`feed: ${feed.title}, totalCount: ${totalCount}`)
+                // 如果超过 单个订阅文章最大保存数量
+                if (totalCount > ARTICLE_LIMIT_MAX) {
+                    // 2. 查询最早的几条记录
+                    const recordsToDelete = await this.articleRepository.find({
+                        where: { feedId: feed.id },
+                        order: {
+                            createdAt: 'DESC',
+                        },
+                        skip: ARTICLE_LIMIT_MAX, // 跳过前 ARTICLE_LIMIT_MAX 个
+                        take: totalCount - ARTICLE_LIMIT_MAX, // 分页大小
+                    })
+                    // 3. 删除最早的几条记录
+                    const removeArticles = await this.articleRepository.remove(recordsToDelete)
+                    // console.log(removes)
+                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}), 成功移除超过数量的文章 ${removeArticles.length} 篇`)
+                }
+            }
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
@@ -1371,7 +1369,7 @@ EXAMPLE JSON ERROR OUTPUT:
         return this.dailyCountRepository.save(this.dailyCountRepository.create(newDailyCount))
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'dailyCountTimer' }) // 每天统计一次
+    @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'dailyCountTimer' }) // 每天统计一次
     private async dailyCountTimer() {
         try {
             this.logger.log('开始统计 文章数、资源数、推送 webhook 数')

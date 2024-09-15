@@ -107,3 +107,4 @@ export const SESSION_MAX_AGE = env.SESSION_MAX_AGE
 
 export const ENABLE_ORIGIN_LIST = env.ENABLE_ORIGIN_LIST?.split(',')?.map((e) => e?.trim())?.filter(Boolean)
 
+export const ARTICLE_LIMIT_MAX = Number(env.ARTICLE_LIMIT_MAX || 1000)
