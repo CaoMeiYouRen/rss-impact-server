@@ -319,8 +319,8 @@ importers:
         specifier: ^0.2.38
         version: 0.2.38
       '@types/pg':
-        specifier: ^8.11.9
-        version: 8.11.9
+        specifier: ^8.11.10
+        version: 8.11.10
       '@types/supertest':
         specifier: ^6.0.2
         version: 6.0.2
@@ -1948,8 +1948,8 @@ packages:
   '@types/passport@1.0.16':
     resolution: {integrity: sha512-FD0qD5hbPWQzaM0wHUnJ/T0BBCJBxCeemtnCwc/ThhTg3x9jfrAcRUmj5Dopza+MfFS9acTe3wk7rcVnRIp/0A==}
 
-  '@types/pg@8.11.9':
-    resolution: {integrity: sha512-M4mYeJZRBD9lCBCGa72F44uKSV9eJrAFfjlPJagdA6pgIr2OPJULFB7nqnZzOdqXG0qzHlgtZKzTdIgbmHitSg==}
+  '@types/pg@8.11.10':
+    resolution: {integrity: sha512-LczQUW4dbOQzsH2RQ5qoeJ6qJPdrcM/DcMLoqWQkMLMsq83J5lAX3LXjdkWdpscFy67JSOWDnh7Ny/sPFykmkg==}
 
   '@types/qs@6.9.15':
     resolution: {integrity: sha512-uXHQKES6DQKKCLh441Xv/dwxOq1TVS3JPUMlEqoEglvlhR6Mxnlew/Xq/LRVHpLyk7iK3zODe1qYHIMltO7XGg==}
@@ -9989,7 +9989,7 @@ snapshots:
     dependencies:
       '@types/express': 4.17.21
 
-  '@types/pg@8.11.9':
+  '@types/pg@8.11.10':
     dependencies:
       '@types/node': 22.5.5
       pg-protocol: 1.6.1
