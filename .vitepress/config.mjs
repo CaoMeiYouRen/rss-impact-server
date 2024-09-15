@@ -21,6 +21,7 @@ export default defineConfig({
             { text: '使用', link: '/docs/usage' },
             { text: '部署', link: '/docs/deploy' },
             { text: '贡献指南', link: '/contributing' },
+            { text: '安全策略', link: '/security' },
             { text: '更新日志', link: 'https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/CHANGELOG.md' }
         ],
         // 编辑链接

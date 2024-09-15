@@ -29,6 +29,8 @@
 > 一个支持 Hook 的 RSS 订阅工具。
 >
 > 本项目为后端部分，前端部分请参考 [rss-impact-web](https://github.com/CaoMeiYouRen/rss-impact-web)。
+>
+> **rss-impact-plus** 正在众筹中，详情请点击链接查看：[rss-impact-plus 众筹](https://afdian.com/project/73a4fc8e6de911efa0f95254001e7c00)。
 
 ## 🏠 主页
 
@@ -176,7 +178,11 @@ pnpm run commit
 
 ## 💰 支持
 
-如果觉得这个项目有用的话请给一颗⭐️，非常感谢
+如果觉得这个项目有用的话请给一颗⭐️，非常感谢。
+
+<a href="https://afdian.com/@CaoMeiYouRen">
+  <img src="https://cdn.jsdelivr.net/gh/CaoMeiYouRen/image-hosting-01@master/images/202306192324870.png" width="312px" height="78px" alt="在爱发电支持我">
+</a>
 
 ## 🌟 Star History
 
