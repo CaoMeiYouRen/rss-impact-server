@@ -77,6 +77,7 @@ export class TasksService implements OnApplicationBootstrap {
     private async fixDatabase() {
         try {
             //
+            // await this.removeArticles()
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
@@ -1270,10 +1271,10 @@ EXAMPLE JSON ERROR OUTPUT:
             for await (const feed of feeds) {
                 // 1. 查询记录总数
                 const totalCount = await this.articleRepository.count({ where: { feedId: feed.id } })
-                // this.logger.log(`feed: ${feed.title}, totalCount: ${totalCount}`)
                 // 如果超过 单个订阅文章最大保存数量
                 if (totalCount > ARTICLE_LIMIT_MAX) {
                     // 2. 查询最早的几条记录
+                    this.logger.log(`正在删除订阅: ${feed.title}(id: ${feed.id}) 超过限制的文章`)
                     const recordsToDelete = await this.articleRepository.find({
                         where: { feedId: feed.id },
                         order: {
@@ -1282,10 +1283,14 @@ EXAMPLE JSON ERROR OUTPUT:
                         skip: ARTICLE_LIMIT_MAX, // 跳过前 ARTICLE_LIMIT_MAX 个
                         take: totalCount - ARTICLE_LIMIT_MAX, // 分页大小
                     })
+                    // console.log('recordsToDelete', recordsToDelete.length)
                     // 3. 删除最早的几条记录
-                    const removeArticles = await this.articleRepository.remove(recordsToDelete)
+                    await Promise.allSettled(recordsToDelete.map((e) => removeQueue.add(async () => {
+                            // remove 方法有数量限制，故采用队列
+                            await this.articleRepository.remove(e)
+                        })))
                     // console.log(removes)
-                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}), 成功移除超过数量的文章 ${removeArticles.length} 篇`)
+                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}), 成功移除超过数量的文章 ${recordsToDelete.length} 篇`)
                 }
             }
         } catch (error) {

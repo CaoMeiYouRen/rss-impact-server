@@ -39,12 +39,12 @@ async function bootstrap() {
     app.enableCors((req: Request, cb) => {
         if (!ENABLE_ORIGIN_LIST?.length) {
             cb(null, {})
-            return
+            return  
         }
         const enableOrigin = ENABLE_ORIGIN_LIST.includes(req.header('Origin'))
         cb(null, {
             origin: enableOrigin,
-            methods: ['GET', 'PUT', 'POST', 'DELETE'],
+            methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
             allowedHeaders: ['Content-Type', 'Authorization'],
             credentials: enableOrigin, // 本项目中还需要启用 cookie
         })
@@ -103,7 +103,6 @@ async function bootstrap() {
     })) // 解决单页应用程序(SPA)重定向问题
 
     await app.listen(PORT)
-
     logger.log(`应用访问地址为 http://127.0.0.1:${PORT}`)
     if (__DEV__) {
         logger.debug(`Docs http://127.0.0.1:${PORT}/docs`)
