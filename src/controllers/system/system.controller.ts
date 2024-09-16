@@ -14,6 +14,7 @@ import { DatabaseInfoDto } from '@/models/database-info.dto'
 import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { OsInfoDto } from '@/models/os-info.dto'
 import { AvueCrudOption } from '@/models/avue.dto'
+import { runSqliteQuery } from '@/utils/database'
 
 @UseAdmin()
 @ApiTags('system')
@@ -57,26 +58,10 @@ export class SystemController {
                 }
             })
             try {
-                const { count: tableCount } = await new Promise<{ count: number }>((resolve, reject) => {
-                    db.get<{ count: number }>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "table"', (error, row) => {
-                        if (error) {
-                            reject(error)
-                            return
-                        }
-                        resolve(row)
-                    })
-                })
+                const { count: tableCount } = await runSqliteQuery(db, 'SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "table"')
                 info.tableCount = tableCount
 
-                const { count: indexCount } = await new Promise<{ count: number }>((resolve, reject) => {
-                    db.get<{ count: number }>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "index"', (error, row) => {
-                        if (error) {
-                            reject(error)
-                            return
-                        }
-                        resolve(row)
-                    })
-                })
+                const { count: indexCount } = await runSqliteQuery(db, 'SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "index"')
                 info.indexCount = indexCount
             } catch (error) {
                 this.logger.error(error?.message, error?.stack)

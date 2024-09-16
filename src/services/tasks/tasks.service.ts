@@ -20,10 +20,11 @@ import ms from 'ms'
 import { isMagnetURI } from 'class-validator'
 import rssParserUtils from '@cao-mei-you-ren/rss-parser/lib/utils'
 import PQueue from 'p-queue'
+import sqlite3 from 'sqlite3'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, AI_LIMIT_MAX, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
+import { __DEV__, AI_LIMIT_MAX, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DATABASE_TYPE, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
 import { getAllUrls, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
@@ -43,6 +44,8 @@ import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 import { DailyCount } from '@/db/models/daily-count.entity'
+import { DATABASE_PATH } from '@/db/database.module'
+import { runSqliteCommand, runSqliteQuery } from '@/utils/database'
 
 const removeQueue = new PQueue({ concurrency: Math.min(os.cpus().length, 8) }) // 删除文件并发数
 const rssQueue = new PQueue({ concurrency: RSS_LIMIT_MAX }) // RSS 请求并发数
@@ -1253,11 +1256,11 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'removeArticles' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeArticles' }) // 每天删除一次
     private async removeArticles() {
         try {
             this.logger.log('开始移除过时的文章')
-            const date = dayjs().add(-ARTICLE_SAVE_DAYS, 'day').toDate()
+            const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-ARTICLE_SAVE_DAYS, 'day').toDate()
             const removes = await this.articleRepository.delete({
                 // pubDate: LessThan(date),
                 createdAt: LessThan(date),
@@ -1286,23 +1289,28 @@ EXAMPLE JSON ERROR OUTPUT:
                     // console.log('recordsToDelete', recordsToDelete.length)
                     // 3. 删除最早的几条记录
                     await Promise.allSettled(recordsToDelete.map((e) => removeQueue.add(async () => {
-                            // remove 方法有数量限制，故采用队列
-                            await this.articleRepository.remove(e)
-                        })))
+                        // remove 方法有数量限制，故采用队列
+                        this.articleRepository.remove(e)
+                    })))
                     // console.log(removes)
                     this.logger.log(`订阅: ${feed.title}(id: ${feed.id}), 成功移除超过数量的文章 ${recordsToDelete.length} 篇`)
                 }
+            }
+            if (DATABASE_TYPE === 'sqlite') {
+                removeQueue.add(async () => {
+                    await this.sqliteAutoVacuum()
+                }, { priority: -1 }) // 优先级设置为负数，排到队尾
             }
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'removeResources' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeResources' }) // 每天删除一次
     private async removeResources() {
         try {
             this.logger.log('开始移除过时的资源')
-            const date = dayjs().add(-RESOURCE_SAVE_DAYS, 'day').toDate()
+            const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-RESOURCE_SAVE_DAYS, 'day').toDate()
             const removes = await this.resourceRepository.delete({
                 createdAt: LessThan(date),
             })
@@ -1333,11 +1341,11 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, { name: 'removeLogs' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeLogs' }) // 每天删除一次
     private async removeLogs() {
         try {
             this.logger.log('开始移除过时的日志')
-            const date = dayjs().add(-LOG_SAVE_DAYS, 'day').toDate()
+            const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-LOG_SAVE_DAYS, 'day').toDate()
             const removes = await this.webhookLogRepository.delete({
                 // pubDate: LessThan(date),
                 createdAt: LessThan(date),
@@ -1398,6 +1406,24 @@ EXAMPLE JSON ERROR OUTPUT:
             await this.dailyCountByDate(start)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
+        }
+    }
+
+    private async sqliteAutoVacuum() {
+        // 触发 VACUUM，以自动回收未使用的空间
+        const db = new sqlite3.Database(DATABASE_PATH, (error) => {
+            if (error) {
+                this.logger.error(error?.message, error?.stack)
+            }
+        })
+        try {
+            await runSqliteCommand(db, 'VACUUM;')
+            this.logger.log('VACUUM run successfully.')
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        } finally {
+            // 关闭数据库连接
+            db.close()
         }
     }
 }
