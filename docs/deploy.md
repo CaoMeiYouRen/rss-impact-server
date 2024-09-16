@@ -44,7 +44,7 @@
 下载 [docker-compose.yml](https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/docker-compose.yml)
 
 ```sh
-wget https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/docker-compose.yml
+wget https://raw.githubusercontent.com/CaoMeiYouRen/rss-impact-server/master/docker-compose.yml
 ```
 
 检查有无需要修改的配置
