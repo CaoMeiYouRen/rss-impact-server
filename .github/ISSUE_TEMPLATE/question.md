@@ -1,28 +1,27 @@
 ---
-name: Bug report
-about: 反馈 Bug
-title: '[bug]'
-labels: bug
+name: Question
+about: 使用上的问题。如果是 Bug 请使用 `Bug report` 模板。
+title: '[question]'
+labels: question
 assignees: ''
 
 ---
 
-**Describe the bug/描述 bug**
+**Description/描述**
 
-A clear and concise description of what the bug is.<br/>
-对 bug 是什么的清晰简洁的描述。
-
----
-**To Reproduce/再现**
-
-Steps to reproduce the behavior:<br/>
-再现行为的步骤：
+Please provide a clear and detailed description of your question. Include any relevant context, background information, or specific details that will help others understand your query.<br/>
+请对您的问题进行清晰详细的描述。包括任何相关的上下文、背景信息或具体细节，以帮助他人理解您的查询。
 
 ---
-**Expected behavior/预期行为**
+**Steps to Reproduce (if applicable)/重现步骤（如适用）**
 
-A clear and concise description of what you expected to happen.<br/>
-对你期望发生的事情的清晰简洁的描述
+If your question is related to a specific issue or problem, please provide the steps to reproduce the behavior:<br/>
+如果您的问题与特定问题有关，请提供重现行为的步骤：
+
+1. Step 1
+2. Step 2
+3. Step 3
+   ...
 
 ---
 **Screenshots/屏幕截图**
@@ -42,7 +41,7 @@ If applicable, add screenshots to help explain your problem.<br/>
 **Additional context/附加上下文**
 
 Add any other context about the problem here.<br/>
-在此处添加有关该问题的任何其他上下文
+在此处添加有关该问题的任何其他上下文。
 
 ---
 **Paid Consultation/付费咨询**
