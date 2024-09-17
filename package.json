@@ -86,7 +86,7 @@
     "ms": "^2.1.3",
     "mysql2": "^3.11.2",
     "nest-winston": "^1.10.0",
-    "openai": "^4.60.0",
+    "openai": "^4.62.0",
     "opml": "^0.5.6",
     "p-queue": "^5.0.0",
     "parse-torrent": "9.1.5",
