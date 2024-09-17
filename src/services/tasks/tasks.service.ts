@@ -2,8 +2,8 @@ import os from 'os'
 import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Repository, In, LessThan, MoreThanOrEqual, Between } from 'typeorm'
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm'
+import { Repository, In, LessThan, MoreThanOrEqual, Between, DataSource } from 'typeorm'
 import { CronJob } from 'cron'
 import { differenceWith, flattenDeep, pick, random, isEqual, pickBy, uniq } from 'lodash'
 import XRegExp from 'xregexp'
@@ -20,7 +20,6 @@ import ms from 'ms'
 import { isMagnetURI } from 'class-validator'
 import rssParserUtils from '@cao-mei-you-ren/rss-parser/lib/utils'
 import PQueue from 'p-queue'
-import sqlite3 from 'sqlite3'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
@@ -44,8 +43,6 @@ import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 import { DailyCount } from '@/db/models/daily-count.entity'
-import { DATABASE_PATH } from '@/db/database.module'
-import { runSqliteCommand, runSqliteQuery } from '@/utils/database'
 
 const removeQueue = new PQueue({ concurrency: Math.min(os.cpus().length, 8) }) // 删除文件并发数
 const rssQueue = new PQueue({ concurrency: RSS_LIMIT_MAX }) // RSS 请求并发数
@@ -64,6 +61,7 @@ export class TasksService implements OnApplicationBootstrap {
     constructor(
         private readonly scheduler: SchedulerRegistry,
         private readonly resourceService: ResourceService,
+        @InjectDataSource() private readonly dataSource: DataSource,
         @InjectRepository(Feed) private readonly feedRepository: Repository<Feed>,
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
         @InjectRepository(Resource) private readonly resourceRepository: Repository<Resource>,
@@ -80,7 +78,6 @@ export class TasksService implements OnApplicationBootstrap {
     private async fixDatabase() {
         try {
             //
-            // await this.removeArticles()
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
@@ -1411,19 +1408,12 @@ EXAMPLE JSON ERROR OUTPUT:
 
     private async sqliteAutoVacuum() {
         // 触发 VACUUM，以自动回收未使用的空间
-        const db = new sqlite3.Database(DATABASE_PATH, (error) => {
-            if (error) {
-                this.logger.error(error?.message, error?.stack)
-            }
-        })
         try {
-            await runSqliteCommand(db, 'VACUUM;')
-            this.logger.log('VACUUM run successfully.')
+            this.logger.log('正在触发 VACUUM')
+            await this.dataSource.query('VACUUM;')
+            this.logger.log('VACUUM 执行成功')
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
-        } finally {
-            // 关闭数据库连接
-            db.close()
         }
     }
 }

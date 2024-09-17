@@ -2,19 +2,16 @@ import os from 'os'
 import fs from 'fs-extra'
 import { Controller, Get, Logger } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
-import sqlite3 from 'sqlite3'
-import mysql, { ConnectionOptions } from 'mysql2/promise'
-import ms from 'ms'
-import { Client } from 'pg'
+import { InjectDataSource } from '@nestjs/typeorm'
+import { DataSource } from 'typeorm'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
-import { DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
+import { DATABASE_DATABASE, DATABASE_TYPE } from '@/app.config'
 import { DATABASE_PATH, entities } from '@/db/database.module'
 import { dataFormat, timeFromNow } from '@/utils/helper'
 import { DatabaseInfoDto } from '@/models/database-info.dto'
 import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { OsInfoDto } from '@/models/os-info.dto'
 import { AvueCrudOption } from '@/models/avue.dto'
-import { runSqliteQuery } from '@/utils/database'
 
 @UseAdmin()
 @ApiTags('system')
@@ -22,6 +19,10 @@ import { runSqliteQuery } from '@/utils/database'
 export class SystemController {
 
     private readonly logger: Logger = new Logger(SystemController.name)
+
+    constructor(@InjectDataSource() private readonly dataSource: DataSource) {
+
+    }
 
     @ApiResponse({ status: 200, type: AvueCrudOption })
     @ApiOperation({ summary: '获取数据库信息 option' })
@@ -48,109 +49,65 @@ export class SystemController {
             indexCount: 0,
         }
         if (DATABASE_TYPE === 'sqlite') {
-
-            info.size = (await fs.stat(DATABASE_PATH))?.size
-            info.sizeFormat = dataFormat(info.size)
-
-            const db = new sqlite3.Database(DATABASE_PATH, (error) => {
-                if (error) {
-                    this.logger.error(error?.message, error?.stack)
-                }
-            })
             try {
-                const { count: tableCount } = await runSqliteQuery(db, 'SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "table"')
-                info.tableCount = tableCount
-
-                const { count: indexCount } = await runSqliteQuery(db, 'SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "index"')
-                info.indexCount = indexCount
-            } catch (error) {
-                this.logger.error(error?.message, error?.stack)
-            } finally {
-                db.close((error) => {
-                    if (error) {
-                        this.logger.error(error?.message, error?.stack)
-                    }
-                })
-            }
-        } else if (DATABASE_TYPE === 'mysql') {
-            const options: ConnectionOptions = {
-                host: DATABASE_HOST,
-                port: DATABASE_PORT,
-                user: DATABASE_USERNAME,
-                password: DATABASE_PASSWORD,
-                database: DATABASE_DATABASE,
-                charset: DATABASE_CHARSET, // 连接的字符集。
-                timezone: DATABASE_TIMEZONE,
-                connectTimeout: ms('60 s'), // 在连接到 MySQL 服务器期间发生超时之前的毫秒数
-                supportBigNumbers: true, // 处理数据库中的大数字
-                bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
-            }
-
-            const db = await mysql.createConnection(options)
-
-            try {
-                const [databaseResults] = await db.query(`
-                   SELECT table_schema AS \`database\`,
-                          SUM(data_length + index_length) AS \`size\`
-                   FROM information_schema.TABLES
-                   WHERE table_schema = ?
-                   GROUP BY table_schema;
-                 `, [DATABASE_DATABASE])
-
-                info.size = Number(databaseResults?.[0]?.size) || 0 // 数据库占用体积
+                info.size = (await fs.stat(DATABASE_PATH))?.size
                 info.sizeFormat = dataFormat(info.size)
 
-                const [tableResults] = await db.query(`
+                const tableResults = await this.dataSource.query<[{ count: number }]>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "table"')
+                info.tableCount = tableResults?.[0]?.count
+
+                const indexResults = await this.dataSource.query<[{ count: number }]>('SELECT COUNT(*) AS count FROM sqlite_master WHERE type = "index"')
+                info.indexCount = indexResults?.[0]?.count
+            } catch (error) {
+                this.logger.error(error?.message, error?.stack)
+            }
+        } else if (DATABASE_TYPE === 'mysql') {
+            try {
+                const [databaseResults] = await this.dataSource.query<[{ database: string, size: string }]>(`
+                    SELECT table_schema AS \`database\`,
+                           SUM(data_length + index_length) AS \`size\`
+                    FROM information_schema.TABLES
+                    WHERE table_schema = ?
+                    GROUP BY table_schema;
+                  `, [DATABASE_DATABASE])
+
+                info.size = Number(databaseResults?.size) || 0 // 数据库占用体积
+                info.sizeFormat = dataFormat(info.size)
+
+                const [tableResults] = await this.dataSource.query<[{ tableCount: number }]>(`
                    SELECT COUNT(*) AS \`tableCount\`
                    FROM information_schema.TABLES
                    WHERE table_schema = ?;
                  `, [DATABASE_DATABASE])
-                info.tableCount = Number(tableResults?.[0]?.tableCount) || 0  // 表数量
+                info.tableCount = tableResults?.tableCount || 0  // 表数量
 
-                const [indexResults] = await db.query(`
+                const [indexResults] = await this.dataSource.query<[{ indexCount: number }]>(`
                    SELECT COUNT(*) AS \`indexCount\`
                    FROM information_schema.STATISTICS
                    WHERE table_schema = ?;
                  `, [DATABASE_DATABASE])
-                info.indexCount = Number(indexResults?.[0]?.indexCount) || 0 // 索引数量
+                info.indexCount = indexResults?.indexCount || 0 // 索引数量
 
             } catch (error) {
                 this.logger.error(error?.message, error?.stack)
-            } finally {
-                await db.end()
             }
         } else if (DATABASE_TYPE === 'postgres') {
-            const options = {
-                host: DATABASE_HOST,
-                port: DATABASE_PORT,
-                user: DATABASE_USERNAME,
-                password: DATABASE_PASSWORD,
-                database: DATABASE_DATABASE,
-                schema: DATABASE_SCHEMA,
-            }
-            const db = new Client(options)
             try {
-                await db.connect()
                 // 查询整个数据库的大小
-                const dbSizeQuery = 'SELECT pg_database_size($1)'
-                const dbSizeRes = await db.query(dbSizeQuery, [DATABASE_DATABASE])
-                info.size = Number(dbSizeRes?.rows?.[0]?.pg_database_size) || 0 // 数据库占用体积
+                const [databaseResults] = await this.dataSource.query<[{ pg_database_size: number }]>('SELECT pg_database_size($1)', [DATABASE_DATABASE])
+                info.size = databaseResults.pg_database_size || 0 // 数据库占用体积
                 info.sizeFormat = dataFormat(info.size)
 
                 // 查询表的数量
-                const tableCountQuery = 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = \'public\';'
-                const tableCountRes = await db.query(tableCountQuery)
-                info.tableCount = Number(tableCountRes.rows[0].count) || 0
+                const [tableResults] = await this.dataSource.query<[{ count: number }]>('SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = \'public\';')
+                info.tableCount = tableResults.count || 0
 
                 // 查询索引的数量
-                const indexCountQuery = 'SELECT COUNT(*) FROM pg_indexes WHERE schemaname = \'public\';'
-                const indexCountRes = await db.query(indexCountQuery)
-                info.indexCount = Number(indexCountRes.rows[0].count) || 0
+                const [indexResults] = await this.dataSource.query<[{ count: number }]>('SELECT COUNT(*) FROM pg_indexes WHERE schemaname = \'public\';')
+                info.indexCount = indexResults.count || 0
 
             } catch (error) {
                 this.logger.error(error?.message, error?.stack)
-            } finally {
-                await db.end()
             }
         }
 

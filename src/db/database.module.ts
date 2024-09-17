@@ -57,7 +57,7 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             database: DATABASE_DATABASE,
                             charset: DATABASE_CHARSET, // 连接的字符集。
                             timezone: DATABASE_TIMEZONE,
-                            connectTimeout: ms('60 s'), // 在连接到 MySQL 服务器期间发生超时之前的毫秒数
+                            connectTimeout: ms('120 s'), // 在连接到 MySQL 服务器期间发生超时之前的毫秒数
                             // debug: __DEV__,
                             supportBigNumbers: true, // 处理数据库中的大数字
                             bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
@@ -83,6 +83,7 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             schema: DATABASE_SCHEMA,
                             parseInt8: true, // 解析 int8 到 number
                             ssl: DATABASE_SSL,
+                            connectTimeoutMS: ms('120 s'), // 在连接到 postgres 服务器期间发生超时之前的毫秒数
                             // logNotifications: __DEV__,
                         } as PostgresConnectionOptions
                         // postgres 仅在第一次加载时同步，否则会丢失数据
