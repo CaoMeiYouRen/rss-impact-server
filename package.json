@@ -145,7 +145,7 @@
     "@types/pg": "^8.11.10",
     "@types/supertest": "^6.0.2",
     "@types/turndown": "^5.0.5",
-    "@types/validator": "^13.12.1",
+    "@types/validator": "^13.12.2",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "autocannon": "^7.15.0",
