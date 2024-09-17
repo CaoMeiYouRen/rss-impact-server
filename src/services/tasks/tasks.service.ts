@@ -191,12 +191,15 @@ export class TasksService implements OnApplicationBootstrap {
                             this.logger.error(error?.message, error?.stack)
                             return article
                         }
-                        article.content = fullText.content || article.content // 仅正文优先使用抓取的内容
-                        article.contentSnippet = rssParserUtils.getSnippet(article.content) || article.contentSnippet // 更新 纯文本格式
-                        article.author = article.author || fullText.author
-                        article.summary = article.summary || fullText.excerpt
-                        // 如果 pubDate 不存在，且 date_published 是有效日期，则填补日期
-                        article.pubDate = article.pubDate || (dayjs(fullText.date_published).isValid() ? dayjs(fullText.date_published).toDate() : undefined)
+                        // 如果抓取到的文本内容比原文还短，则认定为抓取失败
+                        if (fullText.content?.length < article.content?.length) {
+                            article.content = fullText.content || article.content // 仅正文优先使用抓取的内容
+                            article.contentSnippet = rssParserUtils.getSnippet(article.content) || article.contentSnippet // 更新 纯文本格式
+                            article.author = article.author || fullText.author
+                            article.summary = article.summary || fullText.excerpt
+                            // 如果 pubDate 不存在，且 date_published 是有效日期，则填补日期
+                            article.pubDate = article.pubDate || (dayjs(fullText.date_published).isValid() ? dayjs(fullText.date_published).toDate() : undefined)
+                        }
                     }
                     return article
                 }))
