@@ -1,6 +1,6 @@
 import os from 'os'
 import fs from 'fs-extra'
-import { Controller, Get, Logger } from '@nestjs/common'
+import { Controller, Get, Logger, Post } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
@@ -12,6 +12,8 @@ import { DatabaseInfoDto } from '@/models/database-info.dto'
 import { initAvueCrudColumn } from '@/decorators/acl-crud.decorator'
 import { OsInfoDto } from '@/models/os-info.dto'
 import { AvueCrudOption } from '@/models/avue.dto'
+import { ResponseDto } from '@/models/response.dto'
+import { HttpError } from '@/models/http-error'
 
 @UseAdmin()
 @ApiTags('system')
@@ -154,6 +156,19 @@ export class SystemController {
             uptime,
         }
         return info
+    }
+
+    @ApiResponse({ status: 201, type: ResponseDto })
+    @ApiOperation({ summary: '释放 sqlite 数据库未使用空间' })
+    @Post('sqliteVacuum')
+    async sqliteVacuum() {
+        if (DATABASE_TYPE !== 'sqlite') {
+            throw new HttpError(400, '本接口仅支持 sqlite 作为数据库时调用')
+        }
+        this.logger.log('正在触发 VACUUM')
+        await this.dataSource.query('VACUUM;')
+        this.logger.log('VACUUM 执行成功')
+        return new ResponseDto({ message: 'OK' })
     }
 }
 
