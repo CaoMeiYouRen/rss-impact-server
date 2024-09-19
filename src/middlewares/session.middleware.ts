@@ -3,7 +3,7 @@ import session, { SessionOptions, Store } from 'express-session'
 import ms from 'ms'
 import ConnectSqlite3 from 'connect-sqlite3'
 import RedisStore from 'connect-redis'
-import { REDIS_URL, SESSION_MAX_AGE, SESSION_SECRET, __PROD__ } from '@/app.config'
+import { ENABLE_ORIGIN_LIST, REDIS_URL, SESSION_MAX_AGE, SESSION_SECRET, __PROD__ } from '@/app.config'
 import { DATABASE_PATH } from '@/db/database.module'
 import { getRedisClient } from '@/utils/redis'
 let store: Store
@@ -29,12 +29,23 @@ const sessionOptions: SessionOptions = {
     cookie: {
         secure: false,
         maxAge: ms(SESSION_MAX_AGE),
+        httpOnly: true,
+        sameSite: 'lax',
     },
     store,
 }
 
 if (__PROD__) {
-    sessionOptions.cookie.secure = true
+    // 如果需要跨域，判断是否为 http，如果是，则设置为 false
+    // 参考 https://github.com/CaoMeiYouRen/rss-impact-server/issues/334
+    if (ENABLE_ORIGIN_LIST?.length) {
+        sessionOptions.cookie.secure = !ENABLE_ORIGIN_LIST.some((e) => e.startsWith('http://'))
+        if (sessionOptions.cookie.secure) { // 仅在 secure 的时候 sameSite 允许设置为 none
+            sessionOptions.cookie.sameSite = 'none'
+        }
+    } else {
+        sessionOptions.cookie.secure = true
+    }
 }
 
 export const sessionMiddleware = session(sessionOptions)

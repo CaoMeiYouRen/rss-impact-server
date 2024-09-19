@@ -17,6 +17,8 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
       SESSION_SECRET: ${SESSION_SECRET:-RSS_IMPACT}
       RESOURCE_DOWNLOAD_PATH: './data/download'
+      # 启用跨域。如果前端和后端部署在不同域名下，需要跨域时，配置该项。
+      # ENABLE_ORIGIN_LIST: 'http://localhost:3000,http://127.0.0.1:3000'
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs

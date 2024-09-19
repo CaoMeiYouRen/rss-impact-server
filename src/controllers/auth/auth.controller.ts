@@ -33,9 +33,6 @@ export class AuthController {
         if (session) {
             session.uid = user.id
         }
-        if (ENABLE_ORIGIN_LIST?.length) {
-            session.cookie.sameSite = 'none'
-        }
         return new ResponseDto({
             message: 'OK',
             statusCode: 201,

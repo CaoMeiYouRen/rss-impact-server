@@ -39,13 +39,13 @@ async function bootstrap() {
     app.enableCors((req: Request, cb) => {
         if (!ENABLE_ORIGIN_LIST?.length) {
             cb(null, {})
-            return  
+            return
         }
         const enableOrigin = ENABLE_ORIGIN_LIST.includes(req.header('Origin'))
         cb(null, {
             origin: enableOrigin,
             methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-            allowedHeaders: ['Content-Type', 'Authorization'],
+            allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Set-Cookie'],
             credentials: enableOrigin, // 本项目中还需要启用 cookie
         })
     })
