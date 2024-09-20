@@ -103,6 +103,8 @@ export const DATABASE_SCHEMA = env.DATABASE_SCHEMA || 'public'
 
 export const DATABASE_SSL = env.DATABASE_SSL === 'true'
 
+export const DATABASE_INDEX_LENGTH = Number(env.DATABASE_INDEX_LENGTH || 1024)
+
 export const SESSION_MAX_AGE = env.SESSION_MAX_AGE
 
 export const ENABLE_ORIGIN_LIST = env.ENABLE_ORIGIN_LIST?.split(',')?.map((e) => e?.trim())?.filter(Boolean)

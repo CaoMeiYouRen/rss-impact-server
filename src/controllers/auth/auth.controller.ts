@@ -12,7 +12,7 @@ import { RegisterDto } from '@/models/register.dto'
 import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
-import { ENABLE_ORIGIN_LIST, ENABLE_REGISTER } from '@/app.config'
+import { ENABLE_REGISTER } from '@/app.config'
 import { CategoryService } from '@/services/category/category.service'
 
 @ApiTags('auth')

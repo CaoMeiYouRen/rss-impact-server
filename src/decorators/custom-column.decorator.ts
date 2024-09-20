@@ -2,7 +2,7 @@ import { applyDecorators } from '@nestjs/common'
 import { Column, ColumnOptions, Index } from 'typeorm'
 import { IsNotEmpty, IsOptional, Length } from 'class-validator'
 import { JsonStringLength } from './json-string-length.decorator'
-import { DATABASE_TYPE } from '@/app.config'
+import { DATABASE_INDEX_LENGTH, DATABASE_TYPE } from '@/app.config'
 
 export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
     const decorators: PropertyDecorator[] = []
@@ -14,9 +14,9 @@ export function CustomColumn(options: ColumnOptions & { index?: boolean }) {
             options.type = 'integer'
         }
     } else if (DATABASE_TYPE === 'mysql') { // 处理 MySQL 不兼容的配置
-        // mysql 索引最大不超过 3072 字节，在 utf8 编码下不超过 1024 字符
-        if (options.index && Number(options.length) > 1024) {
-            options.length = 1024
+        // mysql 索引最大不超过 3072 字节，在 utf8 编码下不超过 1024 字符，utf8mb4 编码不超过 768 字符
+        if (options.index && Number(options.length) > DATABASE_INDEX_LENGTH) {
+            options.length = DATABASE_INDEX_LENGTH
         }
         // mysql 不支持在 text 类型字段上设置 length
         if (['text', 'mediumtext', 'longtext', 'simple-json', 'simple-array'].includes(options.type as string) && options.length) {
