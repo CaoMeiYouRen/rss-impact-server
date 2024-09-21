@@ -5,6 +5,8 @@ import * as winston from 'winston'
 import DailyRotateFile from 'winston-daily-rotate-file'
 import { Request } from 'express'
 import { isNumberString } from 'class-validator'
+import { Logger, QueryRunner } from 'typeorm'
+import { LoggerService } from '@nestjs/common'
 import { timeFormat } from '@/utils/helper'
 import { __DEV__, __PROD__ } from '@/app.config'
 import { User } from '@/db/models/user.entity'
@@ -124,3 +126,44 @@ export const winstonLogger = WinstonModule.createLogger({
 })
 
 export const logger = winstonLogger
+
+export class CustomLogger implements Logger {
+    constructor(private readonly loggerService: LoggerService) { }
+
+    logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner): any {
+        this.loggerService.verbose(`Query: ${query}${parameters ? `\nParameters: ${parameters.join()}` : ''}`)
+    }
+
+    logQueryError(error: string | Error, query: string, parameters?: any[], queryRunner?: QueryRunner): any {
+        this.loggerService.error(`Query Error: ${error}\nQuery: ${query}${parameters ? `\nParameters: ${parameters.join()}` : ''}`)
+    }
+
+    logQuerySlow(time: number, query: string, parameters?: any[], queryRunner?: QueryRunner): any {
+        this.loggerService.warn(`Slow Query (${time}ms): ${query}${parameters ? `\nParameters: ${parameters.join()}` : ''}`)
+    }
+
+    logSchemaBuild(message: string, queryRunner?: QueryRunner): any {
+        this.loggerService.verbose(`Schema Build: ${message}`)
+    }
+
+    logMigration(message: string, queryRunner?: QueryRunner): any {
+        this.loggerService.log(`Migration: ${message}`)
+    }
+
+    log(level: 'log' | 'info' | 'warn', message: any, queryRunner?: QueryRunner): any {
+        switch (level) {
+            case 'log':
+                this.loggerService.log(message, queryRunner)
+                break
+            case 'info':
+                this.loggerService.log(message, queryRunner)
+                break
+            case 'warn':
+                this.loggerService.warn(message, queryRunner)
+                break
+            default:
+                this.loggerService.verbose(message, queryRunner)
+                break
+        }
+    }
+}
