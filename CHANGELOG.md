@@ -1,5 +1,25 @@
 # rss-impact-server
 
+## [1.5.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.5.1...v1.5.2) (2024-09-21)
+
+
+### ♻ 代码重构
+
+* 优化 全文抓取失败的逻辑 ([606ee66](https://github.com/CaoMeiYouRen/rss-impact-server/commit/606ee66)), closes [#325](https://github.com/CaoMeiYouRen/rss-impact-server/issues/325)
+* 优化 单个订阅增加最大文章数量限制 ([db9a73b](https://github.com/CaoMeiYouRen/rss-impact-server/commit/db9a73b)), closes [#324](https://github.com/CaoMeiYouRen/rss-impact-server/issues/324)
+* 增加 手动调用 sqlite VACUUM 命令的接口 ([893d080](https://github.com/CaoMeiYouRen/rss-impact-server/commit/893d080))
+* 添加 数据库查询日志 ([9cd6842](https://github.com/CaoMeiYouRen/rss-impact-server/commit/9cd6842))
+* 重构 修改查询数据库信息逻辑，改为使用 TypeORM DataSource ([87980be](https://github.com/CaoMeiYouRen/rss-impact-server/commit/87980be))
+
+
+### 🐛 Bug 修复
+
+* 修复 sqlite 不会自动释放未使用的空间的 bug；重构 sqlite 查询和执行相关逻辑 ([0cbb286](https://github.com/CaoMeiYouRen/rss-impact-server/commit/0cbb286))
+* 修复 删除超过限制的文章数量逻辑错误的 bug ([2f9e131](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2f9e131))
+* 修复 在非严格模式下，Cookie 无法跨域的问题 ([12a945d](https://github.com/CaoMeiYouRen/rss-impact-server/commit/12a945d)), closes [#334](https://github.com/CaoMeiYouRen/rss-impact-server/issues/334)
+* 修复 字符编码为 utf8mb4 时，MySQL 无法创建索引的问题；更新了 MySQL 相关文档 ([a64fbd5](https://github.com/CaoMeiYouRen/rss-impact-server/commit/a64fbd5))
+* 修复 队列中存在未捕获的错误 ([fd77a71](https://github.com/CaoMeiYouRen/rss-impact-server/commit/fd77a71)), closes [#312](https://github.com/CaoMeiYouRen/rss-impact-server/issues/312)
+
 ## [1.5.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.5.0...v1.5.1) (2024-09-14)
 
 
