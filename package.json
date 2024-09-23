@@ -132,7 +132,7 @@
     "@types/express-session": "^1.18.0",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.13",
-    "@types/lodash": "^4.17.7",
+    "@types/lodash": "^4.17.9",
     "@types/md5": "^2.3.5",
     "@types/module-alias": "^2.0.4",
     "@types/morgan": "^1.9.9",
