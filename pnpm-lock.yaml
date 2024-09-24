@@ -358,8 +358,8 @@ importers:
         specifier: ^8.57.1
         version: 8.57.1
       eslint-config-cmyr:
-        specifier: ^1.1.31
-        version: 1.1.31(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1)(typescript@5.6.2))(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1))(eslint-plugin-vue@9.26.0(eslint@8.57.1))(eslint@8.57.1)(typescript@5.6.2)
+        specifier: ^1.1.32
+        version: 1.1.32(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1)(typescript@5.6.2))(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1))(eslint-plugin-vue@9.26.0(eslint@8.57.1))(eslint@8.57.1)(typescript@5.6.2)
       eslint-plugin-import:
         specifier: ^2.30.0
         version: 2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1)
@@ -3596,8 +3596,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-cmyr@1.1.31:
-    resolution: {integrity: sha512-A7t9y24zMXEe5autUYq4iaULnoDvd3M+MlYoCCCAzOE5o/kS+5aoCpmFvXVkSwJEyZ9Qo/LePSiqq0uai2xrfg==}
+  eslint-config-cmyr@1.1.32:
+    resolution: {integrity: sha512-dK4atnEPl4twuEpOzdyRvE6JaxDoIJizKIMDdTpca2ZY1b5TosgVnfpXj9lT+hkm4jj2jMsFk2rXVe/u0bgNTg==}
     engines: {node: '>=12'}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': '>=3'
@@ -11959,7 +11959,7 @@ snapshots:
       eslint: 8.57.1
       semver: 7.6.3
 
-  eslint-config-cmyr@1.1.31(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1)(typescript@5.6.2))(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1))(eslint-plugin-vue@9.26.0(eslint@8.57.1))(eslint@8.57.1)(typescript@5.6.2):
+  eslint-config-cmyr@1.1.32(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1)(typescript@5.6.2))(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.6.2))(eslint@8.57.1))(eslint-plugin-vue@9.26.0(eslint@8.57.1))(eslint@8.57.1)(typescript@5.6.2):
     dependencies:
       eslint: 8.57.1
     optionalDependencies:
