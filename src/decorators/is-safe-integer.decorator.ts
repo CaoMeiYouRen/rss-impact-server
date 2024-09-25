@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common'
 import { isInt, IsInt, max, Max, min, Min, ValidationOptions } from 'class-validator'
-export const MAX_VALUE = 2147483647 // 2 ** 31 - 1
+export const MAX_VALUE = Number.MAX_SAFE_INTEGER  // 2 ** 31 - 1  // 2147483647
 /**
  * 验证是否为安全整数
  *
