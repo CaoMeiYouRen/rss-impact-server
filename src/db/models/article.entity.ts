@@ -215,8 +215,8 @@ export class Article extends AclBase {
         hide: true,
     })
     @ApiProperty({ title: '附件体积(B)', description: '单位为 B(字节)', example: 114514 })
-    @IsSafeNaturalNumber()
-    @CustomColumn({ nullable: true })
+    @IsSafeNaturalNumber(Number.MAX_SAFE_INTEGER)
+    @CustomColumn({ type: 'bigint', nullable: true })
     enclosureLength?: number
 
     @SetAclCrudField({
