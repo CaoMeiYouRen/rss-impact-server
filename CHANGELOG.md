@@ -1,5 +1,13 @@
 # rss-impact-server
 
+## [1.5.3](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.5.2...v1.5.3) (2024-09-28)
+
+
+### 🐛 Bug 修复
+
+* 修复 Article 的 enclosureLength 字段类型改为 bigint，最大值调整为 Number.MAX_SAFE_INTEGER ([b9f1b3f](https://github.com/CaoMeiYouRen/rss-impact-server/commit/b9f1b3f))
+* 修复 附件大小的范围过小的问题 ([6ca85eb](https://github.com/CaoMeiYouRen/rss-impact-server/commit/6ca85eb)), closes [#357](https://github.com/CaoMeiYouRen/rss-impact-server/issues/357)
+
 ## [1.5.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.5.1...v1.5.2) (2024-09-21)
 
 
