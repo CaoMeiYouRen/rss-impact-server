@@ -156,7 +156,7 @@
     "debug": "^4.3.7",
     "eslint": "^8.57.1",
     "eslint-config-cmyr": "^1.1.32",
-    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-import": "^2.31.0",
     "husky": "^9.1.6",
     "jest": "^29.7.0",
     "jest-openapi": "^0.14.2",
