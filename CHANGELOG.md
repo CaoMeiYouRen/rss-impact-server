@@ -1,5 +1,22 @@
 # rss-impact-server
 
+# [1.6.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.5.3...v1.6.0) (2024-10-05)
+
+
+### ♻ 代码重构
+
+* 增加 CronJob 配置环境变量 ([c10e961](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c10e961))
+
+
+### ✨ 新功能
+
+* 新增 Sentry 配置 ([2b58003](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2b58003))
+
+
+### 🐛 Bug 修复
+
+* 修复 部分情况下缺少 Origin 判断的问题 ([9329912](https://github.com/CaoMeiYouRen/rss-impact-server/commit/9329912))
+
 ## [1.5.3](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.5.2...v1.5.3) (2024-09-28)
 
 
