@@ -12,7 +12,7 @@ import { RegisterDto } from '@/models/register.dto'
 import { Role } from '@/constant/role'
 import { getAccessToken } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
-import { ENABLE_REGISTER } from '@/app.config'
+import { ENABLE_ORIGIN_LIST, ENABLE_REGISTER } from '@/app.config'
 import { CategoryService } from '@/services/category/category.service'
 
 @ApiTags('auth')
@@ -32,6 +32,10 @@ export class AuthController {
     async login(@Body() _dto: LoginDto, @CurrentUser() user: User, @Session() session: ISession) {
         if (session) {
             session.uid = user.id
+            session.cookie.secure = !ENABLE_ORIGIN_LIST.some((e) => e.startsWith('http://'))
+            if (session.cookie.secure) { // 仅在 secure 的时候 sameSite 允许设置为 none
+                session.cookie.sameSite = 'none'
+            }
         }
         return new ResponseDto({
             message: 'OK',
