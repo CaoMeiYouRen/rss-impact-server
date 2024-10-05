@@ -42,7 +42,9 @@ async function bootstrap() {
             cb(null, {})
             return
         }
-        const enableOrigin = ENABLE_ORIGIN_LIST.includes(req.header('Origin'))
+
+        const origin = req.header('Origin') || `${req.protocol}://${req.hostname}`
+        const enableOrigin = ENABLE_ORIGIN_LIST.some((url) => url.startsWith(origin))
         cb(null, {
             origin: enableOrigin,
             methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
