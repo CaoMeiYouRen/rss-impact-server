@@ -14,6 +14,7 @@ import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 import { CustomColumn } from '@/decorators/custom-column.decorator'
+import { DEFAULT_FEED_CRON } from '@/app.config'
 
 /**
  * RSS 订阅表
@@ -77,7 +78,7 @@ export class Feed extends AclBase {
     @IsIn(RssLabelList.map((e) => e.value))
     @CustomColumn({
         length: 256,
-        default: 'EVERY_10_MINUTES',
+        default: DEFAULT_FEED_CRON,
     })
     cron: string
 

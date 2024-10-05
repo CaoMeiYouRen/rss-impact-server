@@ -127,26 +127,41 @@ export const winstonLogger = WinstonModule.createLogger({
 
 export const logger = winstonLogger
 
+function parametersFormat(parameters: any[]) {
+    if (!parameters?.length) {
+        return ''
+    }
+    return `\n${parameters.map((parameter) => {
+        if (parameter instanceof Date) {
+            return `'${parameter.toISOString()}'`
+        }
+        if (typeof parameter === 'string') {
+            return `'${parameter}'`
+        }
+        return `${parameter}`
+    }).join(', ')}`
+}
+
 export class CustomLogger implements Logger {
     constructor(private readonly loggerService: LoggerService) { }
 
-    logQuery(query: string, parameters?: any[], queryRunner?: QueryRunner): any {
-        this.loggerService.verbose(`Query: ${query}${parameters ? `\nParameters: ${parameters.join()}` : ''}`)
+    logQuery(query: string, parameters?: any[]): any {
+        this.loggerService.verbose(`Query: ${query}${parametersFormat(parameters)}`)
     }
 
-    logQueryError(error: string | Error, query: string, parameters?: any[], queryRunner?: QueryRunner): any {
-        this.loggerService.error(`Query Error: ${error}\nQuery: ${query}${parameters ? `\nParameters: ${parameters.join()}` : ''}`)
+    logQueryError(error: string | Error, query: string, parameters?: any[]): any {
+        this.loggerService.error(`Query Error: ${error}\nQuery: ${query}${parametersFormat(parameters)}`)
     }
 
-    logQuerySlow(time: number, query: string, parameters?: any[], queryRunner?: QueryRunner): any {
-        this.loggerService.warn(`Slow Query (${time}ms): ${query}${parameters ? `\nParameters: ${parameters.join()}` : ''}`)
+    logQuerySlow(time: number, query: string, parameters?: any[]): any {
+        this.loggerService.warn(`Slow Query (${time}ms): ${query}${parametersFormat(parameters)}`)
     }
 
-    logSchemaBuild(message: string, queryRunner?: QueryRunner): any {
+    logSchemaBuild(message: string): any {
         this.loggerService.verbose(`Schema Build: ${message}`)
     }
 
-    logMigration(message: string, queryRunner?: QueryRunner): any {
+    logMigration(message: string): any {
         this.loggerService.log(`Migration: ${message}`)
     }
 
