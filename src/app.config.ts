@@ -112,3 +112,5 @@ export const ENABLE_ORIGIN_LIST = env.ENABLE_ORIGIN_LIST?.split(',')?.map((e) =>
 export const ARTICLE_LIMIT_MAX = Number(env.ARTICLE_LIMIT_MAX || 1000)
 
 export const DEFAULT_FEED_CRON = env.DEFAULT_FEED_CRON || 'EVERY_10_MINUTES'
+
+export const SENTRY_DSN = env.SENTRY_DSN || ''

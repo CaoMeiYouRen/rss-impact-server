@@ -3,6 +3,7 @@ import { CI, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST
 import path from 'path'
 import moduleAlias from 'module-alias'
 moduleAlias.addAlias('@', path.join(__dirname, './'))
+import './utils/sentry'
 import { NestFactory } from '@nestjs/core'
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger'
 import { NestExpressApplication } from '@nestjs/platform-express'

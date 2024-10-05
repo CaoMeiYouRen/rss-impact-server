@@ -6,6 +6,7 @@ import {
     Logger,
 } from '@nestjs/common'
 import { Response, Request } from 'express'
+import { WithSentry } from '@sentry/nestjs'
 import { HttpError } from '@/models/http-error'
 import { ErrorMessageList } from '@/constant/error-message-list'
 import { HttpStatusCode } from '@/constant/http-status-code'
@@ -27,6 +28,7 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
 
     private readonly logger = new Logger(AllExceptionsFilter.name)
 
+    @WithSentry()
     catch(e: T, host: ArgumentsHost) {
         const ctx = host.switchToHttp()
         const response = ctx.getResponse<Response>()
