@@ -48,7 +48,7 @@ async function bootstrap() {
         cb(null, {
             origin: enableOrigin && origin,
             methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
-            allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Set-Cookie'],
+            allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Set-Cookie', 'Accept', 'Accept-Language', 'Content-Language', 'Sentry-Trace', 'Baggage'],
             credentials: enableOrigin, // 本项目中还需要启用 cookie
         })
     })
