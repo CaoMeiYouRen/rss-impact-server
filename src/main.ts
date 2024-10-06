@@ -78,8 +78,7 @@ async function bootstrap() {
         app.use(setRequestId)
         app.use(jsonLogger)
     }
-    app.use(helmet({}))
-    // app.use(consoleLogger)
+    // app.use(helmet({}))
     app.useGlobalFilters(new AllExceptionsFilter())
     app.useGlobalInterceptors(new TimeoutInterceptor())
     app.useGlobalPipes(new ValidationPipe({
