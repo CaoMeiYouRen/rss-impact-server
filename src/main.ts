@@ -46,8 +46,8 @@ async function bootstrap() {
         const origin = req.header('Origin') || `${req.protocol}://${req.hostname}`
         const enableOrigin = ENABLE_ORIGIN_LIST.some((url) => url.startsWith(origin))
         cb(null, {
-            origin: enableOrigin,
-            methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+            origin: enableOrigin && origin,
+            methods: ['GET', 'PUT', 'POST', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
             allowedHeaders: ['Content-Type', 'Authorization', 'Cookie', 'Set-Cookie'],
             credentials: enableOrigin, // 本项目中还需要启用 cookie
         })
