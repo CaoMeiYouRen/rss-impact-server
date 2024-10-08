@@ -72,7 +72,7 @@
     "dotenv": "^16.4.5",
     "entities": "^5.0.0",
     "express-rate-limit": "^7.4.1",
-    "express-session": "^1.18.0",
+    "express-session": "^1.18.1",
     "file-type": "16.5.4",
     "fs-extra": "^11.2.0",
     "go-cqwebsocket": "^6.3.2",
