@@ -64,8 +64,8 @@ importers:
         specifier: ^8.34.0
         version: 8.34.0(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.4(@nestjs/common@10.4.4(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.4)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))
       '@sentry/profiling-node':
-        specifier: ^8.33.1
-        version: 8.33.1
+        specifier: ^8.34.0
+        version: 8.34.0
       art-template:
         specifier: ^4.13.2
         version: 4.13.2
@@ -1933,10 +1933,6 @@ packages:
     peerDependencies:
       semantic-release: '>=18.0.0-beta.1'
 
-  '@sentry/core@8.33.1':
-    resolution: {integrity: sha512-3SS41suXLFzxL3OQvTMZ6q92ZapELVq2l2SoWlZopcamWhog2Ru0dp2vkunq97kFHb2TzKRTlFH4+4gbT8SJug==}
-    engines: {node: '>=14.18'}
-
   '@sentry/core@8.34.0':
     resolution: {integrity: sha512-adrXCTK/zsg5pJ67lgtZqdqHvyx6etMjQW3P82NgWdj83c8fb+zH+K79Z47pD4zQjX0ou2Ws5nwwi4wJbz4bfA==}
     engines: {node: '>=14.18'}
@@ -1948,23 +1944,9 @@ packages:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
       '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0
 
-  '@sentry/node@8.33.1':
-    resolution: {integrity: sha512-0Xmlrl5nU5Bx6YybaIfztyOIiIXW5X64vcK0u94Sg4uHcDO7YvEbhflKjp669ds2I6ZQ/czqxnaAY8gM6P2SCA==}
-    engines: {node: '>=14.18'}
-
   '@sentry/node@8.34.0':
     resolution: {integrity: sha512-Q7BPp7Y8yCcwD620xoziWSOuPi/PCIdttkczvB0BGzBRYh2s702h+qNusRijRpVNZmzmYOo9m1x7Y1O/b8/v2A==}
     engines: {node: '>=14.18'}
-
-  '@sentry/opentelemetry@8.33.1':
-    resolution: {integrity: sha512-D2aE2G0DUHLLnfbOXrTjiNJKAs/RZfOBJMidI4fC2AIwqCmrp55Aex4dRq4hxd8MPLR92Kt/ikHeJxlzWB15KA==}
-    engines: {node: '>=14.18'}
-    peerDependencies:
-      '@opentelemetry/api': ^1.9.0
-      '@opentelemetry/core': ^1.25.1
-      '@opentelemetry/instrumentation': ^0.53.0
-      '@opentelemetry/sdk-trace-base': ^1.26.0
-      '@opentelemetry/semantic-conventions': ^1.27.0
 
   '@sentry/opentelemetry@8.34.0':
     resolution: {integrity: sha512-WS91L+HVKGVIzOgt0szGp+24iKOs86BZsAHGt0HWnMR4kqWP6Ak+TLvqWDCxnuzniZMxdewDGA8p5hrBAPsmsA==}
@@ -1976,21 +1958,13 @@ packages:
       '@opentelemetry/sdk-trace-base': ^1.26.0
       '@opentelemetry/semantic-conventions': ^1.27.0
 
-  '@sentry/profiling-node@8.33.1':
-    resolution: {integrity: sha512-mpgcqT/yUyWiRKjHFJ6UMjNmMgAYK4aeaMQDL7P61y5mrVxfK9vRQbKuXdP9XiyiZe06j1PSskiBEA2S1cDVJQ==}
+  '@sentry/profiling-node@8.34.0':
+    resolution: {integrity: sha512-Ta8GWhmKBIo43WeKVwE1YVMBhNb7e7py5pZXlsfEmZ4wL+UZw4Ed0Yf5FEr3LfwiyLkHzpFiq8clxEK1O6DcSg==}
     engines: {node: '>=14.18'}
     hasBin: true
 
-  '@sentry/types@8.33.1':
-    resolution: {integrity: sha512-GjoAMvwtpIemoF/IiwZ7A60g4nQv3qwzR21GvJqDVUoKD0e8pv9OLX+HyXoUat4wEDGSuDUcUyUKD2G+od73QA==}
-    engines: {node: '>=14.18'}
-
   '@sentry/types@8.34.0':
     resolution: {integrity: sha512-zLRc60CzohGCo6zNsNeQ9JF3SiEeRE4aDCP9fDDdIVCOKovS+mn1rtSip0qd0Vp2fidOu0+2yY0ALCz1A3PJSQ==}
-    engines: {node: '>=14.18'}
-
-  '@sentry/utils@8.33.1':
-    resolution: {integrity: sha512-uzuYpiiJuFY3N4WNHMBWUQX5oNv2t/TbG0OHRp3Rr7yeu+HSfD542TIp9/gMZ+G0Cxd8AmVO3wkKIFbk0TL4Qg==}
     engines: {node: '>=14.18'}
 
   '@sentry/utils@8.34.0':
@@ -10257,11 +10231,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sentry/core@8.33.1':
-    dependencies:
-      '@sentry/types': 8.33.1
-      '@sentry/utils': 8.33.1
-
   '@sentry/core@8.34.0':
     dependencies:
       '@sentry/types': 8.34.0
@@ -10275,46 +10244,6 @@ snapshots:
       '@sentry/node': 8.34.0
       '@sentry/types': 8.34.0
       '@sentry/utils': 8.34.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@sentry/node@8.33.1':
-    dependencies:
-      '@opentelemetry/api': 1.9.0
-      '@opentelemetry/context-async-hooks': 1.26.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/core': 1.26.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.53.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-amqplib': 0.42.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-connect': 0.39.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-dataloader': 0.12.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-express': 0.42.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-fastify': 0.39.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-fs': 0.15.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-generic-pool': 0.39.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-graphql': 0.43.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-hapi': 0.41.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-http': 0.53.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-ioredis': 0.43.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-kafkajs': 0.3.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-koa': 0.43.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-lru-memoizer': 0.40.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-mongodb': 0.47.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-mongoose': 0.42.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-mysql': 0.41.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-mysql2': 0.41.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-nestjs-core': 0.40.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-pg': 0.44.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-redis-4': 0.42.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation-undici': 0.6.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/resources': 1.26.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/sdk-trace-base': 1.26.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/semantic-conventions': 1.27.0
-      '@prisma/instrumentation': 5.19.1
-      '@sentry/core': 8.33.1
-      '@sentry/opentelemetry': 8.33.1(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)
-      '@sentry/types': 8.33.1
-      '@sentry/utils': 8.33.1
-      import-in-the-middle: 1.11.2
     transitivePeerDependencies:
       - supports-color
 
@@ -10358,17 +10287,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sentry/opentelemetry@8.33.1(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)':
-    dependencies:
-      '@opentelemetry/api': 1.9.0
-      '@opentelemetry/core': 1.26.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/instrumentation': 0.53.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/sdk-trace-base': 1.26.0(@opentelemetry/api@1.9.0)
-      '@opentelemetry/semantic-conventions': 1.27.0
-      '@sentry/core': 8.33.1
-      '@sentry/types': 8.33.1
-      '@sentry/utils': 8.33.1
-
   '@sentry/opentelemetry@8.34.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.53.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.26.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.27.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
@@ -10380,24 +10298,18 @@ snapshots:
       '@sentry/types': 8.34.0
       '@sentry/utils': 8.34.0
 
-  '@sentry/profiling-node@8.33.1':
+  '@sentry/profiling-node@8.34.0':
     dependencies:
-      '@sentry/core': 8.33.1
-      '@sentry/node': 8.33.1
-      '@sentry/types': 8.33.1
-      '@sentry/utils': 8.33.1
+      '@sentry/core': 8.34.0
+      '@sentry/node': 8.34.0
+      '@sentry/types': 8.34.0
+      '@sentry/utils': 8.34.0
       detect-libc: 2.0.3
       node-abi: 3.62.0
     transitivePeerDependencies:
       - supports-color
 
-  '@sentry/types@8.33.1': {}
-
   '@sentry/types@8.34.0': {}
-
-  '@sentry/utils@8.33.1':
-    dependencies:
-      '@sentry/types': 8.33.1
 
   '@sentry/utils@8.34.0':
     dependencies:
