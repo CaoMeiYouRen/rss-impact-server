@@ -53,7 +53,7 @@
     "@nestjs/serve-static": "^4.0.2",
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/typeorm": "^10.0.2",
-    "@sentry/nestjs": "^8.33.1",
+    "@sentry/nestjs": "^8.34.0",
     "@sentry/profiling-node": "^8.33.1",
     "art-template": "^4.13.2",
     "axios": "^1.7.7",
