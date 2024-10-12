@@ -1,5 +1,20 @@
 # rss-impact-server
 
+## [1.6.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.6.0...v1.6.1) (2024-10-12)
+
+
+### ♻ 代码重构
+
+* 优化 Origin 的判断 ([62cac73](https://github.com/CaoMeiYouRen/rss-impact-server/commit/62cac73))
+* 暂时移除 helmet ([3949bb7](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3949bb7))
+
+
+### 🐛 Bug 修复
+
+* 修复 cookie 设置问题 ([9612940](https://github.com/CaoMeiYouRen/rss-impact-server/commit/9612940))
+* 修复 跨域请求头中包含未允许的字段 ([7ea2c5c](https://github.com/CaoMeiYouRen/rss-impact-server/commit/7ea2c5c))
+* 修复 部分情况下 cookie 无法跨域的问题 ([326f0f5](https://github.com/CaoMeiYouRen/rss-impact-server/commit/326f0f5))
+
 # [1.6.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.5.3...v1.6.0) (2024-10-05)
 
 
