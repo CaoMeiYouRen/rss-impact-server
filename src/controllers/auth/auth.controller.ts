@@ -13,7 +13,7 @@ import { RegisterDto } from '@/models/register.dto'
 import { Role } from '@/constant/role'
 import { getAccessToken, getRandomCode, validateJwt } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
-import { DISABLE_PASSWORD_LOGIN, DISABLE_PASSWORD_REGISTER, ENABLE_REGISTER } from '@/app.config'
+import { DISABLE_PASSWORD_LOGIN, DISABLE_PASSWORD_REGISTER, ENABLE_AUTH0, ENABLE_REGISTER } from '@/app.config'
 import { CategoryService } from '@/services/category/category.service'
 import { Auth0CallbackData } from '@/models/auth0-callback-data.dto'
 import { JwtPayload } from '@/interfaces/auth0'
@@ -36,7 +36,8 @@ export class AuthController {
         return {
             enableRegister: ENABLE_REGISTER,
             disablePasswordLogin: DISABLE_PASSWORD_LOGIN,
-            disablePasswordRegister: DISABLE_PASSWORD_REGISTER,
+            disablePasswordRegister: !ENABLE_REGISTER || DISABLE_PASSWORD_REGISTER,
+            enableAuth0: ENABLE_AUTH0,
         }
     }
 

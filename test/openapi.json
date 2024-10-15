@@ -5001,12 +5001,16 @@
                     },
                     "disablePasswordRegister": {
                         "type": "boolean"
+                    },
+                    "enableAuth0": {
+                        "type": "boolean"
                     }
                 },
                 "required": [
                     "enableRegister",
                     "disablePasswordLogin",
-                    "disablePasswordRegister"
+                    "disablePasswordRegister",
+                    "enableAuth0"
                 ]
             },
             "LoginDto": {
