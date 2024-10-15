@@ -1,6 +1,6 @@
 import { ConfigParams, SessionStore, auth } from 'express-openid-connect'
 import { sessionOptions } from './session.middleware'
-import { AUTH0_BASE_URL, AUTH0_CLIENT_ID, AUTH0_ISSUER_BASE_URL, AUTH0_SECRET, TIMEOUT, __PROD__ } from '@/app.config'
+import { AUTH0_BASE_URL, AUTH0_CLIENT_ID, AUTH0_ISSUER_BASE_URL, AUTH0_SECRET, TIMEOUT } from '@/app.config'
 
 const config: ConfigParams = {
     authRequired: false, // 可选，是否所有路由都需要认证

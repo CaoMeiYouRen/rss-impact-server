@@ -6,6 +6,7 @@ import { compare } from 'bcryptjs'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from '@/db/models/user.entity'
 import { HttpError } from '@/models/http-error'
+import { DISABLE_PASSWORD_LOGIN } from '@/app.config'
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
@@ -21,6 +22,9 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
     }
 
     async validate(request: Request, username: string, password: string): Promise<any> {
+        if (!DISABLE_PASSWORD_LOGIN) {
+            throw new HttpError(401, '当前不允许通过账号密码登录！')
+        }
         const user = await this.userRepository
             .createQueryBuilder('user')
             .where({
@@ -32,6 +36,9 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
         if (!user) {
             // throw new UnauthorizedException()
             throw new HttpError(401, '用户名或密码错误！')
+        }
+        if (user.disablePasswordLogin) {
+            throw new HttpError(401, '该用户不允许通过账号密码登录！')
         }
         const hash = user.password
         // TODO 优化 compare 性能

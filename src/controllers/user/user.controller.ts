@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Session } from '@nestjs/common'
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags, OmitType } from '@nestjs/swagger'
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { compare } from 'bcryptjs'
@@ -102,7 +102,7 @@ export class UserController {
                 let hide = false
                 if (['roles'].includes(col.prop) && !user?.roles?.includes(Role.admin)) {
                     hide = true
-                } else if (['createdAt', 'updatedAt'].includes(col.prop)) {
+                } else if (['createdAt', 'updatedAt', 'accessToken'].includes(col.prop)) {
                     hide = true
                 }
                 const disabled = ['id', 'roles', 'accessToken'].includes(col.prop)

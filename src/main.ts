@@ -1,13 +1,11 @@
 // eslint-disable-next-line import/order
-import { AUTH0_ISSUER_BASE_URL, CI, ENABLE_AUTH0, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
+import { CI, ENABLE_AUTH0, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias from 'module-alias'
-moduleAlias.addAlias('@', path.join(__dirname, './'))
 import './utils/sentry'
 import { NestFactory } from '@nestjs/core'
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import helmet from 'helmet'
 import { ValidationPipe } from '@nestjs/common'
 import history from 'connect-history-api-fallback'
 import fs from 'fs-extra'
@@ -23,6 +21,7 @@ import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { AppModule } from './app.module'
 import { DATABASE_DIR } from './db/database.module'
 import { authMiddleware } from './middlewares/auth.middleware'
+moduleAlias.addAlias('@', path.join(__dirname, './'))
 
 artTemplate.defaults.onerror = (error) => logger.error(error)
 

@@ -121,3 +121,8 @@ export const AUTH0_CLIENT_ID = env.AUTH0_CLIENT_ID || ''
 export const AUTH0_SECRET = env.AUTH0_SECRET || ''
 export const AUTH0_ISSUER_BASE_URL = env.AUTH0_ISSUER_BASE_URL || ''
 export const ENABLE_AUTH0 = Boolean(AUTH0_BASE_URL && AUTH0_CLIENT_ID && AUTH0_SECRET && AUTH0_ISSUER_BASE_URL)
+
+// 禁用账号密码登录，仅在配置 Auth0 后生效
+export const DISABLE_PASSWORD_LOGIN = env.DISABLE_PASSWORD_LOGIN === 'true' && ENABLE_AUTH0
+// 禁用账号密码注册，仅在配置 Auth0 后生效
+export const DISABLE_PASSWORD_REGISTER = env.DISABLE_PASSWORD_REGISTER === 'true' && ENABLE_AUTH0

@@ -13,7 +13,7 @@ import { RegisterDto } from '@/models/register.dto'
 import { Role } from '@/constant/role'
 import { getAccessToken, getRandomCode, validateJwt } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
-import { ENABLE_ORIGIN_LIST, ENABLE_REGISTER } from '@/app.config'
+import { DISABLE_PASSWORD_REGISTER, ENABLE_REGISTER } from '@/app.config'
 import { CategoryService } from '@/services/category/category.service'
 import { Auth0CallbackData } from '@/models/auth0-callback-data.dto'
 import { JwtPayload } from '@/interfaces/auth0'
@@ -94,6 +94,9 @@ export class AuthController {
                 res.redirect(302, '/')
                 return
             }
+            if (!ENABLE_REGISTER) {
+                throw new HttpError(400, '当前不允许注册新用户！')
+            }
             // 如果邮箱未注册，则创建新用户
             user = await this.repository.save(this.repository.create({
                 username: name,
@@ -109,7 +112,7 @@ export class AuthController {
             session.uid = user.id
             session.save()
             res.redirect(302, '/')
-            
+
         } catch (error) {
             this.logger.error(error)
             if (error instanceof HttpError) {
@@ -149,6 +152,9 @@ export class AuthController {
     async register(@Body() dto: RegisterDto) {
         if (!ENABLE_REGISTER) {
             throw new HttpError(400, '当前不允许注册新用户！')
+        }
+        if (!DISABLE_PASSWORD_REGISTER) {
+            throw new HttpError(400, '当前不允许通过账号密码注册！')
         }
         const { username, password, email } = dto
         if (await this.repository.findOne({ where: [{ username }, { email }] })) {
