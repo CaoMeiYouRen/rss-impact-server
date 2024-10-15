@@ -711,6 +711,28 @@
                 ]
             }
         },
+        "/api/auth/meta": {
+            "get": {
+                "operationId": "Auth_meta",
+                "summary": "登录注册相关的元信息",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthMeta"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
         "/api/auth/login": {
             "post": {
                 "operationId": "Auth_login",
@@ -765,6 +787,60 @@
                 ]
             }
         },
+        "/api/auth/register": {
+            "get": {
+                "operationId": "Auth_registerByAuth0",
+                "summary": "基于 Auth0 注册",
+                "parameters": [
+                    {
+                        "name": "redirect",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "post": {
+                "operationId": "Auth_register",
+                "summary": "注册",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
         "/api/auth/callback": {
             "post": {
                 "operationId": "Auth_callback",
@@ -802,38 +878,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ResponseDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "auth"
-                ]
-            }
-        },
-        "/api/auth/register": {
-            "post": {
-                "operationId": "Auth_register",
-                "summary": "注册",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/RegisterDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -4945,6 +4989,25 @@
                         "example": "github|114514"
                     }
                 }
+            },
+            "AuthMeta": {
+                "type": "object",
+                "properties": {
+                    "enableRegister": {
+                        "type": "boolean"
+                    },
+                    "disablePasswordLogin": {
+                        "type": "boolean"
+                    },
+                    "disablePasswordRegister": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "enableRegister",
+                    "disablePasswordLogin",
+                    "disablePasswordRegister"
+                ]
             },
             "LoginDto": {
                 "type": "object",

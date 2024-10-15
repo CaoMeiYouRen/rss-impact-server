@@ -22,7 +22,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
     }
 
     async validate(request: Request, username: string, password: string): Promise<any> {
-        if (!DISABLE_PASSWORD_LOGIN) {
+        if (DISABLE_PASSWORD_LOGIN) {
             throw new HttpError(401, '当前不允许通过账号密码登录！')
         }
         const user = await this.userRepository

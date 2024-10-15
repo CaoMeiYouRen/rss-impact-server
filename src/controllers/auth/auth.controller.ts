@@ -13,10 +13,11 @@ import { RegisterDto } from '@/models/register.dto'
 import { Role } from '@/constant/role'
 import { getAccessToken, getRandomCode, validateJwt } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
-import { DISABLE_PASSWORD_REGISTER, ENABLE_REGISTER } from '@/app.config'
+import { DISABLE_PASSWORD_LOGIN, DISABLE_PASSWORD_REGISTER, ENABLE_REGISTER } from '@/app.config'
 import { CategoryService } from '@/services/category/category.service'
 import { Auth0CallbackData } from '@/models/auth0-callback-data.dto'
 import { JwtPayload } from '@/interfaces/auth0'
+import { AuthMeta } from '@/models/auth-meta'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -27,6 +28,17 @@ export class AuthController {
     ) { }
 
     private readonly logger: Logger = new Logger(AuthController.name)
+
+    @ApiResponse({ status: 200, type: AuthMeta })
+    @ApiOperation({ summary: '登录注册相关的元信息' })
+    @Get('meta')
+    async meta() {
+        return {
+            enableRegister: ENABLE_REGISTER,
+            disablePasswordLogin: DISABLE_PASSWORD_LOGIN,
+            disablePasswordRegister: DISABLE_PASSWORD_REGISTER,
+        }
+    }
 
     @ApiResponse({ status: 201, type: ResponseDto })
     @ApiOperation({ summary: '登录' })
@@ -47,6 +59,20 @@ export class AuthController {
     async loginByAuth0(@Res() res: Response, @Query('redirect') redirect?: string) {
         res.oidc.login({
             returnTo: redirect,
+        })
+    }
+
+    @ApiOperation({ summary: '基于 Auth0 注册' })
+    @Get('register')
+    async registerByAuth0(@Res() res: Response, @Query('redirect') redirect?: string) {
+        if (!ENABLE_REGISTER) {
+            throw new HttpError(400, '当前不允许注册新用户！')
+        }
+        res.oidc.login({
+            returnTo: redirect,
+            authorizationParams: {
+                screen_hint: 'signup',
+            },
         })
     }
 
@@ -153,7 +179,7 @@ export class AuthController {
         if (!ENABLE_REGISTER) {
             throw new HttpError(400, '当前不允许注册新用户！')
         }
-        if (!DISABLE_PASSWORD_REGISTER) {
+        if (DISABLE_PASSWORD_REGISTER) {
             throw new HttpError(400, '当前不允许通过账号密码注册！')
         }
         const { username, password, email } = dto
