@@ -102,7 +102,7 @@ export class AuthController {
 
                 session.uid = user.id
                 session.save()
-                res.redirect(302, '/')
+                res.redirect(302, `/?state=auth0_login_${getRandomCode(16)}`)
                 return
             }
             // 如果该 sub 没有被绑定，则检查邮箱是否已注册
@@ -118,7 +118,7 @@ export class AuthController {
 
                 session.uid = user.id
                 session.save()
-                res.redirect(302, '/')
+                res.redirect(302, `/?state=auth0_login_${getRandomCode(16)}`)
                 return
             }
             if (!ENABLE_REGISTER) {
@@ -138,7 +138,7 @@ export class AuthController {
             }))
             session.uid = user.id
             session.save()
-            res.redirect(302, '/')
+            res.redirect(302, `/?state=auth0_login_${getRandomCode(16)}`)
 
         } catch (error) {
             this.logger.error(error)
