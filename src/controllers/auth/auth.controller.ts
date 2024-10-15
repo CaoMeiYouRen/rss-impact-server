@@ -58,6 +58,9 @@ export class AuthController {
     @ApiOperation({ summary: '基于 Auth0 登录' })
     @Get('login')
     async loginByAuth0(@Res() res: Response, @Query('redirect') redirect?: string) {
+        if (!res.oidc) {
+            throw new HttpError(400, '未初始化 Auth0 相关配置！')
+        }
         res.oidc.login({
             returnTo: redirect,
         })
@@ -68,6 +71,9 @@ export class AuthController {
     async registerByAuth0(@Res() res: Response, @Query('redirect') redirect?: string) {
         if (!ENABLE_REGISTER) {
             throw new HttpError(400, '当前不允许注册新用户！')
+        }
+        if (!res.oidc) {
+            throw new HttpError(400, '未初始化 Auth0 相关配置！')
         }
         res.oidc.login({
             returnTo: redirect,
@@ -152,7 +158,7 @@ export class AuthController {
     @ApiResponse({ status: 201, type: ResponseDto })
     @ApiOperation({ summary: '登出' })
     @Post('logout')
-    async logout(@Session() session: ISession) {
+    async logout(@Session() session: ISession, @Res() res: Response) {
         return new Promise((resolve, reject) => {
             if (!session) {
                 return resolve(new ResponseDto({

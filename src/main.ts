@@ -20,7 +20,7 @@ import { limiter } from './middlewares/limit.middleware'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { AppModule } from './app.module'
 import { DATABASE_DIR } from './db/database.module'
-import { authMiddleware } from './middlewares/auth.middleware'
+
 moduleAlias.addAlias('@', path.join(__dirname, './'))
 
 artTemplate.defaults.onerror = (error) => logger.error(error)
@@ -102,8 +102,9 @@ async function bootstrap() {
         ],
         htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
     })) // 解决单页应用程序(SPA)重定向问题
-
     if (ENABLE_AUTH0) {
+        // 使用动态 import，否则 auth.middleware 未初始化会导致 Nest 启动失败
+        const { authMiddleware } = await import('./middlewares/auth.middleware')
         app.use(authMiddleware)
     }
 
