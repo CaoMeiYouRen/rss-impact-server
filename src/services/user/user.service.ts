@@ -27,6 +27,8 @@ export class UserService implements OnApplicationBootstrap {
                 email: ADMIN_EMAIL,
                 password: ADMIN_PASSWORD,
                 roles: [Role.admin, Role.user],
+                emailVerified: true,
+                disablePasswordLogin: false,
             })
             this.logger.log('初始化 admin 用户成功')
         }

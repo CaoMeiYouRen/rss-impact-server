@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/order
-import { CI, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
+import { AUTH0_ISSUER_BASE_URL, CI, ENABLE_AUTH0, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias from 'module-alias'
 moduleAlias.addAlias('@', path.join(__dirname, './'))
@@ -22,6 +22,7 @@ import { limiter } from './middlewares/limit.middleware'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { AppModule } from './app.module'
 import { DATABASE_DIR } from './db/database.module'
+import { authMiddleware } from './middlewares/auth.middleware'
 
 artTemplate.defaults.onerror = (error) => logger.error(error)
 
@@ -90,7 +91,6 @@ async function bootstrap() {
         enableDebugMessages: __DEV__,
     }))
     app.use(sessionMiddleware)
-
     app.use(history({
         rewrites: [
             // 匹配 /api 开头的路由,不进行回退
@@ -103,6 +103,10 @@ async function bootstrap() {
         ],
         htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
     })) // 解决单页应用程序(SPA)重定向问题
+
+    if (ENABLE_AUTH0) {
+        app.use(authMiddleware)
+    }
 
     await app.listen(PORT)
     logger.log(`应用访问地址为 http://127.0.0.1:${PORT}`)

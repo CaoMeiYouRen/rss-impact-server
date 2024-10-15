@@ -15,8 +15,10 @@ import * as betterBytes from 'better-bytes'
 import ms from 'ms'
 import PostlightParser from '@cao-mei-you-ren/postlight_parser'
 import { decodeXML } from 'entities'
+import { JwksClient } from 'jwks-rsa'
+import * as jwt from 'jsonwebtoken'
 import { ajax } from './ajax'
-import { TZ } from '@/app.config'
+import { AUTH0_ISSUER_BASE_URL, TZ } from '@/app.config'
 // TODO 考虑支持国际化
 import 'dayjs/locale/zh-cn'
 
@@ -679,4 +681,67 @@ export function unescapeMarkdown(text: string) {
     }
 
     return text.replace(/\\[`*_#\\[\]()!{}|<>&]|&lt;|&gt;|&amp;/g, (match) => unescapeChars[match])
+}
+
+let jwksClient: JwksClient | null = null
+if (AUTH0_ISSUER_BASE_URL) {
+    jwksClient = new JwksClient({
+        jwksUri: `${AUTH0_ISSUER_BASE_URL}/.well-known/jwks.json`,
+    })
+}
+
+export async function getSigningKey(kid: string): Promise<string> {
+    if (!jwksClient) {
+        throw new Error('jwksClient is not initialized')
+    }
+    const key = await jwksClient.getSigningKey(kid)
+    return key.getPublicKey()
+}
+
+/**
+ *
+ * 校验 auth0 jwt
+ * @author CaoMeiYouRen
+ * @date 2024-10-14
+ * @export
+ * @param token
+ */
+export async function validateJwt(token: string): Promise<any> {
+    if (!jwksClient) {
+        throw new Error('jwksClient is not initialized')
+    }
+    const decodedToken = jwt.decode(token, { complete: true })
+    if (!decodedToken) {
+        throw new Error('Invalid token')
+    }
+
+    const kid = decodedToken.header.kid
+    const publicKey = await getSigningKey(kid)
+
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, publicKey, { algorithms: ['RS256'] }, (err, decoded) => {
+            if (err) {
+                reject(err)
+                return
+            }
+            resolve(decoded)
+        })
+    })
+}
+
+/**
+ * 随机生成验证码，包含字母和数字
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-10-15
+ * @export
+ * @param len
+ */
+export function getRandomCode(len: number) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let code = ''
+    for (let i = 0; i < len; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    return code
 }

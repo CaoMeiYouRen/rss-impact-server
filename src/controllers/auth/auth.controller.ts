@@ -1,8 +1,9 @@
-import { Body, Controller, Logger, Post, Session, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Logger, Post, Query, Res, Session, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { Response } from 'express'
 import { User } from '@/db/models/user.entity'
 import { CurrentUser } from '@/decorators/current-user.decorator'
 import { LoginDto } from '@/models/login.dto'
@@ -10,10 +11,12 @@ import { ResponseDto } from '@/models/response.dto'
 import { ISession } from '@/interfaces/session'
 import { RegisterDto } from '@/models/register.dto'
 import { Role } from '@/constant/role'
-import { getAccessToken } from '@/utils/helper'
+import { getAccessToken, getRandomCode, validateJwt } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
 import { ENABLE_ORIGIN_LIST, ENABLE_REGISTER } from '@/app.config'
 import { CategoryService } from '@/services/category/category.service'
+import { Auth0CallbackData } from '@/models/auth0-callback-data.dto'
+import { JwtPayload } from '@/interfaces/auth0'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -39,10 +42,87 @@ export class AuthController {
         })
     }
 
+    @ApiOperation({ summary: '基于 Auth0 登录' })
+    @Get('login')
+    async loginByAuth0(@Res() res: Response, @Query('redirect') redirect?: string) {
+        res.oidc.login({
+            returnTo: redirect,
+        })
+    }
+
+    @ApiOperation({ summary: '处理 Auth0 回调' })
+    @Post('callback')
+    async callback(@Body() body: Auth0CallbackData, @Session() session: ISession, @Res() res: Response) {
+        // 处理 auth0 回调登录
+        try {
+            const idToken = body.id_token
+            // this.logger.debug(idToken, 'idToken')
+            const payload: JwtPayload = await validateJwt(idToken)
+            this.logger.debug(payload, 'payload')
+            const { sub: auth0Id, email, email_verified, name, picture } = payload
+            // 根据 sub 判断登录的第三方账号
+            let user: User = null
+            // 检查该 sub 是否已经被绑定
+            user = await this.repository.findOne({ where: { auth0Id } })
+            // 如果该 sub 已经被绑定，则同步用户信息
+            if (user) {
+                // 同步用户信息
+                // user.username = user.username || name
+                user.email = email
+                user.emailVerified = email_verified
+                user.avatar = picture
+                user = await this.repository.save(user)
+
+                session.uid = user.id
+                session.save()
+                res.redirect(302, '/')
+                return
+            }
+            // 如果该 sub 没有被绑定，则检查邮箱是否已注册
+            user = await this.repository.findOne({ where: { email } })
+            // 如果该邮箱已经被注册，则同步用户信息
+            if (user) {
+                // 同步用户信息
+                user.auth0Id = auth0Id
+                // user.email = email
+                user.emailVerified = email_verified
+                user.avatar = picture
+                user = await this.repository.save(user)
+
+                session.uid = user.id
+                session.save()
+                res.redirect(302, '/')
+                return
+            }
+            // 如果邮箱未注册，则创建新用户
+            user = await this.repository.save(this.repository.create({
+                username: name,
+                auth0Id,
+                email,
+                emailVerified: email_verified,
+                avatar: picture,
+                roles: [Role.user],
+                accessToken: getAccessToken('rss-impact'),
+                password: getRandomCode(32), // 生成随机密码
+                disablePasswordLogin: true, // 不允许密码登录
+            }))
+            session.uid = user.id
+            session.save()
+            res.redirect(302, '/')
+            
+        } catch (error) {
+            this.logger.error(error)
+            if (error instanceof HttpError) {
+                throw error
+            }
+            throw new HttpError(400, '无效的 token')
+        }
+    }
+
     @ApiResponse({ status: 201, type: ResponseDto })
     @ApiOperation({ summary: '登出' })
     @Post('logout')
-    async logout(@CurrentUser() user: User, @Session() session: ISession) {
+    async logout(@Session() session: ISession) {
         return new Promise((resolve, reject) => {
             if (!session) {
                 return resolve(new ResponseDto({

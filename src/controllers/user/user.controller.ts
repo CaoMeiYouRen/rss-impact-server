@@ -98,14 +98,20 @@ export class UserController {
             title: '个人信息',
             submitBtn: true,
             emptyBtn: false,
-            column: initAvueCrudColumn(OmitType(User, ['createdAt', 'updatedAt', 'password', 'accessToken'] as const)).map((col) => {
-                const hide = ['roles'].includes(col.prop) && !user?.roles?.includes(Role.admin)
-                const disabled = ['id', 'roles'].includes(col.prop)
-                const readonly = ['id', 'roles'].includes(col.prop)
+            column: initAvueCrudColumn(User).map((col) => {
+                let hide = false
+                if (['roles'].includes(col.prop) && !user?.roles?.includes(Role.admin)) {
+                    hide = true
+                } else if (['createdAt', 'updatedAt'].includes(col.prop)) {
+                    hide = true
+                }
+                const disabled = ['id', 'roles', 'accessToken'].includes(col.prop)
+                const readonly = ['id', 'roles', 'accessToken'].includes(col.prop)
+
                 return {
                     ...col,
-                    readonly,
                     hide,
+                    readonly,
                     disabled,
                     span: 24,
                     labelWidth: 120,

@@ -741,6 +741,53 @@
                 "tags": [
                     "auth"
                 ]
+            },
+            "get": {
+                "operationId": "Auth_loginByAuth0",
+                "summary": "基于 Auth0 登录",
+                "parameters": [
+                    {
+                        "name": "redirect",
+                        "required": true,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/api/auth/callback": {
+            "post": {
+                "operationId": "Auth_callback",
+                "summary": "处理 Auth0 回调",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Auth0CallbackData"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
             }
         },
         "/api/auth/logout": {
@@ -4666,6 +4713,21 @@
                         "title": "邮箱",
                         "example": "admin@example.com"
                     },
+                    "emailVerified": {
+                        "type": "boolean",
+                        "title": "邮箱是否已验证",
+                        "example": true
+                    },
+                    "disablePasswordLogin": {
+                        "type": "boolean",
+                        "title": "禁用密码登录",
+                        "example": false
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "title": "头像",
+                        "example": "URL_ADDRESS"
+                    },
                     "roles": {
                         "title": "角色",
                         "example": [
@@ -4681,6 +4743,12 @@
                         "title": "接口访问令牌",
                         "description": "接口访问令牌，部分情况可替代账号密码",
                         "example": "rss-impact:fef26d6e-040f-4a7b-8d6a-4e4f12e107b6"
+                    },
+                    "auth0Id": {
+                        "type": "string",
+                        "title": "Auth0 ID",
+                        "description": "绑定的 auth0 账号",
+                        "example": "github|114514"
                     }
                 },
                 "required": [
@@ -4689,6 +4757,8 @@
                     "updatedAt",
                     "username",
                     "email",
+                    "emailVerified",
+                    "disablePasswordLogin",
                     "roles",
                     "accessToken"
                 ]
@@ -4780,6 +4850,21 @@
                         "title": "邮箱",
                         "example": "admin@example.com"
                     },
+                    "emailVerified": {
+                        "type": "boolean",
+                        "title": "邮箱是否已验证",
+                        "example": true
+                    },
+                    "disablePasswordLogin": {
+                        "type": "boolean",
+                        "title": "禁用密码登录",
+                        "example": false
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "title": "头像",
+                        "example": "URL_ADDRESS"
+                    },
                     "roles": {
                         "title": "角色",
                         "example": [
@@ -4789,11 +4874,19 @@
                         "items": {
                             "type": "string"
                         }
+                    },
+                    "auth0Id": {
+                        "type": "string",
+                        "title": "Auth0 ID",
+                        "description": "绑定的 auth0 账号",
+                        "example": "github|114514"
                     }
                 },
                 "required": [
                     "username",
                     "email",
+                    "emailVerified",
+                    "disablePasswordLogin",
                     "roles"
                 ]
             },
@@ -4820,6 +4913,21 @@
                         "title": "邮箱",
                         "example": "admin@example.com"
                     },
+                    "emailVerified": {
+                        "type": "boolean",
+                        "title": "邮箱是否已验证",
+                        "example": true
+                    },
+                    "disablePasswordLogin": {
+                        "type": "boolean",
+                        "title": "禁用密码登录",
+                        "example": false
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "title": "头像",
+                        "example": "URL_ADDRESS"
+                    },
                     "roles": {
                         "title": "角色",
                         "example": [
@@ -4829,6 +4937,12 @@
                         "items": {
                             "type": "string"
                         }
+                    },
+                    "auth0Id": {
+                        "type": "string",
+                        "title": "Auth0 ID",
+                        "description": "绑定的 auth0 账号",
+                        "example": "github|114514"
                     }
                 }
             },
@@ -4850,6 +4964,23 @@
                 "required": [
                     "username",
                     "password"
+                ]
+            },
+            "Auth0CallbackData": {
+                "type": "object",
+                "properties": {
+                    "id_token": {
+                        "type": "string"
+                    },
+                    "state": {
+                        "type": "string"
+                    },
+                    "sid": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id_token"
                 ]
             },
             "RegisterDto": {

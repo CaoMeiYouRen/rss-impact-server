@@ -22,7 +22,7 @@ if (REDIS_URL) {
     }) as Store
 }
 // TODO 考虑增加 session 管理
-const sessionOptions: SessionOptions = {
+export const sessionOptions: SessionOptions = {
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,

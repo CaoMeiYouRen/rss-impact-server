@@ -1,7 +1,7 @@
 
 import { Entity, BeforeInsert, BeforeUpdate } from 'typeorm'
 import { hash } from 'bcryptjs'
-import { IsEmail } from 'class-validator'
+import { IsEmail, IsUrl } from 'class-validator'
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
 
 import { Base } from './base.entity'
@@ -62,6 +62,42 @@ export class User extends Base {
     })
     email: string
 
+    // 邮箱是否验证
+    @SetAclCrudField({
+        search: true,
+        hide: true,
+    })
+    @ApiProperty({ title: '邮箱是否已验证', example: true })
+    @CustomColumn({
+        default: false,
+        nullable: true,
+    })
+    emailVerified: boolean
+
+    // 禁用密码登录，原因是第三方登录时，密码是随机生成的
+    @SetAclCrudField({
+        search: true,
+        hide: true,
+    })
+    @ApiProperty({ title: '禁用密码登录', example: false })
+    @CustomColumn({
+        default: false,
+        nullable: true,
+    })
+    disablePasswordLogin: boolean
+
+    // 头像
+    @SetAclCrudField({
+        hide: true,
+    })
+    @ApiProperty({ title: '头像', example: 'URL_ADDRESS' })
+    @IsUrl({})
+    @CustomColumn({
+        length: 1024,
+        nullable: true,
+    })
+    avatar?: string
+
     @SetAclCrudField({
         search: true,
     })
@@ -93,6 +129,19 @@ export class User extends Base {
             this.accessToken = getAccessToken('rss-impact')
         }
     }
+
+    @SetAclCrudField({
+        search: true,
+        hide: true,
+    })
+    @ApiProperty({ title: 'Auth0 ID', description: '绑定的 auth0 账号', example: 'github|114514' })
+    @CustomColumn({
+        index: true,
+        unique: true,
+        length: 128,
+        nullable: true,
+    })
+    auth0Id?: string
 
 }
 

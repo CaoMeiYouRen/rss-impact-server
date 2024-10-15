@@ -114,3 +114,10 @@ export const ARTICLE_LIMIT_MAX = Number(env.ARTICLE_LIMIT_MAX || 1000)
 export const DEFAULT_FEED_CRON = env.DEFAULT_FEED_CRON || 'EVERY_10_MINUTES'
 
 export const SENTRY_DSN = env.SENTRY_DSN || ''
+
+// auth0 配置
+export const AUTH0_BASE_URL = env.AUTH0_BASE_URL || ''
+export const AUTH0_CLIENT_ID = env.AUTH0_CLIENT_ID || ''
+export const AUTH0_SECRET = env.AUTH0_SECRET || ''
+export const AUTH0_ISSUER_BASE_URL = env.AUTH0_ISSUER_BASE_URL || ''
+export const ENABLE_AUTH0 = Boolean(AUTH0_BASE_URL && AUTH0_CLIENT_ID && AUTH0_SECRET && AUTH0_ISSUER_BASE_URL)
