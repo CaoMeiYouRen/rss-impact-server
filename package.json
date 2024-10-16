@@ -123,7 +123,7 @@
     "@lint-md/cli": "^2.0.0",
     "@nestjs/cli": "^10.4.5",
     "@nestjs/schematics": "^10.2.0",
-    "@nestjs/testing": "^10.4.4",
+    "@nestjs/testing": "^10.4.5",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
