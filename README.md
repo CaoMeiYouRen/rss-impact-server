@@ -64,6 +64,7 @@ https://rss-demo.cmyr.dev
 - 支持 SQLite/MySQL/Postgres 作为数据库 (详见：[数据库配置](./docs/usage.md#数据库配置))。
 - 支持配置代理。
 - 支持自动抓取全文。无需配置 css 查询器。
+- 支持 [Auth0](https://auth0.com/) 第三方一键登录。
 
 ## 📦 依赖要求
 
@@ -72,58 +73,7 @@ https://rss-demo.cmyr.dev
 
 ## 🚀 部署
 
-### Docker 镜像
-
-支持两种注册表：
-
-- Docker Hub: [`caomeiyouren/rss-impact-server`](https://hub.docker.com/r/caomeiyouren/rss-impact-server)
-- GitHub: [`ghcr.io/caomeiyouren/rss-impact-server`](https://github.com/CaoMeiYouRen/rss-impact-server/pkgs/container/rss-impact-server)
-
-支持以下架构：
-
-- `linux/amd64`
-- ~~`linux/arm64`~~
-
-> linux/arm64 尚未进行测试
-
-有以下几种 tags：
-
-| Tag            | 描述     | 举例          |
-| :------------- | :------- | :------------ |
-| `latest`       | 最新     | `latest`      |
-| `{YYYY-MM-DD}` | 特定日期 | `2024-06-07`  |
-| `{sha-hash}`   | 特定提交 | `sha-0891338` |
-| `{version}`    | 特定版本 | `1.2.3`       |
-
-### Docker Compose 部署（推荐）
-
-下载 [docker-compose.yml](https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/docker-compose.yml)
-
-```sh
-wget https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/docker-compose.yml
-```
-
-检查有无需要修改的配置
-
-```sh
-vim docker-compose.yml  # 也可以是你喜欢的编辑器
-```
-
-> 在公网部署时请务必修改 ADMIN_PASSWORD、SESSION_SECRET 环境变量
->
-> 如果要使用自定义查询功能，请修改 BASE_URL 环境变量
-
-启动
-
-```sh
-docker-compose up -d
-```
-
-在浏览器中打开 `http://{Server IP}:3000` 即可查看结果
-
-### 更多部署方式
-
-更多部署方式请查看 [部署文档](./docs/deploy.md)
+部署方式请查看 [部署文档](./docs/deploy.md)
 
 ## 👨‍💻 使用
 

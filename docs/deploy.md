@@ -223,7 +223,7 @@ CACHE_CONTENT_EXPIRE=3600
 
 `MySQL`  和 `PostgreSQL` 数据库**不会**优先支持，可能存在兼容性问题。如果遇到此类问题，请提 [issue](https://github.com/CaoMeiYouRen/rss-impact-server/issues)。 
 
-> 如果你需要寻找一个免费的 MySQL/PostgreSQL 数据库，请参考 [ripienaar/free-for-dev](https://github.com/ripienaar/free-for-dev) 中列出的云服务商，其中包含了一些免费 MySQL/PostgreSQL 数据库服务。。
+> 如果你需要寻找一个免费的 MySQL/PostgreSQL 数据库，请参考 [ripienaar/free-for-dev](https://github.com/ripienaar/free-for-dev) 中列出的云服务商，其中包含了一些免费 MySQL/PostgreSQL 数据库服务。
 
 ## 使用 SQLite 数据库
 
