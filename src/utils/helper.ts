@@ -472,6 +472,54 @@ export function splitString(str: string, maxLength: number): string[] {
 }
 
 /**
+ * 辅助函数，将字符串分割为指定长度的块，考虑换行符
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-10-17
+ * @export
+ * @param str
+ * @param maxLength
+ */
+export function splitStringWithLineBreak(str: string, maxLength: number): string[] {
+    if (maxLength <= 0 || !str?.length) {
+        return [str] // 如果 maxLength 为 0 或负数,或者输入字符串为空,返回包含原始字符串的数组
+    }
+
+    const chunks: string[] = []
+    let start = 0
+
+    while (start < str.length) {
+        let end = start + maxLength
+
+        // 检查是否在 maxLength 处有换行符
+        if (end < str.length && str[end] !== '\n') {
+            // 查找最近的换行符
+            const lastLineBreak = str.lastIndexOf('\n', end)
+            if (lastLineBreak > start) {
+                end = lastLineBreak + 1 // 包含换行符
+            } else {
+                // 如果没有找到换行符，则查找下一个换行符
+                const nextLineBreak = str.indexOf('\n', end)
+                if (nextLineBreak !== -1) {
+                    end = nextLineBreak + 1 // 包含换行符
+                }
+            }
+        }
+
+        // 如果 end 超过了字符串长度，则调整到字符串末尾
+        if (end > str.length) {
+            end = str.length
+        }
+
+        // 将当前块添加到 chunks 中
+        chunks.push(str.slice(start, end))
+        start = end
+    }
+
+    return chunks
+}
+
+/**
  * 检测是否为 http/https 开头的 url
  * @param url
  * @returns

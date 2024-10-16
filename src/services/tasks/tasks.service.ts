@@ -24,7 +24,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, AI_LIMIT_MAX, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DATABASE_TYPE, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
-import { getAllUrls, download, getMd5ByStream, timeFormat, splitString, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority } from '@/utils/helper'
+import { getAllUrls, download, getMd5ByStream, timeFormat, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority, splitStringWithLineBreak } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -461,7 +461,7 @@ export class TasksService implements OnApplicationBootstrap {
             // 合并推送
             const desp = articlesFormat(articles, articleFormatoption)
             // 如果过长，则考虑分割推送，但至多不超过 5 条
-            const chunks = splitString(desp, maxLength).slice(0, 5) // 分割字符串
+            const chunks = splitStringWithLineBreak(desp, maxLength).slice(0, 5) // 分割字符串
             chunks.forEach((chunk) => {
                 notifications.push({
                     title,
@@ -474,7 +474,7 @@ export class TasksService implements OnApplicationBootstrap {
             articles.forEach((article) => {
                 const { text: desp, title: itemTitle } = articleItemFormat(article, articleFormatoption)
                 // 如果过长，则考虑分割推送，但至多不超过 3 条
-                const chunks = splitString(desp, maxLength).slice(0, 3) // 分割字符串
+                const chunks = splitStringWithLineBreak(desp, maxLength).slice(0, 3) // 分割字符串
                 chunks.forEach((chunk) => {
                     notifications.push({
                         title: itemTitle,

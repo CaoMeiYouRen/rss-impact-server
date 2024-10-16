@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown, escapeMarkdown, unescapeMarkdown } from './helper';
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown, escapeMarkdown, unescapeMarkdown, splitStringWithLineBreak } from './helper';
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {
@@ -444,5 +444,83 @@ describe('unescapeMarkdown', () => {
 
     it('should unescape ampersands', () => {
         expect(unescapeMarkdown('AT&amp;T')).toBe('AT&T');
+    });
+});
+
+describe('splitStringWithLineBreak', () => {
+    it('should return an array with the original string if maxLength is 0 or negative', () => {
+        expect(splitStringWithLineBreak('', 0)).toEqual(['']);
+        expect(splitStringWithLineBreak('test', -1)).toEqual(['test']);
+    });
+
+    it('should return an array with the original string if the input string is empty', () => {
+        expect(splitStringWithLineBreak('', 10)).toEqual(['']);
+    });
+
+    it('should split the string into chunks of the specified maxLength', () => {
+        const str = "Hello, world!\nThis is a test.\nAnother line.";
+        const maxLength = 20;
+        const result = splitStringWithLineBreak(str, maxLength);
+        expect(result).toEqual([
+            "Hello, world!\n",
+            "This is a test.\n",
+            "Another line."
+        ]);
+    });
+
+    it('should handle strings without line breaks', () => {
+        const str = "This is a test without line breaks.";
+        const maxLength = 10;
+        const result = splitStringWithLineBreak(str, maxLength);
+        expect(result).toEqual([
+            "This is a ",
+            "test witho",
+            "ut line br",
+            "eaks."
+        ]);
+    });
+
+    it('should handle strings with multiple consecutive line breaks', () => {
+        const str = "Line 1\n\nLine 2\n\nLine 3";
+        const maxLength = 10;
+        const result = splitStringWithLineBreak(str, maxLength);
+        expect(result).toEqual([
+            "Line 1\n\n",
+            "Line 2\n\n",
+            "Line 3"
+        ]);
+    });
+
+    it('should handle strings with trailing line breaks', () => {
+        const str = "Line 1\nLine 2\nLine 3\n";
+        const maxLength = 10;
+        const result = splitStringWithLineBreak(str, maxLength);
+        expect(result).toEqual([
+            "Line 1\n",
+            "Line 2\n",
+            "Line 3\n"
+        ]);
+    });
+
+    it('should handle strings with leading line breaks', () => {
+        const str = "\nLine 1\nLine 2\nLine 3";
+        const maxLength = 10;
+        const result = splitStringWithLineBreak(str, maxLength);
+        expect(result).toEqual([
+            "\nLine 1\n",
+            "Line 2\n",
+            "Line 3"
+        ]);
+    });
+
+    it('should handle strings with mixed content', () => {
+        const str = "This is a test.\nAnother line with more text.\nAnd another line.";
+        const maxLength = 20;
+        const result = splitStringWithLineBreak(str, maxLength);
+        expect(result).toEqual([
+            "This is a test.\n",
+            "Another line with more text.\n",
+            "And another line."
+        ]);
     });
 });
