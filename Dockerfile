@@ -5,7 +5,7 @@ FROM caomeiyouren/alpine-nodejs-minimize:latest AS runtime
 # 前端构建阶段
 FROM nodejs AS frontend-builder
 # 如果前端更新了，但后端没有更新，需要发版时，修改该变量
-ENV FRONTEND_VERSION='0.0.8'
+ENV FRONTEND_VERSION='0.0.9'
 
 WORKDIR /frontend
 
