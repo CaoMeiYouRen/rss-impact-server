@@ -65,9 +65,8 @@ export class User extends Base {
     // 邮箱是否验证
     @SetAclCrudField({
         search: true,
-        hide: true,
     })
-    @ApiProperty({ title: '邮箱是否已验证', example: true })
+    @ApiProperty({ title: '邮箱已验证', example: true })
     @CustomColumn({
         default: false,
         nullable: true,
@@ -77,7 +76,6 @@ export class User extends Base {
     // 禁用密码登录，原因是第三方登录时，密码是随机生成的
     @SetAclCrudField({
         search: true,
-        hide: true,
     })
     @ApiProperty({ title: '禁用密码登录', example: false })
     @CustomColumn({
@@ -88,7 +86,7 @@ export class User extends Base {
 
     // 头像
     @SetAclCrudField({
-        hide: true,
+        type: 'img',
     })
     @ApiProperty({ title: '头像', example: 'URL_ADDRESS' })
     @IsUrl({})
@@ -132,7 +130,9 @@ export class User extends Base {
 
     @SetAclCrudField({
         search: true,
-        hide: true,
+        addDisplay: false,
+        editDisabled: true,
+        readonly: true,
     })
     @ApiProperty({ title: 'Auth0 ID', description: '绑定的 auth0 账号', example: 'github|114514' })
     @CustomColumn({

@@ -100,10 +100,12 @@ export class UserController {
             emptyBtn: false,
             column: initAvueCrudColumn(User).map((col) => {
                 let hide = false
-                if (['roles'].includes(col.prop) && !user?.roles?.includes(Role.admin)) {
+                const showProps = ['id', 'username', 'email']
+                if (!showProps.includes(col.prop)) {
                     hide = true
-                } else if (['createdAt', 'updatedAt', 'accessToken'].includes(col.prop)) {
-                    hide = true
+                }
+                if (['roles'].includes(col.prop) && user?.roles?.includes(Role.admin)) {
+                    hide = false
                 }
                 const disabled = ['id', 'roles', 'accessToken'].includes(col.prop)
                 const readonly = ['id', 'roles', 'accessToken'].includes(col.prop)
