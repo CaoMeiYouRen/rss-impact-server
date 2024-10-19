@@ -1,5 +1,27 @@
 # rss-impact-server
 
+# [1.7.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.6.1...v1.7.0) (2024-10-19)
+
+
+### ♻ 代码重构
+
+* 优化 auth0 登录时增加 state ([d4afbb3](https://github.com/CaoMeiYouRen/rss-impact-server/commit/d4afbb3))
+* 优化 用户管理和个人信息页面 ([b8b0b49](https://github.com/CaoMeiYouRen/rss-impact-server/commit/b8b0b49))
+* 优化超长文本分割，修复文本断句问题 ([f9dad15](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f9dad15)), closes [#329](https://github.com/CaoMeiYouRen/rss-impact-server/issues/329)
+
+
+### ✨ 新功能
+
+* 增加 auth0 登录/注册 功能 ([e5b3c9a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/e5b3c9a))
+* 增加 禁用账号密码登录/注册 配置项 ([bee55b0](https://github.com/CaoMeiYouRen/rss-impact-server/commit/bee55b0))
+
+
+### 🐛 Bug 修复
+
+* 修复 auth0 未初始化时，nest 启动失败的问题 ([5bed6bf](https://github.com/CaoMeiYouRen/rss-impact-server/commit/5bed6bf))
+* 修复 禁用登录注册的逻辑错误 ([cedf805](https://github.com/CaoMeiYouRen/rss-impact-server/commit/cedf805))
+* 修复 缺少 Auth0 配置字段的问题 ([b8fd5f5](https://github.com/CaoMeiYouRen/rss-impact-server/commit/b8fd5f5))
+
 ## [1.6.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.6.0...v1.6.1) (2024-10-12)
 
 
