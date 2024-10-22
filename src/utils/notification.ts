@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios'
-import { ServerChanTurbo, CustomEmail, Dingtalk, WechatRobot, WechatApp, PushPlus, IGot, Qmsg, XiZhi, PushDeer, Discord, OneBot, Telegram } from 'push-all-in-one'
+import { ServerChanTurbo, ServerChanV3, CustomEmail, Dingtalk, WechatRobot, WechatApp, PushPlus, IGot, Qmsg, XiZhi, PushDeer, Discord, OneBot, Telegram } from 'push-all-in-one'
 import { mdToCqcode } from './helper'
 import { NotificationConfig } from '@/models/notification-config'
 
@@ -22,6 +22,11 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
             const { SCTKEY } = config as NotificationConfig<typeof type>['config']
             const serverChanTurbo = new ServerChanTurbo(SCTKEY)
             return serverChanTurbo.send(title, desp)
+        }
+        case 'ServerChanV3': {
+            const { SERVER_CHAN_V3_KEY } = config as NotificationConfig<typeof type>['config']
+            const serverChanV3 = new ServerChanV3(SERVER_CHAN_V3_KEY)
+            return serverChanV3.send(title, desp)
         }
         case 'CustomEmail': {
             const customEmail = new CustomEmail(config as NotificationConfig<typeof type>['config'])

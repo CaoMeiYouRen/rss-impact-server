@@ -16,6 +16,9 @@ export type PushConfig = {
     ServerChanTurbo?: {
         SCTKEY: string
     }
+    ServerChanV3?: {
+        SERVER_CHAN_V3_KEY: string
+    }
     CoolPush?: {
         SKEY: string
         PUSH_TYPE: any
@@ -93,6 +96,7 @@ export type PushType = keyof PushConfig
 
 export const PushTypeMap: Record<PushType, string> = {
     ServerChanTurbo: 'Server酱·Turbo',
+    ServerChanV3: 'Server 酱³',
     Dingtalk: '钉钉',
     CustomEmail: '自定义邮件',
     WechatRobot: '企业微信群机器人',
@@ -108,6 +112,7 @@ export const PushTypeMap: Record<PushType, string> = {
     Telegram: 'Telegram',
     Discord: 'Discord',
     OneBot: 'OneBot',
+
 }
 
 export const PushTypeList = Object.entries(PushTypeMap).map(([value, label]) => ({
@@ -123,6 +128,9 @@ export type PushConfigType = {
 export const DEFAULT_PUSH_CONFIG: Required<PushConfig> = {
     ServerChanTurbo: {
         SCTKEY: '',
+    },
+    ServerChanV3: {
+        SERVER_CHAN_V3_KEY: '',
     },
     CoolPush: {
         SKEY: '',
@@ -199,6 +207,7 @@ export const DEFAULT_PUSH_CONFIG: Required<PushConfig> = {
 export type ParamConfig = Record<PushType, Field[]>
 
 export const DEFAULT_PARAM_CONFIG: ParamConfig = {
+    ServerChanV3: [],
     ServerChanTurbo: [],
     CoolPush: [],
     Dingtalk: [],
@@ -226,6 +235,9 @@ export type PushConfigMapType = {
 export const PUSH_CONFIG_MAP: PushConfigMapType = {
     ServerChanTurbo: {
         SCTKEY: 'SCTKey',
+    },
+    ServerChanV3: {
+        SERVER_CHAN_V3_KEY: '推送Key',
     },
     CoolPush: {
         SKEY: 'Skey',
