@@ -104,6 +104,10 @@ jobs:
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           platforms: linux/amd64,linux/arm64
+          build-args: |
+            VITE_BAIDU_STATISTICS=${{ secrets.VITE_BAIDU_STATISTICS }}
+            VITE_DOMAIN=${{ secrets.VITE_DOMAIN }}
+            VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }}
       - name: Docker Hub README & description sync
         uses: meeDamian/sync-readme@v1.0.6
         with:

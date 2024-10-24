@@ -7,6 +7,10 @@ FROM nodejs AS frontend-builder
 # 如果前端更新了，但后端没有更新，需要发版时，修改该变量
 ENV FRONTEND_VERSION='0.0.9'
 
+ARG VITE_BAIDU_STATISTICS=''
+ARG VITE_DOMAIN=''
+ARG VITE_SENTRY_DSN=''
+
 WORKDIR /frontend
 
 RUN git clone https://github.com/CaoMeiYouRen/rss-impact-web.git /frontend --depth=1
