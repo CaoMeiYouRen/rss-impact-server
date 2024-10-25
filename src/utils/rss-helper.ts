@@ -243,7 +243,7 @@ type Condition = {
     filterout: FilterOut
 }
 
-const filterFields = ['title', 'content', 'summary', 'author', 'categories', 'enclosureUrl', 'enclosureType', 'enclosureLength']
+const filterFields = ['link', 'title', 'content', 'summary', 'author', 'categories', 'enclosureUrl', 'enclosureType', 'enclosureLength']
 
 /**
  * 按条件过滤文章

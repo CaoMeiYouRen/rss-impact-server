@@ -7,6 +7,11 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
  */
 export class FilterOut {
 
+    @ApiProperty({ title: '排除链接', example: 'url1|url2' })
+    @Length(0, 2048)
+    @IsOptional()
+    link?: string
+
     @ApiProperty({ title: '排除标题', example: '标题1|标题2' })
     @Length(0, 256)
     @IsOptional()

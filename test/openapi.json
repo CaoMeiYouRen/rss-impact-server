@@ -5087,6 +5087,7 @@
                     "type": {
                         "enum": [
                             "ServerChanTurbo",
+                            "ServerChanV3",
                             "Dingtalk",
                             "CustomEmail",
                             "WechatRobot",
@@ -5484,6 +5485,13 @@
                         "description": "过滤时间，返回指定时间范围内的内容。设置为 0 禁用",
                         "example": 3600
                     },
+                    "link": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "过滤链接",
+                        "example": "url1|url2"
+                    },
                     "title": {
                         "type": "string",
                         "minLength": 0,
@@ -5545,6 +5553,13 @@
             "FilterOut": {
                 "type": "object",
                 "properties": {
+                    "link": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 2048,
+                        "title": "排除链接",
+                        "example": "url1|url2"
+                    },
                     "title": {
                         "type": "string",
                         "minLength": 0,

@@ -23,6 +23,11 @@ export class Filter {
     @IsOptional()
     time?: number
 
+    @ApiProperty({ title: '过滤链接', example: 'url1|url2' })
+    @Length(0, 2048)
+    @IsOptional()
+    link?: string
+
     @ApiProperty({ title: '过滤标题', example: '标题1|标题2' })
     @Length(0, 256)
     @IsOptional()
