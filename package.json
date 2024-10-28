@@ -51,7 +51,7 @@
     "@nestjs/platform-express": "^10.4.6",
     "@nestjs/schedule": "^4.1.1",
     "@nestjs/serve-static": "^4.0.2",
-    "@nestjs/swagger": "^7.4.2",
+    "@nestjs/swagger": "^8.0.0",
     "@nestjs/typeorm": "^10.0.2",
     "@sentry/nestjs": "^8.35.0",
     "@sentry/profiling-node": "^8.35.0",
