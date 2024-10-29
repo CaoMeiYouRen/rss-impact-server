@@ -1,5 +1,18 @@
 # rss-impact-server
 
+# [1.8.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.7.0...v1.8.0) (2024-10-26)
+
+
+### ♻ 代码重构
+
+* 前端增加百度统计 ([e78e897](https://github.com/CaoMeiYouRen/rss-impact-server/commit/e78e897))
+* 增加 Server 酱³ 推送 ([d61b929](https://github.com/CaoMeiYouRen/rss-impact-server/commit/d61b929))
+
+
+### ✨ 新功能
+
+* 新增 过滤链接 配置 ([0ebaa81](https://github.com/CaoMeiYouRen/rss-impact-server/commit/0ebaa81))
+
 # [1.7.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.6.1...v1.7.0) (2024-10-19)
 
 
