@@ -20,7 +20,7 @@ import { AvueFormOption } from '@/interfaces/avue'
 import { FileUploadDto } from '@/models/file-upload.dto'
 import { Category } from '@/db/models/category.entity'
 import { to } from '@/utils/helper'
-import { __DEV__ } from '@/app.config'
+import { __DEV__, DEFAULT_FEED_CRON } from '@/app.config'
 import { AvueCrudOption } from '@/models/avue.dto'
 import { CategoryService } from '@/services/category/category.service'
 
@@ -169,7 +169,7 @@ export class FeedController {
                 const newFeed = plainToInstance(Feed, {
                     url: sub.xmlUrl,
                     title: sub.text,
-                    cron: 'EVERY_10_MINUTES',
+                    cron: DEFAULT_FEED_CRON,
                     isEnabled: true,
                     categoryId: uncategorizedId,
                     userId: user.id,
@@ -188,7 +188,7 @@ export class FeedController {
                         const newFeed = plainToInstance(Feed, {
                             url: subItem.xmlUrl,
                             title: subItem.text,
-                            cron: 'EVERY_10_MINUTES',
+                            cron: DEFAULT_FEED_CRON,
                             isEnabled: true,
                             categoryId: categories.find((e) => e.name === sub.text)?.id,
                             userId: user.id,

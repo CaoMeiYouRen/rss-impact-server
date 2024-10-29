@@ -442,7 +442,7 @@ export async function retryBackoff<T = void>(cb: () => T | Promise<T>, config: R
             const interval = Math.max(10, initialInterval) // 不小于 10 毫秒
             const delayed = interval * 2 ** currentRetries // 2 的 currentRetries 次方
             if (delayed >= maxInterval) {
-                throw new Error(`函数 ${cb.name} 重试次数已达到重试间隔 ${maxInterval} 次！`, { cause: err })
+                throw new Error(`函数 ${cb.name} 重试次数已达到重试间隔 ${maxInterval} 毫秒！`, { cause: err })
             }
             await sleep(delayed) // 等待重试
         }
