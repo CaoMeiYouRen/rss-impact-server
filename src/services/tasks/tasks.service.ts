@@ -170,6 +170,7 @@ export class TasksService implements OnApplicationBootstrap {
                 },
                 select: ['guid'],
             })
+            const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-RESOURCE_SAVE_DAYS, 'day')
             let diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid)
                 .map((item) => {
                     const article = rssItemToArticle(item)
@@ -177,7 +178,8 @@ export class TasksService implements OnApplicationBootstrap {
                     article.userId = uid
                     article.author = article.author || rss.author
                     return this.articleRepository.create(article)
-                })
+                }) // 过滤 pubDate 在 ARTICLE_SAVE_DAYS 之前的 记录
+                .filter((article) => dayjs(article.pubDate).isAfter(date))
             if (!diffArticles?.length) {
                 return
             }
