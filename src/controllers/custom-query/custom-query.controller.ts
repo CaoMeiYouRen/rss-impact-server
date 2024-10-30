@@ -103,6 +103,7 @@ export class CustomQueryController {
                 where: {
                     pubDate,
                     feedId,
+                    userId: custom.userId,
                 },
                 take: limit || 20,
                 order: {
