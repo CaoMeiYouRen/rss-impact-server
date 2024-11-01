@@ -17,8 +17,9 @@ import PostlightParser from '@cao-mei-you-ren/postlight_parser'
 import { decodeXML } from 'entities'
 import { JwksClient } from 'jwks-rsa'
 import * as jwt from 'jsonwebtoken'
+import { Jelban } from 'jelban.js'
 import { ajax } from './ajax'
-import { AUTH0_ISSUER_BASE_URL, TZ } from '@/app.config'
+import { ALLOWED_EMAIL_DOMAINS, AUTH0_ISSUER_BASE_URL, TZ } from '@/app.config'
 // TODO 考虑支持国际化
 import 'dayjs/locale/zh-cn'
 
@@ -792,4 +793,21 @@ export function getRandomCode(len: number) {
         code += chars.charAt(Math.floor(Math.random() * chars.length))
     }
     return code
+}
+
+const jelban = new Jelban({
+    allowDomains: ALLOWED_EMAIL_DOMAINS,
+})
+
+/**
+ * 验证邮箱是否为临时/垃圾邮箱
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-11-02
+ * @export
+ * @param email
+ */
+export function isJunkEmail(email: string): boolean {
+    // 如果是有效的邮箱 jelban.isValid 返回 true，所以这里取反
+    return !jelban.isValid(email, false)
 }

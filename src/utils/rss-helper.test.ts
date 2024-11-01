@@ -1,36 +1,34 @@
-import { isUUID } from "class-validator";
-import { formatGuid, rssItemToArticle, filterArticles } from "./rss-helper";
-import { Article, EnclosureImpl } from "@/db/models/article.entity";
-import { plainToInstance } from "class-transformer";
-import dayjs from "dayjs";
+import { isUUID } from 'class-validator'
+import dayjs from 'dayjs'
+import { formatGuid, rssItemToArticle, filterArticles } from './rss-helper'
+import { Article } from '@/db/models/article.entity'
 
 describe('formatGuid', () => {
 
     it('should return guid if it is a URL', () => {
-        const entry = { guid: 'https://example.com/article', link: 'https://example.com/article' };
-        const result = formatGuid(entry);
-        expect(result).toBe(entry.guid);
-    });
+        const entry = { guid: 'https://example.com/article', link: 'https://example.com/article' }
+        const result = formatGuid(entry)
+        expect(result).toBe(entry.guid)
+    })
 
     it('should return id if it is a URL and guid is not a URL', () => {
-        const entry = { guid: '1234567890', id: 'https://example.com/article', link: 'https://example.com/article' };
-        const result = formatGuid(entry);
-        expect(result).toBe(entry.id);
-    });
+        const entry = { guid: '1234567890', id: 'https://example.com/article', link: 'https://example.com/article' }
+        const result = formatGuid(entry)
+        expect(result).toBe(entry.id)
+    })
 
     it('should return link if guid and id are not URLs', () => {
-        const entry = { guid: '1234567890', id: '0987654321', link: 'https://example.com/article' };
-        const result = formatGuid(entry);
-        expect(result).toBe(entry.link);
-    });
+        const entry = { guid: '1234567890', id: '0987654321', link: 'https://example.com/article' }
+        const result = formatGuid(entry)
+        expect(result).toBe(entry.link)
+    })
 
     it('should return a UUID if guid, id, and link are not URLs', () => {
-        const entry = { guid: '1234567890', id: '0987654321', link: '' };
-        const result = formatGuid(entry);
+        const entry = { guid: '1234567890', id: '0987654321', link: '' }
+        const result = formatGuid(entry)
         expect(isUUID(result)).toBe(true)
-    });
-});
-
+    })
+})
 
 describe('rssItemToArticle', () => {
     it('should convert RSS item to Article correctly', () => {
@@ -47,20 +45,20 @@ describe('rssItemToArticle', () => {
             enclosure: {
                 url: 'https://example.com/file.torrent',
                 type: 'application/x-bittorrent',
-                length: '1024' as any
-            }
-        };
+                length: '1024' as any,
+            },
+        }
 
-        const expectedArticle = new Article();
-        expectedArticle.guid = 'https://example.com/article';
-        expectedArticle.link = 'https://example.com/article';
-        expectedArticle.title = 'Article Title';
-        expectedArticle.content = 'Article content';
-        expectedArticle.pubDate = new Date('2023-03-21T10:00:00Z');
-        expectedArticle.author = 'John Doe';
-        expectedArticle.contentSnippet = 'Article snippet';
-        expectedArticle.summary = 'Article summary';
-        expectedArticle.categories = ['Category 1', 'Category 2'];
+        const expectedArticle = new Article()
+        expectedArticle.guid = 'https://example.com/article'
+        expectedArticle.link = 'https://example.com/article'
+        expectedArticle.title = 'Article Title'
+        expectedArticle.content = 'Article content'
+        expectedArticle.pubDate = new Date('2023-03-21T10:00:00Z')
+        expectedArticle.author = 'John Doe'
+        expectedArticle.contentSnippet = 'Article snippet'
+        expectedArticle.summary = 'Article summary'
+        expectedArticle.categories = ['Category 1', 'Category 2']
         // expectedArticle.enclosure = plainToInstance(EnclosureImpl, {
         //     url: 'https://example.com/file.torrent',
         //     type: 'application/x-bittorrent',
@@ -70,9 +68,9 @@ describe('rssItemToArticle', () => {
         expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
         expectedArticle.enclosureLength = 1024
 
-        const article = rssItemToArticle(rssItem);
-        expect(article).toEqual(expectedArticle);
-    });
+        const article = rssItemToArticle(rssItem)
+        expect(article).toEqual(expectedArticle)
+    })
 
     it('should handle missing fields correctly', () => {
         const rssItem = {
@@ -80,19 +78,19 @@ describe('rssItemToArticle', () => {
             link: 'https://example.com/article',
             title: 'Article Title',
             'content:encoded': 'Article content',
-            'content:encodedSnippet': 'Article content'
-        };
+            'content:encodedSnippet': 'Article content',
+        }
 
-        const expectedArticle = new Article();
-        expectedArticle.guid = 'https://example.com/article';
-        expectedArticle.link = 'https://example.com/article';
-        expectedArticle.title = 'Article Title';
-        expectedArticle.content = 'Article content';
-        expectedArticle.contentSnippet = 'Article content';
+        const expectedArticle = new Article()
+        expectedArticle.guid = 'https://example.com/article'
+        expectedArticle.link = 'https://example.com/article'
+        expectedArticle.title = 'Article Title'
+        expectedArticle.content = 'Article content'
+        expectedArticle.contentSnippet = 'Article content'
 
-        const article = rssItemToArticle(rssItem);
-        expect(article).toEqual(expectedArticle);
-    });
+        const article = rssItemToArticle(rssItem)
+        expect(article).toEqual(expectedArticle)
+    })
 
     it('should handle enclosure with URL normalization', () => {
         const rssItem = {
@@ -103,21 +101,21 @@ describe('rssItemToArticle', () => {
             enclosure: {
                 url: 'http://example.com/file.torrent',
                 type: 'application/x-bittorrent',
-                length: '1024' as any
-            }
-        };
+                length: '1024' as any,
+            },
+        }
 
-        const expectedArticle = new Article();
-        expectedArticle.guid = 'https://example.com/article';
-        expectedArticle.link = 'https://example.com/article';
-        expectedArticle.title = 'Article Title';
-        expectedArticle.content = 'Article content';
+        const expectedArticle = new Article()
+        expectedArticle.guid = 'https://example.com/article'
+        expectedArticle.link = 'https://example.com/article'
+        expectedArticle.title = 'Article Title'
+        expectedArticle.content = 'Article content'
         expectedArticle.enclosureType = 'application/x-bittorrent'
         expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
         expectedArticle.enclosureLength = 1024
-        const article = rssItemToArticle(rssItem);
-        expect(article.enclosureUrl).toBe('http://example.com/file.torrent');
-    });
+        const article = rssItemToArticle(rssItem)
+        expect(article.enclosureUrl).toBe('http://example.com/file.torrent')
+    })
 
     it('should handle enclosure with length as string', () => {
         const rssItem = {
@@ -128,43 +126,42 @@ describe('rssItemToArticle', () => {
             enclosure: {
                 url: 'https://example.com/file.torrent',
                 type: 'application/x-bittorrent',
-                length: '1024' as any
-            }
-        };
+                length: '1024' as any,
+            },
+        }
 
-        const expectedArticle = new Article();
-        expectedArticle.guid = 'https://example.com/article';
-        expectedArticle.link = 'https://example.com/article';
-        expectedArticle.title = 'Article Title';
-        expectedArticle.content = 'Article content';
+        const expectedArticle = new Article()
+        expectedArticle.guid = 'https://example.com/article'
+        expectedArticle.link = 'https://example.com/article'
+        expectedArticle.title = 'Article Title'
+        expectedArticle.content = 'Article content'
         expectedArticle.enclosureType = 'application/x-bittorrent'
         expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
         expectedArticle.enclosureLength = 1024
-        const article = rssItemToArticle(rssItem);
-        expect(article.enclosureLength).toBe(1024);
-    });
+        const article = rssItemToArticle(rssItem)
+        expect(article.enclosureLength).toBe(1024)
+    })
 
     it('should handle link as enclosure for torrent files', () => {
         const rssItem = {
             guid: 'https://example.com/article',
             link: 'https://example.com/file.torrent',
             title: 'Article Title',
-            'content:encoded': 'Article content'
-        };
+            'content:encoded': 'Article content',
+        }
 
-        const expectedArticle = new Article();
-        expectedArticle.guid = 'https://example.com/article';
-        expectedArticle.link = 'https://example.com/file.torrent';
-        expectedArticle.title = 'Article Title';
-        expectedArticle.content = 'Article content';
+        const expectedArticle = new Article()
+        expectedArticle.guid = 'https://example.com/article'
+        expectedArticle.link = 'https://example.com/file.torrent'
+        expectedArticle.title = 'Article Title'
+        expectedArticle.content = 'Article content'
         expectedArticle.enclosureType = 'application/x-bittorrent'
         expectedArticle.enclosureUrl = 'https://example.com/file.torrent'
-        const article = rssItemToArticle(rssItem);
-        expect(article.enclosureType).toEqual(expectedArticle.enclosureType);
-        expect(article.enclosureUrl).toEqual(expectedArticle.enclosureUrl);
-    });
-});
-
+        const article = rssItemToArticle(rssItem)
+        expect(article.enclosureType).toEqual(expectedArticle.enclosureType)
+        expect(article.enclosureUrl).toEqual(expectedArticle.enclosureUrl)
+    })
+})
 
 describe('filterArticles', () => {
     const articles = [
@@ -214,7 +211,7 @@ describe('filterArticles', () => {
                 length: 4096,
             },
         },
-    ] as Article[];
+    ] as Article[]
 
     it('should filter articles based on the given condition', () => {
         const condition = {
@@ -233,24 +230,24 @@ describe('filterArticles', () => {
                 enclosureUrl: 'article2\\.pdf',
                 enclosureType: 'application/pdf',
             },
-        };
+        }
 
-        const filteredArticles = filterArticles(articles, condition);
+        const filteredArticles = filterArticles(articles, condition)
 
-        expect(filteredArticles).toHaveLength(1);
-        expect(filteredArticles[0].guid).toBe('1');
-    });
+        expect(filteredArticles).toHaveLength(1)
+        expect(filteredArticles[0].guid).toBe('1')
+    })
 
     it('should return all articles if the condition is empty', () => {
         const condition = {
             filter: {},
             filterout: {},
-        };
+        }
 
-        const filteredArticles = filterArticles(articles, condition);
+        const filteredArticles = filterArticles(articles, condition)
 
-        expect(filteredArticles).toHaveLength(3);
-    });
+        expect(filteredArticles).toHaveLength(3)
+    })
 
     it('should handle articles without pubDate or filter.time', () => {
         const articlesWithoutPubDate = [
@@ -266,18 +263,18 @@ describe('filterArticles', () => {
                 categories: ['category4', 'category5'],
 
             },
-        ] as Article[];
+        ] as Article[]
 
         const condition = {
             filter: {
                 time: 86400,
             },
             filterout: {},
-        };
+        }
 
-        const filteredArticles = filterArticles(articlesWithoutPubDate, condition);
+        const filteredArticles = filterArticles(articlesWithoutPubDate, condition)
 
-        expect(filteredArticles).toHaveLength(1);
-        expect(filteredArticles[0].guid).toBe('4');
-    });
-});
+        expect(filteredArticles).toHaveLength(1)
+        expect(filteredArticles[0].guid).toBe('4')
+    })
+})

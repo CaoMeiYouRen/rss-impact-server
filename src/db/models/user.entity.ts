@@ -6,10 +6,11 @@ import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
 
 import { Base } from './base.entity'
 import { Role } from '@/constant/role'
-import { getAccessToken } from '@/utils/helper'
+import { getAccessToken, isJunkEmail } from '@/utils/helper'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { CustomColumn } from '@/decorators/custom-column.decorator'
+import { ENABLE_EMAIL_VALIDATION } from '@/app.config'
 
 @Entity()
 export class User extends Base {
@@ -61,6 +62,19 @@ export class User extends Base {
         length: 128,
     })
     email: string
+
+    // 入库前校验邮箱是否有效
+    @BeforeInsert()
+    @BeforeUpdate()
+    private async validateEmail() {
+        // 如果是 demo 用户 或 管理员，则不校验
+        if (this.username === 'demo' || this.email === 'demo@example.com' || this.roles.includes(Role.admin)) {
+            return
+        }
+        if (ENABLE_EMAIL_VALIDATION && this.email && isJunkEmail(this.email)) {
+            throw new Error(`无效的邮箱地址：${this.email}`)
+        }
+    }
 
     // 邮箱是否验证
     @SetAclCrudField({

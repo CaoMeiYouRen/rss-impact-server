@@ -129,3 +129,9 @@ export const DISABLE_PASSWORD_REGISTER = env.DISABLE_PASSWORD_REGISTER === 'true
 
 // 启用 demo 账号
 export const ENABLE_DEMO_ACCOUNT = env.ENABLE_DEMO_ACCOUNT === 'true'
+
+// 允许的邮箱域名
+export const ALLOWED_EMAIL_DOMAINS = env.ALLOWED_EMAIL_DOMAINS?.split(',')?.map((e) => e?.trim())?.filter(Boolean)
+
+// 启用邮箱校验
+export const ENABLE_EMAIL_VALIDATION = env.ENABLE_EMAIL_VALIDATION === 'true' || Boolean(ALLOWED_EMAIL_DOMAINS?.length)

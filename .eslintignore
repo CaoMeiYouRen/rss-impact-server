@@ -6,5 +6,5 @@ build
 /test/unit/coverage/
 /test/unit/specs/
 *.min.*
-*.spec.*
-*.test.*
+# *.spec.*
+# *.test.*
