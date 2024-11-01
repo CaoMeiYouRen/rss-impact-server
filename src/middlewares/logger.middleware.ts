@@ -8,10 +8,10 @@ import { isNumberString } from 'class-validator'
 import { Logger, QueryRunner } from 'typeorm'
 import { LoggerService } from '@nestjs/common'
 import { timeFormat } from '@/utils/helper'
-import { __DEV__, __PROD__ } from '@/app.config'
+import { __DEV__, __PROD__, LOG_LEVEL } from '@/app.config'
 import { User } from '@/db/models/user.entity'
 
-const logDir = path.resolve('logs')
+export const logDir = path.resolve('logs')
 
 morgan.token('user', (req: Request) => {
     const user = req.user as User
@@ -78,7 +78,7 @@ const format = winston.format.combine(
 const dailyRotateFileOption = {
     dirname: logDir,
     datePattern: 'YYYY-MM-DD',
-    zippedArchive: false,
+    zippedArchive: __PROD__, // 如果是生产环境，压缩日志文件
     maxSize: '20m',
     maxFiles: '31d',
     format,
@@ -86,7 +86,7 @@ const dailyRotateFileOption = {
 }
 
 export const winstonLogger = WinstonModule.createLogger({
-    level: __DEV__ ? 'silly' : 'http',
+    level: LOG_LEVEL,
     exitOnError: false,
     transports: [
         new winston.transports.Console({

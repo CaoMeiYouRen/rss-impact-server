@@ -38,6 +38,8 @@ export const TZ = env.TZ || 'Asia/Shanghai'
 
 export const TIMEOUT = Number(env.TIMEOUT || 10 * 1000)
 
+export const LOG_LEVEL = process.env.LOG_LEVEL || (__DEV__ ? 'silly' : 'http')
+
 // 每页最大查询条数
 export const PAGE_LIMIT_MAX = Number(env.PAGE_LIMIT_MAX || 1000)
 

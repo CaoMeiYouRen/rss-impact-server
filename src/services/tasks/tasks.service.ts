@@ -43,6 +43,7 @@ import { AIConfig } from '@/models/ai-config'
 import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 import { DailyCount } from '@/db/models/daily-count.entity'
+import { logDir } from '@/middlewares/logger.middleware'
 
 const removeQueue = new PQueue({ concurrency: Math.min(os.cpus().length, 8) }) // 删除文件并发数
 const rssQueue = new PQueue({ concurrency: RSS_LIMIT_MAX }) // RSS 请求并发数
@@ -1354,6 +1355,31 @@ EXAMPLE JSON ERROR OUTPUT:
             })
             this.logger.log('成功移除过时的日志')
             this.logger.log(removes)
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        }
+    }
+
+    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeLogs' }) // 每天删除一次
+    private async removeLogFiles() {
+        try {
+            const dirPath = logDir// 解析为绝对路径
+            const files = await fs.readdir(dirPath)
+
+            files.forEach((file) => {
+                if (/\.(log(.gz)?)$/.test(file)) {
+                    return null
+                }
+                return removeQueue.add(async () => {
+                    // 检查日志最后写入时间是否超过31天
+                    const stats = await fs.stat(path.join(dirPath, file))
+                    const date = stats.mtime
+                    const days = dayjs().diff(date, 'day')
+                    if (days > 31) {
+                        await fs.remove(path.join(dirPath, file))
+                    }
+                })
+            })
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
