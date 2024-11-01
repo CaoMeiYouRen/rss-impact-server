@@ -11,7 +11,8 @@
                         ".entity.ts",
                         "-config.ts",
                         "auth-meta.ts",
-                        "http-error.ts"
+                        "http-error.ts",
+                        ".ts"
                     ]
                 }
             }

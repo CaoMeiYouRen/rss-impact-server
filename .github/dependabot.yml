@@ -32,3 +32,6 @@ updates:
       - dependency-name: "parse-torrent"
         versions:
           - ">= 10.0.0"
+      - dependency-name: "@nestjs/swagger"
+        versions:
+          - ">= 8.0.0" # 8.0.0 以上的版本会导致 nestjs 无法启动

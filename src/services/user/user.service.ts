@@ -55,8 +55,8 @@ export class UserService implements OnApplicationBootstrap {
                 disablePasswordLogin: false,
             })
             await this.userRepository.save(user)
+            this.logger.log('初始化 demo 用户成功')
         }
-        this.logger.log('初始化 demo 用户成功')
     }
 
     async dicData() {
