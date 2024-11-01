@@ -128,6 +128,9 @@ PORT=3000
 BASE_URL='http://localhost:3000'
 # 启用跨域。如果前端和后端部署在不同域名下，需要跨域时，配置该项。
 # ENABLE_ORIGIN_LIST=https://example1.com,https://example2.com
+# 通过 docker 部署时，也会产生跨域问题，需要配置该项。
+# ENABLE_ORIGIN_LIST='http://localhost:3000,http://127.0.0.1:3000'
+# 如果你有前置的反向代理服务，例如 Nginx 等，则无需配置该项。
 ENABLE_ORIGIN_LIST=''
 # 超时时间(ms)
 TIMEOUT=30000
@@ -215,6 +218,9 @@ REVERSE_TRIGGER_LIMIT=4
 CACHE_EXPIRE=300
 # RSS 内存缓存时间，单位：秒
 CACHE_CONTENT_EXPIRE=3600
+
+# Sentry dsn 路径，用于错误上报
+SENTRY_DSN=''
 ```
 
 # 🗄️ 数据库配置
