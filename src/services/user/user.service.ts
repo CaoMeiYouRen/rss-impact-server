@@ -3,7 +3,7 @@ import { FindOptionsWhere, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateUser, UpdateUser, User } from '@/db/models/user.entity'
 import { HttpError } from '@/models/http-error'
-import { ADMIN_EMAIL, ADMIN_PASSWORD } from '@/app.config'
+import { ADMIN_EMAIL, ADMIN_PASSWORD, ENABLE_DEMO_ACCOUNT } from '@/app.config'
 import { Role } from '@/constant/role'
 
 @Injectable()
@@ -14,8 +14,9 @@ export class UserService implements OnApplicationBootstrap {
     constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
     }
 
-    onApplicationBootstrap() {
-        this.initAdmin()
+    async onApplicationBootstrap() {
+        await this.initAdmin()
+        await this.initDemoAccount()
     }
 
     private async initAdmin() {
@@ -32,6 +33,30 @@ export class UserService implements OnApplicationBootstrap {
             })
             this.logger.log('初始化 admin 用户成功')
         }
+    }
+
+    private async initDemoAccount() {
+        if (!ENABLE_DEMO_ACCOUNT) {
+            return
+        }
+        // 初始化 demo 用户
+        let user = await this.userRepository.findOne({
+            where: {
+                username: 'demo',
+            },
+        })
+        if (!user) {
+            user = this.userRepository.create({
+                username: 'demo',
+                email: 'demo@example.com',
+                password: 'demo',
+                roles: [Role.user],
+                emailVerified: false,
+                disablePasswordLogin: false,
+            })
+            await this.userRepository.save(user)
+        }
+        this.logger.log('初始化 demo 用户成功')
     }
 
     async dicData() {

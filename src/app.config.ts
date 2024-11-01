@@ -126,3 +126,6 @@ export const ENABLE_AUTH0 = Boolean(AUTH0_BASE_URL && AUTH0_CLIENT_ID && AUTH0_S
 export const DISABLE_PASSWORD_LOGIN = env.DISABLE_PASSWORD_LOGIN === 'true' && ENABLE_AUTH0
 // 禁用账号密码注册，仅在配置 Auth0 后生效
 export const DISABLE_PASSWORD_REGISTER = env.DISABLE_PASSWORD_REGISTER === 'true' && ENABLE_AUTH0
+
+// 启用 demo 账号
+export const ENABLE_DEMO_ACCOUNT = env.ENABLE_DEMO_ACCOUNT === 'true'
