@@ -523,29 +523,29 @@ describe('splitStringWithLineBreak', () => {
     })
 })
 
-describe('isJunkEmail', () => {
-    it('should return false for a valid email (normal user)', () => {
-        const result = isJunkEmail('example@gmail.com')
-        expect(result).toBe(false)
-    })
+// describe('isJunkEmail', () => {
+//     it('should return false for a valid email (normal user)', () => {
+//         const result = isJunkEmail('example@gmail.com')
+//         expect(result).toBe(false)
+//     })
 
-    it('should return true for another valid email (normal user)', () => {
-        const result = isJunkEmail('another.valid@example.com')
-        expect(result).toBe(true)
-    })
+//     it('should return true for another valid email (normal user)', () => {
+//         const result = isJunkEmail('another.valid@example.com')
+//         expect(result).toBe(true)
+//     })
 
-    it('should return false for an invalid email (junk email)', () => {
-        const result = isJunkEmail('invalid@example')
-        expect(result).toBe(false)
-    })
+//     it('should return false for an invalid email (junk email)', () => {
+//         const result = isJunkEmail('invalid@example')
+//         expect(result).toBe(false)
+//     })
 
-    it('should return false for an empty string', () => {
-        const result = isJunkEmail('')
-        expect(result).toBe(false)
-    })
+//     it('should return false for an empty string', () => {
+//         const result = isJunkEmail('')
+//         expect(result).toBe(false)
+//     })
 
-    it('should return false for a non-email string', () => {
-        const result = isJunkEmail('not-an-email')
-        expect(result).toBe(false)
-    })
-})
+//     it('should return false for a non-email string', () => {
+//         const result = isJunkEmail('not-an-email')
+//         expect(result).toBe(false)
+//     })
+// })

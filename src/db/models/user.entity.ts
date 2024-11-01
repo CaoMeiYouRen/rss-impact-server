@@ -5,7 +5,7 @@ import { IsEmail, IsUrl } from 'class-validator'
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
 import { Base } from './base.entity'
 import { Role } from '@/constant/role'
-import { getAccessToken, isJunkEmail } from '@/utils/helper'
+import { getAccessToken, isAllowedEmail } from '@/utils/helper'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { CustomColumn } from '@/decorators/custom-column.decorator'
@@ -70,8 +70,8 @@ export class User extends Base {
         if (this.username === 'demo' || this.email === 'demo@example.com' || this.roles.includes(Role.admin)) {
             return
         }
-        if (ENABLE_EMAIL_VALIDATION && this.email && isJunkEmail(this.email)) {
-            throw new Error(`无效的邮箱地址：${this.email}`)
+        if (ENABLE_EMAIL_VALIDATION && this.email && isAllowedEmail(this.email)) {
+            throw new Error(`邮箱地址 ${this.email} 不在允许的域名内`)
         }
     }
 
@@ -111,6 +111,7 @@ export class User extends Base {
 
     @SetAclCrudField({
         search: true,
+        value: [Role.user],
     })
     @ApiProperty({ title: '角色', example: [Role.admin] })
     @CustomColumn({

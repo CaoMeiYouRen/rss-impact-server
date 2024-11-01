@@ -795,9 +795,9 @@ export function getRandomCode(len: number) {
     return code
 }
 
-const jelban = new Jelban({
-    allowDomains: ALLOWED_EMAIL_DOMAINS,
-})
+// const jelban = new Jelban({
+//     allowDomains: ALLOWED_EMAIL_DOMAINS,
+// })
 
 /**
  * 验证邮箱是否为临时/垃圾邮箱
@@ -808,6 +808,24 @@ const jelban = new Jelban({
  * @param email
  */
 export function isJunkEmail(email: string): boolean {
-    // 如果是有效的邮箱 jelban.isValid 返回 true，所以这里取反
-    return !jelban.isValid(email, false)
+    if (!ALLOWED_EMAIL_DOMAINS?.length) {
+        return false
+    }
+    // 判断email的域名是否在 ALLOWED_EMAIL_DOMAINS 里，如果是，则不是垃圾邮箱
+    return !ALLOWED_EMAIL_DOMAINS.includes(email?.split('@')?.[1])
+}
+
+/**
+ * 验证邮箱的域名是否为允许的域名
+ *
+ * @author CaoMeiYouRen
+ * @date 2024-11-02
+ * @export
+ * @param email
+ */
+export function isAllowedEmail(email: string) {
+    if (!ALLOWED_EMAIL_DOMAINS?.length) {
+        return true
+    }
+    return ALLOWED_EMAIL_DOMAINS.includes(email?.split('@')?.[1])
 }
