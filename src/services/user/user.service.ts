@@ -50,7 +50,7 @@ export class UserService implements OnApplicationBootstrap {
                 username: 'demo',
                 email: 'demo@example.com',
                 password: 'demodemo',
-                roles: [Role.user],
+                roles: [Role.user, Role.demo],
                 emailVerified: false,
                 disablePasswordLogin: false,
             })

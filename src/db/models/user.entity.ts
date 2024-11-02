@@ -67,7 +67,7 @@ export class User extends Base {
     @BeforeUpdate()
     private async validateEmail() {
         // 如果是 demo 用户 或 管理员，则不校验
-        if (this.username === 'demo' || this.email === 'demo@example.com' || this.roles.includes(Role.admin)) {
+        if (this.roles.includes(Role.demo) || this.roles.includes(Role.admin)) {
             return
         }
         if (ENABLE_EMAIL_VALIDATION && this.email && isAllowedEmail(this.email)) {

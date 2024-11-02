@@ -134,7 +134,7 @@ export class UserController {
     @Post('me')
     async updateMe(@Body() body: UpdateMe, @CurrentUser() user: User) {
         // demo 用户禁用用户名/邮箱修改
-        if (user.username === 'demo' || user.email === 'demo@example.com') {
+        if (user.roles.includes(Role.demo)) {
             throw new HttpError(400, 'demo 用户禁止修改个人信息！')
         }
         if (body.username && body.username !== user.username && await this.userService.findOne({ username: body.username })) {
@@ -176,7 +176,7 @@ export class UserController {
     @ApiResponse({ status: 201, type: ResponseDto })
     async resetPassword(@Body() body: ResetPasswordDto, @CurrentUser() currentUser: User, @Session() session: ISession) {
         // demo 用户禁用用户名/邮箱修改
-        if (currentUser.username === 'demo' || currentUser.email === 'demo@example.com') {
+        if (currentUser.roles.includes(Role.demo)) {
             throw new HttpError(400, 'demo 用户禁止修改密码！')
         }
         const user = await this.repository
