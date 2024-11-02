@@ -49,7 +49,7 @@ export class UserService implements OnApplicationBootstrap {
             user = this.userRepository.create({
                 username: 'demo',
                 email: 'demo@example.com',
-                password: 'demo',
+                password: 'demodemo',
                 roles: [Role.user],
                 emailVerified: false,
                 disablePasswordLogin: false,

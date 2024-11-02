@@ -42,7 +42,7 @@
 
 https://rss-demo.cmyr.dev
 
-用户名：`demo` 密码：`demo`
+用户名：`demo` 密码：`demodemo`
 
 > Demo 站开放注册，可以随意体验。
 >
