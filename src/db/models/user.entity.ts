@@ -110,8 +110,14 @@ export class User extends Base {
     avatar?: string
 
     @SetAclCrudField({
+        type: 'select',
+        multiple: true,
         search: true,
         value: [Role.user],
+        dicData: Object.entries(Role).map(([key, value]) => ({
+                label: key,
+                value,
+            })),
     })
     @ApiProperty({ title: '角色', example: [Role.admin] })
     @CustomColumn({
