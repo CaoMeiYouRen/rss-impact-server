@@ -1,5 +1,32 @@
 # rss-impact-server
 
+# [1.9.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.8.0...v1.9.0) (2024-11-02)
+
+
+### ♻ 代码重构
+
+* 优化 user 的 roles 字段的选项 ([f065463](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f065463))
+* 修改 demo 账号的验证逻辑 ([0d0fd5b](https://github.com/CaoMeiYouRen/rss-impact-server/commit/0d0fd5b))
+* 修改 邮箱校验逻辑 ([b7b3928](https://github.com/CaoMeiYouRen/rss-impact-server/commit/b7b3928))
+* 增加 demo 账号，以方便用户体验 ([406e1a6](https://github.com/CaoMeiYouRen/rss-impact-server/commit/406e1a6)), closes [#434](https://github.com/CaoMeiYouRen/rss-impact-server/issues/434)
+* 增加日志压缩、自动删除日志、日志级别设置 ([c3d378b](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c3d378b))
+
+
+### ✨ 新功能
+
+* 新增 用户邮箱校验 ([edf3e5d](https://github.com/CaoMeiYouRen/rss-impact-server/commit/edf3e5d))
+
+
+### 🐛 Bug 修复
+
+* 修复 @nestjs/swagger 版本更新导致 nestjs 无法启动的问题 ([6d2faf8](https://github.com/CaoMeiYouRen/rss-impact-server/commit/6d2faf8))
+* 修复 demo 账号的密码过短导致无法登录的问题 ([cafb088](https://github.com/CaoMeiYouRen/rss-impact-server/commit/cafb088))
+* 修复 登出时未处理 oidc 登出的问题 ([3917a3a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3917a3a))
+* 修复 自定义查询 未设置 user 的问题 ([19cf2dd](https://github.com/CaoMeiYouRen/rss-impact-server/commit/19cf2dd))
+* 修复 获取 RSS 时，可能会获取到过时的内容的问题 ([2687afa](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2687afa))
+* 修复 通过  OPML 文件导入的订阅的默认轮询时间错误 ([4ecb328](https://github.com/CaoMeiYouRen/rss-impact-server/commit/4ecb328))
+* 修改通过 docker 部署时的默认跨域配置 ([93137f1](https://github.com/CaoMeiYouRen/rss-impact-server/commit/93137f1))
+
 # [1.8.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.7.0...v1.8.0) (2024-10-26)
 
 
