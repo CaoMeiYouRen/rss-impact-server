@@ -175,9 +175,11 @@ export class AuthController {
                     message: 'OK',
                     statusCode: 201,
                 }))
-                res.oidc.logout({
-                    returnTo: '/login',
-                })
+                if (res.oidc) {
+                    res.oidc.logout({
+                        returnTo: '/login',
+                    })
+                }
             })
         })
     }
