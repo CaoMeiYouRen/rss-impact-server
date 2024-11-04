@@ -55,6 +55,8 @@ RUN export PROJECT_ROOT=/app/ && \
 FROM runtime
 
 ENV NODE_ENV production
+ENV GIT_HASH = ${GIT_HASH}
+ENV GIT_DATE = ${GIT_DATE}
 
 WORKDIR /app
 # 后端部分

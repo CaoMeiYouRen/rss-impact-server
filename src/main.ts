@@ -12,14 +12,16 @@ import fs from 'fs-extra'
 import artTemplate from 'art-template'
 import ms from 'ms'
 import { Request } from 'express'
-import { setRequestId } from './middlewares/request.middleware'
-import { sessionMiddleware } from './middlewares/session.middleware'
-import { jsonLogger, logger } from './middlewares/logger.middleware'
-import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
-import { limiter } from './middlewares/limit.middleware'
-import { AllExceptionsFilter } from './filters/all-exceptions.filter'
-import { AppModule } from './app.module'
 import { DATABASE_DIR } from './db/database.module'
+import { AppModule } from './app.module'
+import { AllExceptionsFilter } from './filters/all-exceptions.filter'
+import { limiter } from './middlewares/limit.middleware'
+import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
+import { jsonLogger, logger } from './middlewares/logger.middleware'
+import { sessionMiddleware } from './middlewares/session.middleware'
+import { setRequestId } from './middlewares/request.middleware'
+import { getGitInfo } from './utils/git-info'
+import { timeFormat } from './utils/helper'
 
 moduleAlias.addAlias('@', path.join(__dirname, './'))
 
@@ -113,6 +115,11 @@ async function bootstrap() {
     if (__DEV__) {
         logger.debug(`Docs http://127.0.0.1:${PORT}/docs`)
     }
+    const pkg = await fs.readJson(path.join(__dirname, '../package.json'))
+    const version = pkg.version
+    logger.log(`当前 RSS Impact server 版本为：${version}`)
+    const { gitHash, gitDate } = getGitInfo()
+    logger.log(`当前 RSS Impact server 构建哈希为：${gitHash}，构建时间为：${timeFormat(gitDate)}`)
 
     if (CI && __BENCHMARKS_TEST__) {
         setTimeout(() => {
