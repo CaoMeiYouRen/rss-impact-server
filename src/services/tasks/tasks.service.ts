@@ -162,6 +162,9 @@ export class TasksService implements OnApplicationBootstrap {
                     rss = await rssParserString(resp)
                 }
             }
+            if (rss) { // 如果成功获取了到 rss 内容，则清空错误计数
+                await this.cacheService.set(key, 0, ms('1 d')) // 重置错误计数
+            }
             if (!Array.isArray(rss?.items)) {
                 return
             }
