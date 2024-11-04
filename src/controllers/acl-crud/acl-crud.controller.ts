@@ -118,10 +118,9 @@ export class AclCrudController {
         let { limit = 1000, skip = 0 } = query
         limit = user?.roles?.includes(Role.admin) ? limit : Math.min(limit, PAGE_LIMIT_MAX)
         skip = skip || (page - 1) * limit
-        const conditions = getConditions(user)
+        const conditions = getConditions(user, where)
         const data = await this.repository.find({
             where: {
-                ...transformQueryOperator(where),
                 ...conditions,
             },
             skip,
@@ -154,11 +153,10 @@ export class AclCrudController {
         let { limit = 10, skip = 0 } = query
         limit = user?.roles?.includes(Role.admin) ? limit : Math.min(limit, PAGE_LIMIT_MAX)
         skip = skip || (page - 1) * limit
-        const conditions = getConditions(user)
+        const conditions = getConditions(user, where)
         __DEV__ && this.logger.debug(query)
         const [data, total] = await this.repository.findAndCount({
             where: {
-                ...transformQueryOperator(where),
                 ...conditions,
             },
             skip,

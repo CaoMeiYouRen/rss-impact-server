@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
 /* eslint-disable no-loss-of-precision */
 import dayjs from 'dayjs'
-import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown, escapeMarkdown, unescapeMarkdown, splitStringWithLineBreak, isJunkEmail } from './helper'
+import { Between, Equal, ILike, In, Like } from 'typeorm'
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown, escapeMarkdown, unescapeMarkdown, splitStringWithLineBreak, isJunkEmail, transformQueryOperator } from './helper'
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {
@@ -549,3 +550,44 @@ describe('splitStringWithLineBreak', () => {
 //         expect(result).toBe(false)
 //     })
 // })
+
+describe('transformQueryOperator', () => {
+    it('should transform operators correctly', () => {
+        const mockWhere = {
+            name: { $op: 'Like', value: 'John' },
+            age: { $op: 'Between', value: [18, 30] },
+            status: { $op: 'Equal', value: 'active' },
+            tags: { $op: 'In', value: ['tag1', 'tag2'] },
+            description: { $op: 'ILike', value: 'example' },
+        }
+
+        const result = transformQueryOperator(mockWhere)
+        expect(result).toEqual({
+            name: Like('John'),
+            age: Between(18, 30),
+            status: Equal('active'),
+            tags: In(['tag1', 'tag2']),
+            description: ILike('example'),
+        })
+    })
+
+    it('should return basic types as is', () => {
+        const mockWhere = {
+            name: 'John',
+            age: 25,
+            isActive: true,
+        }
+
+        const result = transformQueryOperator(mockWhere)
+        expect(result).toEqual(mockWhere)
+    })
+
+    it('should handle unknown operators as is', () => {
+        const mockWhere = {
+            name: { $op: 'UnknownOp', value: 'John' },
+        }
+
+        const result = transformQueryOperator(mockWhere)
+        expect(result).toEqual(mockWhere)
+    })
+})

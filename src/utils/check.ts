@@ -1,3 +1,4 @@
+import { transformQueryOperator } from './helper'
 import { Role } from '@/constant/role'
 import { AclBase } from '@/db/models/acl-base.entity'
 import { User } from '@/db/models/user.entity'
@@ -16,12 +17,15 @@ export function checkAuth(obj: AclBase, user: User) {
     }
     return objUserId === userId // user 仅允许操作自己的数据
 }
-
-export function getConditions(user: User) {
+// 生成查询条件
+export function getConditions(user: User, where: Record<string, any> = {}) {
     if (user?.roles?.includes(Role.admin)) { // admin 无条件放行
-        return {}
+        return {
+            ...transformQueryOperator(where),
+        }
     }
     return {
+        ...transformQueryOperator(where),
         userId: user.id,
     }
 }
