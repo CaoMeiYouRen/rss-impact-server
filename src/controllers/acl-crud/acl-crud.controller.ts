@@ -113,6 +113,7 @@ export class AclCrudController {
         }
         const {
             page = 1,
+            where = {},
         } = query
         let { limit = 1000, skip = 0 } = query
         limit = user?.roles?.includes(Role.admin) ? limit : Math.min(limit, PAGE_LIMIT_MAX)
@@ -120,11 +121,13 @@ export class AclCrudController {
         const conditions = getConditions(user)
         const data = await this.repository.find({
             where: {
+                ...transformQueryOperator(where),
                 ...conditions,
             },
             skip,
             take: limit,
             order: {
+                id: 'DESC',
                 createdAt: 'DESC',
             },
             select: [this?.__OPTIONS__?.props?.label, this?.__OPTIONS__?.props?.value] as any[],
@@ -161,6 +164,7 @@ export class AclCrudController {
             skip,
             take: limit,
             order: merge({
+                id: 'DESC',
                 createdAt: 'DESC',
             }, this?.__OPTIONS__?.order, sort),
             relations: uniq([...relations, ...this?.__OPTIONS__?.relations || []]),
