@@ -61,11 +61,7 @@ jobs:
       - name: Get short commit hash
         run: echo "TAG=sha-${GITHUB_SHA::7}" >>${GITHUB_ENV}
       - name: Get git info
-        run: |
-          GIT_HASH=$(git rev-parse --short HEAD)
-          echo "GIT_HASH=$GIT_HASH" >> ${GITHUB_ENV}
-          GIT_DATE=$(git log -1 --format=%cd)
-          echo "GIT_DATE=$GIT_DATE" >> ${GITHUB_ENV}
+        run: scripts/git.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -114,9 +110,6 @@ jobs:
             VITE_BAIDU_STATISTICS=${{ secrets.VITE_BAIDU_STATISTICS }}
             VITE_DOMAIN=${{ secrets.VITE_DOMAIN }}
             VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }}
-        env:
-          GIT_HASH: ${{ env.GIT_HASH }}
-          GIT_DATE: ${{ env.GIT_DATE }}
       - name: Docker Hub README & description sync
         uses: meeDamian/sync-readme@v1.0.6
         with:

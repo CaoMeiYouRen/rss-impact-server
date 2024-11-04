@@ -115,11 +115,9 @@ async function bootstrap() {
     if (__DEV__) {
         logger.debug(`Docs http://127.0.0.1:${PORT}/docs`)
     }
-    const pkg = await fs.readJson(path.join(__dirname, '../package.json'))
-    const version = pkg.version
-    logger.log(`当前 RSS Impact server 版本为：${version}`)
-    const { gitHash, gitDate } = getGitInfo()
-    logger.log(`当前 RSS Impact server 构建哈希为：${gitHash}，构建时间为：${gitDate !== 'unknown' ? timeFormat(gitDate) : 'unknown'}`)
+    const { version } = await fs.readJson('package.json')
+    const { gitHash, gitDate } = await getGitInfo()
+    logger.log(`当前 RSS Impact server 版本为：${version}，构建哈希为：${gitHash}，构建时间为：${gitDate}`)
 
     if (CI && __BENCHMARKS_TEST__) {
         setTimeout(() => {

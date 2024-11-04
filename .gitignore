@@ -46,3 +46,4 @@ audit.json
 
 .vitepress/cache
 .vitepress/dist
+.gitinfo

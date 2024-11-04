@@ -62,10 +62,7 @@ jobs:
         run: |
           GIT_TAG=$(git describe --tags --exact-match HEAD 2>/dev/null || true)
           echo "GIT_TAG=$GIT_TAG" >> ${GITHUB_ENV}
-          GIT_HASH=$(git rev-parse --short HEAD)
-          echo "GIT_HASH=$GIT_HASH" >> ${GITHUB_ENV}
-          GIT_DATE=$(git log -1 --format=%cd)
-          echo "GIT_DATE=$GIT_DATE" >> ${GITHUB_ENV}
+          scripts/git.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -117,6 +114,3 @@ jobs:
             VITE_BAIDU_STATISTICS=${{ secrets.VITE_BAIDU_STATISTICS }}
             VITE_DOMAIN=${{ secrets.VITE_DOMAIN }}
             VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }}
-        env:
-          GIT_HASH: ${{ env.GIT_HASH }}
-          GIT_DATE: ${{ env.GIT_DATE }}
