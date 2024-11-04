@@ -132,6 +132,7 @@ export class TasksService implements OnApplicationBootstrap {
             if (errorCount > MAX_ERROR_COUNT) {
                 feed.isEnabled = false
                 await this.feedRepository.save(feed)
+                await this.disableFeedTask(feed)
                 this.logger.warn(`订阅 id: ${feed.id} 错误次数已达 ${errorCount} 次，已停止订阅！`)
                 return
             }
@@ -233,6 +234,7 @@ export class TasksService implements OnApplicationBootstrap {
             if (errorCount > MAX_ERROR_COUNT) {
                 feed.isEnabled = false
                 await this.feedRepository.save(feed)
+                await this.disableFeedTask(feed)
                 this.logger.log(`订阅 id: ${feed.id} 已被禁用！`)
             }
         }
