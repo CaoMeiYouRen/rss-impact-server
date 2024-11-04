@@ -186,7 +186,7 @@ export function articleItemFormat(item: Article, option: ArticleFormatoption = {
         text += `时间：${date}`
     }
 
-    text = text.replace(/(\n[\s|\t]*\r*\n)/g, '\n') // 去除多余换行符
+    text = text.replace(/(\n[\s|\t]*\r*\n)/g, '\n').replace(/\n+/g, '\n')// 去除多余换行符
     if (isMarkdown) {
         text = text.replace(/\n/g, '\n\n') // 替换为markdown下的换行
     }
