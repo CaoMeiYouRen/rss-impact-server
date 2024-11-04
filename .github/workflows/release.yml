@@ -117,5 +117,6 @@ jobs:
             VITE_BAIDU_STATISTICS=${{ secrets.VITE_BAIDU_STATISTICS }}
             VITE_DOMAIN=${{ secrets.VITE_DOMAIN }}
             VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }}
-            GIT_HASH=${{ env.GIT_HASH }}
-            GIT_DATE=${{ env.GIT_DATE }}
+        env:
+          GIT_HASH: ${{ env.GIT_HASH }}
+          GIT_DATE: ${{ env.GIT_DATE }}

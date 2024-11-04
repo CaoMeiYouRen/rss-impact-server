@@ -119,7 +119,7 @@ async function bootstrap() {
     const version = pkg.version
     logger.log(`当前 RSS Impact server 版本为：${version}`)
     const { gitHash, gitDate } = getGitInfo()
-    logger.log(`当前 RSS Impact server 构建哈希为：${gitHash}，构建时间为：${timeFormat(gitDate)}`)
+    logger.log(`当前 RSS Impact server 构建哈希为：${gitHash}，构建时间为：${gitDate !== 'unknown' ? timeFormat(gitDate) : 'unknown'}`)
 
     if (CI && __BENCHMARKS_TEST__) {
         setTimeout(() => {
