@@ -61,7 +61,9 @@ jobs:
       - name: Get short commit hash
         run: echo "TAG=sha-${GITHUB_SHA::7}" >>${GITHUB_ENV}
       - name: Get git info
-        run: scripts/git.sh
+        run: |
+          chmod +x scripts/git.sh
+          scripts/git.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx

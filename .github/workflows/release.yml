@@ -62,6 +62,7 @@ jobs:
         run: |
           GIT_TAG=$(git describe --tags --exact-match HEAD 2>/dev/null || true)
           echo "GIT_TAG=$GIT_TAG" >> ${GITHUB_ENV}
+          chmod +x scripts/git.sh
           scripts/git.sh
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
