@@ -92,7 +92,7 @@
     "ms": "^2.1.3",
     "mysql2": "^3.11.3",
     "nest-winston": "^1.10.0",
-    "openai": "^4.69.0",
+    "openai": "^4.70.2",
     "opml": "^0.5.6",
     "p-queue": "^5.0.0",
     "parse-torrent": "9.1.5",
@@ -113,7 +113,7 @@
     "turndown": "^7.2.0",
     "typeorm": "^0.3.20",
     "validator": "^13.12.0",
-    "winston": "^3.15.0",
+    "winston": "^3.16.0",
     "winston-daily-rotate-file": "^5.0.0",
     "xregexp": "^5.1.1"
   },
@@ -145,7 +145,7 @@
     "@types/morgan": "^1.9.9",
     "@types/ms": "^0.7.34",
     "@types/multer": "^1.4.12",
-    "@types/node": "^22.8.6",
+    "@types/node": "^22.8.7",
     "@types/parse-torrent": "^5.8.7",
     "@types/passport-local": "^1.0.38",
     "@types/passport-strategy": "^0.2.38",
@@ -175,7 +175,7 @@
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
-    "vitepress": "^1.4.3"
+    "vitepress": "^1.4.5"
   },
   "pnpm": {
     "overrides": {
