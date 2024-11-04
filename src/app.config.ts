@@ -137,3 +137,6 @@ export const ALLOWED_EMAIL_DOMAINS = env.ALLOWED_EMAIL_DOMAINS?.split(',')?.map(
 
 // 启用邮箱校验
 export const ENABLE_EMAIL_VALIDATION = env.ENABLE_EMAIL_VALIDATION === 'true' || Boolean(ALLOWED_EMAIL_DOMAINS?.length)
+
+// 最大错误次数
+export const MAX_ERROR_COUNT = Number(env.MAX_ERROR_COUNT || 10)

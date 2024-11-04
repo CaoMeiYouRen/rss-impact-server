@@ -31,6 +31,7 @@ import { getRedisClient } from '@/utils/redis'
         }),
         CacheModule.registerAsync({
             async useFactory() {
+                // 启用 Redis 缓存
                 if (REDIS_URL) {
                     const client = getRedisClient()
                     const store = redisInsStore(client, { ttl: CACHE_EXPIRE * 1000 })
@@ -38,6 +39,7 @@ import { getRedisClient } from '@/utils/redis'
                         store,
                     }
                 }
+                // 默认使用内存缓存
                 return {
                 }
             },

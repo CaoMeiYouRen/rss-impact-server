@@ -20,10 +20,11 @@ import ms from 'ms'
 import { isMagnetURI } from 'class-validator'
 import rssParserUtils from '@cao-mei-you-ren/rss-parser/lib/utils'
 import PQueue from 'p-queue'
+import { CacheService } from '../cache/cache.service'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, AI_LIMIT_MAX, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DATABASE_TYPE, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
+import { __DEV__, AI_LIMIT_MAX, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DATABASE_TYPE, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, MAX_ERROR_COUNT, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
 import { getAllUrls, download, getMd5ByStream, timeFormat, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority, splitStringWithLineBreak } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
@@ -62,6 +63,7 @@ export class TasksService implements OnApplicationBootstrap {
     constructor(
         private readonly scheduler: SchedulerRegistry,
         private readonly resourceService: ResourceService,
+        private readonly cacheService: CacheService,
         @InjectDataSource() private readonly dataSource: DataSource,
         @InjectRepository(Feed) private readonly feedRepository: Repository<Feed>,
         @InjectRepository(Article) private readonly articleRepository: Repository<Article>,
@@ -123,7 +125,16 @@ export class TasksService implements OnApplicationBootstrap {
     async getRssContent(feed: Feed, rss?: Record<string, any> & Parser.Output<Record<string, any>>) {
         const { id: fid, url, userId: uid, isFullText = false } = feed
         let proxyUrl = feed.proxyConfig?.url
+        const key = `rss:${fid}:errorCount`
         try {
+            // 判断错误次数
+            const errorCount = await this.cacheService.get<number>(key) || 0
+            if (errorCount > MAX_ERROR_COUNT) {
+                feed.isEnabled = false
+                await this.feedRepository.save(feed)
+                this.logger.warn(`订阅 id: ${feed.id} 错误次数已达 ${errorCount} 次，已停止订阅！`)
+                return
+            }
             if (!rss) {
                 if (feed.proxyConfigId && !feed.proxyConfig) {
                     const newFeed = await this.feedRepository.findOne({ where: { id: fid }, relations: ['proxyConfig'] })
@@ -212,6 +223,15 @@ export class TasksService implements OnApplicationBootstrap {
         } catch (error) {
             this.logger.error(`url: ${url}\nproxyUrl: ${proxyUrl}\nmessage: ${error?.message}`, error?.stack)
             this.reverseTriggerHooks(feed, error)
+
+            // 增加错误计数
+            const errorCount = await this.cacheService.get<number>(key) || 0
+            this.cacheService.set(key, errorCount + 1, ms('1 d')) // 1 天内错误超过 10 次，则禁用订阅
+            if (errorCount > MAX_ERROR_COUNT) {
+                feed.isEnabled = false
+                await this.feedRepository.save(feed)
+                this.logger.log(`订阅 id: ${feed.id} 已被禁用！`)
+            }
         }
     }
 
