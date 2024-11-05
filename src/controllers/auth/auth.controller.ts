@@ -92,7 +92,7 @@ export class AuthController {
             // this.logger.debug(idToken, 'idToken')
             const payload: JwtPayload = await validateJwt(idToken)
             this.logger.debug(payload, 'payload')
-            const { sub: auth0Id, email, email_verified, name, picture } = payload
+            const { sub: auth0Id, email, email_verified, name, nickname, picture } = payload
             // 根据 sub 判断登录的第三方账号
             let user: User = null
             // 检查该 sub 是否已经被绑定
@@ -132,7 +132,7 @@ export class AuthController {
             }
             // 如果邮箱未注册，则创建新用户
             user = await this.repository.save(this.repository.create({
-                username: name,
+                username: nickname, // nickname 比 name 更友好，更接近用户设定的用户名
                 auth0Id,
                 email,
                 emailVerified: email_verified,
