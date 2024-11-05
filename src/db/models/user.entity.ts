@@ -70,7 +70,7 @@ export class User extends Base {
         if (this.roles.includes(Role.demo) || this.roles.includes(Role.admin)) {
             return
         }
-        if (ENABLE_EMAIL_VALIDATION && this.email && isAllowedEmail(this.email)) {
+        if (ENABLE_EMAIL_VALIDATION && this.email && !isAllowedEmail(this.email)) {
             throw new Error(`邮箱地址 ${this.email} 不在允许的域名内`)
         }
     }
@@ -115,9 +115,9 @@ export class User extends Base {
         search: true,
         value: [Role.user],
         dicData: Object.entries(Role).map(([key, value]) => ({
-                label: key,
-                value,
-            })),
+            label: key,
+            value,
+        })),
     })
     @ApiProperty({ title: '角色', example: [Role.admin] })
     @CustomColumn({
