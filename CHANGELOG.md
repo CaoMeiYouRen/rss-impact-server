@@ -1,5 +1,30 @@
 # rss-impact-server
 
+# [1.10.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.9.0...v1.10.0) (2024-11-09)
+
+
+### ♻ 代码重构
+
+* 修改 auth0 默认的用户名设定 ([c797d1f](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c797d1f))
+* 修改 getConditions 逻辑；修改相关测试用例 ([f767650](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f767650))
+* 新增 git commit hash 输出 ([6f82b22](https://github.com/CaoMeiYouRen/rss-impact-server/commit/6f82b22)), closes [#440](https://github.com/CaoMeiYouRen/rss-impact-server/issues/440)
+* 订阅获取成功时，清空错误计数 ([19c87bc](https://github.com/CaoMeiYouRen/rss-impact-server/commit/19c87bc))
+
+
+### ✨ 新功能
+
+* 新增 最大错误次数 配置，自动禁用错误次数过多的订阅 ([9c59f92](https://github.com/CaoMeiYouRen/rss-impact-server/commit/9c59f92))
+* 新增 构建信息 输出 ([2b26cd4](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2b26cd4))
+
+
+### 🐛 Bug 修复
+
+* 修复 oidc 未初始化时的 logout ([5dad474](https://github.com/CaoMeiYouRen/rss-impact-server/commit/5dad474))
+* 修复 推送时存在多余的换行符的问题 ([383e858](https://github.com/CaoMeiYouRen/rss-impact-server/commit/383e858))
+* 修复 禁用订阅后未移除定时任务的问题 ([bdf728a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/bdf728a))
+* 修复 邮箱校验逻辑错误 ([166873e](https://github.com/CaoMeiYouRen/rss-impact-server/commit/166873e))
+* 修复 部分情况不按照 id 排序的问题 ([1045a37](https://github.com/CaoMeiYouRen/rss-impact-server/commit/1045a37))
+
 # [1.9.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.8.0...v1.9.0) (2024-11-02)
 
 
