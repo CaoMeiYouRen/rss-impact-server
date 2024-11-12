@@ -176,7 +176,7 @@ importers:
         version: 3.11.4
       nest-winston:
         specifier: ^1.10.0
-        version: 1.10.0(@nestjs/common@10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.16.0)
+        version: 1.10.0(@nestjs/common@10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.17.0)
       openai:
         specifier: ^4.71.1
         version: 4.71.1(encoding@0.1.13)
@@ -241,11 +241,11 @@ importers:
         specifier: ^13.12.0
         version: 13.12.0
       winston:
-        specifier: ^3.16.0
-        version: 3.16.0
+        specifier: ^3.17.0
+        version: 3.17.0
       winston-daily-rotate-file:
         specifier: ^5.0.0
-        version: 5.0.0(winston@3.16.0)
+        version: 5.0.0(winston@3.17.0)
       xregexp:
         specifier: ^5.1.1
         version: 5.1.1
@@ -5719,6 +5719,10 @@ packages:
     resolution: {integrity: sha512-1ulHeNPp6k/LD8H91o7VYFBng5i1BDE7HoKxVbZiGFidS1Rj65qcywLxX+pVfAPoQJEjRdvKcusKwOupHCVOVQ==}
     engines: {node: '>= 12.0.0'}
 
+  logform@2.7.0:
+    resolution: {integrity: sha512-TFYA4jnP7PVbmlBIfhlSe+WKxs9dklXMTEGcBCIvLhE/Tn3H6Gk1norupVW7m5Cnd4bLcr08AytbyV/xj7f/kQ==}
+    engines: {node: '>= 12.0.0'}
+
   long@5.2.3:
     resolution: {integrity: sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==}
 
@@ -8470,8 +8474,12 @@ packages:
     resolution: {integrity: sha512-ajBj65K5I7denzer2IYW6+2bNIVqLGDHqDw3Ow8Ohh+vdW+rv4MZ6eiDvHoKhfJFZ2auyN8byXieDDJ96ViONg==}
     engines: {node: '>= 12.0.0'}
 
-  winston@3.16.0:
-    resolution: {integrity: sha512-xz7+cyGN5M+4CmmD4Npq1/4T+UZaz7HaeTlAruFUTjk79CNMq+P6H30vlE4z0qfqJ01VHYQwd7OZo03nYm/+lg==}
+  winston-transport@4.9.0:
+    resolution: {integrity: sha512-8drMJ4rkgaPo1Me4zD/3WLfI/zPdA9o2IipKODunnGDcuqbHwjsbB79ylv04LCGGzU0xQ6vTznOMpQGaLhhm6A==}
+    engines: {node: '>= 12.0.0'}
+
+  winston@3.17.0:
+    resolution: {integrity: sha512-DLiFIXYC5fMPxaRg832S6F5mJYvePtmO5G9v9IgUFPhXm9/GkXarH/TUrBAVzhTCzAj9anE/+GjrgXp/54nOgw==}
     engines: {node: '>= 12.0.0'}
 
   word-wrap@1.2.5:
@@ -15141,6 +15149,15 @@ snapshots:
       safe-stable-stringify: 2.4.3
       triple-beam: 1.4.1
 
+  logform@2.7.0:
+    dependencies:
+      '@colors/colors': 1.6.0
+      '@types/triple-beam': 1.3.5
+      fecha: 4.2.3
+      ms: 2.1.3
+      safe-stable-stringify: 2.4.3
+      triple-beam: 1.4.1
+
   long@5.2.3: {}
 
   longest-streak@3.1.0: {}
@@ -15863,11 +15880,11 @@ snapshots:
 
   nerf-dart@1.0.0: {}
 
-  nest-winston@1.10.0(@nestjs/common@10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.16.0):
+  nest-winston@1.10.0(@nestjs/common@10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.17.0):
     dependencies:
       '@nestjs/common': 10.4.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       fast-safe-stringify: 2.1.1
-      winston: 3.16.0
+      winston: 3.17.0
 
   nice-napi@1.0.2:
     dependencies:
@@ -18296,12 +18313,12 @@ snapshots:
 
   wildcard@2.0.1: {}
 
-  winston-daily-rotate-file@5.0.0(winston@3.16.0):
+  winston-daily-rotate-file@5.0.0(winston@3.17.0):
     dependencies:
       file-stream-rotator: 0.6.1
       object-hash: 3.0.0
       triple-beam: 1.4.1
-      winston: 3.16.0
+      winston: 3.17.0
       winston-transport: 4.7.0
 
   winston-transport@4.7.0:
@@ -18310,19 +18327,25 @@ snapshots:
       readable-stream: 3.6.2
       triple-beam: 1.4.1
 
-  winston@3.16.0:
+  winston-transport@4.9.0:
+    dependencies:
+      logform: 2.7.0
+      readable-stream: 3.6.2
+      triple-beam: 1.4.1
+
+  winston@3.17.0:
     dependencies:
       '@colors/colors': 1.6.0
       '@dabh/diagnostics': 2.0.3
       async: 3.2.5
       is-stream: 2.0.1
-      logform: 2.6.0
+      logform: 2.7.0
       one-time: 1.0.0
       readable-stream: 3.6.2
       safe-stable-stringify: 2.4.3
       stack-trace: 0.0.10
       triple-beam: 1.4.1
-      winston-transport: 4.7.0
+      winston-transport: 4.9.0
 
   word-wrap@1.2.5: {}
 
