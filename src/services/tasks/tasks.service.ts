@@ -1316,10 +1316,11 @@ EXAMPLE JSON ERROR OUTPUT:
                     })
                     // console.log('recordsToDelete', recordsToDelete.length)
                     // 3. 删除最早的几条记录
-                    await Promise.allSettled(recordsToDelete.map((e) => removeQueue.add(async () => {
-                        // remove 方法有数量限制，故采用队列
-                        this.articleRepository.remove(e)
-                    })))
+                    await this.articleRepository.delete(recordsToDelete.map((e) => e.id)) // 删除时使用 id
+                    // await Promise.allSettled(recordsToDelete.map((e) => removeQueue.add(async () => {
+                    //     // remove 方法有数量限制，故采用队列
+                    //     this.articleRepository.remove(e)
+                    // })))
                     // console.log(removes)
                     this.logger.log(`订阅: ${feed.title}(id: ${feed.id}), 成功移除超过数量的文章 ${recordsToDelete.length} 篇`)
                 }
@@ -1385,23 +1386,24 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeLogs' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'removeLogs' }) // 每天删除一次
     private async removeLogFiles() {
         try {
             const dirPath = logDir// 解析为绝对路径
             const files = await fs.readdir(dirPath)
 
             files.forEach((file) => {
-                if (/\.(log(.gz)?)$/.test(file)) {
+                if (/\.(log(\.gz)?)$/.test(file)) {
                     return null
                 }
                 return removeQueue.add(async () => {
                     // 检查日志最后写入时间是否超过31天
-                    const stats = await fs.stat(path.join(dirPath, file))
+                    const filepath = path.join(dirPath, file)
+                    const stats = await fs.stat(filepath)
                     const date = stats.mtime
                     const days = dayjs().diff(date, 'day')
                     if (days > 31) {
-                        await fs.remove(path.join(dirPath, file))
+                        await fs.remove(filepath)
                     }
                 })
             })
