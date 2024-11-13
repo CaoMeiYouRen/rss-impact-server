@@ -1300,10 +1300,21 @@ EXAMPLE JSON ERROR OUTPUT:
                 },
             })
             for await (const feed of feeds) {
-                // 1. 查询记录总数
-                const totalCount = await this.articleRepository.count({ where: { feedId: feed.id } })
-                // 如果超过 单个订阅文章最大保存数量
-                if (totalCount > ARTICLE_LIMIT_MAX) {
+                // console.log('recordsToDelete', recordsToDelete.length)
+                // await Promise.allSettled(recordsToDelete.map((e) => removeQueue.add(async () => {
+                //     // remove 方法有数量限制，故采用队列
+                //     this.articleRepository.remove(e)
+                // })))
+                // console.log(removes)
+                // 3. 删除最早的几条记录
+                removeQueue.add(async () => { // 添加到队列中
+                    // 1. 查询记录总数
+                    const totalCount = await this.articleRepository.count({ where: { feedId: feed.id } })
+                    // 如果未超过 单个订阅文章最大保存数量
+                    if (totalCount <= ARTICLE_LIMIT_MAX) {
+                        // this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 未超过最大保存数量，无需删除`)
+                        return
+                    }
                     // 2. 查询最早的几条记录
                     this.logger.log(`正在删除订阅: ${feed.title}(id: ${feed.id}) 超过限制的文章`)
                     const recordsToDelete = await this.articleRepository.find({
@@ -1314,16 +1325,9 @@ EXAMPLE JSON ERROR OUTPUT:
                         skip: ARTICLE_LIMIT_MAX, // 跳过前 ARTICLE_LIMIT_MAX 个
                         take: totalCount - ARTICLE_LIMIT_MAX, // 分页大小
                     })
-                    // console.log('recordsToDelete', recordsToDelete.length)
-                    // 3. 删除最早的几条记录
                     await this.articleRepository.delete(recordsToDelete.map((e) => e.id)) // 删除时使用 id
-                    // await Promise.allSettled(recordsToDelete.map((e) => removeQueue.add(async () => {
-                    //     // remove 方法有数量限制，故采用队列
-                    //     this.articleRepository.remove(e)
-                    // })))
-                    // console.log(removes)
                     this.logger.log(`订阅: ${feed.title}(id: ${feed.id}), 成功移除超过数量的文章 ${recordsToDelete.length} 篇`)
-                }
+                })
             }
             if (DATABASE_TYPE === 'sqlite') {
                 removeQueue.add(async () => {
