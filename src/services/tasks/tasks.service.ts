@@ -1284,7 +1284,7 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeArticles' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'removeArticles' }) // 每天删除一次
     private async removeArticles() {
         try {
             this.logger.log('开始移除过时的文章')
@@ -1335,7 +1335,7 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeResources' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'removeResources' }) // 每天删除一次
     private async removeResources() {
         try {
             this.logger.log('开始移除过时的资源')
@@ -1370,7 +1370,7 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeLogs' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'removeLogs' }) // 每天删除一次
     private async removeLogs() {
         try {
             this.logger.log('开始移除过时的日志')
@@ -1386,7 +1386,7 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'removeLogs' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'removeLogFiles' }) // 每天删除一次
     private async removeLogFiles() {
         try {
             const dirPath = logDir// 解析为绝对路径
