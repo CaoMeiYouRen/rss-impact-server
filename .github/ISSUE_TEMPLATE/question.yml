@@ -1,0 +1,100 @@
+name: Question
+description: 使用上的问题。如果是 Bug 请使用 `Bug report` 模板。此外，更建议前往 discussions 讨论。
+title: "[question] "
+labels: ["question"]
+# assignees: []
+body:
+  - type: textarea
+    id: question-description
+    attributes:
+      label: Question Description
+      description: 请对您的问题进行清晰详细的描述。包括任何相关的上下文、背景信息或具体细节，以帮助他人理解您的问题。
+      placeholder: 例如，我在使用某个功能时遇到了困难，具体表现为 [...]
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Reproduction Steps
+      description: 如果适用，请提供重现问题的步骤。
+      placeholder: 1. 打开应用程序。2. 点击按钮。3. 观察到应用程序崩溃。
+    validations:
+      required: false
+
+  - type: input
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: 如果适用，请添加屏幕截图以帮助解释您的问题
+      placeholder: 例如，https://example.com/screenshot.png
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        **Desktop (please complete the following information):/系统信息（请填写以下信息）：**
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      description: 请提供操作系统信息。
+      placeholder: 例如，Windows 10, macOS 11.2, Ubuntu 20.04, Docker
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      description: 请提供浏览器信息。
+      placeholder: 例如，Chrome 91, Firefox 89
+    validations:
+      required: false
+
+  - type: input
+    id: nodejs-version
+    attributes:
+      label: NodeJS Version
+      description: 请提供 NodeJS 版本信息。
+      placeholder: 例如，20.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: rss-impact-version
+    attributes:
+      label: RSS Impact Version
+      description: 请提供 RSS Impact 版本信息。在 /about 页面可以找到。
+      placeholder: 例如，1.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: rss-impact-commit-hash
+    attributes:
+      label: RSS Impact Commit Hash
+      description: 请提供 RSS Impact 的后端构建哈希。在 /about 页面可以找到。
+      placeholder: 例如，a593056
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: 请提供任何其他相关的上下文信息。
+      placeholder: 例如，我使用的是最新版本的应用程序。
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        **Paid Consultation/付费咨询**
+
+        如果您愿意支付费用以获得更快的回复，请[前往爱发电进行赞助](https://afdian.com/a/CaoMeiYouRen)。
+
+        如果您不愿意付费，请耐心等待开发者回复。开发者可能因为各种各样的原因无法及时回复，还请谅解。
