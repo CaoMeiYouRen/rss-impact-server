@@ -1284,29 +1284,24 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'removeArticles' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeArticles' }) // 每天删除一次
     private async removeArticles() {
         try {
             this.logger.log('开始移除过时的文章')
             const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-ARTICLE_SAVE_DAYS, 'day').toDate()
             const removes = await this.articleRepository.delete({
-                // pubDate: LessThan(date),
-                createdAt: LessThan(date),
+                pubDate: LessThan(date), // pubDate 小于当前时间 - ARTICLE_SAVE_DAYS 天的记录
+                // createdAt: LessThan(date), // createdAt 小于当前时间 - ARTICLE_SAVE_DAYS 天的记录
             })
             this.logger.log('成功移除过时的文章')
             this.logger.log(removes)
             const feeds = await this.feedRepository.find({
                 where: {
+                    isEnabled: true, // 只查找已启用的订阅
                 },
             })
             for await (const feed of feeds) {
-                // console.log('recordsToDelete', recordsToDelete.length)
-                // await Promise.allSettled(recordsToDelete.map((e) => removeQueue.add(async () => {
-                //     // remove 方法有数量限制，故采用队列
-                //     this.articleRepository.remove(e)
-                // })))
-                // console.log(removes)
-                // 3. 删除最早的几条记录
+                // 删除最早的几条记录
                 removeQueue.add(async () => { // 添加到队列中
                     // 1. 查询记录总数
                     const totalCount = await this.articleRepository.count({ where: { feedId: feed.id } })
@@ -1339,7 +1334,7 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'removeResources' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeResources' }) // 每天删除一次
     private async removeResources() {
         try {
             this.logger.log('开始移除过时的资源')
@@ -1374,13 +1369,12 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'removeLogs' }) // 每天删除一次
+    @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeLogs' }) // 每天删除一次
     private async removeLogs() {
         try {
             this.logger.log('开始移除过时的日志')
             const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-LOG_SAVE_DAYS, 'day').toDate()
             const removes = await this.webhookLogRepository.delete({
-                // pubDate: LessThan(date),
                 createdAt: LessThan(date),
             })
             this.logger.log('成功移除过时的日志')
@@ -1397,16 +1391,16 @@ EXAMPLE JSON ERROR OUTPUT:
             const files = await fs.readdir(dirPath)
 
             files.forEach((file) => {
-                if (/\.(log(\.gz)?)$/.test(file)) {
+                if (!/\.(log(\.gz)?)$/.test(file)) { // 如果不是日志文件，则跳过
                     return null
                 }
                 return removeQueue.add(async () => {
-                    // 检查日志最后写入时间是否超过31天
+                    // 检查日志最后写入时间是否超过 LOG_SAVE_DAYS 天
                     const filepath = path.join(dirPath, file)
                     const stats = await fs.stat(filepath)
                     const date = stats.mtime
                     const days = dayjs().diff(date, 'day')
-                    if (days > 31) {
+                    if (days > LOG_SAVE_DAYS) {
                         await fs.remove(filepath)
                     }
                 })
