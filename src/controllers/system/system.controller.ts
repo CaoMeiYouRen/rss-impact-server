@@ -5,7 +5,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectDataSource } from '@nestjs/typeorm'
 import { DataSource } from 'typeorm'
 import { UseAdmin } from '@/decorators/use-admin.decorator'
-import { DATABASE_DATABASE, DATABASE_TYPE } from '@/app.config'
+import { DATABASE_DATABASE, DATABASE_TYPE, DISABLE_EMPTY_FEEDS } from '@/app.config'
 import { DATABASE_PATH, entities } from '@/db/database.module'
 import { dataFormat, timeFromNow } from '@/utils/helper'
 import { DatabaseInfoDto } from '@/models/database-info.dto'
@@ -175,6 +175,9 @@ export class SystemController {
     @ApiOperation({ summary: '禁用不包含任何 Hook 和 自定义查询的订阅' })
     @Post('disableEmptyFeeds')
     async disableEmptyFeeds() {
+        if (!DISABLE_EMPTY_FEEDS) {
+            throw new HttpError(400, '本接口仅支持 DISABLE_EMPTY_FEEDS 为 true 时调用')
+        }
         await this.tasksService.disableEmptyFeeds()
         return new ResponseDto({ message: 'OK' })
     }
