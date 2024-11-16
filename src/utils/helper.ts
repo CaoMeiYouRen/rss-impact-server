@@ -17,7 +17,6 @@ import PostlightParser from '@cao-mei-you-ren/postlight_parser'
 import { decodeXML } from 'entities'
 import { JwksClient } from 'jwks-rsa'
 import * as jwt from 'jsonwebtoken'
-import { Jelban } from 'jelban.js'
 import { ajax } from './ajax'
 import { ALLOWED_EMAIL_DOMAINS, AUTH0_ISSUER_BASE_URL, TZ } from '@/app.config'
 // TODO 考虑支持国际化

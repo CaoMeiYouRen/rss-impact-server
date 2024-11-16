@@ -2,7 +2,7 @@
 /* eslint-disable no-loss-of-precision */
 import dayjs from 'dayjs'
 import { Between, Equal, ILike, In, Like } from 'typeorm'
-import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown, escapeMarkdown, unescapeMarkdown, splitStringWithLineBreak, isJunkEmail, transformQueryOperator } from './helper'
+import { timeFormat, isImageUrl, deepOmit, deepTrim, mdToCqcode, dataFormat, splitString, timeFromNow, collapseWhitespace, parseDataSize, htmlToMarkdown, escapeMarkdown, unescapeMarkdown, splitStringWithLineBreak, transformQueryOperator } from './helper'
 
 describe('timeFormat', () => {
     it('should format the current time with the default pattern', () => {

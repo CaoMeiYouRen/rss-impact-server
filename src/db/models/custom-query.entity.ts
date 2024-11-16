@@ -96,11 +96,11 @@ export class CustomQuery extends AclBase {
             value: 'id',
         },
     })
-    @ApiProperty({ title: '指定订阅', description: '支持选择多个订阅', example: [], type: [Feed] })
+    @ApiProperty({ title: '指定订阅', description: '支持选择多个订阅', example: [], type: () => [Feed] })
     @Type(() => Feed)
     @IsArray()
     @IsOptional()
-    @ManyToMany(() => Feed)
+    @ManyToMany(() => Feed, (feed) => feed.customQueries)
     @JoinTable()
     feeds?: Feed[]
 

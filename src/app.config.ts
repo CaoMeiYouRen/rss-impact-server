@@ -140,3 +140,6 @@ export const ENABLE_EMAIL_VALIDATION = env.ENABLE_EMAIL_VALIDATION === 'true' ||
 
 // 最大错误次数
 export const MAX_ERROR_COUNT = Number(env.MAX_ERROR_COUNT || 10)
+
+// 禁用不包含任何 Hook 和 自定义查询的订阅
+export const DISABLE_EMPTY_FEEDS = env.DISABLE_EMPTY_FEEDS === 'true'

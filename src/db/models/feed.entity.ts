@@ -7,6 +7,7 @@ import { Category } from './category.entity'
 import { Article } from './article.entity'
 import { Hook } from './hook.entity'
 import { ProxyConfig } from './proxy-config.entity'
+import { CustomQuery } from './custom-query.entity'
 import { IsId } from '@/decorators/is-id.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
@@ -181,6 +182,12 @@ export class Feed extends AclBase {
     @JoinTable()
     hooks: Hook[]
 
+    @SetAclCrudField({
+        hide: true,
+    })
+    @ApiProperty({ title: '自定义查询列表', example: [], type: () => [CustomQuery] })
+    @ManyToMany(() => CustomQuery, (customQuery) => customQuery.feeds)
+    customQueries: CustomQuery[]
 }
 
 export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] as const) { }

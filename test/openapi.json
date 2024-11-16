@@ -5868,6 +5868,138 @@
                     "feed"
                 ]
             },
+            "CustomQuery": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "title": "ID",
+                        "example": 1
+                    },
+                    "createdAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "创建时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "更新时间",
+                        "example": "2023-12-31T16:00:00.000Z"
+                    },
+                    "userId": {
+                        "type": "number",
+                        "title": "所属用户",
+                        "example": 1
+                    },
+                    "user": {
+                        "title": "所属用户",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        ]
+                    },
+                    "name": {
+                        "type": "string",
+                        "title": "名称",
+                        "example": "查询A"
+                    },
+                    "scope": {
+                        "type": "object",
+                        "enum": [
+                            "all",
+                            "category",
+                            "feed"
+                        ],
+                        "title": "查询范围",
+                        "description": "指定分类和指定订阅的配置互斥，只按照本项指定的范围查询",
+                        "example": "all"
+                    },
+                    "categories": {
+                        "title": "指定分类",
+                        "description": "支持选择多个分类",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Category"
+                        }
+                    },
+                    "feeds": {
+                        "title": "指定订阅",
+                        "description": "支持选择多个订阅",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Feed"
+                        }
+                    },
+                    "format": {
+                        "type": "object",
+                        "enum": [
+                            "rss2.0",
+                            "atom",
+                            "json"
+                        ],
+                        "title": "输出格式",
+                        "example": "rss2.0"
+                    },
+                    "useAiSummary": {
+                        "type": "boolean",
+                        "title": "使用 AI 总结",
+                        "description": "如果是，则用 AI 总结替换原本的总结"
+                    },
+                    "appendAiSummary": {
+                        "type": "boolean",
+                        "title": "增加 AI 总结",
+                        "description": "如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读"
+                    },
+                    "key": {
+                        "type": "string",
+                        "title": "访问秘钥",
+                        "description": "通过访问秘钥即可无需登录访问 RSS 订阅。一旦泄露，请立即修改！",
+                        "example": "custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200"
+                    },
+                    "url": {
+                        "type": "string",
+                        "title": "输出路径"
+                    },
+                    "filter": {
+                        "title": "过滤条件",
+                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Filter"
+                            }
+                        ]
+                    },
+                    "filterout": {
+                        "title": "排除条件",
+                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/FilterOut"
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "userId",
+                    "user",
+                    "name",
+                    "scope",
+                    "format",
+                    "useAiSummary",
+                    "appendAiSummary",
+                    "key",
+                    "filter",
+                    "filterout"
+                ]
+            },
             "Feed": {
                 "type": "object",
                 "properties": {
@@ -5999,6 +6131,14 @@
                         "items": {
                             "$ref": "#/components/schemas/Hook"
                         }
+                    },
+                    "customQueries": {
+                        "title": "自定义查询列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CustomQuery"
+                        }
                     }
                 },
                 "required": [
@@ -6015,7 +6155,8 @@
                     "category",
                     "isFullText",
                     "articles",
-                    "hooks"
+                    "hooks",
+                    "customQueries"
                 ]
             },
             "Hook": {
@@ -6336,6 +6477,14 @@
                         "items": {
                             "$ref": "#/components/schemas/Hook"
                         }
+                    },
+                    "customQueries": {
+                        "title": "自定义查询列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CustomQuery"
+                        }
                     }
                 },
                 "required": [
@@ -6349,7 +6498,8 @@
                     "category",
                     "isFullText",
                     "articles",
-                    "hooks"
+                    "hooks",
+                    "customQueries"
                 ]
             },
             "UpdateFeed": {
@@ -6470,6 +6620,14 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/Hook"
+                        }
+                    },
+                    "customQueries": {
+                        "title": "自定义查询列表",
+                        "example": [],
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CustomQuery"
                         }
                     }
                 }
@@ -7357,138 +7515,6 @@
                         ]
                     }
                 }
-            },
-            "CustomQuery": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "number",
-                        "title": "ID",
-                        "example": 1
-                    },
-                    "createdAt": {
-                        "format": "date-time",
-                        "type": "string",
-                        "title": "创建时间",
-                        "example": "2023-12-31T16:00:00.000Z"
-                    },
-                    "updatedAt": {
-                        "format": "date-time",
-                        "type": "string",
-                        "title": "更新时间",
-                        "example": "2023-12-31T16:00:00.000Z"
-                    },
-                    "userId": {
-                        "type": "number",
-                        "title": "所属用户",
-                        "example": 1
-                    },
-                    "user": {
-                        "title": "所属用户",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/User"
-                            }
-                        ]
-                    },
-                    "name": {
-                        "type": "string",
-                        "title": "名称",
-                        "example": "查询A"
-                    },
-                    "scope": {
-                        "type": "object",
-                        "enum": [
-                            "all",
-                            "category",
-                            "feed"
-                        ],
-                        "title": "查询范围",
-                        "description": "指定分类和指定订阅的配置互斥，只按照本项指定的范围查询",
-                        "example": "all"
-                    },
-                    "categories": {
-                        "title": "指定分类",
-                        "description": "支持选择多个分类",
-                        "example": [],
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Category"
-                        }
-                    },
-                    "feeds": {
-                        "title": "指定订阅",
-                        "description": "支持选择多个订阅",
-                        "example": [],
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Feed"
-                        }
-                    },
-                    "format": {
-                        "type": "object",
-                        "enum": [
-                            "rss2.0",
-                            "atom",
-                            "json"
-                        ],
-                        "title": "输出格式",
-                        "example": "rss2.0"
-                    },
-                    "useAiSummary": {
-                        "type": "boolean",
-                        "title": "使用 AI 总结",
-                        "description": "如果是，则用 AI 总结替换原本的总结"
-                    },
-                    "appendAiSummary": {
-                        "type": "boolean",
-                        "title": "增加 AI 总结",
-                        "description": "如果是，则将 AI 总结 增加 到正文前，以方便通过 RSS 阅读器阅读"
-                    },
-                    "key": {
-                        "type": "string",
-                        "title": "访问秘钥",
-                        "description": "通过访问秘钥即可无需登录访问 RSS 订阅。一旦泄露，请立即修改！",
-                        "example": "custom-query-key:2c28d0b6-47db-43a4-aff4-439edbe29200"
-                    },
-                    "url": {
-                        "type": "string",
-                        "title": "输出路径"
-                    },
-                    "filter": {
-                        "title": "过滤条件",
-                        "description": "保留想要的内容，必须符合全部条件才保留。支持通过正则表达式过滤。留空的规则不会过滤。",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Filter"
-                            }
-                        ]
-                    },
-                    "filterout": {
-                        "title": "排除条件",
-                        "description": "去掉不要的内容，有一个条件符合就排除。支持通过正则表达式排除。留空的规则不会排除。",
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/FilterOut"
-                            }
-                        ]
-                    }
-                },
-                "required": [
-                    "id",
-                    "createdAt",
-                    "updatedAt",
-                    "userId",
-                    "user",
-                    "name",
-                    "scope",
-                    "format",
-                    "useAiSummary",
-                    "appendAiSummary",
-                    "key",
-                    "filter",
-                    "filterout"
-                ]
             },
             "FindCustomQuery": {
                 "type": "object",

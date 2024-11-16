@@ -1,4 +1,3 @@
-import os from 'os'
 import path from 'path'
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common'
 import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule'
@@ -19,12 +18,11 @@ import OpenAI from 'openai'
 import ms from 'ms'
 import { isMagnetURI } from 'class-validator'
 import rssParserUtils from '@cao-mei-you-ren/rss-parser/lib/utils'
-import PQueue from 'p-queue'
 import { CacheService } from '../cache/cache.service'
 import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
-import { __DEV__, AI_LIMIT_MAX, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, BIT_TORRENT_LIMIT_MAX, DATABASE_TYPE, DOWNLOAD_LIMIT_MAX, HOOK_LIMIT_MAX, LOG_SAVE_DAYS, MAX_ERROR_COUNT, NOTIFICATION_LIMIT_MAX, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, RSS_LIMIT_MAX, TZ } from '@/app.config'
+import { __DEV__, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, DATABASE_TYPE, DISABLE_EMPTY_FEEDS, LOG_SAVE_DAYS, MAX_ERROR_COUNT, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
 import { getAllUrls, download, getMd5ByStream, timeFormat, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority, splitStringWithLineBreak } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
@@ -45,14 +43,8 @@ import { HttpError } from '@/models/http-error'
 import { RegularConfig } from '@/models/regular-config'
 import { DailyCount } from '@/db/models/daily-count.entity'
 import { logDir } from '@/middlewares/logger.middleware'
-
-const removeQueue = new PQueue({ concurrency: Math.min(os.cpus().length, 8) }) // 删除文件并发数
-const rssQueue = new PQueue({ concurrency: RSS_LIMIT_MAX }) // RSS 请求并发数
-const hookQueue = new PQueue({ concurrency: HOOK_LIMIT_MAX }) // Hook 并发数
-const downloadQueue = new PQueue({ concurrency: DOWNLOAD_LIMIT_MAX }) // 下载并发数限制
-const aiQueue = new PQueue({ concurrency: AI_LIMIT_MAX }) // AI 总结并发数
-const bitTorrentQueue = new PQueue({ concurrency: BIT_TORRENT_LIMIT_MAX }) // BitTorrent 并发数
-const notificationQueue = new PQueue({ concurrency: NOTIFICATION_LIMIT_MAX }) // 推送 并发数
+import { rssQueue, hookQueue, notificationQueue, downloadQueue, bitTorrentQueue, aiQueue, removeQueue } from '@/utils/queue'
+import { CustomQuery } from '@/db/models/custom-query.entity'
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -71,6 +63,7 @@ export class TasksService implements OnApplicationBootstrap {
         @InjectRepository(WebhookLog) private readonly webhookLogRepository: Repository<WebhookLog>,
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(DailyCount) private readonly dailyCountRepository: Repository<DailyCount>,
+        @InjectRepository(CustomQuery) private readonly customQueryRepository: Repository<CustomQuery>,
     ) { }
 
     async onApplicationBootstrap() {
@@ -1328,6 +1321,31 @@ EXAMPLE JSON ERROR OUTPUT:
                 removeQueue.add(async () => {
                     await this.sqliteAutoVacuum()
                 }, { priority: -1 }) // 优先级设置为负数，排到队尾
+            }
+        } catch (error) {
+            this.logger.error(error?.message, error?.stack)
+        }
+    }
+
+    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'disableEmptyFeeds' }) // 每天禁用空订阅
+    async disableEmptyFeeds() {
+        if (!DISABLE_EMPTY_FEEDS) {
+            return
+        }
+        try {
+            const feeds = await this.feedRepository.find({
+                where: {
+                    isEnabled: true, // 只查找已启用的订阅
+                },
+                relations: ['hooks', 'customQueries'],
+            })
+            // 禁用不包含任何 Hook 和 自定义查询的订阅
+            for await (const feed of feeds) {
+                if (feed.hooks?.length > 0 || feed.customQueries?.length > 0) {
+                    continue
+                }
+                await this.feedRepository.update({ id: feed.id }, { isEnabled: false })
+                this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 已禁用，因为不包含任何 Hook 和 自定义查询`)
             }
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
