@@ -1342,10 +1342,12 @@ EXAMPLE JSON ERROR OUTPUT:
             // 禁用不包含任何 Hook 和 自定义查询的订阅
             for await (const feed of feeds) {
                 if (feed.hooks?.length > 0 || feed.customQueries?.length > 0) {
-                    continue
+                    return
                 }
-                await this.feedRepository.update({ id: feed.id }, { isEnabled: false })
-                this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 已禁用，因为不包含任何 Hook 和 自定义查询`)
+                removeQueue.add(async () => {
+                    await this.feedRepository.update({ id: feed.id }, { isEnabled: false })
+                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 已禁用，因为不包含任何 Hook 和 自定义查询`)
+                })
             }
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
@@ -1480,12 +1482,16 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    private async sqliteAutoVacuum() {
+    async sqliteAutoVacuum() {
         // 触发 VACUUM，以自动回收未使用的空间
         try {
             this.logger.log('正在触发 VACUUM')
-            await this.dataSource.query('VACUUM;')
-            this.logger.log('VACUUM 执行成功')
+            await removeQueue.add(async () => {
+                await this.dataSource.query('VACUUM;')
+                this.logger.log('VACUUM 执行成功')
+            }, {
+                priority: -1, // 优先级设置为负数，排到队尾
+            })
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }

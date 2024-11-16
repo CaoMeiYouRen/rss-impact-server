@@ -2,6 +2,7 @@ import { AfterLoad, BeforeInsert, Entity, JoinTable, ManyToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { IsObject, ValidateNested, IsIn, IsArray, IsBoolean, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
+import _ from 'lodash'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
 import { Category } from './category.entity'
@@ -169,7 +170,9 @@ export class CustomQuery extends AclBase {
 
     @AfterLoad() // 生成输出 url
     private updateUrl() {
-        this.url = new URL(`${BASE_URL}/api/custom-query/rss/${this.id}?key=${this.key}`, BASE_URL).toString()
+        if (!_.isNil(this.key)) {
+            this.url = new URL(`${BASE_URL}/api/custom-query/rss/${this.id}?key=${this.key}`, BASE_URL).toString()
+        }
     }
 
     @SetAclCrudField({

@@ -183,10 +183,18 @@ export class Feed extends AclBase {
     hooks: Hook[]
 
     @SetAclCrudField({
-        hide: true,
+        type: 'select',
+        multiple: true,
+        dicUrl: '/custom-query/dicData',
+        props: {
+            label: 'name',
+            value: 'id',
+        },
     })
     @ApiProperty({ title: '自定义查询列表', example: [], type: () => [CustomQuery] })
-    @ManyToMany(() => CustomQuery, (customQuery) => customQuery.feeds)
+    @Type(() => CustomQuery)
+    @IsArray()
+    @ManyToMany(() => CustomQuery, (customQuery) => customQuery.feeds) // JoinTable 在 CustomQuery 这边
     customQueries: CustomQuery[]
 }
 

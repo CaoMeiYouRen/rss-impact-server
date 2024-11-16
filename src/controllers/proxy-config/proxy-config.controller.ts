@@ -66,6 +66,8 @@ export class ProxyConfigController {
                 createdAt: 'DESC',
             },
             select: ['id', 'name'],
+            skip,
+            take: limit,
         })
         data.unshift({
             name: '不代理',

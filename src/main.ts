@@ -21,7 +21,6 @@ import { jsonLogger, logger } from './middlewares/logger.middleware'
 import { sessionMiddleware } from './middlewares/session.middleware'
 import { setRequestId } from './middlewares/request.middleware'
 import { getGitInfo } from './utils/git-info'
-import { timeFormat } from './utils/helper'
 
 moduleAlias.addAlias('@', path.join(__dirname, './'))
 

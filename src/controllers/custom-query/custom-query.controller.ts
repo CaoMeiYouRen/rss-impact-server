@@ -56,6 +56,10 @@ import { to } from '@/utils/helper'
         },
     },
     relations: ['categories', 'feeds'],
+    props: {
+        label: 'name',
+        value: 'id',
+    },
 })
 @ApiTags('custom-query')
 @Controller('custom-query')

@@ -8,7 +8,7 @@ import { isNumberString } from 'class-validator'
 import { Logger, QueryRunner } from 'typeorm'
 import { LoggerService } from '@nestjs/common'
 import { timeFormat } from '@/utils/helper'
-import { __DEV__, __PROD__, LOG_LEVEL } from '@/app.config'
+import { __PROD__, LOG_LEVEL } from '@/app.config'
 import { User } from '@/db/models/user.entity'
 
 export const logDir = path.resolve('logs')

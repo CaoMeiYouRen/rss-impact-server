@@ -44,7 +44,7 @@ import { CategoryService } from '@/services/category/category.service'
             dto: UpdateFeed,
         },
     },
-    relations: ['hooks'],
+    relations: ['hooks', 'customQueries'],
     props: {
         label: 'title',
         value: 'id',

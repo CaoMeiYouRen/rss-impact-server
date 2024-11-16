@@ -26,7 +26,6 @@ import { AclOptions } from '@/decorators/acl-crud.decorator'
 import { isId } from '@/decorators/is-id.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { AvueCrudConfig, DicData } from '@/models/avue.dto'
-import { transformQueryOperator } from '@/utils/helper'
 
 export class ICrudQuery implements CrudRouteForFind {
     /**

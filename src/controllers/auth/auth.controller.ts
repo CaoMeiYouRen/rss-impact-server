@@ -92,7 +92,8 @@ export class AuthController {
             // this.logger.debug(idToken, 'idToken')
             const payload: JwtPayload = await validateJwt(idToken)
             this.logger.debug(payload, 'payload')
-            const { sub: auth0Id, email, email_verified, name, nickname, picture } = payload
+            // nickname 比 name 更友好，更接近用户设定的用户名
+            const { sub: auth0Id, email, email_verified, nickname, picture } = payload
             // 根据 sub 判断登录的第三方账号
             let user: User = null
             // 检查该 sub 是否已经被绑定

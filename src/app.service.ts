@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import fs from 'fs-extra'
-import { timeFormat } from './utils/helper'
 import { getGitInfo } from './utils/git-info'
 
 @Injectable()

@@ -14,6 +14,7 @@ import { OsInfoDto } from '@/models/os-info.dto'
 import { AvueCrudOption } from '@/models/avue.dto'
 import { ResponseDto } from '@/models/response.dto'
 import { HttpError } from '@/models/http-error'
+import { TasksService } from '@/services/tasks/tasks.service'
 
 @UseAdmin()
 @ApiTags('system')
@@ -22,8 +23,9 @@ export class SystemController {
 
     private readonly logger: Logger = new Logger(SystemController.name)
 
-    constructor(@InjectDataSource() private readonly dataSource: DataSource) {
-
+    constructor(
+        private readonly tasksService: TasksService,
+        @InjectDataSource() private readonly dataSource: DataSource) {
     }
 
     @ApiResponse({ status: 200, type: AvueCrudOption })
@@ -165,9 +167,15 @@ export class SystemController {
         if (DATABASE_TYPE !== 'sqlite') {
             throw new HttpError(400, '本接口仅支持 sqlite 作为数据库时调用')
         }
-        this.logger.log('正在触发 VACUUM')
-        await this.dataSource.query('VACUUM;')
-        this.logger.log('VACUUM 执行成功')
+        await this.tasksService.sqliteAutoVacuum() // 自动释放空间
+        return new ResponseDto({ message: 'OK' })
+    }
+
+    @ApiResponse({ status: 201, type: ResponseDto })
+    @ApiOperation({ summary: '禁用不包含任何 Hook 和 自定义查询的订阅' })
+    @Post('disableEmptyFeeds')
+    async disableEmptyFeeds() {
+        await this.tasksService.disableEmptyFeeds()
         return new ResponseDto({ message: 'OK' })
     }
 }
