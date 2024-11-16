@@ -1327,7 +1327,7 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    // @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'disableEmptyFeeds' }) // 每天禁用空订阅
+    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'disableEmptyFeeds' }) // 每天禁用空订阅
     async disableEmptyFeeds() {
         if (!DISABLE_EMPTY_FEEDS) {
             this.logger.warn('DISABLE_EMPTY_FEEDS 为 false，不执行禁用空订阅操作')
@@ -1344,10 +1344,21 @@ EXAMPLE JSON ERROR OUTPUT:
                 this.logger.warn('没有启用的订阅，不执行禁用空订阅操作')
                 return
             }
+            // 检查所有为 all 的自定义查询，该部分需要单独处理，因为该部分不依赖于订阅
+            const customQueries = await this.customQueryRepository.find({
+                where: {
+                    scope: 'all',
+                },
+            })
+            const userIds = uniq(customQueries.map((e) => e.userId))
             // 禁用不包含任何 Hook 和 自定义查询的订阅
             feeds.forEach((feed) => {
                 if (feed.hooks?.length > 0 || feed.customQueries?.length > 0 || feed.category?.customQueries?.length > 0) {
                     this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 包含 Hook 或 自定义查询，无需禁用`)
+                    return
+                }
+                if (userIds.includes(feed.userId)) { // 该订阅属于全量自定义查询，则无需禁用
+                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 属于全量查询，无需禁用`)
                     return
                 }
                 removeQueue.add(async () => {
