@@ -95,7 +95,7 @@ jobs:
             ghcr.io/${{ github.repository }}
             registry.cn-hangzhou.aliyuncs.com/${{ github.repository }}
           tags: |
-            type=match,priority=1100,pattern=\d.\d.\d,value=${{env.GIT_TAG}},enable=true
+            type=semver,priority=1100,pattern={{version}},value=${{env.GIT_TAG}},enable=true
             type=raw,value=latest,enable=true
             type=raw,value={{date 'YYYY-MM-DD' tz='Asia/Shanghai'}},enable=true
             type=sha,format=short,prefix=sha-,enable=true
