@@ -1,5 +1,21 @@
 # rss-impact-server
 
+# [1.11.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.10.0...v1.11.0) (2024-11-16)
+
+
+### ♻ 代码重构
+
+* 优化 删除日志和订阅的逻辑 ([264773a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/264773a))
+* 优化 删除过时的文章 为队列 ([dc53047](https://github.com/CaoMeiYouRen/rss-impact-server/commit/dc53047))
+* 优化 部分定时任务触发时间；修改删除文章和日志的逻辑；增加 CQImage 注释 ([5ede09f](https://github.com/CaoMeiYouRen/rss-impact-server/commit/5ede09f))
+* 修改 部分定时任务的执行时间 ([ec291ab](https://github.com/CaoMeiYouRen/rss-impact-server/commit/ec291ab))
+
+
+### ✨ 新功能
+
+* 新增 禁用空订阅接口；优化 VACUUM 逻辑；移除部分未使用的代码 ([12b0ed5](https://github.com/CaoMeiYouRen/rss-impact-server/commit/12b0ed5))
+* 新增 默认禁用不包含任何 Hook 和 自定义查询的订阅 ([807ea36](https://github.com/CaoMeiYouRen/rss-impact-server/commit/807ea36)), closes [#467](https://github.com/CaoMeiYouRen/rss-impact-server/issues/467)
+
 # [1.10.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.9.0...v1.10.0) (2024-11-09)
 
 

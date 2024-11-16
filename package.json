@@ -1,6 +1,6 @@
 {
   "name": "rss-impact-server",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "一个基于 RSS 的 Hook 系统。本项目为后端部分。",
   "keywords": [
     "RSS",
