@@ -1330,6 +1330,7 @@ EXAMPLE JSON ERROR OUTPUT:
     @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'disableEmptyFeeds' }) // 每天禁用空订阅
     async disableEmptyFeeds() {
         if (!DISABLE_EMPTY_FEEDS) {
+            this.logger.warn('DISABLE_EMPTY_FEEDS 为 false，不执行禁用空订阅操作')
             return
         }
         try {
@@ -1339,13 +1340,20 @@ EXAMPLE JSON ERROR OUTPUT:
                 },
                 relations: ['hooks', 'customQueries'],
             })
+            if (!feeds.length) {
+                this.logger.warn('没有启用的订阅，不执行禁用空订阅操作')
+                return
+            }
             // 禁用不包含任何 Hook 和 自定义查询的订阅
             for await (const feed of feeds) {
                 if (feed.hooks?.length > 0 || feed.customQueries?.length > 0) {
+                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 包含 Hook 和 自定义查询，无需禁用`)
                     return
                 }
                 removeQueue.add(async () => {
-                    await this.feedRepository.update({ id: feed.id }, { isEnabled: false })
+                    feed.isEnabled = false
+                    await this.feedRepository.save(feed)
+                    await this.disableFeedTask(feed, false)
                     this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 已禁用，因为不包含任何 Hook 和 自定义查询`)
                 })
             }
