@@ -1327,7 +1327,7 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'disableEmptyFeeds' }) // 每天禁用空订阅
+    // @Cron(CronExpression.EVERY_DAY_AT_3AM, { name: 'disableEmptyFeeds' }) // 每天禁用空订阅
     async disableEmptyFeeds() {
         if (!DISABLE_EMPTY_FEEDS) {
             this.logger.warn('DISABLE_EMPTY_FEEDS 为 false，不执行禁用空订阅操作')
