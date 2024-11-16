@@ -1345,7 +1345,7 @@ EXAMPLE JSON ERROR OUTPUT:
                 return
             }
             // 禁用不包含任何 Hook 和 自定义查询的订阅
-            for await (const feed of feeds) {
+            feeds.forEach((feed) => {
                 if (feed.hooks?.length > 0 || feed.customQueries?.length > 0) {
                     this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 包含 Hook 和 自定义查询，无需禁用`)
                     return
@@ -1356,7 +1356,7 @@ EXAMPLE JSON ERROR OUTPUT:
                     await this.disableFeedTask(feed, false)
                     this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 已禁用，因为不包含任何 Hook 和 自定义查询`)
                 })
-            }
+            })
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
