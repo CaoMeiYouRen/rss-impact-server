@@ -1338,7 +1338,7 @@ EXAMPLE JSON ERROR OUTPUT:
                 where: {
                     isEnabled: true, // 只查找已启用的订阅
                 },
-                relations: ['hooks', 'customQueries'],
+                relations: ['hooks', 'customQueries', 'category', 'category.customQueries'],
             })
             if (!feeds.length) {
                 this.logger.warn('没有启用的订阅，不执行禁用空订阅操作')
@@ -1346,8 +1346,8 @@ EXAMPLE JSON ERROR OUTPUT:
             }
             // 禁用不包含任何 Hook 和 自定义查询的订阅
             feeds.forEach((feed) => {
-                if (feed.hooks?.length > 0 || feed.customQueries?.length > 0) {
-                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 包含 Hook 和 自定义查询，无需禁用`)
+                if (feed.hooks?.length > 0 || feed.customQueries?.length > 0 || feed.category?.customQueries?.length > 0) {
+                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 包含 Hook 或 自定义查询，无需禁用`)
                     return
                 }
                 removeQueue.add(async () => {

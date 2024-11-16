@@ -62,31 +62,9 @@ export class CustomQuery extends AclBase {
     @Type(() => Category)
     @IsArray()
     @IsOptional()
-    @ManyToMany(() => Category)
+    @ManyToMany(() => Category, (category) => category.customQueries)
     @JoinTable()
     categories?: Category[]
-
-    // @SetAclCrudField({
-    //     type: 'select',
-    //     dicUrl: '/feed/dicData',
-    //     props: {
-    //         label: 'title',
-    //         value: 'id',
-    //     },
-    //     value: null,
-    //     hide: true,
-    // })
-    // @ApiProperty({ title: '指定订阅', description: '注意：订阅的查询是单选的', example: 1 })
-    // @IsId()
-    // @CustomColumn({ nullable: true })
-    // feedId?: number
-
-    // @SetAclCrudField({
-    //     hide: true,
-    // })
-    // @ApiProperty({ title: '订阅源', type: () => Feed })
-    // @ManyToOne(() => Feed)
-    // feed?: Feed
 
     @SetAclCrudField({
         type: 'select',
