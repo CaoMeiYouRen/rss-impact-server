@@ -58,7 +58,7 @@ export class CustomQuery extends AclBase {
             value: 'id',
         },
     })
-    @ApiProperty({ title: '指定分类', description: '支持选择多个分类', example: [], type: [Category] })
+    @ApiProperty({ title: '指定分类', description: '支持选择多个分类', example: [], type: () => [Category] })
     @Type(() => Category)
     @IsArray()
     @IsOptional()

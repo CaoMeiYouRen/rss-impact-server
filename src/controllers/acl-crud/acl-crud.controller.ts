@@ -114,7 +114,7 @@ export class AclCrudController {
             page = 1,
             where = {},
         } = query
-        let { limit = 1000, skip = 0 } = query
+        let { limit = user?.roles?.includes(Role.admin) ? 10000 : 1000, skip = 0 } = query
         limit = user?.roles?.includes(Role.admin) ? limit : Math.min(limit, PAGE_LIMIT_MAX)
         skip = skip || (page - 1) * limit
         const conditions = getConditions(user, where)
