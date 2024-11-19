@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsIn, IsNotEmpty, IsObject } from 'class-validator'
-import { MetaPushConfig, PushType, PushConfig, PushTypeList } from '@/interfaces/push-type'
+import { IsBoolean, IsIn, IsNotEmpty, IsObject, IsOptional } from 'class-validator'
+import { MetaPushConfig, PushType, PushTypeList } from '@/interfaces/push-type'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
@@ -15,10 +15,24 @@ export class NotificationConfig<T extends PushType = PushType> implements MetaPu
     @IsNotEmpty()
     type: T
 
-    @ApiProperty({ title: '推送配置', description: '具体配置请参考 push-all-in-one 文档', example: { SCTKEY: '' } })
+    @ApiProperty({ title: '推送配置', description: '具体配置请参考 push-all-in-one 文档，在线生成配置：https://push.cmyr.dev', example: { SERVER_CHAN_TURBO_SENDKEY: '' } })
     @IsNotEmpty()
     @IsObject()
-    config: PushConfig[T]
+    config: MetaPushConfig<T>['config']
+
+    @ApiProperty({
+        title: '附加参数',
+        description: '具体附加参数请参考 push-all-in-one 文档，在线生成配置：https://push.cmyr.dev',
+        example: {
+            short: '1',
+            noip: true,
+            channel: '1',
+            openid: '1',
+        },
+    })
+    @IsOptional()
+    @IsObject()
+    option: MetaPushConfig<T>['option']
 
     @ApiProperty({ title: '合并推送', description: '在一次轮询中检测到多条 RSS 更新，将合并为一条推送', example: true })
     @IsBoolean({})

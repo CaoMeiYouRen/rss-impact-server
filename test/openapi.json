@@ -5173,9 +5173,6 @@
                             "IGot",
                             "Qmsg",
                             "XiZhi",
-                            "CoolPush",
-                            "Email",
-                            "UniPush",
                             "Telegram",
                             "Discord",
                             "OneBot"
@@ -5188,9 +5185,20 @@
                     "config": {
                         "type": "object",
                         "title": "推送配置",
-                        "description": "具体配置请参考 push-all-in-one 文档",
+                        "description": "具体配置请参考 push-all-in-one 文档，在线生成配置：https://push.cmyr.dev",
                         "example": {
-                            "SCTKEY": ""
+                            "SERVER_CHAN_TURBO_SENDKEY": ""
+                        }
+                    },
+                    "option": {
+                        "type": "object",
+                        "title": "附加参数",
+                        "description": "具体附加参数请参考 push-all-in-one 文档，在线生成配置：https://push.cmyr.dev",
+                        "example": {
+                            "short": "1",
+                            "noip": true,
+                            "channel": "1",
+                            "openid": "1"
                         }
                     },
                     "isMergePush": {
@@ -5237,6 +5245,7 @@
                 "required": [
                     "type",
                     "config",
+                    "option",
                     "isMergePush",
                     "isMarkdown",
                     "isSnippet",
