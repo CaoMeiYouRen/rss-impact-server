@@ -57,7 +57,7 @@ https://rss-demo.cmyr.dev
 ## ✨功能亮点
 
 - 项目的核心在于 Hook ，本项目支持 推送通知、Webhook 、下载、BitTorrent、AI 大模型 等多种形式的 Hook ，还支持反转触发（即 RSS 源出错的时候触发）。
-- 推送通知 Hook 基于 [push-all-in-one](https://github.com/CaoMeiYouRen/push-all-in-one) 开发，支持 Server 酱、自定义邮件、钉钉机器人、企业微信机器人 等多种推送方式。支持 markdown 格式推送。
+- 推送通知 Hook 基于 [push-all-in-one](https://github.com/CaoMeiYouRen/push-all-in-one) 开发，支持 Server 酱、自定义邮件、钉钉机器人、企业微信机器人 等多种推送方式。支持 markdown 格式推送。支持 [配置在线生成](https://push.cmyr.dev/)。
 - BitTorrent Hook 支持调用 qBitTorrent 接口来自动下载 BitTorrent ，也支持按体积过滤 BitTorrent ，解决部分 BitTorrent RSS 源没有提供 `enclosureLength` 的问题。支持 `<mediaContent/>` tag。
 - Webhook 支持 GET/POST 等全部 HTTP 方法进行调用。
 - 下载 Hook 支持按 md5 过滤资源，支持按后缀名过滤资源。
