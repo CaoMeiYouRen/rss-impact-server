@@ -14,9 +14,9 @@ import { NotificationConfig } from '@/models/notification-config'
  */
 export async function runPushAllInOne(title: string, desp: string, pushConfig: NotificationConfig, proxyUrl?: string) {
     const { isMarkdown, type, config, option } = pushConfig
-    if (isMarkdown) {
-        title = `${title.replace(/(\n[\s|\t]*\r*\n)/g, '\n')}\n`
-    }
+    // if (isMarkdown) {
+    //     title = `${title.replace(/(\n[\s|\t]*\r*\n)/g, '\n')}\n`
+    // }
     if (type === 'OneBot') {
         if (isMarkdown) {
             desp = mdToCqcode(desp).replace(/(\n[\s|\t]*\r*\n)/g, '\n')  // 去除多余换行符
