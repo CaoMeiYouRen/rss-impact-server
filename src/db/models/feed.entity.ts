@@ -1,6 +1,6 @@
 import { Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
-import { IsArray, IsBoolean, IsDefined, IsIn } from 'class-validator'
+import { IsArray, IsBoolean, IsDefined, IsIn, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Category } from './category.entity'
@@ -174,10 +174,12 @@ export class Feed extends AclBase {
             label: 'name',
             value: 'id',
         },
+        value: [],
     })
     @ApiProperty({ title: 'Hook列表', example: [], type: () => [Hook] })
     @Type(() => Hook)
     @IsArray()
+    @IsOptional()
     @ManyToMany(() => Hook, (hook) => hook.feeds)
     @JoinTable()
     hooks: Hook[]
@@ -190,10 +192,12 @@ export class Feed extends AclBase {
             label: 'name',
             value: 'id',
         },
+        value: [],
     })
     @ApiProperty({ title: '自定义查询列表', example: [], type: () => [CustomQuery] })
     @Type(() => CustomQuery)
     @IsArray()
+    @IsOptional()
     @ManyToMany(() => CustomQuery, (customQuery) => customQuery.feeds) // JoinTable 在 CustomQuery 这边
     customQueries: CustomQuery[]
 }
