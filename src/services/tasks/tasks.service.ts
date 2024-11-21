@@ -45,6 +45,8 @@ import { DailyCount } from '@/db/models/daily-count.entity'
 import { logDir } from '@/middlewares/logger.middleware'
 import { rssQueue, hookQueue, notificationQueue, downloadQueue, bitTorrentQueue, aiQueue, removeQueue } from '@/utils/queue'
 import { CustomQuery } from '@/db/models/custom-query.entity'
+import { Category } from '@/db/models/category.entity'
+import { ProxyConfig } from '@/db/models/proxy-config.entity'
 
 @Injectable()
 export class TasksService implements OnApplicationBootstrap {
@@ -64,6 +66,9 @@ export class TasksService implements OnApplicationBootstrap {
         @InjectRepository(User) private readonly userRepository: Repository<User>,
         @InjectRepository(DailyCount) private readonly dailyCountRepository: Repository<DailyCount>,
         @InjectRepository(CustomQuery) private readonly customQueryRepository: Repository<CustomQuery>,
+        @InjectRepository(Category) private readonly categoryRepository: Repository<Category>,
+        @InjectRepository(Hook) private readonly hookRepository: Repository<Hook>,
+        @InjectRepository(ProxyConfig) private readonly proxyConfigRepository: Repository<ProxyConfig>,
     ) { }
 
     async onApplicationBootstrap() {
@@ -1454,36 +1459,39 @@ EXAMPLE JSON ERROR OUTPUT:
         const start = defaultDate.toDate() // 从0点开始算
         const end = defaultDate.add(1, 'day').add(-1, 'millisecond').toDate() // 到 23点59分59秒999毫秒
         const date = defaultDate.format('YYYY-MM-DD')
-        const articleCount = await this.articleRepository.count({
+        const options = {
             where: {
                 createdAt: Between(start, end),
             },
-        })
-        const resourceCount = await this.resourceRepository.count({
-            where: {
-                createdAt: Between(start, end),
-            },
-        })
-        const webhookLogCount = await this.webhookLogRepository.count({
-            where: {
-                createdAt: Between(start, end),
-            },
-        })
+        }
+        const articleCount = await this.articleRepository.count(options)
+        const resourceCount = await this.resourceRepository.count(options)
+        const webhookLogCount = await this.webhookLogRepository.count(options)
+        const feedCount = await this.feedRepository.count(options)
+        const categoryCount = await this.categoryRepository.count(options)
+        const hookCount = await this.hookRepository.count(options)
+        const customQueryCount = await this.customQueryRepository.count(options)
+        const proxyConfigCount = await this.proxyConfigRepository.count(options)
+        const userCount = await this.userRepository.count(options)
         const newDailyCount: Partial<DailyCount> = {
             date,
             articleCount,
             resourceCount,
             webhookLogCount,
+            feedCount,
+            categoryCount,
+            hookCount,
+            customQueryCount,
+            proxyConfigCount,
+            userCount,
         }
         const dailyCount = await this.dailyCountRepository.findOne({ where: { date } })
-        const fields = ['articleCount', 'resourceCount', 'webhookLogCount']
-        if (dailyCount) { // 如果存在且值不相等，则更新
-            if (!isEqual(pickBy(newDailyCount, fields), pickBy(dailyCount, fields))) {
-                await this.dailyCountRepository.save(this.dailyCountRepository.create({
-                    ...dailyCount,
-                    ...newDailyCount,
-                }))
-            }
+        const fields = Object.keys(newDailyCount)
+        if (dailyCount && !isEqual(pickBy(newDailyCount, fields), pickBy(dailyCount, fields))) { // 如果存在且值不相等，则更新
+            await this.dailyCountRepository.save(this.dailyCountRepository.create({
+                ...dailyCount,
+                ...newDailyCount,
+            }))
             return null
         }
         return this.dailyCountRepository.save(this.dailyCountRepository.create(newDailyCount))

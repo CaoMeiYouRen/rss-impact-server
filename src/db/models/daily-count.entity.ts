@@ -43,6 +43,48 @@ export class DailyCount extends Base {
         default: 0,
     })
     webhookLogCount: number
+
+    @ApiProperty({ title: 'RSS订阅源数量', example: 233 })
+    @IsSafeNaturalNumber()
+    @CustomColumn({
+        default: 0,
+    })
+    feedCount: number
+
+    @ApiProperty({ title: '分类数量', example: 233 })
+    @IsSafeNaturalNumber()
+    @CustomColumn({
+        default: 0,
+    })
+    categoryCount: number
+
+    @ApiProperty({ title: 'Hook数量', example: 233 })
+    @IsSafeNaturalNumber()
+    @CustomColumn({
+        default: 0,
+    })
+    hookCount: number
+
+    @ApiProperty({ title: '自定义查询数量', example: 233 })
+    @IsSafeNaturalNumber()
+    @CustomColumn({
+        default: 0,
+    })
+    customQueryCount: number
+
+    @ApiProperty({ title: '代理数量', example: 233 })
+    @IsSafeNaturalNumber()
+    @CustomColumn({
+        default: 0,
+    })
+    proxyConfigCount: number
+
+    @ApiProperty({ title: '用户数量', example: 233 })
+    @IsSafeNaturalNumber()
+    @CustomColumn({
+        default: 0,
+    })
+    userCount: number
 }
 
 export class FindDailyCount extends FindPlaceholderDto<DailyCount> {
