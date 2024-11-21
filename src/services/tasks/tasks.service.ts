@@ -1484,7 +1484,7 @@ EXAMPLE JSON ERROR OUTPUT:
             proxyConfigCount,
             userCount,
         }
-        this.logger.log(`${date} 的每日统计数据: \n${JSON.stringify(newDailyCount, null, 4)}`)
+        this.logger.log(`${date} 的每日统计数据: newDailyCount \n${JSON.stringify(newDailyCount, null, 4)}`)
         const fields = Object.keys(newDailyCount)
         // 如果 newDailyCount 每一项都是 0 ，则跳过更新
         if (fields.every((e) => newDailyCount[e] === 0)) {
@@ -1494,14 +1494,17 @@ EXAMPLE JSON ERROR OUTPUT:
         const dailyCount = await this.dailyCountRepository.findOne({ where: { date } })
         if (dailyCount) { // 如果存在
             // 如果值不相等，则更新
-            if (!isEqual(pickBy(newDailyCount, fields), pickBy(dailyCount, fields))) {
+            if (!isEqual(pick(newDailyCount, fields), pick(dailyCount, fields))) {
+                this.logger.log(`${date} 的每日统计数据已存在，开始更新`)
                 await this.dailyCountRepository.save(this.dailyCountRepository.create({
                     date,
                     ...Object.fromEntries(fields.map((e) => [e, Math.max(dailyCount[e], newDailyCount[e])])), // 保留数值更大的字段
                     id: dailyCount.id,
                 }))
                 this.logger.log(`${date} 的每日统计数据已更新`)
+                return
             }
+            this.logger.log(`${date} 的每日统计数据已存在，无需更新`)
             return
         }
         // 如果不存在，则创建
