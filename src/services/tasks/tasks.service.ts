@@ -1454,7 +1454,7 @@ EXAMPLE JSON ERROR OUTPUT:
         }
     }
 
-    private async dailyCountByDate(dateInput: string | Date | Dayjs) { // 'YYYY-MM-DD'
+    async dailyCountByDate(dateInput: string | Date | Dayjs) { // 'YYYY-MM-DD'
         const defaultDate = dayjs(dateInput).tz().hour(0).minute(0).second(0).millisecond(0)
         const start = defaultDate.toDate() // 从0点开始算
         const end = defaultDate.add(1, 'day').add(-1, 'millisecond').toDate() // 到 23点59分59秒999毫秒
@@ -1474,7 +1474,6 @@ EXAMPLE JSON ERROR OUTPUT:
         const proxyConfigCount = await this.proxyConfigRepository.count(options)
         const userCount = await this.userRepository.count(options)
         const newDailyCount: Partial<DailyCount> = {
-            date,
             articleCount,
             resourceCount,
             webhookLogCount,
@@ -1485,16 +1484,32 @@ EXAMPLE JSON ERROR OUTPUT:
             proxyConfigCount,
             userCount,
         }
-        const dailyCount = await this.dailyCountRepository.findOne({ where: { date } })
         const fields = Object.keys(newDailyCount)
-        if (dailyCount && !isEqual(pickBy(newDailyCount, fields), pickBy(dailyCount, fields))) { // 如果存在且值不相等，则更新
-            await this.dailyCountRepository.save(this.dailyCountRepository.create({
-                ...dailyCount,
-                ...newDailyCount,
-            }))
-            return null
+        // 如果 newDailyCount 每一项都是 0 ，则跳过更新
+        if (fields.every((e) => newDailyCount[e] === 0)) {
+            this.logger.log(`${date} 的每日统计数据每一项都是 0，跳过更新`)
+            return
         }
-        return this.dailyCountRepository.save(this.dailyCountRepository.create(newDailyCount))
+        const dailyCount = await this.dailyCountRepository.findOne({ where: { date } })
+        if (dailyCount) {
+            // 如果存在且值不相等，则更新
+            // 保留数值更大的字段
+            if (!isEqual(pickBy(newDailyCount, fields), pickBy(dailyCount, fields))) {
+                await this.dailyCountRepository.save(this.dailyCountRepository.create({
+                    date,
+                    ...Object.fromEntries(fields.map((e) => [e, Math.max(dailyCount[e], newDailyCount[e])])),
+                    id: dailyCount.id,
+                }))
+                this.logger.log(`${date} 的每日统计数据已更新`)
+            }
+            return
+        }
+        // 如果不存在，则创建
+        await this.dailyCountRepository.save(this.dailyCountRepository.create({
+            date,
+            ...newDailyCount,
+        }))
+        this.logger.log(`${date} 的每日统计数据已创建`)
     }
 
     @Cron(CronExpression.EVERY_DAY_AT_1AM, { name: 'dailyCountTimer' }) // 每天统计一次
