@@ -1,6 +1,6 @@
 import { Entity, ManyToMany, OneToMany } from 'typeorm'
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
-import { IsArray, IsNotEmpty } from 'class-validator'
+import { IsArray, IsNotEmpty, IsOptional } from 'class-validator'
 import { Type } from 'class-transformer'
 import { AclBase } from './acl-base.entity'
 import { Feed } from './feed.entity'
@@ -51,6 +51,7 @@ export class Category extends AclBase {
         },
     })
     @ApiProperty({ title: '订阅链接', example: [], type: () => [Feed] })
+    @IsOptional()
     @OneToMany(() => Feed, (feed) => feed.category)
     feeds: Feed[]
 
@@ -66,6 +67,7 @@ export class Category extends AclBase {
     @ApiProperty({ title: '自定义查询列表', example: [], type: () => [CustomQuery] })
     @Type(() => CustomQuery)
     @IsArray()
+    @IsOptional()
     @ManyToMany(() => CustomQuery, (customQuery) => customQuery.categories) // JoinTable 在 CustomQuery 这边
     customQueries: CustomQuery[]
 
