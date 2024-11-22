@@ -865,7 +865,6 @@ export class TasksService implements OnApplicationBootstrap {
                 this.logger.warn(`bt 服务器当前的磁盘空间 ${dataFormat(freeSpaceOnDisk)} 小于 保留磁盘的最小值 ${dataFormat(minDiskSize)} ，正在自动删除中`)
                 // 按 下载体积降序
                 const torrents = await qBittorrent.listTorrents({ sort: 'downloaded', reverse: true })
-                // torrents.sort((a, b) => b?.downloaded - a?.downloaded)
                 const torrent = torrents.at(0)
                 if (torrent?.downloaded) { // 如果 torrent 存在且下载的体积大于 0，则删除
                     await this.tryRemoveTorrent(qBittorrent, torrent.hash)
