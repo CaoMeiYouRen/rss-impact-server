@@ -1,5 +1,33 @@
 # rss-impact-server
 
+# [1.12.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.11.0...v1.12.0) (2024-11-23)
+
+
+### ♻ 代码重构
+
+* **daily-count:** 添加新的统计字段 ([3f20077](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3f20077))
+* **db:** 优化 feed 实体的验证逻辑 ([2b5b72e](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2b5b72e))
+* **notification:** 优化通知功能 ([909b049](https://github.com/CaoMeiYouRen/rss-impact-server/commit/909b049))
+* **tasks:** 优化每日统计数据更新逻辑 ([6687504](https://github.com/CaoMeiYouRen/rss-impact-server/commit/6687504))
+* 优化 DISABLE_EMPTY_FEEDS 配置提示 ([355052b](https://github.com/CaoMeiYouRen/rss-impact-server/commit/355052b))
+* 优化 部分情况下 dicData 的查询条数 ([bf81783](https://github.com/CaoMeiYouRen/rss-impact-server/commit/bf81783))
+* 优化分类实体验证逻辑；升级 nodejs 最低版本为 20 ([14f7f58](https://github.com/CaoMeiYouRen/rss-impact-server/commit/14f7f58))
+
+
+### ✨ 新功能
+
+* **daily-count:** 添加重新统计接口；优化每日统计逻辑 ([b051ad4](https://github.com/CaoMeiYouRen/rss-impact-server/commit/b051ad4))
+* 更新 push-all-in-one 版本至 4.1.1；移除不再使用的依赖项；更新接口定义以匹配新版本；优化推送工具函数 ([d689a7f](https://github.com/CaoMeiYouRen/rss-impact-server/commit/d689a7f)), closes [#459](https://github.com/CaoMeiYouRen/rss-impact-server/issues/459)
+
+
+### 🐛 Bug 修复
+
+* **tasks:** 修复每日统计数据更新逻辑 ([65f1d3c](https://github.com/CaoMeiYouRen/rss-impact-server/commit/65f1d3c))
+* 修复 查询全部 的自定义查询会被错误禁用的 bug ([bf1c563](https://github.com/CaoMeiYouRen/rss-impact-server/commit/bf1c563))
+* 修复 禁用空订阅 逻辑错误 ([865a875](https://github.com/CaoMeiYouRen/rss-impact-server/commit/865a875))
+* 修复 禁用空订阅 逻辑错误 ([3a96aef](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3a96aef))
+* 修复 自定义查询为分类时，会错误禁用的问题 ([6b058ed](https://github.com/CaoMeiYouRen/rss-impact-server/commit/6b058ed))
+
 # [1.11.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.10.0...v1.11.0) (2024-11-16)
 
 
