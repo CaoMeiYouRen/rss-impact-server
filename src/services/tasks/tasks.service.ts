@@ -1455,6 +1455,7 @@ EXAMPLE JSON ERROR OUTPUT:
 
     async dailyCountByDate(dateInput: string | Date | Dayjs) { // 'YYYY-MM-DD'
         const defaultDate = dayjs(dateInput).tz().hour(0).minute(0).second(0).millisecond(0)
+        const rawDate = defaultDate.toDate()
         const start = defaultDate.toDate() // 从0点开始算
         const end = defaultDate.add(1, 'day').add(-1, 'millisecond').toDate() // 到 23点59分59秒999毫秒
         const date = defaultDate.format('YYYY-MM-DD')
@@ -1492,12 +1493,24 @@ EXAMPLE JSON ERROR OUTPUT:
         }
         const dailyCount = await this.dailyCountRepository.findOne({ where: { date } })
         if (dailyCount) { // 如果存在
+            // 如果 rawDate 为空，则更新
+            if (!dailyCount.rawDate) {
+                await this.dailyCountRepository.save(this.dailyCountRepository.create({
+                    ...newDailyCount,
+                    date,
+                    rawDate,
+                    id: dailyCount.id,
+                }))
+                this.logger.log(`${date} 的每日统计数据已更新`)
+                return
+            }
             // 如果值不相等，则更新
             if (!isEqual(pick(newDailyCount, fields), pick(dailyCount, fields))) {
                 this.logger.log(`${date} 的每日统计数据已存在，开始更新`)
                 await this.dailyCountRepository.save(this.dailyCountRepository.create({
-                    date,
                     ...Object.fromEntries(fields.map((e) => [e, Math.max(dailyCount[e], newDailyCount[e])])), // 保留数值更大的字段
+                    date,
+                    rawDate,
                     id: dailyCount.id,
                 }))
                 this.logger.log(`${date} 的每日统计数据已更新`)
@@ -1508,8 +1521,9 @@ EXAMPLE JSON ERROR OUTPUT:
         }
         // 如果不存在，则创建
         await this.dailyCountRepository.save(this.dailyCountRepository.create({
-            date,
             ...newDailyCount,
+            date,
+            rawDate,
         }))
         this.logger.log(`${date} 的每日统计数据已创建`)
     }

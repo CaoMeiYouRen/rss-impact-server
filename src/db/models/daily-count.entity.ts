@@ -23,6 +23,13 @@ export class DailyCount extends Base {
     })
     date: string
 
+    @ApiProperty({ title: '原始日期', example: new Date('2024-01-01') })
+    @CustomColumn({
+        index: true,
+        nullable: true,
+    })
+    rawDate: Date
+
     @ApiProperty({ title: '文章数量', example: 114 })
     @IsSafeNaturalNumber()
     @CustomColumn({

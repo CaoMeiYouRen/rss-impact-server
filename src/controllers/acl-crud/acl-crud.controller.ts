@@ -161,8 +161,8 @@ export class AclCrudController {
             skip,
             take: limit,
             order: merge({
-                id: 'DESC',
-                createdAt: 'DESC',
+                // id: 'DESC',
+                // createdAt: 'DESC',
             }, this?.__OPTIONS__?.order, sort),
             relations: uniq([...relations, ...this?.__OPTIONS__?.relations || []]),
             select: uniq([...this?.__OPTIONS__?.select || []]) as any,

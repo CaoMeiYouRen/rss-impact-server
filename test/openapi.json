@@ -8045,6 +8045,12 @@
                         "title": "日期",
                         "example": "2024-01-01"
                     },
+                    "rawDate": {
+                        "format": "date-time",
+                        "type": "string",
+                        "title": "原始日期",
+                        "example": "2024-01-01T00:00:00.000Z"
+                    },
                     "articleCount": {
                         "type": "number",
                         "title": "文章数量",
@@ -8096,6 +8102,7 @@
                     "createdAt",
                     "updatedAt",
                     "date",
+                    "rawDate",
                     "articleCount",
                     "resourceCount",
                     "webhookLogCount",
