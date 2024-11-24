@@ -4,6 +4,7 @@ import { Base } from './base.entity'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { CustomColumn } from '@/decorators/custom-column.decorator'
+import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 
 /**
  * 每日计数：文章数/资源数/推送 webhook 数
@@ -23,6 +24,9 @@ export class DailyCount extends Base {
     })
     date: string
 
+    @SetAclCrudField({
+        hide: true,
+    })
     @ApiProperty({ title: '原始日期', example: new Date('2024-01-01') })
     @CustomColumn({
         index: true,
