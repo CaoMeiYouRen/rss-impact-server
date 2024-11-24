@@ -1496,7 +1496,7 @@ EXAMPLE JSON ERROR OUTPUT:
             // 如果 rawDate 为空，则更新
             if (!dailyCount.rawDate) {
                 await this.dailyCountRepository.save(this.dailyCountRepository.create({
-                    ...newDailyCount,
+                    ...Object.fromEntries(fields.map((e) => [e, Math.max(dailyCount[e], newDailyCount[e])])), // 保留数值更大的字段
                     date,
                     rawDate,
                     id: dailyCount.id,
