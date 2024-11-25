@@ -7,7 +7,7 @@ settings:
 overrides:
   '@types/methods': ^1.1.4
   '@types/superagent': ^8.1.0
-  axios: ^1.7.7
+  axios: ^1.7.8
   compare-func: 2.0.0
   cron: 3.2.1
   formidable: ^3.2.4
@@ -70,8 +70,8 @@ importers:
         specifier: ^4.13.2
         version: 4.13.2
       axios:
-        specifier: ^1.7.7
-        version: 1.7.7(debug@4.3.7)
+        specifier: ^1.7.8
+        version: 1.7.8(debug@4.3.7)
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -423,7 +423,7 @@ importers:
         version: 5.7.2
       vitepress:
         specifier: ^1.5.0
-        version: 1.5.0(@algolia/client-search@4.24.0)(@types/node@22.9.4)(axios@1.7.7(debug@4.3.7))(postcss@8.4.47)(search-insights@2.17.2)(terser@5.31.0)(typescript@5.7.2)
+        version: 1.5.0(@algolia/client-search@4.24.0)(@types/node@22.9.4)(axios@1.7.8(debug@4.3.7))(postcss@8.4.47)(search-insights@2.17.2)(terser@5.31.0)(typescript@5.7.2)
 
 packages:
 
@@ -2530,7 +2530,7 @@ packages:
     resolution: {integrity: sha512-O2ZgrAGPy0qAjpoI2YR3egNgyEqwG85fxfwmA9BshRIGjV4G6yu6CfOPpMHAOoCD+UfsIl7Vb1bXJ6ifrHYDDA==}
     peerDependencies:
       async-validator: ^4
-      axios: ^1.7.7
+      axios: ^1.7.8
       change-case: ^5
       drauu: ^0.4
       focus-trap: ^7
@@ -2913,8 +2913,8 @@ packages:
   aws4@1.13.0:
     resolution: {integrity: sha512-3AungXC4I8kKsS9PuS4JH2nc+0bVY/mjgrephHTIi8fpEeGsTHBUJeosp0Wc1myYMElmD0B3Oc4XL/HVJ4PV2g==}
 
-  axios@1.7.7:
-    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
+  axios@1.7.8:
+    resolution: {integrity: sha512-Uu0wb7KNqK2t5K+YQyVCLM76prD5sRFjKHbJYCP1J7JFGEQ6nN7HWn9+04LAeiJ3ji54lgS/gZCH1oxyrf1SPw==}
 
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
@@ -11290,13 +11290,13 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@11.1.0(axios@1.7.7(debug@4.3.7))(focus-trap@7.6.0)(vue@3.5.12(typescript@5.7.2))':
+  '@vueuse/integrations@11.1.0(axios@1.7.8(debug@4.3.7))(focus-trap@7.6.0)(vue@3.5.12(typescript@5.7.2))':
     dependencies:
       '@vueuse/core': 11.1.0(vue@3.5.12(typescript@5.7.2))
       '@vueuse/shared': 11.1.0(vue@3.5.12(typescript@5.7.2))
       vue-demi: 0.14.10(vue@3.5.12(typescript@5.7.2))
     optionalDependencies:
-      axios: 1.7.7(debug@4.3.7)
+      axios: 1.7.8(debug@4.3.7)
       focus-trap: 7.6.0
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -11729,7 +11729,7 @@ snapshots:
 
   aws4@1.13.0: {}
 
-  axios@1.7.7(debug@4.3.7):
+  axios@1.7.8(debug@4.3.7):
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.7)
       form-data: 4.0.0
@@ -16171,7 +16171,7 @@ snapshots:
     dependencies:
       '@types/request': 2.48.12
       '@types/superagent': 8.1.7
-      axios: 1.7.7(debug@4.3.7)
+      axios: 1.7.8(debug@4.3.7)
       combos: 0.2.0
       fs-extra: 9.1.0
       js-yaml: 4.1.0
@@ -16654,7 +16654,7 @@ snapshots:
   push-all-in-one@4.1.1:
     dependencies:
       '@colors/colors': 1.6.0
-      axios: 1.7.7(debug@4.3.7)
+      axios: 1.7.8(debug@4.3.7)
       debug: 4.3.7
       https-proxy-agent: 7.0.5
       nodemailer: 6.9.13
@@ -18105,7 +18105,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.31.0
 
-  vitepress@1.5.0(@algolia/client-search@4.24.0)(@types/node@22.9.4)(axios@1.7.7(debug@4.3.7))(postcss@8.4.47)(search-insights@2.17.2)(terser@5.31.0)(typescript@5.7.2):
+  vitepress@1.5.0(@algolia/client-search@4.24.0)(@types/node@22.9.4)(axios@1.7.8(debug@4.3.7))(postcss@8.4.47)(search-insights@2.17.2)(terser@5.31.0)(typescript@5.7.2):
     dependencies:
       '@docsearch/css': 3.6.2
       '@docsearch/js': 3.6.2(@algolia/client-search@4.24.0)(search-insights@2.17.2)
@@ -18118,7 +18118,7 @@ snapshots:
       '@vue/devtools-api': 7.5.6
       '@vue/shared': 3.5.12
       '@vueuse/core': 11.1.0(vue@3.5.12(typescript@5.7.2))
-      '@vueuse/integrations': 11.1.0(axios@1.7.7(debug@4.3.7))(focus-trap@7.6.0)(vue@3.5.12(typescript@5.7.2))
+      '@vueuse/integrations': 11.1.0(axios@1.7.8(debug@4.3.7))(focus-trap@7.6.0)(vue@3.5.12(typescript@5.7.2))
       focus-trap: 7.6.0
       mark.js: 8.11.1
       minisearch: 7.1.0
