@@ -1,5 +1,18 @@
 # rss-impact-server
 
+# [1.13.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.12.0...v1.13.0) (2024-11-30)
+
+
+### ✨ 新功能
+
+* **db:** add acl crud field to daily count entity ([7b28074](https://github.com/CaoMeiYouRen/rss-impact-server/commit/7b28074))
+
+
+### 🐛 Bug 修复
+
+* **tasks:** 修复每日统计数据更新逻辑 ([f3dbd62](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f3dbd62))
+* 修复每日统计数据更新逻辑；添加 rawDate 字段 ([27b649c](https://github.com/CaoMeiYouRen/rss-impact-server/commit/27b649c))
+
 # [1.12.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.11.0...v1.12.0) (2024-11-23)
 
 
