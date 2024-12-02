@@ -161,5 +161,9 @@ pnpm run commit
 Copyright © 2024 [CaoMeiYouRen](https://github.com/CaoMeiYouRen).<br />
 This project is [AGPL-3.0](https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/LICENSE) licensed.
 
+## 🏷️ 其他
+>
+> 本项目的名称来自《Genshin Impact》
+
 ***
 _This README was generated with ❤️ by [cmyr-template-cli](https://github.com/CaoMeiYouRen/cmyr-template-cli)_
