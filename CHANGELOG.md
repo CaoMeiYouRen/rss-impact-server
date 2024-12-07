@@ -1,5 +1,12 @@
 # rss-impact-server
 
+# [1.14.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.13.0...v1.14.0) (2024-12-07)
+
+
+### ✨ 新功能
+
+* update connect-redis to version 8.0.0; update RedisStore import statement ([09f0c4b](https://github.com/CaoMeiYouRen/rss-impact-server/commit/09f0c4b))
+
 # [1.13.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.12.0...v1.13.0) (2024-11-30)
 
 
