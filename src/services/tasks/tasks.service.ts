@@ -1545,6 +1545,7 @@ EXAMPLE JSON ERROR OUTPUT:
         try {
             this.logger.log('正在触发 VACUUM')
             await removeQueue.add(async () => {
+                this.logger.log('开始执行 VACUUM')
                 await this.dataSource.query('VACUUM;')
                 this.logger.log('VACUUM 执行成功')
             }, {
