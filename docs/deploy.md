@@ -223,6 +223,12 @@ CACHE_CONTENT_EXPIRE=3600
 SENTRY_DSN=''
 ```
 
+## 缓存配置
+
+`REDIS_URL=redis://localhost:6379/`
+
+如果设置了 该项，则 limiter 和 session 都会用 redis。
+
 # 🗄️ 数据库配置
 
 注意：`SQLite` 数据库是优先支持的数据库（因为开发环境使用的是`SQLite`）。
