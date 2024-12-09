@@ -181,8 +181,8 @@ importers:
         specifier: ^4.76.0
         version: 4.76.0(encoding@0.1.13)
       opml:
-        specifier: ^0.5.6
-        version: 0.5.6
+        specifier: ^0.5.7
+        version: 0.5.7
       p-queue:
         specifier: ^5.0.0
         version: 5.0.0
@@ -6573,8 +6573,8 @@ packages:
     resolution: {integrity: sha512-DYUF07AHjI3QDKqKbn2F7RqozT4hyi4JvmpodLrq0HHoNP7t/AjeG/uqiBK1/N2PZSAQEThVjDLHSmJN4iqu/w==}
     engines: {node: ^10.19.0 || >=12.0.0 < 13 || >=13.7.0 < 14 || >= 14.2.0}
 
-  opml@0.5.6:
-    resolution: {integrity: sha512-bzQRZWJMUSGD7PHJkDpxCKXXfYPfAXl4ecyygzR7GIy0t3Urk0Q61wKwQh+0Akk06R1DdBzd/ksF5H9lMr2YkQ==}
+  opml@0.5.7:
+    resolution: {integrity: sha512-FqWQRkuGyBrirwzwgbIRTosV8+waYpHbT/Qz8cXmSkD4ztShvH9fG20YUeNo+Y6ZmZjOe2ClLoJBdTBRCB6qYg==}
 
   opmltojs@0.4.14:
     resolution: {integrity: sha512-pQACXvUPD1tar/L28Rf1OYJuJMNHXfs3/TL6NN96WnH9rNGl2JeZwAnDoywYY5nnV3cq1wrgoZwFxJC0GoDR8g==}
@@ -16203,7 +16203,7 @@ snapshots:
       object-hash: 2.2.0
       oidc-token-hash: 5.0.3
 
-  opml@0.5.6:
+  opml@0.5.7:
     dependencies:
       daveutils: 0.4.65
       opmltojs: 0.4.14
