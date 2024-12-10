@@ -115,3 +115,4 @@ jobs:
             VITE_BAIDU_STATISTICS=${{ secrets.VITE_BAIDU_STATISTICS }}
             VITE_DOMAIN=${{ secrets.VITE_DOMAIN }}
             VITE_SENTRY_DSN=${{ secrets.VITE_SENTRY_DSN }}
+            VITE_PETERCAT_AI_TOKEN=${{ secrets.VITE_PETERCAT_AI_TOKEN }}
