@@ -32,7 +32,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config ./test/jest.config.e2e.ts",
-    "test:benchmarks": "tsx benchmarks/index.ts",
+    "test:benchmarks": "tsx benchmarks/index.mts",
     "commit": "cz",
     "prepare": "husky install",
     "docs:dev": "vitepress dev .",
