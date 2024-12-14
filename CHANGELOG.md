@@ -1,5 +1,12 @@
 # rss-impact-server
 
+## [1.14.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.0...v1.14.1) (2024-12-14)
+
+
+### 🐛 Bug 修复
+
+* 添加 splat 格式支持；添加 VACUUM 任务日志 ([35b7f53](https://github.com/CaoMeiYouRen/rss-impact-server/commit/35b7f53))
+
 # [1.14.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.13.0...v1.14.0) (2024-12-07)
 
 
