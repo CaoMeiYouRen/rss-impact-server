@@ -23,6 +23,7 @@ jobs:
           node-version: "lts/*"
           cache: "pnpm"
       - run: pnpm i --frozen-lockfile
+      - run: pnpm run build
       - run: |
           pnpm run start:benchmarks &
           pnpm run test:benchmarks
