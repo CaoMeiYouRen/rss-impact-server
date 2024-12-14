@@ -5,12 +5,17 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   test:
     name: Benchmarks Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - name: Setup pnpm
@@ -27,3 +32,8 @@ jobs:
       - run: |
           pnpm run start:benchmarks &
           pnpm run test:benchmarks
+        env:
+          CI: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_PR_NUMBER: ${{ github.event.number }}
