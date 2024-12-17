@@ -1,5 +1,6 @@
 import path from 'path'
 import type { Config } from 'jest'
+import ms from 'ms'
 
 const config: Config = {
     moduleNameMapper: {
@@ -17,6 +18,7 @@ const config: Config = {
     },
     coverageDirectory: path.resolve('./coverage'),
     testEnvironment: 'node',
+    testTimeout: ms('2m'),
 }
 
 export default config

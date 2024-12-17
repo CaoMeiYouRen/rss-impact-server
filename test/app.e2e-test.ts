@@ -45,20 +45,28 @@ describe('AppController (e2e)', () => {
         // 如果数据库文件不存在，我们需要初始化它
         if (needInit) {
             // 创建一个临时的 TypeORM 连接来初始化数据库
-            const moduleFixture: TestingModule = await Test.createTestingModule({
+            const tempModule = await Test.createTestingModule({
                 imports: [
                     TypeOrmModule.forRoot({
                         type: 'sqlite',
                         database: testDbPath,
                         entities,
                         synchronize: true,
+                        autoLoadEntities: true,
                     }),
                 ],
             }).compile()
 
-            const tempApp = moduleFixture.createNestApplication()
+            const tempApp = tempModule.createNestApplication()
             await tempApp.init()
-            await tempApp.close()
+            
+            // 确保完全关闭所有连接
+            await new Promise<void>((resolve) => {
+                tempApp.close().then(() => {
+                    // 给一点时间让连接完全关闭
+                    setTimeout(resolve, 1000)
+                })
+            })
         }
 
         // 现在创建实际的测试应用
@@ -76,8 +84,26 @@ describe('AppController (e2e)', () => {
     }, 30000)
 
     afterEach(async () => {
-        await app.close()
+        if (app) {
+            // 确保完全关闭所有连接
+            await new Promise<void>((resolve) => {
+                app.close().then(() => {
+                    // 给一点时间让连接完全关闭
+                    setTimeout(resolve, 1000)
+                })
+            })
+        }
     }, 10000)
+
+    afterAll(async () => {
+        // 测试完成后删除测试数据库文件
+        const testDbPath = path.join(__dirname, '../database.test.sqlite')
+        try {
+            await fs.promises.unlink(testDbPath)
+        } catch (error) {
+            // 忽略文件不存在的错误
+        }
+    })
 
     it('GET /api', async () => {
         const response = await request(app.getHttpServer())
@@ -108,7 +134,6 @@ describe('AppController (e2e)', () => {
             .set('Cookie', cookie)
             .expect(200)
 
-        // expect(response).toSatisfyApiSpec()
         expect(response.body).toHaveProperty('username', 'admin')
         expect(response.body).toHaveProperty('email', 'admin@example.com')
         expect(response.body).toHaveProperty('roles')
