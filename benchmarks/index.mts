@@ -3,6 +3,7 @@ import path from 'path'
 import autocannon, { Client, Options } from 'autocannon'
 import dotenv from 'dotenv'
 import { Octokit } from 'octokit'
+import * as betterBytes from 'better-bytes'
 
 dotenv.config({
     path: [
@@ -44,11 +45,15 @@ async function runAutocannon(param: Options) {
         const octokit = new Octokit({
             auth: GITHUB_TOKEN,
         })
+        const osInfo = `System: ${os.type()} ${os.release()} (${os.arch()})<br>
+Node.js: ${process.versions.node}<br>
+CPU: ${os.cpus().length} cores<br>
+Memory: ${betterBytes.format(os.totalmem())} MB`
         await octokit.rest.issues.createComment({
             owner: GITHUB_REPOSITORY.split('/')[0],
             repo: GITHUB_REPOSITORY.split('/')[1],
             issue_number: parseInt(GITHUB_PR_NUMBER),
-            body: `## Benchmarks Results\n\n\`\`\`\n${resultOutput}\n\`\`\``,
+            body: `## System Info \n\n${osInfo}## Benchmarks Results\n\n\`\`\`\n${resultOutput}\n\`\`\``,
         })
     }
     return result
