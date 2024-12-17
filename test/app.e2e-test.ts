@@ -38,7 +38,7 @@ describe('AppController (e2e)', () => {
         app = moduleFixture.createNestApplication()
         app.enableCors({})
         app.setGlobalPrefix('/api')
-        app.use(sessionMiddleware)
+        // app.use(sessionMiddleware)
         await app.init()
     }, 30000)
 
