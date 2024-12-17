@@ -1,6 +1,6 @@
 
 import { Entity, BeforeInsert, BeforeUpdate } from 'typeorm'
-import { hash } from 'bcryptjs'
+import { hash } from 'bcrypt'
 import { IsEmail, IsUrl } from 'class-validator'
 import { ApiProperty, OmitType, PartialType, PickType } from '@nestjs/swagger'
 import { Base } from './base.entity'

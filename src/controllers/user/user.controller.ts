@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Session } from
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { compare } from 'bcryptjs'
+import { compare } from 'bcrypt'
 import { ICrudQuery } from '../acl-crud/acl-crud.controller'
 import { CreateUser, FindUser, UpdateMe, UpdateUser, User } from '@/db/models/user.entity'
 import { CrudQuery } from '@/decorators/crud-query.decorator'

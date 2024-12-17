@@ -1,5 +1,5 @@
 import { workerData, parentPort } from 'worker_threads'
-import { compare } from 'bcryptjs'
+import { compare } from 'bcrypt'
 
 async function verifyPassword() {
     const { password, hash } = workerData as { password: string, hash: string }

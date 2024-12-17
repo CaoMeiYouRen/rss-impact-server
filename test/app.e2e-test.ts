@@ -59,7 +59,7 @@ describe('AppController (e2e)', () => {
 
             const tempApp = tempModule.createNestApplication()
             await tempApp.init()
-            
+
             // 确保完全关闭所有连接
             await new Promise<void>((resolve) => {
                 tempApp.close().then(() => {
@@ -96,13 +96,7 @@ describe('AppController (e2e)', () => {
     }, 10000)
 
     afterAll(async () => {
-        // 测试完成后删除测试数据库文件
-        const testDbPath = path.join(__dirname, '../database.test.sqlite')
-        try {
-            await fs.promises.unlink(testDbPath)
-        } catch (error) {
-            // 忽略文件不存在的错误
-        }
+
     })
 
     it('GET /api', async () => {
