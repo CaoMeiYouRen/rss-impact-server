@@ -101,7 +101,7 @@ export class User extends Base {
     @SetAclCrudField({
         type: 'img',
     })
-    @ApiProperty({ title: '头像', example: 'URL_ADDRESS' })
+    @ApiProperty({ title: '头像', example: 'URL_ADDRESS', required: false })
     @IsUrl({})
     @CustomColumn({
         length: 1024,
@@ -154,7 +154,7 @@ export class User extends Base {
         editDisabled: true,
         readonly: true,
     })
-    @ApiProperty({ title: 'Auth0 ID', description: '绑定的 auth0 账号', example: 'github|114514' })
+    @ApiProperty({ title: 'Auth0 ID', description: '绑定的 auth0 账号', example: 'github|114514', required: false })
     @CustomColumn({
         index: true,
         unique: true,
