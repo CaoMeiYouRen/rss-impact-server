@@ -8,15 +8,15 @@ import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { Express } from 'express'
 import jestOpenAPI from 'jest-openapi'
+import { TypeOrmModule } from '@nestjs/typeorm'
 import { AppModule } from '../src/app.module'
 import { TasksService } from '../src/services/tasks/tasks.service'
 import { sessionMiddleware } from '../src/middlewares/session.middleware'
+import { entities } from '../src/db/database.module'
 
 const openApiSpecObject = fs.readJSONSync(path.join(__dirname, './openapi.json'))
 
 jestOpenAPI(openApiSpecObject)
-
-const apiPaths = Object.keys(openApiSpecObject?.paths)
 
 describe('AppController (e2e)', () => {
     let app: INestApplication<Express>
@@ -25,10 +25,46 @@ describe('AppController (e2e)', () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         onApplicationBootstrap: () => { },
     }
+
     beforeEach(async () => {
+        // 确保测试数据库文件存在
+        const testDbPath = path.join(__dirname, '../database.test.sqlite')
+        try {
+            await fs.promises.access(path.dirname(testDbPath))
+        } catch {
+            await fs.promises.mkdir(path.dirname(testDbPath), { recursive: true })
+        }
+
+        let needInit = false
+        try {
+            await fs.promises.access(testDbPath)
+        } catch {
+            needInit = true
+        }
+
+        // 如果数据库文件不存在，我们需要初始化它
+        if (needInit) {
+            // 创建一个临时的 TypeORM 连接来初始化数据库
+            const moduleFixture: TestingModule = await Test.createTestingModule({
+                imports: [
+                    TypeOrmModule.forRoot({
+                        type: 'sqlite',
+                        database: testDbPath,
+                        entities,
+                        synchronize: true,
+                    }),
+                ],
+            }).compile()
+
+            const tempApp = moduleFixture.createNestApplication()
+            await tempApp.init()
+            await tempApp.close()
+        }
+
+        // 现在创建实际的测试应用
         const moduleFixture: TestingModule = await Test.createTestingModule({
             imports: [AppModule],
-        }).overrideProvider(TasksService) // 覆盖掉 tasksService
+        }).overrideProvider(TasksService)
             .useValue(tasksService)
             .compile()
 
@@ -37,26 +73,18 @@ describe('AppController (e2e)', () => {
         app.setGlobalPrefix('/api')
         app.use(sessionMiddleware)
         await app.init()
-    })
+    }, 30000)
 
     afterEach(async () => {
         await app.close()
-    })
+    }, 10000)
 
-    // it('GET /', (done) => {
-    //     request(app.getHttpServer())
-    //         .get('/')
-    //         .expect(200, done)
-    // })
-
-    it('GET /api', (done) => {
-        request(app.getHttpServer())
+    it('GET /api', async () => {
+        const response = await request(app.getHttpServer())
             .get('/api')
-            .expect((res) => {
-                expect(res).toSatisfyApiSpec()
-            })
-            .expect(200, done)
-    })
+        expect(response).toSatisfyApiSpec()
+        expect(response.status).toBe(200)
+    }, 10000)
 
     it('POST /api/auth/login - should set session cookie', async () => {
         const response = await request(app.getHttpServer())
@@ -70,7 +98,8 @@ describe('AppController (e2e)', () => {
         expect(Array.isArray(sessionCookie)).toBe(true)
         cookie = sessionCookie[0].split(';')[0]
         expect(cookie).toMatch(/^connect\.sid=/)
-    })
+        expect(response).toSatisfyApiSpec()
+    }, 30000)
 
     it('GET /api/user/me - should maintain session', async () => {
         expect(cookie).toBeDefined()
@@ -79,16 +108,17 @@ describe('AppController (e2e)', () => {
             .set('Cookie', cookie)
             .expect(200)
 
+        // expect(response).toSatisfyApiSpec()
         expect(response.body).toHaveProperty('username', 'admin')
         expect(response.body).toHaveProperty('email', 'admin@example.com')
         expect(response.body).toHaveProperty('roles')
         expect(Array.isArray(response.body.roles)).toBe(true)
         expect(response.body.roles).toContain('admin')
-    })
+    }, 10000)
 
     it('GET /api/user/me - should reject without session', async () => {
         await request(app.getHttpServer())
             .get('/api/user/me')
             .expect(401)
-    })
+    }, 10000)
 })
