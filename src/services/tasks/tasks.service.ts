@@ -23,7 +23,7 @@ import { ResourceService } from '@/services/resource/resource.service'
 import { Feed } from '@/db/models/feed.entity'
 import { RssCronList } from '@/constant/rss-cron'
 import { __DEV__, ARTICLE_LIMIT_MAX, ARTICLE_SAVE_DAYS, DATABASE_TYPE, DISABLE_EMPTY_FEEDS, LOG_SAVE_DAYS, MAX_ERROR_COUNT, RESOURCE_DOWNLOAD_PATH, RESOURCE_SAVE_DAYS, REVERSE_TRIGGER_LIMIT, TZ } from '@/app.config'
-import { getAllUrls, download, getMd5ByStream, timeFormat, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority, splitStringWithLineBreak } from '@/utils/helper'
+import { getAllUrls, download, getMd5ByStream, timeFormat, isHttpURL, to, limitToken, getTokenLength, splitStringByToken, retryBackoff, parseDataSize, dataFormat, getFullText, getPriority, splitStringWithLineBreak, sleep, randomSleep } from '@/utils/helper'
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
@@ -1282,49 +1282,85 @@ EXAMPLE JSON ERROR OUTPUT:
     }
 
     @Cron(CronExpression.EVERY_DAY_AT_4AM, { name: 'removeArticles' }) // 每天删除一次
-    private async removeArticles() {
+    async removeArticles() {
         try {
-            this.logger.log('开始移除过时的文章')
             const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-ARTICLE_SAVE_DAYS, 'day').toDate()
-            const removes = await this.articleRepository.delete({
-                pubDate: LessThan(date), // pubDate 小于当前时间 - ARTICLE_SAVE_DAYS 天的记录
-                // createdAt: LessThan(date), // createdAt 小于当前时间 - ARTICLE_SAVE_DAYS 天的记录
-            })
-            this.logger.log('成功移除过时的文章')
-            this.logger.log(removes)
-            const feeds = await this.feedRepository.find({
-                where: {
-                    isEnabled: true, // 只查找已启用的订阅
-                },
-            })
-            for await (const feed of feeds) {
-                // 删除最早的几条记录
-                removeQueue.add(async () => { // 添加到队列中
-                    // 1. 查询记录总数
-                    const totalCount = await this.articleRepository.count({ where: { feedId: feed.id } })
-                    // 如果未超过 单个订阅文章最大保存数量
-                    if (totalCount <= ARTICLE_LIMIT_MAX) {
-                        // this.logger.log(`订阅: ${feed.title}(id: ${feed.id}) 未超过最大保存数量，无需删除`)
-                        return
-                    }
-                    // 2. 查询最早的几条记录
-                    this.logger.log(`正在删除订阅: ${feed.title}(id: ${feed.id}) 超过限制的文章`)
-                    const recordsToDelete = await this.articleRepository.find({
-                        where: { feedId: feed.id },
-                        order: {
-                            createdAt: 'DESC',
-                        },
-                        skip: ARTICLE_LIMIT_MAX, // 跳过前 ARTICLE_LIMIT_MAX 个
-                        take: totalCount - ARTICLE_LIMIT_MAX, // 分页大小
-                    })
-                    await this.articleRepository.delete(recordsToDelete.map((e) => e.id)) // 删除时使用 id
-                    this.logger.log(`订阅: ${feed.title}(id: ${feed.id}), 成功移除超过数量的文章 ${recordsToDelete.length} 篇`)
+
+            // 1. First remove old articles based on pubDate in batches
+            const BATCH_SIZE = 1000
+            let deletedCount = 0
+            let hasMoreArticles = true
+
+            while (hasMoreArticles) {
+                const articlesToDelete = await this.articleRepository.find({
+                    where: { pubDate: LessThan(date) },
+                    take: BATCH_SIZE,
+                    select: ['id'], // Only select IDs for better performance
                 })
+
+                hasMoreArticles = articlesToDelete.length === BATCH_SIZE
+                if (articlesToDelete.length === 0) {
+                    break
+                }
+
+                const ids = articlesToDelete.map((article) => article.id)
+                const result = await this.articleRepository.delete(ids)
+                deletedCount += result.affected || 0
+
+                // Small delay to prevent CPU overload
+                await randomSleep(10, 100)
             }
+
+            this.logger.log(`成功移除 ${deletedCount} 篇过时的文章`)
+
+            // 2. Process feeds that exceed article limit
+            const feeds = await this.feedRepository.find({
+                where: { isEnabled: true },
+                select: ['id', 'title'], // Only select necessary fields
+            })
+
+            for (const feed of feeds) {
+                const totalCount = await this.articleRepository.count({
+                    where: { feedId: feed.id },
+                })
+
+                if (totalCount <= ARTICLE_LIMIT_MAX) {
+                    continue
+                }
+
+                const excessCount = totalCount - ARTICLE_LIMIT_MAX
+                let processed = 0
+                let hasMoreExcessArticles = true
+
+                // Delete excess articles in batches
+                while (hasMoreExcessArticles && processed < excessCount) {
+                    const articlesToDelete = await this.articleRepository
+                        .createQueryBuilder('article')
+                        .where('article.feedId = :feedId', { feedId: feed.id })
+                        .orderBy('article.createdAt', 'ASC')
+                        .take(Math.min(BATCH_SIZE, excessCount - processed))
+                        .select('article.id')
+                        .getMany()
+
+                    hasMoreExcessArticles = articlesToDelete.length > 0
+                    if (!hasMoreExcessArticles) {
+                        break
+                    }
+
+                    const ids = articlesToDelete.map((article) => article.id)
+                    await this.articleRepository.delete(ids)
+                    processed += articlesToDelete.length
+
+                    // Small delay to prevent CPU overload
+                    await randomSleep(10, 100)
+                }
+
+                this.logger.log(`订阅: ${feed.title}(id: ${feed.id}), 成功移除超过数量的文章 ${processed} 篇`)
+            }
+
+            // 3. Vacuum database if needed
             if (DATABASE_TYPE === 'sqlite') {
-                removeQueue.add(async () => {
-                    await this.sqliteAutoVacuum()
-                }, { priority: -1 }) // 优先级设置为负数，排到队尾
+                await this.sqliteAutoVacuum()
             }
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
