@@ -27,44 +27,6 @@ describe('AppController (e2e)', () => {
     }
 
     beforeEach(async () => {
-        // 确保测试数据库文件存在
-        const testDbPath = path.join(__dirname, '../database.test.sqlite')
-        try {
-            await fs.promises.access(path.dirname(testDbPath))
-        } catch {
-            await fs.promises.mkdir(path.dirname(testDbPath), { recursive: true })
-        }
-
-        try {
-            await fs.remove(testDbPath)
-        } catch (error) {
-            console.log(error)
-        }
-
-        // 如果数据库文件不存在，我们需要初始化它
-        // 创建一个临时的 TypeORM 连接来初始化数据库
-        const tempModule = await Test.createTestingModule({
-            imports: [
-                TypeOrmModule.forRoot({
-                    type: 'sqlite',
-                    database: testDbPath,
-                    entities,
-                    synchronize: true,
-                    autoLoadEntities: true,
-                }),
-            ],
-        }).compile()
-
-        const tempApp = tempModule.createNestApplication()
-        await tempApp.init()
-
-        // 确保完全关闭所有连接
-        await new Promise<void>((resolve) => {
-            tempApp.close().then(() => {
-                // 给一点时间让连接完全关闭
-                setTimeout(resolve, 1000)
-            })
-        })
 
         // 现在创建实际的测试应用
         const moduleFixture: TestingModule = await Test.createTestingModule({
