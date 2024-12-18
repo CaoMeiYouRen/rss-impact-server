@@ -1293,7 +1293,7 @@ EXAMPLE JSON ERROR OUTPUT:
 
             while (hasMoreArticles) {
                 const articlesToDelete = await this.articleRepository.find({
-                    where: { pubDate: LessThan(date) },
+                    where: [{ pubDate: LessThan(date) }, { createdAt: LessThan(date) }],
                     take: BATCH_SIZE,
                     select: ['id'], // Only select IDs for better performance
                 })
