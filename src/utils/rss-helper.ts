@@ -94,7 +94,7 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
         // 2. 如果 pubDate 为过去时间，且小于 new Date(0)（1970-01-01），则认定该时间无效
         const now = dayjs()
         if (pubDate.isAfter(now.add(5, 'minute'))) { // 未来时间
-            article.pubDate = null
+            article.pubDate = now.toDate()
         } else if (pubDate.isBefore(dayjs(0))) { // 过去时间
             article.pubDate = null
         }
