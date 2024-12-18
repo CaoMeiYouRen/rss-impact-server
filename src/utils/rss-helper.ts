@@ -87,7 +87,18 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     article.title = item.title
     article.content = item['content:encoded'] || item.content
     if (item.pubDate || item.isoDate) {
-        article.pubDate = dayjs(item.pubDate || item.isoDate).toDate()
+        const pubDate = dayjs(item.pubDate || item.isoDate)
+        article.pubDate = pubDate.toDate()
+        // 验证 pubDate 的时间是否为有效时间
+        // 1. 如果 pubDate 为未来时间，且超过当前服务器时间 5 分钟以上，则认定该时间无效
+        // 2. 如果 pubDate 为过去时间，且小于 new Date(0)（1970-01-01），则认定该时间无效
+        const now = dayjs()
+        if (pubDate.isAfter(now.add(5, 'minute'))) { // 未来时间
+            article.pubDate = null
+        } else if (pubDate.isBefore(dayjs(0))) { // 过去时间
+            article.pubDate = null
+        }
+
     }  // 如果没有 pubDate/isoDate 则留空
     article.author = item.author || item.creator || item['dc:creator']
     article.contentSnippet = item['content:encodedSnippet'] || item.contentSnippet
