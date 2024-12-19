@@ -7,20 +7,10 @@ FROM nodejs AS frontend-builder
 # 如果前端更新了，但后端没有更新，需要发版时，修改该变量
 ENV FRONTEND_VERSION='0.0.10'
 
-ARG VITE_BAIDU_STATISTICS=''
-ARG VITE_DOMAIN=''
-ARG VITE_SENTRY_DSN=''
-ARG VITE_PETERCAT_AI_TOKEN=''
-
 WORKDIR /frontend
 
-RUN git clone https://github.com/CaoMeiYouRen/rss-impact-web.git /frontend --depth=1
+RUN git clone https://github.com/CaoMeiYouRen/rss-impact-web.git /frontend --depth=1 --branch=gh-pages
 
-RUN npm config set registry https://registry.npmjs.org/ && \
-    pnpm config set registry https://registry.npmjs.org/ && \
-    npm i -g pnpm && pnpm i --frozen-lockfile
-
-RUN pnpm run build
 # 构建阶段
 FROM nodejs AS builder
 
@@ -63,7 +53,7 @@ WORKDIR /app
 # 后端部分
 COPY --from=docker-minifier /app /app
 # 前端部分
-COPY --from=frontend-builder /frontend/dist /app/public
+COPY --from=frontend-builder /frontend /app/public
 
 EXPOSE 3000
 
