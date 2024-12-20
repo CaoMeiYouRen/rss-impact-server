@@ -5,7 +5,7 @@ services:
     # build: .
     container_name: 'rss-impact-server'
     image: ${DOCKER_IMAGE:-caomeiyouren/rss-impact-server}
-    restart: always
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
@@ -21,6 +21,20 @@ services:
       # 通过 docker 部署时，也会产生跨域问题，需要配置该项。
       # 如果你有前置的反向代理服务，例如 Nginx 等，则无需配置该项。
       ENABLE_ORIGIN_LIST: 'http://localhost:3000,http://127.0.0.1:3000'
+      REDIS_URL: 'redis://redis:6379'
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
+    depends_on:
+      - redis
+    deploy:
+      resources:
+        # 资源上限
+        limits:
+            cpus: 0.5
+            memory: 512M
+  redis:
+    image: redis:6-alpine
+    restart: always
+    volumes:
+      - ./redis-data:/data
