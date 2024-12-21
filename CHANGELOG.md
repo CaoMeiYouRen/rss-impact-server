@@ -1,5 +1,31 @@
 # rss-impact-server
 
+## [1.14.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.1...v1.14.2) (2024-12-21)
+
+
+### ♻ 代码重构
+
+* **app:** 优化获取版本和 Git 信息的时机 ([402e00b](https://github.com/CaoMeiYouRen/rss-impact-server/commit/402e00b))
+* **user:** 替换 bcryptjs 为 bcrypt ([8e967e6](https://github.com/CaoMeiYouRen/rss-impact-server/commit/8e967e6))
+
+
+### ✅ 测试
+
+* **e2e:** 优化数据库初始化逻辑 ([785e285](https://github.com/CaoMeiYouRen/rss-impact-server/commit/785e285))
+* **e2e:** 完善 e2e 测试 ([f034a06](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f034a06))
+* **e2e:** 添加测试数据库初始化逻辑；优化测试用例超时时间 ([7963b1a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/7963b1a))
+* **e2e:** 禁用会话中间件以测试无状态应用 ([291a582](https://github.com/CaoMeiYouRen/rss-impact-server/commit/291a582))
+* **e2e:** 移除测试数据库初始化代码 ([857dcaf](https://github.com/CaoMeiYouRen/rss-impact-server/commit/857dcaf))
+* 增加测试超时配置和数据库清理；优化 e2e 测试中的数据库初始化和关闭逻辑 ([d18d152](https://github.com/CaoMeiYouRen/rss-impact-server/commit/d18d152))
+
+
+### 🐛 Bug 修复
+
+* **tasks:** 修复删除任务的多条件支持 ([a8ee9be](https://github.com/CaoMeiYouRen/rss-impact-server/commit/a8ee9be))
+* **utils:** 修复 RSS 时间处理逻辑 ([316780d](https://github.com/CaoMeiYouRen/rss-impact-server/commit/316780d))
+* **utils:** 添加 RSS 文章发布时间验证 ([f7a9342](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f7a9342))
+* 优化 移除过时的文章 的性能 ([dfc2450](https://github.com/CaoMeiYouRen/rss-impact-server/commit/dfc2450)), closes [#468](https://github.com/CaoMeiYouRen/rss-impact-server/issues/468)
+
 ## [1.14.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.0...v1.14.1) (2024-12-14)
 
 
