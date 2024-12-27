@@ -63,7 +63,7 @@ async function sleep(time: number) {
 async function start() {
     const params: Options[] = ([
         {
-            url: '/api',
+            url: '/api/',
             method: 'GET',
         },
         {

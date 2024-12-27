@@ -6,27 +6,17 @@ import { getGitInfo } from './utils/git-info'
 export class AppService implements OnApplicationBootstrap {
 
     private readonly logger = new Logger(AppService.name)
-
-    private version: string
-    private gitHash: string
-    private gitDate: Date
+    private objStr: string
 
     constructor() { }
 
     async onApplicationBootstrap() {
         const { version } = await fs.readJson('package.json')
         const { gitHash, gitDate } = await getGitInfo()
-        this.version = version
-        this.gitHash = gitHash
-        this.gitDate = new Date(gitDate)
-    }
-
-    async getHello() {
-        const { version, gitHash, gitDate } = this
-        return {
+        const obj = {
             statusCode: 200,
             message: 'Hello RSS Impact!',
-            timestamp: new Date(),
+            // timestamp: new Date(),
             version,
             gitHash,
             gitDate: new Date(gitDate),
@@ -34,5 +24,10 @@ export class AppService implements OnApplicationBootstrap {
             issueUrl: 'https://github.com/CaoMeiYouRen/rss-impact-server/issues',
             docsUrl: 'https://rss-docs.cmyr.dev',
         }
+        this.objStr = JSON.stringify(obj, null, 4)
+    }
+
+    async getHello() {
+        return this.objStr
     }
 }
