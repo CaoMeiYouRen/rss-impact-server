@@ -21,6 +21,7 @@ export default defineConfig({
             { text: '使用', link: '/docs/usage' },
             { text: '部署', link: '/docs/deploy' },
             { text: '贡献指南', link: '/contributing' },
+            { text: '贡献者公约', link: '/codeOfConduct' },
             { text: '安全策略', link: '/security' },
             { text: '更新日志', link: 'https://github.com/CaoMeiYouRen/rss-impact-server/blob/master/CHANGELOG.md' }
         ],
@@ -38,6 +39,7 @@ export default defineConfig({
         'README.md': 'index.md',
         'CHANGELOG.md': 'changelog.md',
         'CONTRIBUTING.md': 'contributing.md',
-        'SECURITY.md': 'security.md'
+        'SECURITY.md': 'security.md',
+        'CODE_OF_CONDUCT.md': 'codeOfConduct.md'
     }
 })
