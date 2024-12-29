@@ -401,8 +401,8 @@ importers:
         specifier: ^15.3.0
         version: 15.3.0
       octokit:
-        specifier: ^4.0.2
-        version: 4.0.2
+        specifier: ^4.0.3
+        version: 4.0.3
       semantic-release:
         specifier: 21.0.1
         version: 21.0.1(encoding@0.1.13)(typescript@5.7.2)
@@ -6692,8 +6692,8 @@ packages:
   obuf@1.1.2:
     resolution: {integrity: sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==}
 
-  octokit@4.0.2:
-    resolution: {integrity: sha512-wbqF4uc1YbcldtiBFfkSnquHtECEIpYD78YUXI6ri1Im5OO2NLo6ZVpRdbJpdnpZ05zMrVPssNiEo6JQtea+Qg==}
+  octokit@4.0.3:
+    resolution: {integrity: sha512-kfqH80Yuuux4fLbZ4SvObjCvVu89U0eCh5+fulh6tr/hJkDYS1inXDGnNJDOp312GANMEhWWMLYmjQR8MvSSMQ==}
     engines: {node: '>= 18'}
 
   ofetch@1.3.4:
@@ -16548,7 +16548,7 @@ snapshots:
 
   obuf@1.1.2: {}
 
-  octokit@4.0.2:
+  octokit@4.0.3:
     dependencies:
       '@octokit/app': 15.1.1
       '@octokit/core': 6.1.2
