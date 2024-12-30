@@ -27,25 +27,20 @@ describe('AppController (e2e)', () => {
         onApplicationBootstrap: () => { },
     }
 
-    beforeEach(async () => {
+    beforeAll(async () => {
 
         // 确保测试数据库文件存在
         const testDbPath = path.join(__dirname, '../data/database.test.sqlite')
         try {
-            await fs.promises.access(path.dirname(testDbPath))
-        } catch {
-            await fs.promises.mkdir(path.dirname(testDbPath), { recursive: true })
-        }
-
-        let needInit = false
-        try {
-            await fs.promises.access(testDbPath)
-        } catch {
-            needInit = true
+            if (!await fs.pathExists(path.dirname(testDbPath))) {
+                await fs.mkdir(path.dirname(testDbPath), { recursive: true })
+            }
+        } catch (error) {
+            console.error(error)
         }
 
         // 如果数据库文件不存在，我们需要初始化它
-        if (needInit) {
+        if (!await fs.pathExists(testDbPath)) {
             // 创建一个临时的 TypeORM 连接来初始化数据库
             const tempModule = await Test.createTestingModule({
                 imports: [
@@ -63,12 +58,15 @@ describe('AppController (e2e)', () => {
             await tempApp.init()
 
             // 确保完全关闭所有连接
-            await new Promise<void>((resolve) => {
-                tempApp.close().then(() => {
-                    // 给一点时间让连接完全关闭
-                    setTimeout(resolve, 1000)
-                })
-            })
+            await tempApp.close()
+        }
+
+        // 检查数据库文件是否存在
+        if (await fs.pathExists(testDbPath)) {
+            console.log('数据库文件已存在，路径为：', testDbPath)
+        } else {
+            console.error('数据库文件不存在！')
+            process.exit(1)
         }
 
         // 现在创建实际的测试应用
@@ -85,22 +83,11 @@ describe('AppController (e2e)', () => {
         await app.init()
     }, 30000)
 
-    afterEach(async () => {
+    afterAll(async () => {
         if (app) {
             await app.close()
-            // 确保完全关闭所有连接
-            // await new Promise<void>((resolve) => {
-            //     app.close().then(() => {
-            //         // 给一点时间让连接完全关闭
-            //         setTimeout(resolve, 1000)
-            //     })
-            // })
         }
     }, 10000)
-
-    afterAll(async () => {
-
-    })
 
     it('GET /api', async () => {
         const response = await request(app.getHttpServer())
