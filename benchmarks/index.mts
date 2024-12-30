@@ -45,7 +45,7 @@ async function runAutocannon(param: Options) {
         const octokit = new Octokit({
             auth: GITHUB_TOKEN,
         })
-        const osInfo = `System: ${os.type()} ${os.release()} (${os.arch()})<br>Node.js: ${process.versions.node}<br>CPU: ${os.cpus().length} cores<br>Memory: ${betterBytes.format(os.totalmem())} MB`
+        const osInfo = `System: ${os.type()} ${os.release()} (${os.arch()})<br>Node.js: ${process.versions.node}<br>CPU: ${os.cpus().length} cores<br>Memory: ${betterBytes.format(os.totalmem())}`
         await octokit.rest.issues.createComment({
             owner: GITHUB_REPOSITORY.split('/')[0],
             repo: GITHUB_REPOSITORY.split('/')[1],
