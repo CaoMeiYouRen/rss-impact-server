@@ -87,7 +87,7 @@ describe('AppController (e2e)', () => {
             // forbidNonWhitelisted: true,
             enableDebugMessages: true,
         }))
-        app.use(sessionMiddleware)
+        // app.use(sessionMiddleware)
         await app.init()
     }, 60000)
 
