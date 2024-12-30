@@ -24,7 +24,7 @@ jobs:
       - run: pnpm run lint:md
       - run: pnpm run build
       - run: pnpm run test
-      - run: pnpm run test:e2e -- --detectOpenHandles --passWithNoTests
+      - run: pnpm run test:e2e
       - run: pnpm run test:cov
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1
