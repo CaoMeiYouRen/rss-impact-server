@@ -67,7 +67,7 @@
     "connect-history-api-fallback": "^2.0.0",
     "connect-redis": "^8.0.1",
     "connect-sqlite3": "^0.9.13",
-    "cron": "3.3.1",
+    "cron": "3.3.2",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "entities": "^6.0.0",
