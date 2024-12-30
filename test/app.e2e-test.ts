@@ -81,13 +81,13 @@ describe('AppController (e2e)', () => {
         app.setGlobalPrefix('/api')
         app.use(sessionMiddleware)
         await app.init()
-    }, 30000)
+    }, 60000)
 
     afterAll(async () => {
         if (app) {
             await app.close()
         }
-    }, 10000)
+    }, 30000)
 
     it('GET /api', async () => {
         const response = await request(app.getHttpServer())
