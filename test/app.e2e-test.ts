@@ -28,6 +28,48 @@ describe('AppController (e2e)', () => {
 
     beforeEach(async () => {
 
+        // 确保测试数据库文件存在
+        const testDbPath = path.join(__dirname, '../data/database.test.sqlite')
+        try {
+            await fs.promises.access(path.dirname(testDbPath))
+        } catch {
+            await fs.promises.mkdir(path.dirname(testDbPath), { recursive: true })
+        }
+
+        let needInit = false
+        try {
+            await fs.promises.access(testDbPath)
+        } catch {
+            needInit = true
+        }
+
+        // 如果数据库文件不存在，我们需要初始化它
+        if (needInit) {
+            // 创建一个临时的 TypeORM 连接来初始化数据库
+            const tempModule = await Test.createTestingModule({
+                imports: [
+                    TypeOrmModule.forRoot({
+                        type: 'sqlite',
+                        database: testDbPath,
+                        entities,
+                        synchronize: true,
+                        autoLoadEntities: true,
+                    }),
+                ],
+            }).compile()
+
+            const tempApp = tempModule.createNestApplication()
+            await tempApp.init()
+
+            // 确保完全关闭所有连接
+            await new Promise<void>((resolve) => {
+                tempApp.close().then(() => {
+                    // 给一点时间让连接完全关闭
+                    setTimeout(resolve, 1000)
+                })
+            })
+        }
+
         // 现在创建实际的测试应用
         const moduleFixture: TestingModule = await Test.createTestingModule({
             imports: [AppModule],
@@ -38,7 +80,7 @@ describe('AppController (e2e)', () => {
         app = moduleFixture.createNestApplication()
         app.enableCors({})
         app.setGlobalPrefix('/api')
-        // app.use(sessionMiddleware)
+        app.use(sessionMiddleware)
         await app.init()
     }, 30000)
 
@@ -65,7 +107,7 @@ describe('AppController (e2e)', () => {
         expect(response.status).toBe(200)
     }, 10000)
 
-    it.skip('POST /api/auth/login - should set session cookie', async () => {
+    it('POST /api/auth/login - should set session cookie', async () => {
         const response = await request(app.getHttpServer())
             .post('/api/auth/login')
             .send({ username: 'admin', password: '123456' })
@@ -80,7 +122,7 @@ describe('AppController (e2e)', () => {
         expect(response).toSatisfyApiSpec()
     }, 30000)
 
-    it.skip('GET /api/user/me - should maintain session', async () => {
+    it('GET /api/user/me - should maintain session', async () => {
         expect(cookie).toBeDefined()
         const response = await request(app.getHttpServer())
             .get('/api/user/me')
@@ -94,7 +136,7 @@ describe('AppController (e2e)', () => {
         expect(response.body.roles).toContain('admin')
     }, 10000)
 
-    it.skip('GET /api/user/me - should reject without session', async () => {
+    it('GET /api/user/me - should reject without session', async () => {
         await request(app.getHttpServer())
             .get('/api/user/me')
             .expect(401)
