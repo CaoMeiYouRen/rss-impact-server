@@ -9,6 +9,7 @@ import request from 'supertest'
 import { Express } from 'express'
 import jestOpenAPI from 'jest-openapi'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { } from 'typeorm'
 import { AppModule } from '../src/app.module'
 import { TasksService } from '../src/services/tasks/tasks.service'
 import { sessionMiddleware } from '../src/middlewares/session.middleware'
@@ -85,15 +86,16 @@ describe('AppController (e2e)', () => {
     }, 30000)
 
     afterEach(async () => {
-        // if (app) {
-        //     // 确保完全关闭所有连接
-        //     await new Promise<void>((resolve) => {
-        //         app.close().then(() => {
-        //             // 给一点时间让连接完全关闭
-        //             setTimeout(resolve, 1000)
-        //         })
-        //     })
-        // }
+        if (app) {
+            await app.close()
+            // 确保完全关闭所有连接
+            // await new Promise<void>((resolve) => {
+            //     app.close().then(() => {
+            //         // 给一点时间让连接完全关闭
+            //         setTimeout(resolve, 1000)
+            //     })
+            // })
+        }
     }, 10000)
 
     afterAll(async () => {
