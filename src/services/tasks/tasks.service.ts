@@ -184,7 +184,7 @@ export class TasksService implements OnApplicationBootstrap {
                 },
                 select: ['guid'],
             })
-            const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-RESOURCE_SAVE_DAYS, 'day')
+            const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-ARTICLE_SAVE_DAYS, 'day')
             let diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid)
                 .map((item) => {
                     const article = rssItemToArticle(item)
