@@ -1,5 +1,25 @@
 # rss-impact-server
 
+## [1.14.3](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.2...v1.14.3) (2025-01-04)
+
+
+### ♻ 代码重构
+
+* **benchmarks:** 优化系统信息输出格式 ([54c50b1](https://github.com/CaoMeiYouRen/rss-impact-server/commit/54c50b1))
+
+
+### ✅ 测试
+
+* **app:** 修复e2e测试中的app关闭逻辑 ([17ad4ab](https://github.com/CaoMeiYouRen/rss-impact-server/commit/17ad4ab))
+* **e2e:** 优化测试数据库初始化逻辑，改用beforeAll和afterAll ([a5e33ee](https://github.com/CaoMeiYouRen/rss-impact-server/commit/a5e33ee))
+* **e2e:** 初始化测试数据库并启用会话中间件 ([e5d5517](https://github.com/CaoMeiYouRen/rss-impact-server/commit/e5d5517))
+* 修复 API 路径并添加响应头；优化服务逻辑 ([2a4ff2e](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2a4ff2e))
+
+
+### 🐛 Bug 修复
+
+* 更改常量名称从 RESOURCE_SAVE_DAYS 为 ARTICLE_SAVE_DAYS ([f4e1f4f](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f4e1f4f))
+
 ## [1.14.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.1...v1.14.2) (2024-12-21)
 
 
