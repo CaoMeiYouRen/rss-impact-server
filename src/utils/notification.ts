@@ -17,6 +17,16 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
     // if (isMarkdown) {
     //     title = `${title.replace(/(\n[\s|\t]*\r*\n)/g, '\n')}\n`
     // }
+    if (type === 'Dingtalk') {
+        // 处理 URL 可能会被风控的问题
+        const linkRegex = /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi
+        const links = desp.match(linkRegex)
+        if (links?.length) {
+            links.forEach((link) => {
+                desp = desp.replace(link, link.replaceAll('.', '\u200d.\u200d')) // 在点号上添加零宽字符
+            })
+        }
+    }
     if (type === 'OneBot') {
         if (isMarkdown) {
             desp = mdToCqcode(desp).replace(/(\n[\s|\t]*\r*\n)/g, '\n')  // 去除多余换行符

@@ -313,14 +313,6 @@ export class TasksService implements OnApplicationBootstrap {
         if (isMarkdown) {
             desp = desp.replace(/\n/g, '\n\n') // 替换为markdown下的换行
         }
-        // 处理 URL 可能会被风控的问题
-        const linkRegex = /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi
-        const links = desp.match(linkRegex)
-        if (links?.length) {
-            links.forEach((link) => {
-                desp = desp.replace(link, link.replaceAll('.', '\u200d.\u200d')) // 在点号上添加零宽字符
-            })
-        }
         await notificationQueue.add(() => this.notification(hook, feed, [], title, desp))
     }
 
