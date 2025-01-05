@@ -17,6 +17,17 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
     // if (isMarkdown) {
     //     title = `${title.replace(/(\n[\s|\t]*\r*\n)/g, '\n')}\n`
     // }
+    if (isMarkdown) {
+        if (type === 'OneBot') {
+            desp = mdToCqcode(desp).replace(/(\n[\s|\t]*\r*\n)/g, '\n')  // 去除多余换行符
+        } else if (['Dingtalk', 'WechatRobot', 'WechatApp'].includes(type)) {
+            (option as any).msgtype = 'markdown'
+        } else if (type === 'PushDeer') {
+            (option as any).type = 'markdown'
+        } else if (type === 'PushPlus') {
+            (option as any).template = 'markdown'
+        }
+    }
     if (type === 'Dingtalk') {
         // 处理 URL 可能会被风控的问题
         const linkRegex = /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi
@@ -27,11 +38,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
             })
         }
     }
-    if (type === 'OneBot') {
-        if (isMarkdown) {
-            desp = mdToCqcode(desp).replace(/(\n[\s|\t]*\r*\n)/g, '\n')  // 去除多余换行符
-        }
-    }
+
     if (['Telegram', 'Discord'].includes(type) && proxyUrl) { // 设置代理
         (config as any).PROXY_URL = proxyUrl
     }
