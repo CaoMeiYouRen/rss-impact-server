@@ -1,5 +1,17 @@
 # rss-impact-server
 
+## [1.14.4](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.3...v1.14.4) (2025-01-11)
+
+
+### ♻ 代码重构
+
+* 优化对 Dingtalk 的 URL 风控处理 ([50f1356](https://github.com/CaoMeiYouRen/rss-impact-server/commit/50f1356))
+
+
+### 🐛 Bug 修复
+
+* 增强对 Markdown 消息类型的支持 ([e626f76](https://github.com/CaoMeiYouRen/rss-impact-server/commit/e626f76))
+
 ## [1.14.3](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.2...v1.14.3) (2025-01-04)
 
 
