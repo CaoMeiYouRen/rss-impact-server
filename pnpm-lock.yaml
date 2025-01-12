@@ -281,8 +281,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(semantic-release@21.0.1(encoding@0.1.13)(typescript@5.7.3))
       '@types/autocannon':
-        specifier: ^7.12.5
-        version: 7.12.5
+        specifier: ^7.12.6
+        version: 7.12.6
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -2187,8 +2187,8 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@types/autocannon@7.12.5':
-    resolution: {integrity: sha512-IGxnlq0ip0DTDOpShCDOjsBW+lclASdli1Jep+YSEOeUwylwyMai3WCVLi0mnXjHPD1cIziz3eiVyX6i7toB7Q==}
+  '@types/autocannon@7.12.6':
+    resolution: {integrity: sha512-eBluTewWVKr1XlCPz3hYuzs+5JPme+Jh01sKpGPSnWg4wep1Oz2hpGn+dmcITl+uxYoV+rnhA+8LMengL+zcVw==}
 
   '@types/aws-lambda@8.10.146':
     resolution: {integrity: sha512-3BaDXYTh0e6UCJYL/jwV/3+GRslSc08toAiZSmleYtkAUyV5rtvdPYxrG/88uqvTuT6sb27WE9OS90ZNTIuQ0g==}
@@ -11050,7 +11050,7 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@types/autocannon@7.12.5':
+  '@types/autocannon@7.12.6':
     dependencies:
       '@types/node': 22.10.5
 
