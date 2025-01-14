@@ -175,8 +175,8 @@ importers:
         specifier: ^3.12.0
         version: 3.12.0
       nest-winston:
-        specifier: ^1.10.0
-        version: 1.10.0(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.17.0)
+        specifier: ^1.10.1
+        version: 1.10.1(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.17.0)
       openai:
         specifier: ^4.78.1
         version: 4.78.1(encoding@0.1.13)
@@ -6451,8 +6451,8 @@ packages:
   nerf-dart@1.0.0:
     resolution: {integrity: sha512-EZSPZB70jiVsivaBLYDCyntd5eH8NTSMOn3rB+HxwdmKThGELLdYv8qVIMWvZEFy9w8ZZpW9h9OB32l1rGtj7g==}
 
-  nest-winston@1.10.0:
-    resolution: {integrity: sha512-ipfvW6jxjX9xUqACw1HhDmrE1HLLLReqqR5cYt2mehW6Fg87LYTYuoCqwAUYTrawekrQd2vNAe5YBC/Jmxxoxw==}
+  nest-winston@1.10.1:
+    resolution: {integrity: sha512-P0GGPucdVoJtYKsWAbXzLEUQSV/w356obzHjKMfYooATzDzX3Wr30bM7+LqCCqcZYjxkR3+Zha9XOPJcJbAbpg==}
     peerDependencies:
       '@nestjs/common': ^5.0.0 || ^6.6.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
       winston: ^3.0.0
@@ -16396,7 +16396,7 @@ snapshots:
 
   nerf-dart@1.0.0: {}
 
-  nest-winston@1.10.0(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.17.0):
+  nest-winston@1.10.1(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.17.0):
     dependencies:
       '@nestjs/common': 10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       fast-safe-stringify: 2.1.1
