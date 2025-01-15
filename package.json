@@ -75,7 +75,7 @@
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
     "file-type": "16.5.4",
-    "fs-extra": "^11.2.0",
+    "fs-extra": "^11.3.0",
     "go-cqwebsocket": "^6.3.2",
     "gpt-3-encoder": "^1.1.4",
     "helmet": "^8.0.0",
