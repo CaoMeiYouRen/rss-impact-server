@@ -35,3 +35,6 @@ updates:
       - dependency-name: "@nestjs/swagger"
         versions:
           - ">= 8.0.0" # 8.0.0 以上的版本会导致 nestjs 无法启动
+      - dependency-name: "@sentry/profiling-node"
+        versions:
+          - ">= 8.48.0" # 8.48.0 以上的版本包含 .node 文件，会导致 docker 无法启动
