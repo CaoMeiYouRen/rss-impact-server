@@ -178,8 +178,8 @@ importers:
         specifier: ^1.10.1
         version: 1.10.1(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(winston@3.17.0)
       openai:
-        specifier: ^4.78.1
-        version: 4.78.1(encoding@0.1.13)
+        specifier: ^4.79.1
+        version: 4.79.1(encoding@0.1.13)
       opml:
         specifier: ^0.5.7
         version: 0.5.7
@@ -2400,11 +2400,11 @@ packages:
   '@types/mysql@2.15.26':
     resolution: {integrity: sha512-DSLCOXhkvfS5WNNPbfn2KdICAmk8lLc+/PNvnPnF7gOdMZCxopXduqv0OQ13y/yA/zXTSikZZqVgybUxOEg6YQ==}
 
-  '@types/node-fetch@2.6.11':
-    resolution: {integrity: sha512-24xFj9R5+rfQJLRyM56qh+wnVSYhyXC2tkoBndtY0U+vubqNsYXGjufB2nn8Q6gt0LrARwL6UBtMCSVCwl4B1g==}
+  '@types/node-fetch@2.6.12':
+    resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
 
-  '@types/node@18.19.33':
-    resolution: {integrity: sha512-NR9+KrpSajr2qBVp/Yt5TU/rp+b5Mayi3+OlMlcg2cVCfRmcG5PWZ7S4+MG9PZ5gWBoc9Pd0BKSRViuBCRPu0A==}
+  '@types/node@18.19.71':
+    resolution: {integrity: sha512-evXpcgtZm8FY4jqBSN8+DmOTcVkkvTmAayeo4Wf3m1xAruyVGzGuDh/Fb/WWX2yLItUiho42ozyJjB0dw//Tkw==}
 
   '@types/node@22.10.7':
     resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==}
@@ -2889,8 +2889,8 @@ packages:
     resolution: {integrity: sha512-jRR5wdylq8CkOe6hei19GGZnxM6rBGwFl3Bg0YItGDimvjGtAvdZk4Pu6Cl4u4Igsws4a1fd1Vq3ezrhn4KmFw==}
     engines: {node: '>= 14'}
 
-  agentkeepalive@4.5.0:
-    resolution: {integrity: sha512-5GG/5IbQQpC9FpkRGsSvZI5QYeSCzlJHdpBQntCsuTOxhKD8lqKhrleg2Yi7yvMIf82Ycmmqln9U8V9qwEiJew==}
+  agentkeepalive@4.6.0:
+    resolution: {integrity: sha512-kja8j7PjmncONqaTsB8fQ+wE2mSU2DJ9D4XKoJ5PFWIdRMa6SLSN1ff4mOr4jCbfRSsxR4keIiySJU0N9T5hIQ==}
     engines: {node: '>= 8.0.0'}
 
   aggregate-error@3.1.0:
@@ -4642,12 +4642,16 @@ packages:
     resolution: {integrity: sha512-1lLKB2Mu3aGP1Q/2eCOx0fNbRMe7XdwktwOruhfqqd0rIJWwN4Dh+E3hrPSlDCXnSR7UtZ1N38rVXm+6+MEhJQ==}
     engines: {node: '>= 0.12'}
 
-  form-data@2.5.1:
-    resolution: {integrity: sha512-m21N3WOmEEURgk6B9GLOE4RuWOFf28Lhh9qGYeNlGq4VDXUlJy2th2slBNU8Gp8EzloYZOibZJ7t5ecIrFSjVA==}
+  form-data@2.5.2:
+    resolution: {integrity: sha512-GgwY0PS7DbXqajuGf4OYlsrIu3zgxD6Vvql43IBhm6MahqA5SK/7mwhtNj2AdH2z35YR34ujJ7BN+3fFC3jP5Q==}
     engines: {node: '>= 0.12'}
 
   form-data@4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+    engines: {node: '>= 6'}
+
+  form-data@4.0.1:
+    resolution: {integrity: sha512-tzN8e4TX8+kkxGPK8D5u0FNmjPUjw3lwC9lSLxxoB/+GtsJG91CO8bSWy73APlgAZzZbXEYZJuxjkHH2w+Ezhw==}
     engines: {node: '>= 6'}
 
   format@0.2.2:
@@ -6788,12 +6792,15 @@ packages:
   oniguruma-to-js@0.4.3:
     resolution: {integrity: sha512-X0jWUcAlxORhOqqBREgPMgnshB7ZGYszBNspP+tS9hPD3l13CdaXcHbgImoHUHlrvGx/7AvFEkTRhAGYh+jzjQ==}
 
-  openai@4.78.1:
-    resolution: {integrity: sha512-drt0lHZBd2lMyORckOXFPQTmnGLWSLt8VK0W9BhOKWpMFBEoHMoz5gxMPmVq5icp+sOrsbMnsmZTVHUlKvD1Ow==}
+  openai@4.79.1:
+    resolution: {integrity: sha512-M7P5/PKnT/S/B5v0D64giC9mjyxFYkqlCuQFzR5hkdzMdqUuHf8T1gHhPGPF5oAvu4+PO3TvJv/qhZoS2bqAkw==}
     hasBin: true
     peerDependencies:
+      ws: ^8.18.0
       zod: ^3.23.8
     peerDependenciesMeta:
+      ws:
+        optional: true
       zod:
         optional: true
 
@@ -11385,12 +11392,12 @@ snapshots:
     dependencies:
       '@types/node': 22.10.7
 
-  '@types/node-fetch@2.6.11':
+  '@types/node-fetch@2.6.12':
     dependencies:
       '@types/node': 22.10.7
-      form-data: 4.0.0
+      form-data: 4.0.1
 
-  '@types/node@18.19.33':
+  '@types/node@18.19.71':
     dependencies:
       undici-types: 5.26.5
 
@@ -11450,7 +11457,7 @@ snapshots:
       '@types/caseless': 0.12.5
       '@types/node': 22.10.7
       '@types/tough-cookie': 4.0.5
-      form-data: 2.5.1
+      form-data: 2.5.2
 
   '@types/responselike@1.0.3':
     dependencies:
@@ -12002,7 +12009,7 @@ snapshots:
 
   agent-base@7.1.3: {}
 
-  agentkeepalive@4.5.0:
+  agentkeepalive@4.6.0:
     dependencies:
       humanize-ms: 1.2.1
 
@@ -14180,13 +14187,20 @@ snapshots:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  form-data@2.5.1:
+  form-data@2.5.2:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+      safe-buffer: 5.2.1
+
+  form-data@4.0.0:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  form-data@4.0.0:
+  form-data@4.0.1:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
@@ -15862,7 +15876,7 @@ snapshots:
 
   make-fetch-happen@9.1.0:
     dependencies:
-      agentkeepalive: 4.5.0
+      agentkeepalive: 4.6.0
       cacache: 15.3.0
       http-cache-semantics: 4.1.1
       http-proxy-agent: 4.0.1
@@ -16766,12 +16780,12 @@ snapshots:
     dependencies:
       regex: 4.3.2
 
-  openai@4.78.1(encoding@0.1.13):
+  openai@4.79.1(encoding@0.1.13):
     dependencies:
-      '@types/node': 18.19.33
-      '@types/node-fetch': 2.6.11
+      '@types/node': 18.19.71
+      '@types/node-fetch': 2.6.12
       abort-controller: 3.0.0
-      agentkeepalive: 4.5.0
+      agentkeepalive: 4.6.0
       form-data-encoder: 1.7.2
       formdata-node: 4.4.1
       node-fetch: 2.7.0(encoding@0.1.13)
