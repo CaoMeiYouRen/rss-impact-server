@@ -263,8 +263,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0(eslint@8.57.1)(typescript@5.7.3)
       '@nestjs/cli':
-        specifier: ^11.0.0
-        version: 11.0.0(@types/node@22.10.7)(webpack-cli@5.1.4)
+        specifier: ^11.0.1
+        version: 11.0.1(@types/node@22.10.7)(webpack-cli@5.1.4)
       '@nestjs/schematics':
         specifier: ^11.0.0
         version: 11.0.0(chokidar@4.0.3)(typescript@5.7.3)
@@ -1501,8 +1501,8 @@ packages:
       cache-manager: <=5
       rxjs: ^7.0.0
 
-  '@nestjs/cli@11.0.0':
-    resolution: {integrity: sha512-53Hparhbz4nNQNttf6EFfYNeFxSLdshqnvaiWy3MBnZxgAuqtAZP3xsiNHPId5dYtzGCjdK60FN4Vcspx3Y+aw==}
+  '@nestjs/cli@11.0.1':
+    resolution: {integrity: sha512-W1pS3mKBb5L2T0Sk9/bAFTS3XctcaAn9q1veXCIKSaGwGk7pjqEa1AwzX8/Lq10NJgjJno/Lhw1kZrX32VImFA==}
     engines: {node: '>= 20.11'}
     hasBin: true
     peerDependencies:
@@ -10399,7 +10399,7 @@ snapshots:
       cache-manager: 5.7.6
       rxjs: 7.8.1
 
-  '@nestjs/cli@11.0.0(@types/node@22.10.7)(webpack-cli@5.1.4)':
+  '@nestjs/cli@11.0.1(@types/node@22.10.7)(webpack-cli@5.1.4)':
     dependencies:
       '@angular-devkit/core': 19.1.2(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.1.2(chokidar@4.0.3)
