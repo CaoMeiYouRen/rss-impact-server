@@ -249,7 +249,7 @@ SENTRY_DSN=''
 
 > 如果你需要一个免费的 MySQL 数据库，可以考虑使用 [TiDB](https://tidbcloud.com/) 或  [Aiven for MySQL](https://aiven.io/pricing?product=mysql)。
 >
-> TiDB 提供一个 5 GB 的兼容 MySQL 的分布式数据库。详见 [Pricing Details](https://www.pingcap.com/tidb-serverless-pricing-details/)。
+> TiDB 提供一个 5 GB 的兼容 MySQL 的分布式数据库。详见 [Pricing Details](https://www.pingcap.com/tidb-serverless-pricing-details/)。备注：TiDB 不是完全兼容 MySQL 的，请先确保可以正常连接。
 >
 > Aiven 提供一个 5 GB 的免费 MySQL 数据库。详见 [Free plans](https://aiven.io/docs/platform/concepts/free-plan)。备注：在使用 aiven 之前，请先确保可以服务器可以访问 aivencloud.com，以免无法连接。
 
