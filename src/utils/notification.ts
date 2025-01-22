@@ -1,6 +1,7 @@
 import { runPushAllInOne as $runPushAllInOne } from 'push-all-in-one'
 import { mdToCqcode } from './helper'
 import { NotificationConfig } from '@/models/notification-config'
+import { logger } from '@/middlewares/logger.middleware'
 
 /**
  * 从传入变量中读取配置，并选择一个渠道推送
@@ -14,6 +15,7 @@ import { NotificationConfig } from '@/models/notification-config'
  */
 export async function runPushAllInOne(title: string, desp: string, pushConfig: NotificationConfig, proxyUrl?: string) {
     const { isMarkdown, type, config, option } = pushConfig
+    logger.debug('runPushAllInOne: %O', { title, desp, isMarkdown, type, config, option })
     // if (isMarkdown) {
     //     title = `${title.replace(/(\n[\s|\t]*\r*\n)/g, '\n')}\n`
     // }
@@ -29,10 +31,10 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
         }
     }
     if (type === 'Dingtalk') {
-        // 处理 URL 可能会被风控的问题
+        // 处理 URL 可能会被风控的问题，例如 kisssub.org
         const linkRegex = /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi
         const links = desp.match(linkRegex)
-        if (links?.length) {
+        if (links?.length && /kisssub\.org/.test(desp)) {
             links.forEach((link) => {
                 desp = desp.replace(link, link.replaceAll('.', '\u200d.\u200d')) // 在点号上添加零宽字符
             })
