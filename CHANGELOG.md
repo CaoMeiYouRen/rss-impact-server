@@ -1,5 +1,12 @@
 # rss-impact-server
 
+# [1.15.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.4...v1.15.0) (2025-01-25)
+
+
+### ✨ 新功能
+
+* **notification:** 添加调试日志以增强推送功能的可追踪性 ([724e7f0](https://github.com/CaoMeiYouRen/rss-impact-server/commit/724e7f0))
+
 ## [1.14.4](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.3...v1.14.4) (2025-01-11)
 
 
