@@ -138,7 +138,7 @@
     "@types/express-session": "^1.18.1",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.14",
-    "@types/jsonwebtoken": "^9.0.7",
+    "@types/jsonwebtoken": "^9.0.8",
     "@types/lodash": "^4.17.14",
     "@types/md5": "^2.3.5",
     "@types/module-alias": "^2.0.4",
