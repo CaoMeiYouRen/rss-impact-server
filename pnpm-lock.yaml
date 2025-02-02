@@ -61,8 +61,8 @@ importers:
         specifier: ^11.0.0
         version: 11.0.0(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)(reflect-metadata@0.2.2)(rxjs@7.8.1)(typeorm@0.3.20(ioredis@5.4.2)(mysql2@3.12.0)(pg@8.13.1)(sqlite3@5.1.7)(ts-node@10.9.2(@types/node@22.12.0)(typescript@5.7.3)))
       '@sentry/nestjs':
-        specifier: ^8.52.1
-        version: 8.52.1(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)
+        specifier: ^8.53.0
+        version: 8.53.0(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)
       '@sentry/profiling-node':
         specifier: 8.48.0
         version: 8.48.0
@@ -2248,12 +2248,12 @@ packages:
     resolution: {integrity: sha512-VGwYgTfLpvJ5LRO5A+qWo1gpo6SfqaGXL9TOzVgBucAdpzbrYHpZ87sEarDVq/4275uk1b0S293/mfsskFczyw==}
     engines: {node: '>=14.18'}
 
-  '@sentry/core@8.52.1':
-    resolution: {integrity: sha512-FG0P9I03xk4jBI4O7NBkw8uqLGH9/RWOSFoRH3eYvUTyBLhkk9IaCFbAAGBNZhojky8T7gqYwnuRbFNlrAiuSA==}
+  '@sentry/core@8.53.0':
+    resolution: {integrity: sha512-u6p5JeGSgvcoDqVcPve2gcJuhks8EQXPELzeYKuW3rHpsUfkLG6X5RVtk32dKOqqL2qzvMelnknBN7tyIf5PiA==}
     engines: {node: '>=14.18'}
 
-  '@sentry/nestjs@8.52.1':
-    resolution: {integrity: sha512-qFagjruva5pmhhPjupse+hMMSBqS+rEMsbeAAbEA12eBVAcEZZUicVatbd0Nm7cayLJZKE0BFDFTWHjuEzS69A==}
+  '@sentry/nestjs@8.53.0':
+    resolution: {integrity: sha512-aiQH7FRWE2DFT9lkJhr9EuutEG8otB9V9y5rX+7SAoCjo0oSuGtN8SV+Nvycl0wJKOZk1AeAnMJHwJ1l6rkeSA==}
     engines: {node: '>=16'}
     peerDependencies:
       '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
@@ -2263,8 +2263,8 @@ packages:
     resolution: {integrity: sha512-pnprAuUOc8cxnJdZA09hutHXNsbQZoDgzf3zPyXMNx0ewB/RviFMOgfe7ViX1mIB/oVrcFenXBgO5uvTd7JwPg==}
     engines: {node: '>=14.18'}
 
-  '@sentry/node@8.52.1':
-    resolution: {integrity: sha512-we9fIfn5Q0c6U4VPrXhNtJ7uz5HkTlnOQV7hP/GG09tmKa6hrL20tkhCosObl3XZ/qlIbD/GQMv4WmhOgNzgkQ==}
+  '@sentry/node@8.53.0':
+    resolution: {integrity: sha512-1Zl/56xz6xy+ybo+VodcomT8/GenD2A57DmZ6m2otIFtcmGLEFr48M21h5bcRuj7o730MV2pfYVHRgiMQEjLMw==}
     engines: {node: '>=14.18'}
 
   '@sentry/opentelemetry@8.48.0':
@@ -2277,8 +2277,8 @@ packages:
       '@opentelemetry/sdk-trace-base': ^1.29.0
       '@opentelemetry/semantic-conventions': ^1.28.0
 
-  '@sentry/opentelemetry@8.52.1':
-    resolution: {integrity: sha512-xaGm/KlfFi3yxK6PP+IRLnvfnd8Hp3yvJIdp3Mvc2aHW1Dh7zz+VTNNmWFZQmAbWrNqIoqZG2s1tZOeJwMHPpg==}
+  '@sentry/opentelemetry@8.53.0':
+    resolution: {integrity: sha512-IDpfbQCFDUqXdspTOUujcfvvslmtMJ4cUoXP+NHgkjbeNvcwoPvAT4PNUmzisPYQT4DXb8ERxJOzy2VpG6w8hQ==}
     engines: {node: '>=14.18'}
     peerDependencies:
       '@opentelemetry/api': ^1.9.0
@@ -3569,8 +3569,8 @@ packages:
   cjs-module-lexer@1.3.1:
     resolution: {integrity: sha512-a3KdPAANPbNE4ZUv9h6LckSl9zLsYOP4MBmhIPkRaeyybt+r4UghLvq+xw/YwUcC1gqylCkL4rdVs3Lwupjm4Q==}
 
-  cjs-module-lexer@1.4.2:
-    resolution: {integrity: sha512-7gdnIlr/WqvlQaX6yMvhHbiEVZ07qCV22rb/brgyFGKgo76ckIsrtDp4w2NIOitmKDNgiUm+pfVSE4VMwnkXwQ==}
+  cjs-module-lexer@1.4.3:
+    resolution: {integrity: sha512-9z8TZaGM1pfswYeXrUpzPrkx8UnWYdhJclsiYMm6x/w5+nN+8Tf/LnAgfLGQCm59qAOxU8WwHEq2vNwF6i4j+Q==}
 
   class-transformer@0.5.1:
     resolution: {integrity: sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw==}
@@ -11349,14 +11349,14 @@ snapshots:
 
   '@sentry/core@8.48.0': {}
 
-  '@sentry/core@8.52.1': {}
+  '@sentry/core@8.53.0': {}
 
-  '@sentry/nestjs@8.52.1(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)':
+  '@sentry/nestjs@8.53.0(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.15)':
     dependencies:
       '@nestjs/common': 10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/core': 10.4.15(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.15)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@sentry/core': 8.52.1
-      '@sentry/node': 8.52.1
+      '@sentry/core': 8.53.0
+      '@sentry/node': 8.53.0
     transitivePeerDependencies:
       - supports-color
 
@@ -11400,7 +11400,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@sentry/node@8.52.1':
+  '@sentry/node@8.53.0':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 1.30.1(@opentelemetry/api@1.9.0)
@@ -11434,8 +11434,8 @@ snapshots:
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.28.0
       '@prisma/instrumentation': 5.22.0
-      '@sentry/core': 8.52.1
-      '@sentry/opentelemetry': 8.52.1(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)
+      '@sentry/core': 8.53.0
+      '@sentry/opentelemetry': 8.53.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)
       import-in-the-middle: 1.12.0
     transitivePeerDependencies:
       - supports-color
@@ -11449,14 +11449,14 @@ snapshots:
       '@opentelemetry/semantic-conventions': 1.28.0
       '@sentry/core': 8.48.0
 
-  '@sentry/opentelemetry@8.52.1(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)':
+  '@sentry/opentelemetry@8.53.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.56.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.28.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/core': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/instrumentation': 0.56.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.28.0
-      '@sentry/core': 8.52.1
+      '@sentry/core': 8.53.0
 
   '@sentry/profiling-node@8.48.0':
     dependencies:
@@ -13040,7 +13040,7 @@ snapshots:
 
   cjs-module-lexer@1.3.1: {}
 
-  cjs-module-lexer@1.4.2: {}
+  cjs-module-lexer@1.4.3: {}
 
   class-transformer@0.5.1: {}
 
@@ -15144,7 +15144,7 @@ snapshots:
     dependencies:
       acorn: 8.14.0
       acorn-import-attributes: 1.9.5(acorn@8.14.0)
-      cjs-module-lexer: 1.4.2
+      cjs-module-lexer: 1.4.3
       module-details-from-path: 1.0.3
 
   import-local@3.1.0:
