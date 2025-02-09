@@ -197,7 +197,16 @@
         "express",
         "webpack"
       ]
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@sentry/profiling-node",
+      "bcrypt",
+      "core-js",
+      "core-js-pure",
+      "esbuild",
+      "sqlite3"
+    ]
   },
   "config": {
     "commitizen": {
