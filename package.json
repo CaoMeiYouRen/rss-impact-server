@@ -190,7 +190,9 @@
       "path-to-regexp": "^3.3.0",
       "lodash.pick": "^4.4.0",
       "nth-check": "^2.1.1",
-      "cookie": "^0.7.0"
+      "cookie": "^0.7.0",
+      "katex": "^0.16.21",
+      "@sentry/node": "^8.49.0"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
