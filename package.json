@@ -192,7 +192,11 @@
       "nth-check": "^2.1.1",
       "cookie": "^0.7.0",
       "katex": "^0.16.21",
-      "@sentry/node": "^8.49.0"
+      "@sentry/node": "^8.49.0",
+      "esbuild": "^0.25.0",
+      "@octokit/plugin-paginate-rest": "^11.4.1",
+      "@octokit/request": "^9.2.1",
+      "@octokit/request-error": "^5.1.1"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
