@@ -981,7 +981,7 @@ export class TasksService implements OnApplicationBootstrap {
         const proxyUrl = hook.proxyConfig?.url
         const { type, isOnlySummaryEmpty, contentType, isIncludeTitle, apiKey, prompt, timeout, isSplit } = config
         const isSnippet = contentType === 'text'
-        let { minContentLength, maxTokens, temperature, maxContextLength, action, endpoint, model } = config
+        let { minContentLength, maxTokens, temperature, maxContextLength, action, endpoint, model, responseFormat } = config
         endpoint = endpoint || 'https://api.openai.com/v1'
         model = model || 'gpt-3.5-turbo'
         action = action || 'summary'
@@ -989,6 +989,7 @@ export class TasksService implements OnApplicationBootstrap {
         maxContextLength = maxContextLength || 4096
         minContentLength = minContentLength ?? 1024
         temperature = temperature ?? 0
+        responseFormat = responseFormat ?? (action === 'summary' ? 'text' : 'json')
         const aiArticles = articles.filter((article) => {
             if (action === 'summary' && isOnlySummaryEmpty && article.summary) { // 如果已经有 summary 了，则不再生成 AI summary
                 return false
@@ -1110,6 +1111,9 @@ EXAMPLE JSON ERROR OUTPUT:
                                 n: 1,
                                 temperature,
                                 max_tokens: maxTokens,
+                                response_format: {
+                                    type: responseFormat as any,
+                                },
                             }))
                             if (error) {
                                 this.logger.error(error?.message, error?.stack)
@@ -1134,7 +1138,7 @@ EXAMPLE JSON ERROR OUTPUT:
                                 temperature,
                                 max_tokens: maxTokens,
                                 response_format: {
-                                    type: 'json_object',
+                                    type: responseFormat as any,
                                 },
                             }))
                             if (error) {

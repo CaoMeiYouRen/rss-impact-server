@@ -88,6 +88,27 @@ export class AIConfig {
 
     @SetAclCrudField({
         labelWidth: 105,
+        dicData: [
+            {
+                label: '纯文本',
+                value: 'text',
+            },
+            {
+                label: 'JSON',
+                value: 'json_object',
+            },
+            {
+                label: 'JSON Schema',
+                value: 'json_schema',
+            },
+        ],
+    })
+    @ApiProperty({ title: '响应格式', description: 'OpenAI 响应格式。总结时默认为纯文本，分类时默认为JSON', example: 0 })
+    @IsOptional()
+    responseFormat?: string
+
+    @SetAclCrudField({
+        labelWidth: 105,
     })
     @ApiProperty({ title: '最小正文长度', description: '当 RSS 的正文超过这个数字时，才启用 AI 总结。默认值 1024。设置为 0 则不限制。', example: 1024 })
     @IsSafeNaturalNumber()
