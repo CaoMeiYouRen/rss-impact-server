@@ -5277,20 +5277,22 @@
                 "properties": {
                     "type": {
                         "enum": [
-                            "ServerChanTurbo",
-                            "ServerChanV3",
-                            "Dingtalk",
                             "CustomEmail",
-                            "WechatRobot",
-                            "WechatApp",
+                            "Dingtalk",
+                            "Discord",
+                            "Feishu",
+                            "IGot",
+                            "Ntfy",
+                            "OneBot",
                             "PushDeer",
                             "PushPlus",
-                            "IGot",
                             "Qmsg",
-                            "XiZhi",
+                            "ServerChanTurbo",
+                            "ServerChanV3",
                             "Telegram",
-                            "Discord",
-                            "OneBot"
+                            "WechatApp",
+                            "WechatRobot",
+                            "XiZhi"
                         ],
                         "type": "string",
                         "title": "推送类型",
@@ -5602,6 +5604,12 @@
                         "title": "最大 token 数",
                         "description": "OpenAI 最大 token 数。注意一定要比模型的 最大上下文 小，否则可能会总结失败。默认值 2048",
                         "example": 2048
+                    },
+                    "responseFormat": {
+                        "type": "string",
+                        "title": "响应格式",
+                        "description": "OpenAI 响应格式。总结时默认为纯文本，分类时默认为JSON",
+                        "example": 0
                     },
                     "minContentLength": {
                         "type": "number",
