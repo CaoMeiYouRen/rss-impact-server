@@ -115,7 +115,7 @@
     "validator": "^13.12.0",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0",
-    "xregexp": "^5.1.1"
+    "xregexp": "^5.1.2"
   },
   "devDependencies": {
     "@cao-mei-you-ren/avue-types": "^1.1.0",
