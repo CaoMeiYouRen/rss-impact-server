@@ -7,7 +7,7 @@ settings:
 overrides:
   '@types/methods': ^1.1.4
   '@types/superagent': ^8.1.0
-  axios: ^1.7.9
+  axios: ^1.8.1
   compare-func: 2.0.0
   cron: 4.1.0
   formidable: ^3.2.4
@@ -76,8 +76,8 @@ importers:
         specifier: ^4.13.2
         version: 4.13.2
       axios:
-        specifier: ^1.7.9
-        version: 1.7.9(debug@4.4.0)
+        specifier: ^1.8.1
+        version: 1.8.1(debug@4.4.0)
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1(encoding@0.1.13)
@@ -432,7 +432,7 @@ importers:
         version: 5.7.3
       vitepress:
         specifier: ^1.6.3
-        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.13.5)(axios@1.7.9(debug@4.4.0))(postcss@8.5.1)(search-insights@2.17.2)(terser@5.39.0)(typescript@5.7.3)
+        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.13.5)(axios@1.8.1(debug@4.4.0))(postcss@8.5.1)(search-insights@2.17.2)(terser@5.39.0)(typescript@5.7.3)
 
 packages:
 
@@ -2695,7 +2695,7 @@ packages:
     resolution: {integrity: sha512-HYLt8M6mjUfcoUOzyBcX2RjpfapIwHPBmQJtTmXOQW845Y/Osu9VuTJ5kPvnmWJ6IUa05WpblfOwZ+P0G4iZsQ==}
     peerDependencies:
       async-validator: ^4
-      axios: ^1.7.9
+      axios: ^1.8.1
       change-case: ^5
       drauu: ^0.4
       focus-trap: ^7
@@ -3146,8 +3146,8 @@ packages:
   aws4@1.13.0:
     resolution: {integrity: sha512-3AungXC4I8kKsS9PuS4JH2nc+0bVY/mjgrephHTIi8fpEeGsTHBUJeosp0Wc1myYMElmD0B3Oc4XL/HVJ4PV2g==}
 
-  axios@1.7.9:
-    resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
+  axios@1.8.1:
+    resolution: {integrity: sha512-NN+fvwH/kV01dYUQ3PTOZns4LWtWhOFCAhQ/pHb88WQ1hNe5V/dvFwc4VJcDL11LT9xSX0QtsR8sWUuyOuOq7g==}
 
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
@@ -4213,10 +4213,6 @@ packages:
     resolution: {integrity: sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA==}
     engines: {node: '>= 0.4'}
 
-  es-set-tostringtag@2.0.3:
-    resolution: {integrity: sha512-3T8uNMC3OQTHkFUsFq8r/BwAXLHvU/9O9mE0fBc/MY5iq/8H7ncvO947LmYA6ldWw9Uh8Yhf25zu6n7nML5QWQ==}
-    engines: {node: '>= 0.4'}
-
   es-set-tostringtag@2.1.0:
     resolution: {integrity: sha512-j6vWzfrGVfyXxge+O0x5sh6cvxAog0a/4Rdd2K36zCMV5eJ+/+tOAngRO8cODMNWbVRdVlmGZQL2YS3yR8bIUA==}
     engines: {node: '>= 0.4'}
@@ -4679,8 +4675,8 @@ packages:
   focus-trap@7.6.4:
     resolution: {integrity: sha512-xx560wGBk7seZ6y933idtjJQc1l+ck+pI3sKvhKozdBV1dRZoKhkW5xoCaFv9tQiX5RH1xfSxjuNu6g+lmN/gw==}
 
-  follow-redirects@1.15.6:
-    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
+  follow-redirects@1.15.9:
+    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -11934,13 +11930,13 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/integrations@12.5.0(axios@1.7.9(debug@4.4.0))(focus-trap@7.6.4)(typescript@5.7.3)':
+  '@vueuse/integrations@12.5.0(axios@1.8.1(debug@4.4.0))(focus-trap@7.6.4)(typescript@5.7.3)':
     dependencies:
       '@vueuse/core': 12.5.0(typescript@5.7.3)
       '@vueuse/shared': 12.5.0(typescript@5.7.3)
       vue: 3.5.13(typescript@5.7.3)
     optionalDependencies:
-      axios: 1.7.9(debug@4.4.0)
+      axios: 1.8.1(debug@4.4.0)
       focus-trap: 7.6.4
     transitivePeerDependencies:
       - typescript
@@ -12328,7 +12324,7 @@ snapshots:
       define-properties: 1.2.1
       es-abstract: 1.23.3
       es-errors: 1.3.0
-      es-object-atoms: 1.0.0
+      es-object-atoms: 1.1.1
       es-shim-unscopables: 1.0.2
 
   array.prototype.findlastindex@1.2.5:
@@ -12445,10 +12441,10 @@ snapshots:
 
   aws4@1.13.0: {}
 
-  axios@1.7.9(debug@4.4.0):
+  axios@1.8.1(debug@4.4.0):
     dependencies:
-      follow-redirects: 1.15.6(debug@4.4.0)
-      form-data: 4.0.0
+      follow-redirects: 1.15.9(debug@4.4.0)
+      form-data: 4.0.2
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -13556,7 +13552,7 @@ snapshots:
       es-define-property: 1.0.0
       es-errors: 1.3.0
       es-object-atoms: 1.0.0
-      es-set-tostringtag: 2.0.3
+      es-set-tostringtag: 2.1.0
       es-to-primitive: 1.2.1
       function.prototype.name: 1.1.6
       get-intrinsic: 1.2.4
@@ -13613,7 +13609,7 @@ snapshots:
       globalthis: 1.0.4
       has-property-descriptors: 1.0.2
       has-proto: 1.0.3
-      has-symbols: 1.0.3
+      has-symbols: 1.1.0
       internal-slot: 1.0.7
       iterator.prototype: 1.1.2
       safe-array-concat: 1.1.2
@@ -13629,12 +13625,6 @@ snapshots:
   es-object-atoms@1.1.1:
     dependencies:
       es-errors: 1.3.0
-
-  es-set-tostringtag@2.0.3:
-    dependencies:
-      get-intrinsic: 1.2.4
-      has-tostringtag: 1.0.2
-      hasown: 2.0.2
 
   es-set-tostringtag@2.1.0:
     dependencies:
@@ -14308,7 +14298,7 @@ snapshots:
     dependencies:
       tabbable: 6.2.0
 
-  follow-redirects@1.15.6(debug@4.4.0):
+  follow-redirects@1.15.9(debug@4.4.0):
     optionalDependencies:
       debug: 4.4.0
 
@@ -14719,7 +14709,7 @@ snapshots:
 
   has-tostringtag@1.0.2:
     dependencies:
-      has-symbols: 1.0.3
+      has-symbols: 1.1.0
 
   has-unicode@2.0.1: {}
 
@@ -15267,7 +15257,7 @@ snapshots:
     dependencies:
       define-properties: 1.2.1
       get-intrinsic: 1.3.0
-      has-symbols: 1.0.3
+      has-symbols: 1.1.0
       reflect.getprototypeof: 1.0.6
       set-function-name: 2.0.2
 
@@ -16841,7 +16831,7 @@ snapshots:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-object-atoms: 1.0.0
+      es-object-atoms: 1.1.1
 
   object.fromentries@2.0.8:
     dependencies:
@@ -16860,7 +16850,7 @@ snapshots:
     dependencies:
       define-properties: 1.2.1
       es-abstract: 1.23.3
-      es-object-atoms: 1.0.0
+      es-object-atoms: 1.1.1
 
   object.values@1.2.0:
     dependencies:
@@ -16959,7 +16949,7 @@ snapshots:
     dependencies:
       '@types/request': 2.48.12
       '@types/superagent': 8.1.7
-      axios: 1.7.9(debug@4.4.0)
+      axios: 1.8.1(debug@4.4.0)
       combos: 0.2.0
       fs-extra: 9.1.0
       js-yaml: 4.1.0
@@ -17444,7 +17434,7 @@ snapshots:
   push-all-in-one@4.3.0:
     dependencies:
       '@colors/colors': 1.6.0
-      axios: 1.7.9(debug@4.4.0)
+      axios: 1.8.1(debug@4.4.0)
       debug: 4.4.0
       https-proxy-agent: 7.0.6
       nodemailer: 6.9.13
@@ -18026,7 +18016,7 @@ snapshots:
     dependencies:
       call-bind: 1.0.7
       es-errors: 1.3.0
-      get-intrinsic: 1.2.4
+      get-intrinsic: 1.3.0
       object-inspect: 1.13.1
 
   signal-exit@3.0.7: {}
@@ -18241,10 +18231,10 @@ snapshots:
       define-properties: 1.2.1
       es-abstract: 1.23.3
       es-errors: 1.3.0
-      es-object-atoms: 1.0.0
+      es-object-atoms: 1.1.1
       get-intrinsic: 1.3.0
-      gopd: 1.0.1
-      has-symbols: 1.0.3
+      gopd: 1.2.0
+      has-symbols: 1.1.0
       internal-slot: 1.0.7
       regexp.prototype.flags: 1.5.2
       set-function-name: 2.0.2
@@ -18317,7 +18307,7 @@ snapshots:
       cookiejar: 2.1.4
       debug: 4.4.0
       fast-safe-stringify: 2.1.1
-      form-data: 4.0.0
+      form-data: 4.0.2
       formidable: 3.5.1
       methods: 1.1.2
       mime: 2.6.0
@@ -18933,7 +18923,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.39.0
 
-  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.13.5)(axios@1.7.9(debug@4.4.0))(postcss@8.5.1)(search-insights@2.17.2)(terser@5.39.0)(typescript@5.7.3):
+  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.13.5)(axios@1.8.1(debug@4.4.0))(postcss@8.5.1)(search-insights@2.17.2)(terser@5.39.0)(typescript@5.7.3):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.20.0)(search-insights@2.17.2)
@@ -18946,7 +18936,7 @@ snapshots:
       '@vue/devtools-api': 7.7.0
       '@vue/shared': 3.5.13
       '@vueuse/core': 12.5.0(typescript@5.7.3)
-      '@vueuse/integrations': 12.5.0(axios@1.7.9(debug@4.4.0))(focus-trap@7.6.4)(typescript@5.7.3)
+      '@vueuse/integrations': 12.5.0(axios@1.8.1(debug@4.4.0))(focus-trap@7.6.4)(typescript@5.7.3)
       focus-trap: 7.6.4
       mark.js: 8.11.1
       minisearch: 7.1.1
