@@ -1,5 +1,13 @@
 # rss-impact-server
 
+## [1.15.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.15.0...v1.15.1) (2025-03-01)
+
+
+### 🐛 Bug 修复
+
+* 更新 push-all-in-one 依赖至 4.3.0，并优化推送类型映射 ([faf36ca](https://github.com/CaoMeiYouRen/rss-impact-server/commit/faf36ca))
+* 添加响应格式配置到 AIConfig 和任务服务 ([89fa9c1](https://github.com/CaoMeiYouRen/rss-impact-server/commit/89fa9c1))
+
 # [1.15.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.14.4...v1.15.0) (2025-01-25)
 
 
