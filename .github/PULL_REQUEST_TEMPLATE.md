@@ -26,3 +26,7 @@ Close #
 如有任何其他需要说明的地方,请在此补充
 
 If there is any other information that needs to be explained, please supplement it here.
+
+---
+> 如果你的 pull request 长时间未被处理，请在评论区 @CaoMeiYouRen 。
+> If your pull request has not been processed for a long time, please leave a comment at @CaoMeiYouRen.
