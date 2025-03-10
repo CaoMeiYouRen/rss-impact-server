@@ -65,7 +65,7 @@
     "class-validator": "^0.14.1",
     "compare-func": "2.0.0",
     "connect-history-api-fallback": "^2.0.0",
-    "connect-redis": "^8.0.1",
+    "connect-redis": "^8.0.2",
     "connect-sqlite3": "^0.9.13",
     "cron": "4.1.0",
     "dayjs": "^1.11.13",
