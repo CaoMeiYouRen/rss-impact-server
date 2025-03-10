@@ -103,8 +103,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       connect-redis:
-        specifier: ^8.0.1
-        version: 8.0.1(express-session@1.18.1)
+        specifier: ^8.0.2
+        version: 8.0.2(express-session@1.18.1)
       connect-sqlite3:
         specifier: ^0.9.13
         version: 0.9.15
@@ -3646,8 +3646,8 @@ packages:
     resolution: {integrity: sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA==}
     engines: {node: '>=0.8'}
 
-  connect-redis@8.0.1:
-    resolution: {integrity: sha512-7iOI214/r15ahvu0rqKCHhsgpMdOgyLwqlw/icSTnnAR75xFvMyfxAE+je4M87rZLjDlKzKcTc48XxQXYFsMgA==}
+  connect-redis@8.0.2:
+    resolution: {integrity: sha512-8A6rNOkwLQf25kkERnutNRppE3WUJ7B2bTl/DKf0jW9PkhzJQ3+VJYDHsN+NIuTtQrWsQr5n5UX7bm9l8rkTtQ==}
     engines: {node: '>=18'}
     peerDependencies:
       express-session: '>=1'
@@ -13023,7 +13023,7 @@ snapshots:
 
   connect-history-api-fallback@2.0.0: {}
 
-  connect-redis@8.0.1(express-session@1.18.1):
+  connect-redis@8.0.2(express-session@1.18.1):
     dependencies:
       express-session: 1.18.1
 
