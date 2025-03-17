@@ -142,8 +142,8 @@ importers:
         specifier: ^1.1.4
         version: 1.1.4
       helmet:
-        specifier: ^8.0.0
-        version: 8.0.0
+        specifier: ^8.1.0
+        version: 8.1.0
       https-proxy-agent:
         specifier: ^7.0.6
         version: 7.0.6
@@ -5052,8 +5052,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  helmet@8.0.0:
-    resolution: {integrity: sha512-VyusHLEIIO5mjQPUI1wpOAEu+wl6Q0998jzTxqUYGE45xCIcAxy3MsbEK/yyJUJ3ADeMoB6MornPH6GMWAf+Pw==}
+  helmet@8.1.0:
+    resolution: {integrity: sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg==}
     engines: {node: '>=18.0.0'}
 
   hexoid@1.0.0:
@@ -14761,7 +14761,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  helmet@8.0.0: {}
+  helmet@8.1.0: {}
 
   hexoid@1.0.0: {}
 
