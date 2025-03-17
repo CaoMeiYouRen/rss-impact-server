@@ -78,7 +78,7 @@
     "fs-extra": "^11.3.0",
     "go-cqwebsocket": "^6.3.2",
     "gpt-3-encoder": "^1.1.4",
-    "helmet": "^8.0.0",
+    "helmet": "^8.1.0",
     "https-proxy-agent": "^7.0.6",
     "ioredis": "^5.6.0",
     "jelban.js": "^1.0.0",
