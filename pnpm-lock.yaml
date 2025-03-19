@@ -76,8 +76,8 @@ importers:
         specifier: 8.48.0
         version: 8.48.0
       art-template:
-        specifier: ^4.13.4
-        version: 4.13.4
+        specifier: 4.13.2
+        version: 4.13.2
       axios:
         specifier: ^1.8.3
         version: 1.8.3(debug@4.4.0)
@@ -3131,8 +3131,8 @@ packages:
     resolution: {integrity: sha512-3CYzex9M9FGQjCGMGyi6/31c8GJbgb0qGyrx5HWxPd0aCwh4cB2YjMb2Xf9UuoogrMrlO9cTqnB5rI5GHZTcUA==}
     engines: {node: '>=0.10.0'}
 
-  art-template@4.13.4:
-    resolution: {integrity: sha512-SoCdwWrj6VNoErheIKnDSzBEO0SsZJK9p34nliZUuChkfiReu8x4hLP/jBTLG6yEr+tWxdANufophDYsau52Fg==}
+  art-template@4.13.2:
+    resolution: {integrity: sha512-04ws5k+ndA5DghfheY4c8F1304XJKeTcaXqZCLpxFkNMSkaR3ChW1pX2i9d3sEEOZuLy7de8lFriRaik1jEeOQ==}
     engines: {node: '>= 1.0.0'}
 
   asap@2.0.6:
@@ -12424,7 +12424,7 @@ snapshots:
 
   arrify@1.0.1: {}
 
-  art-template@4.13.4:
+  art-template@4.13.2:
     dependencies:
       acorn: 5.7.4
       escodegen: 1.14.3
