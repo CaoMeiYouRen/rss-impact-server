@@ -124,8 +124,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       express-openid-connect:
-        specifier: ^2.17.1
-        version: 2.17.1(express@4.21.2)
+        specifier: ^2.18.0
+        version: 2.18.0(express@4.21.2)
       express-rate-limit:
         specifier: ^7.5.0
         version: 7.5.0(express@4.21.2)
@@ -160,8 +160,8 @@ importers:
         specifier: ^9.0.2
         version: 9.0.2
       jwks-rsa:
-        specifier: ^3.1.0
-        version: 3.1.0
+        specifier: ^3.2.0
+        version: 3.2.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -187,8 +187,8 @@ importers:
         specifier: ^1.10.2
         version: 1.10.2(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(winston@3.17.0)
       openai:
-        specifier: ^4.87.3
-        version: 4.87.3(encoding@0.1.13)
+        specifier: ^4.87.4
+        version: 4.87.4(encoding@0.1.13)
       opml:
         specifier: ^0.5.7
         version: 0.5.7
@@ -2337,6 +2337,9 @@ packages:
   '@types/express-serve-static-core@4.19.1':
     resolution: {integrity: sha512-ej0phymbFLoCB26dbbq5PGScsf2JAJ4IJHjG10LalgUV36XKTmA4GdA+PVllKvRk0sEKt64X8975qFnkSi0hqA==}
 
+  '@types/express-serve-static-core@4.19.6':
+    resolution: {integrity: sha512-N4LZ2xG7DatVqhCZzOGb1Yi5lMbXSZcmdLDe9EzSndPV2HpWYWzRbaerl2n27irrm94EPpprqa8KpskPT085+A==}
+
   '@types/express-serve-static-core@5.0.0':
     resolution: {integrity: sha512-AbXMTZGt40T+KON9/Fdxx0B2WK5hsgxcfXJLr5bFpZ7b4JCex2WyQPTEKdXqfHiY5nKKBScZ7yCoO6Pvgxfvnw==}
 
@@ -2483,6 +2486,9 @@ packages:
 
   '@types/qs@6.9.15':
     resolution: {integrity: sha512-uXHQKES6DQKKCLh441Xv/dwxOq1TVS3JPUMlEqoEglvlhR6Mxnlew/Xq/LRVHpLyk7iK3zODe1qYHIMltO7XGg==}
+
+  '@types/qs@6.9.18':
+    resolution: {integrity: sha512-kK7dgTYDyGqS+e2Q4aK9X3D7q234CIZ1Bv0q/7Z5IwRDoADNU81xXJK/YVyLbLTZCoIwUoDoffFeF+p/eIklAA==}
 
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
@@ -3737,6 +3743,10 @@ packages:
     resolution: {integrity: sha512-6DnInpx7SJ2AK3+CTUE/ZM0vWTUboZCegxhC2xiIydHR9jNuTAASBrfEpHhiGOZw/nX51bHt6YQl8jsGo4y/0w==}
     engines: {node: '>= 0.6'}
 
+  cookie@0.7.2:
+    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
+    engines: {node: '>= 0.6'}
+
   cookiejar@2.1.4:
     resolution: {integrity: sha512-LDx6oHrK+PhzLKJU9j5S7/Y3jM/mUHvD/DeI1WQmJn652iPC5Y4TBzC9l+5OMOXlyTTA+SmVUPm0HQUwpD5Jqw==}
 
@@ -4540,8 +4550,8 @@ packages:
     resolution: {integrity: sha512-2Zks0hf1VLFYI1kbh0I5jP3KHHyCHpkfyHBzsSXRFgl/Bg9mWYfMW8oD+PdMPlEwy5HNsR9JutYy6pMeOh61nw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  express-openid-connect@2.17.1:
-    resolution: {integrity: sha512-5pVK6PNV09x6UN29R9Mer0XF3hwQq2HxiFsjZvLuIQ9ezeTUGbqrefzBOpzciz1S/1WWVaVPDIcj4EBpD8WB3Q==}
+  express-openid-connect@2.18.0:
+    resolution: {integrity: sha512-UynJUKAn29jYtXGnjLqn22YES2GNn5GhT7iEiN3W7EaWMt/8dg39UJM9av4R44rPwEE4JNzIkd/Gg4InIiMQNQ==}
     engines: {node: ^10.19.0 || >=12.0.0 < 13 || >=13.7.0 < 14 || >= 14.2.0}
     peerDependencies:
       express: '>= 4.17.0'
@@ -5844,8 +5854,8 @@ packages:
   jwa@1.4.1:
     resolution: {integrity: sha512-qiLX/xhEEFKUAJ6FiBMbes3w9ATzyk5W7Hvzpa/SLYdxNtng+gcurvrI7TbACjIXlsJyr05/S1oUhZrc63evQA==}
 
-  jwks-rsa@3.1.0:
-    resolution: {integrity: sha512-v7nqlfezb9YfHHzYII3ef2a2j1XnGeSE/bK3WfumaYCqONAIstJbrEGapz4kadScZzEt7zYCN7bucj8C0Mv/Rg==}
+  jwks-rsa@3.2.0:
+    resolution: {integrity: sha512-PwchfHcQK/5PSydeKCs1ylNym0w/SSv8a62DgHJ//7x2ZclCoinlsjAfDxAAbpoTPybOum/Jgy+vkvMmKz89Ww==}
     engines: {node: '>=14'}
 
   jws@3.2.2:
@@ -6841,8 +6851,8 @@ packages:
   ofetch@1.3.4:
     resolution: {integrity: sha512-KLIET85ik3vhEfS+3fDlc/BAZiAp+43QEC/yCo5zkNoY2YaKvNkOaFr/6wCFgFH1kuYQM5pMNi0Tg8koiIemtw==}
 
-  oidc-token-hash@5.0.3:
-    resolution: {integrity: sha512-IF4PcGgzAr6XXSff26Sk/+P4KZFJVuHAJZj3wgO3vX2bMdNVp/QXTP3P7CEm9V1IdG8lDLY3HhiqpsE/nOwpPw==}
+  oidc-token-hash@5.1.0:
+    resolution: {integrity: sha512-y0W+X7Ppo7oZX6eovsRkuzcSM40Bicg2JEJkDJ4irIt1wsYAP5MLSNv+QAogO8xivMffw/9OvV3um1pxXgt1uA==}
     engines: {node: ^10.13.0 || >=12.0.0}
 
   on-finished@2.3.0:
@@ -6882,8 +6892,8 @@ packages:
   oniguruma-to-es@2.3.0:
     resolution: {integrity: sha512-bwALDxriqfKGfUufKGGepCzu9x7nJQuoRoAFp4AnwehhC2crqrDIAP/uN2qdlsAvSMpeRC3+Yzhqc7hLmle5+g==}
 
-  openai@4.87.3:
-    resolution: {integrity: sha512-d2D54fzMuBYTxMW8wcNmhT1rYKcTfMJ8t+4KjH2KtvYenygITiGBgHoIrzHwnDQWW+C5oCA+ikIR2jgPCFqcKQ==}
+  openai@4.87.4:
+    resolution: {integrity: sha512-lsfM20jZY4A0lNexfoUAkfmrEXxaTXvv8OKYicpeAJUNHObpRgkvC7pxPgMnB6gc9ID8OCwzzhEhBpNy69UR7w==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -7338,6 +7348,9 @@ packages:
 
   pump@3.0.0:
     resolution: {integrity: sha512-LwZy+p3SFs1Pytd/jYct4wpv49HiYCqd9Rlc5ZVdk0V+8Yzv6jR5Blk3TRmPL1ft69TxP0IMZGJ+WPFU2BFhww==}
+
+  pump@3.0.2:
+    resolution: {integrity: sha512-tUPXtzlGM8FE3P0ZL6DVs/3P58k9nk8/jZeQCurTJylQA8qFYzHFfhBJkuqyE0FifOsQ0uKWekiZ5g8wtr28cw==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -11471,6 +11484,13 @@ snapshots:
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
 
+  '@types/express-serve-static-core@4.19.6':
+    dependencies:
+      '@types/node': 22.13.10
+      '@types/qs': 6.9.18
+      '@types/range-parser': 1.2.7
+      '@types/send': 0.17.4
+
   '@types/express-serve-static-core@5.0.0':
     dependencies:
       '@types/node': 22.13.10
@@ -11485,8 +11505,8 @@ snapshots:
   '@types/express@4.17.21':
     dependencies:
       '@types/body-parser': 1.19.5
-      '@types/express-serve-static-core': 4.19.1
-      '@types/qs': 6.9.15
+      '@types/express-serve-static-core': 4.19.6
+      '@types/qs': 6.9.18
       '@types/serve-static': 1.15.7
 
   '@types/express@5.0.0':
@@ -11653,6 +11673,8 @@ snapshots:
       pg-types: 2.2.0
 
   '@types/qs@6.9.15': {}
+
+  '@types/qs@6.9.18': {}
 
   '@types/range-parser@1.2.7': {}
 
@@ -13135,6 +13157,8 @@ snapshots:
 
   cookie@0.7.1: {}
 
+  cookie@0.7.2: {}
+
   cookiejar@2.1.4: {}
 
   copy-anything@3.0.5:
@@ -14118,11 +14142,11 @@ snapshots:
       jest-message-util: 29.7.0
       jest-util: 29.7.0
 
-  express-openid-connect@2.17.1(express@4.21.2):
+  express-openid-connect@2.18.0(express@4.21.2):
     dependencies:
       base64url: 3.0.1
       clone: 2.1.2
-      cookie: 0.7.1
+      cookie: 0.7.2
       debug: 4.4.0
       express: 4.21.2
       futoin-hkdf: 1.5.3
@@ -14159,7 +14183,7 @@ snapshots:
       body-parser: 1.20.3
       content-disposition: 0.5.4
       content-type: 1.0.5
-      cookie: 0.7.1
+      cookie: 0.7.2
       cookie-signature: 1.0.6
       debug: 2.6.9
       depd: 2.0.0
@@ -14539,7 +14563,7 @@ snapshots:
 
   get-stream@5.2.0:
     dependencies:
-      pump: 3.0.0
+      pump: 3.0.2
 
   get-stream@6.0.1: {}
 
@@ -15781,7 +15805,7 @@ snapshots:
       ecdsa-sig-formatter: 1.0.11
       safe-buffer: 5.2.1
 
-  jwks-rsa@3.1.0:
+  jwks-rsa@3.2.0:
     dependencies:
       '@types/express': 4.17.21
       '@types/jsonwebtoken': 9.0.9
@@ -16914,7 +16938,7 @@ snapshots:
       node-fetch-native: 1.6.4
       ufo: 1.5.3
 
-  oidc-token-hash@5.0.3: {}
+  oidc-token-hash@5.1.0: {}
 
   on-finished@2.3.0:
     dependencies:
@@ -16954,7 +16978,7 @@ snapshots:
       regex: 5.1.1
       regex-recursion: 5.1.1
 
-  openai@4.87.3(encoding@0.1.13):
+  openai@4.87.4(encoding@0.1.13):
     dependencies:
       '@types/node': 18.19.80
       '@types/node-fetch': 2.6.12
@@ -17003,7 +17027,7 @@ snapshots:
       lru-cache: 6.0.0
       make-error: 1.3.6
       object-hash: 2.2.0
-      oidc-token-hash: 5.0.3
+      oidc-token-hash: 5.1.0
 
   opml@0.5.7:
     dependencies:
@@ -17450,6 +17474,11 @@ snapshots:
   psl@1.9.0: {}
 
   pump@3.0.0:
+    dependencies:
+      end-of-stream: 1.4.4
+      once: 1.4.0
+
+  pump@3.0.2:
     dependencies:
       end-of-stream: 1.4.4
       once: 1.4.0
