@@ -171,7 +171,7 @@
     "octokit": "^4.1.2",
     "semantic-release": "21.0.1",
     "supertest": "^7.1.0",
-    "ts-jest": "^29.2.6",
+    "ts-jest": "^29.3.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.19.3",
