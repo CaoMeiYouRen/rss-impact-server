@@ -187,8 +187,8 @@ importers:
         specifier: ^1.10.2
         version: 1.10.2(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(winston@3.17.0)
       openai:
-        specifier: ^4.89.0
-        version: 4.89.0(encoding@0.1.13)
+        specifier: ^4.89.1
+        version: 4.89.1(encoding@0.1.13)
       opml:
         specifier: ^0.5.7
         version: 0.5.7
@@ -6900,8 +6900,8 @@ packages:
   oniguruma-to-es@2.3.0:
     resolution: {integrity: sha512-bwALDxriqfKGfUufKGGepCzu9x7nJQuoRoAFp4AnwehhC2crqrDIAP/uN2qdlsAvSMpeRC3+Yzhqc7hLmle5+g==}
 
-  openai@4.89.0:
-    resolution: {integrity: sha512-XNI0q2l8/Os6jmojxaID5EhyQjxZgzR2gWcpEjYWK5hGKwE7AcifxEY7UNwFDDHJQXqeiosQ0CJwQN+rvnwdjA==}
+  openai@4.89.1:
+    resolution: {integrity: sha512-k6t7WfnodIctPo40/9sy7Ww4VypnfkKi/urO2VQx4trCIwgzeroO1jkaCL2f5MyTS1H3HT9X+M2qLsc7NSXwTw==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -17013,7 +17013,7 @@ snapshots:
       regex: 5.1.1
       regex-recursion: 5.1.1
 
-  openai@4.89.0(encoding@0.1.13):
+  openai@4.89.1(encoding@0.1.13):
     dependencies:
       '@types/node': 18.19.83
       '@types/node-fetch': 2.6.12
