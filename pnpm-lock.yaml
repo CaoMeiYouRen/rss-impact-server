@@ -187,8 +187,8 @@ importers:
         specifier: ^1.10.2
         version: 1.10.2(@nestjs/common@10.4.15(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(winston@3.17.0)
       openai:
-        specifier: ^4.89.1
-        version: 4.89.1(encoding@0.1.13)
+        specifier: ^4.90.0
+        version: 4.90.0(encoding@0.1.13)
       opml:
         specifier: ^0.5.7
         version: 0.5.7
@@ -2451,8 +2451,8 @@ packages:
   '@types/node-fetch@2.6.12':
     resolution: {integrity: sha512-8nneRWKCg3rMtF69nLQJnOYUcbafYeFSjqkw3jCRLsqkWFlHaoQrr5mXmofFGOx3DKn7UfmBMyov8ySvLRVldA==}
 
-  '@types/node@18.19.83':
-    resolution: {integrity: sha512-D69JeR5SfFS5H6FLbUaS0vE4r1dGhmMBbG4Ed6BNS4wkDK8GZjsdCShT5LCN59vOHEUHnFCY9J4aclXlIphMkA==}
+  '@types/node@18.19.84':
+    resolution: {integrity: sha512-ACYy2HGcZPHxEeWTqowTF7dhXN+JU1o7Gr4b41klnn6pj2LD6rsiGqSZojMdk1Jh2ys3m76ap+ae1vvE4+5+vg==}
 
   '@types/node@22.13.13':
     resolution: {integrity: sha512-ClsL5nMwKaBRwPcCvH8E7+nU4GxHVx1axNvMZTFHMEfNI7oahimt26P5zjVCRrjiIWj6YFXfE1v3dEp94wLcGQ==}
@@ -6900,8 +6900,8 @@ packages:
   oniguruma-to-es@2.3.0:
     resolution: {integrity: sha512-bwALDxriqfKGfUufKGGepCzu9x7nJQuoRoAFp4AnwehhC2crqrDIAP/uN2qdlsAvSMpeRC3+Yzhqc7hLmle5+g==}
 
-  openai@4.89.1:
-    resolution: {integrity: sha512-k6t7WfnodIctPo40/9sy7Ww4VypnfkKi/urO2VQx4trCIwgzeroO1jkaCL2f5MyTS1H3HT9X+M2qLsc7NSXwTw==}
+  openai@4.90.0:
+    resolution: {integrity: sha512-YCuHMMycqtCg1B8G9ezkOF0j8UnBWD3Al/zYaelpuXwU1yhCEv+Y4n9G20MnyGy6cH4GsFwOMrgstQ+bgG1PtA==}
     hasBin: true
     peerDependencies:
       ws: ^8.18.0
@@ -11648,7 +11648,7 @@ snapshots:
       '@types/node': 22.13.13
       form-data: 4.0.2
 
-  '@types/node@18.19.83':
+  '@types/node@18.19.84':
     dependencies:
       undici-types: 5.26.5
 
@@ -17013,9 +17013,9 @@ snapshots:
       regex: 5.1.1
       regex-recursion: 5.1.1
 
-  openai@4.89.1(encoding@0.1.13):
+  openai@4.90.0(encoding@0.1.13):
     dependencies:
-      '@types/node': 18.19.83
+      '@types/node': 18.19.84
       '@types/node-fetch': 2.6.12
       abort-controller: 3.0.0
       agentkeepalive: 4.6.0
