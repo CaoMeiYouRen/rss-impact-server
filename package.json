@@ -199,7 +199,8 @@
       "@octokit/request-error": "^5.1.1",
       "@babel/runtime-corejs2": "^7.26.10",
       "@babel/helpers": "^7.26.10",
-      "@babel/runtime-corejs3": "^7.26.10"
+      "@babel/runtime-corejs3": "^7.26.10",
+      "tar-fs": "^2.1.2"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
