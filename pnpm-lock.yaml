@@ -26,7 +26,7 @@ overrides:
   '@babel/helpers': ^7.26.10
   '@babel/runtime-corejs3': ^7.26.10
   tar-fs: ^2.1.2
-  vite: ^5.4.15
+  vite: ^5.4.17
   '@nestjs/common': ^11.0.11
 
 importers:
@@ -2021,51 +2021,61 @@ packages:
     resolution: {integrity: sha512-0O8ViX+QcBd3ZmGlcFTnYXZKGbFu09EhgD27tgTdGnkcYXLat4KIsBBQeKLR2xZDCXdIBAlWLkiXE1+rJpCxFw==}
     cpu: [arm]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm-musleabihf@4.31.0':
     resolution: {integrity: sha512-w5IzG0wTVv7B0/SwDnMYmbr2uERQp999q8FMkKG1I+j8hpPX2BYFjWe69xbhbP6J9h2gId/7ogesl9hwblFwwg==}
     cpu: [arm]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-arm64-gnu@4.31.0':
     resolution: {integrity: sha512-JyFFshbN5xwy6fulZ8B/8qOqENRmDdEkcIMF0Zz+RsfamEW+Zabl5jAb0IozP/8UKnJ7g2FtZZPEUIAlUSX8cA==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-arm64-musl@4.31.0':
     resolution: {integrity: sha512-kpQXQ0UPFeMPmPYksiBL9WS/BDiQEjRGMfklVIsA0Sng347H8W2iexch+IEwaR7OVSKtr2ZFxggt11zVIlZ25g==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-linux-loongarch64-gnu@4.31.0':
     resolution: {integrity: sha512-pMlxLjt60iQTzt9iBb3jZphFIl55a70wexvo8p+vVFK+7ifTRookdoXX3bOsRdmfD+OKnMozKO6XM4zR0sHRrQ==}
     cpu: [loong64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-powerpc64le-gnu@4.31.0':
     resolution: {integrity: sha512-D7TXT7I/uKEuWiRkEFbed1UUYZwcJDU4vZQdPTcepK7ecPhzKOYk4Er2YR4uHKme4qDeIh6N3XrLfpuM7vzRWQ==}
     cpu: [ppc64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-riscv64-gnu@4.31.0':
     resolution: {integrity: sha512-wal2Tc8O5lMBtoePLBYRKj2CImUCJ4UNGJlLwspx7QApYny7K1cUYlzQ/4IGQBLmm+y0RS7dwc3TDO/pmcneTw==}
     cpu: [riscv64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-s390x-gnu@4.31.0':
     resolution: {integrity: sha512-O1o5EUI0+RRMkK9wiTVpk2tyzXdXefHtRTIjBbmFREmNMy7pFeYXCFGbhKFwISA3UOExlo5GGUuuj3oMKdK6JQ==}
     cpu: [s390x]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-gnu@4.31.0':
     resolution: {integrity: sha512-zSoHl356vKnNxwOWnLd60ixHNPRBglxpv2g7q0Cd3Pmr561gf0HiAcUBRL3S1vPqRC17Zo2CX/9cPkqTIiai1g==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@rollup/rollup-linux-x64-musl@4.31.0':
     resolution: {integrity: sha512-ypB/HMtcSGhKUQNiFwqgdclWNRrAYDH8iMYH4etw/ZlGwiTVxBz2tDrGRrPlfZu6QjXwtd+C3Zib5pFqID97ZA==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@rollup/rollup-win32-arm64-msvc@4.31.0':
     resolution: {integrity: sha512-JuhN2xdI/m8Hr+aVO3vspO7OQfUFO6bKLIRTAy0U15vmWjnZDLrEgCZ2s6+scAYaQVpYSh9tZtRijApw9IXyMw==}
@@ -2675,7 +2685,7 @@ packages:
     resolution: {integrity: sha512-cxh314tzaWwOLqVes2gnnCtvBDcM1UMdn+iFR+UjAn411dPT3tOmqrJjbMd7koZpMAmBM/GqeV4n9ge7JSiJJQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
-      vite: ^5.4.15
+      vite: ^5.4.17
       vue: ^3.2.25
 
   '@vue/compiler-core@3.5.13':
@@ -8705,8 +8715,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vite@5.4.16:
-    resolution: {integrity: sha512-Y5gnfp4NemVfgOTDQAunSD4346fal44L9mszGGY/e+qxsRT5y1sMlS/8tiQ8AFAp+MFgYNSINdfEchJiPm41vQ==}
+  vite@5.4.17:
+    resolution: {integrity: sha512-5+VqZryDj4wgCs55o9Lp+p8GE78TLVg0lasCH5xFZ4jacZjtqZa6JUw9/p0WeAojaOfncSM6v77InkFPGnvPvg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -11894,9 +11904,9 @@ snapshots:
 
   '@ungap/structured-clone@1.2.1': {}
 
-  '@vitejs/plugin-vue@5.2.1(vite@5.4.16(@types/node@22.14.0)(terser@5.39.0))(vue@3.5.13(typescript@5.8.3))':
+  '@vitejs/plugin-vue@5.2.1(vite@5.4.17(@types/node@22.14.0)(terser@5.39.0))(vue@3.5.13(typescript@5.8.3))':
     dependencies:
-      vite: 5.4.16(@types/node@22.14.0)(terser@5.39.0)
+      vite: 5.4.17(@types/node@22.14.0)(terser@5.39.0)
       vue: 3.5.13(typescript@5.8.3)
 
   '@vue/compiler-core@3.5.13':
@@ -18956,7 +18966,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
-  vite@5.4.16(@types/node@22.14.0)(terser@5.39.0):
+  vite@5.4.17(@types/node@22.14.0)(terser@5.39.0):
     dependencies:
       esbuild: 0.25.0
       postcss: 8.5.1
@@ -18975,7 +18985,7 @@ snapshots:
       '@shikijs/transformers': 2.1.0
       '@shikijs/types': 2.1.0
       '@types/markdown-it': 14.1.2
-      '@vitejs/plugin-vue': 5.2.1(vite@5.4.16(@types/node@22.14.0)(terser@5.39.0))(vue@3.5.13(typescript@5.8.3))
+      '@vitejs/plugin-vue': 5.2.1(vite@5.4.17(@types/node@22.14.0)(terser@5.39.0))(vue@3.5.13(typescript@5.8.3))
       '@vue/devtools-api': 7.7.0
       '@vue/shared': 3.5.13
       '@vueuse/core': 12.5.0(typescript@5.8.3)
@@ -18984,7 +18994,7 @@ snapshots:
       mark.js: 8.11.1
       minisearch: 7.1.1
       shiki: 2.1.0
-      vite: 5.4.16(@types/node@22.14.0)(terser@5.39.0)
+      vite: 5.4.17(@types/node@22.14.0)(terser@5.39.0)
       vue: 3.5.13(typescript@5.8.3)
     optionalDependencies:
       postcss: 8.5.1
