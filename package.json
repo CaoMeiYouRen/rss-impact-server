@@ -149,7 +149,7 @@
     "@types/parse-torrent": "^5.8.7",
     "@types/passport-local": "^1.0.38",
     "@types/passport-strategy": "^0.2.38",
-    "@types/pg": "^8.11.11",
+    "@types/pg": "^8.11.12",
     "@types/supertest": "^6.0.3",
     "@types/turndown": "^5.0.5",
     "@types/validator": "^13.12.3",
