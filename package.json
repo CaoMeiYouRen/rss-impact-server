@@ -69,7 +69,7 @@
     "connect-sqlite3": "^0.9.13",
     "cron": "4.1.4",
     "dayjs": "^1.11.13",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "entities": "^6.0.0",
     "express-openid-connect": "^2.18.0",
     "express-rate-limit": "^7.5.0",
