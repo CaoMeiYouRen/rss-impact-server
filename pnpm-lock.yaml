@@ -356,8 +356,8 @@ importers:
         specifier: ^0.2.38
         version: 0.2.38
       '@types/pg':
-        specifier: ^8.11.14
-        version: 8.11.14
+        specifier: ^8.15.1
+        version: 8.15.1
       '@types/supertest':
         specifier: ^6.0.3
         version: 6.0.3
@@ -2494,8 +2494,8 @@ packages:
   '@types/pg-pool@2.0.6':
     resolution: {integrity: sha512-TaAUE5rq2VQYxab5Ts7WZhKNmuN78Q6PiFonTDdpbx8a1H0M1vhy3rhiMjl+e2iHmogyMw7jZF4FrE6eJUy5HQ==}
 
-  '@types/pg@8.11.14':
-    resolution: {integrity: sha512-qyD11E5R3u0eJmd1lB0WnWKXJGA7s015nyARWljfz5DcX83TKAIlY+QrmvzQTsbIe+hkiFtkyL2gHC6qwF6Fbg==}
+  '@types/pg@8.15.1':
+    resolution: {integrity: sha512-YKHrkGWBX5+ivzvOQ66I0fdqsQTsvxqM0AGP2i0XrVZ9DP5VA/deEbTf7VuLPGpY7fJB9uGbkZ6KjVhuHcrTkQ==}
 
   '@types/pg@8.6.1':
     resolution: {integrity: sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w==}
@@ -11710,9 +11710,9 @@ snapshots:
 
   '@types/pg-pool@2.0.6':
     dependencies:
-      '@types/pg': 8.11.14
+      '@types/pg': 8.15.1
 
-  '@types/pg@8.11.14':
+  '@types/pg@8.15.1':
     dependencies:
       '@types/node': 22.15.3
       pg-protocol: 1.9.5
