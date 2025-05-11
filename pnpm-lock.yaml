@@ -127,8 +127,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0
       express-openid-connect:
-        specifier: ^2.18.0
-        version: 2.18.0(express@4.21.2)
+        specifier: ^2.18.1
+        version: 2.18.1(express@4.21.2)
       express-rate-limit:
         specifier: ^7.5.0
         version: 7.5.0(express@4.21.2)
@@ -4562,8 +4562,8 @@ packages:
     resolution: {integrity: sha512-2Zks0hf1VLFYI1kbh0I5jP3KHHyCHpkfyHBzsSXRFgl/Bg9mWYfMW8oD+PdMPlEwy5HNsR9JutYy6pMeOh61nw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  express-openid-connect@2.18.0:
-    resolution: {integrity: sha512-UynJUKAn29jYtXGnjLqn22YES2GNn5GhT7iEiN3W7EaWMt/8dg39UJM9av4R44rPwEE4JNzIkd/Gg4InIiMQNQ==}
+  express-openid-connect@2.18.1:
+    resolution: {integrity: sha512-trHqgwXxWF0n/XrDsRzsvQtnBNbU03iCNXbKR/sHwBqXlvCgup341bW7B8t6nr3L/CMoDpK+9gsTnx3qLCqdjQ==}
     engines: {node: ^10.19.0 || >=12.0.0 < 13 || >=13.7.0 < 14 || >= 14.2.0}
     peerDependencies:
       express: '>= 4.17.0'
@@ -5150,6 +5150,9 @@ packages:
 
   http-cache-semantics@4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
+
+  http-cache-semantics@4.2.0:
+    resolution: {integrity: sha512-dTxcvPXqPvXBQpq5dUr6mEMJX4oIEFv6bwom3FDwKRDsuIjjJGANqhBuoAn9c1RQJIdAKav33ED65E2ys+87QQ==}
 
   http-errors@1.8.1:
     resolution: {integrity: sha512-Kpk9Sm7NmI+RHhnj6OIWDI1d6fIoFAtFt9RLaTMRlg/8w49juAStsrBgp0Dp4OdxdVbRIeKhtCUvoi/RuAhO4g==}
@@ -12803,7 +12806,7 @@ snapshots:
     dependencies:
       clone-response: 1.0.3
       get-stream: 5.2.0
-      http-cache-semantics: 4.1.1
+      http-cache-semantics: 4.2.0
       keyv: 4.5.4
       lowercase-keys: 2.0.0
       normalize-url: 6.1.0
@@ -14177,7 +14180,7 @@ snapshots:
       jest-message-util: 29.7.0
       jest-util: 29.7.0
 
-  express-openid-connect@2.18.0(express@4.21.2):
+  express-openid-connect@2.18.1(express@4.21.2):
     dependencies:
       base64url: 3.0.1
       clone: 2.1.2
@@ -14918,7 +14921,10 @@ snapshots:
       domutils: 3.1.0
       entities: 4.5.0
 
-  http-cache-semantics@4.1.1: {}
+  http-cache-semantics@4.1.1:
+    optional: true
+
+  http-cache-semantics@4.2.0: {}
 
   http-errors@1.8.1:
     dependencies:
