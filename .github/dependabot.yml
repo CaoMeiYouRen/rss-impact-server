@@ -41,3 +41,6 @@ updates:
       - dependency-name: art-template
         versions:
           - ">=4.13.3" # 4.13.3 以上版本存在恶意代码，参考 https://github.com/yoimiya-kokomi/Miao-Yunzai/pull/515
+      - dependency-name: bcrypt
+        versions:
+          - ">= 6.0.0" # 6.0.0 以上版本会导致 docker 无法启动
