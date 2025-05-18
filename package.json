@@ -160,7 +160,7 @@
     "conventional-changelog-cmyr-config": "^2.1.2",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog-cmyr": "^1.1.1",
-    "debug": "^4.4.0",
+    "debug": "^4.4.1",
     "eslint": "^8.57.1",
     "eslint-config-cmyr": "^1.1.33",
     "eslint-plugin-import": "^2.31.0",
