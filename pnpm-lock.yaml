@@ -35,7 +35,7 @@ importers:
     dependencies:
       '@cao-mei-you-ren/postlight_parser':
         specifier: ^3.0.1
-        version: 3.0.1(encoding@0.1.13)(moment-timezone@0.5.48)
+        version: 3.0.1(encoding@0.1.13)(moment-timezone@0.6.0)
       '@cao-mei-you-ren/qbittorrent':
         specifier: ^1.1.0
         version: 1.1.0
@@ -175,8 +175,8 @@ importers:
         specifier: ^2.2.3
         version: 2.2.3
       moment-timezone:
-        specifier: ^0.5.48
-        version: 0.5.48
+        specifier: ^0.6.0
+        version: 0.6.0
       morgan:
         specifier: ^1.10.0
         version: 1.10.0
@@ -6553,8 +6553,8 @@ packages:
   moment-parseformat@3.0.0:
     resolution: {integrity: sha512-dVgXe6b6DLnv4CHG7a1zUe5mSXaIZ3c6lSHm/EKeVeQI2/4pwe0VRde8OyoCE1Ro2lKT5P6uT9JElF7KDLV+jw==}
 
-  moment-timezone@0.5.48:
-    resolution: {integrity: sha512-f22b8LV1gbTO2ms2j2z13MuPogNoh5UzxL3nzNAYKGraILnbGc9NEE6dyiiiLv46DGRb8A4kg8UKWLjPthxBHw==}
+  moment-timezone@0.6.0:
+    resolution: {integrity: sha512-ldA5lRNm3iJCWZcBCab4pnNL3HSZYXVb/3TYr75/1WCTWYuTqYUb5f/S384pncYjJ88lbO8Z4uPDvmoluHJc8Q==}
 
   moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
@@ -9557,7 +9557,7 @@ snapshots:
 
   '@cao-mei-you-ren/crypto-hash@3.0.0': {}
 
-  '@cao-mei-you-ren/postlight_parser@3.0.1(encoding@0.1.13)(moment-timezone@0.5.48)':
+  '@cao-mei-you-ren/postlight_parser@3.0.1(encoding@0.1.13)(moment-timezone@0.6.0)':
     dependencies:
       '@babel/runtime-corejs2': 7.26.10
       '@postlight/ci-failed-test-reporter': 1.0.26(encoding@0.1.13)
@@ -9574,7 +9574,7 @@ snapshots:
       wuzzy: 0.1.8
       yargs-parser: 15.0.3
     optionalDependencies:
-      moment-timezone: 0.5.48
+      moment-timezone: 0.6.0
     transitivePeerDependencies:
       - encoding
 
@@ -16719,7 +16719,7 @@ snapshots:
 
   moment-parseformat@3.0.0: {}
 
-  moment-timezone@0.5.48:
+  moment-timezone@0.6.0:
     dependencies:
       moment: 2.30.1
 
