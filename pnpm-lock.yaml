@@ -109,8 +109,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       connect-redis:
-        specifier: ^8.0.3
-        version: 8.0.3(express-session@1.18.1)
+        specifier: ^8.1.0
+        version: 8.1.0(express-session@1.18.1)
       connect-sqlite3:
         specifier: ^0.9.13
         version: 0.9.15
@@ -3686,8 +3686,8 @@ packages:
     resolution: {integrity: sha512-U73+6lQFmfiNPrYbXqr6kZ1i1wiRqXnp2nhMsINseWXO8lDau0LGEffJ8kQi4EjLZympVgRdvqjAgiZ1tgzDDA==}
     engines: {node: '>=0.8'}
 
-  connect-redis@8.0.3:
-    resolution: {integrity: sha512-wLIaRv5csDWZsODD/X1vzfF9YKAYVfjJfzxsR6er0jqikM+i4GuBv06kgB8/O3QJWj5ANhYRoym/j1rL459v7g==}
+  connect-redis@8.1.0:
+    resolution: {integrity: sha512-Km0EYLDlmExF52UCss5gLGTtrukGC57G6WCC2aqEMft5Vr4xNWuM4tL+T97kWrw+vp40SXFteb6Xk/7MxgpwdA==}
     engines: {node: '>=18'}
     peerDependencies:
       express-session: '>=1'
@@ -6576,6 +6576,7 @@ packages:
   multer@1.4.4-lts.1:
     resolution: {integrity: sha512-WeSGziVj6+Z2/MwQo3GvqzgR+9Uc+qt8SwHKh3gvNPiISKfsMfG4SvCOFYlxxgkXt7yIV2i1yczehm0EOKIxIg==}
     engines: {node: '>= 6.0.0'}
+    deprecated: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
 
   mute-stream@0.0.8:
     resolution: {integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==}
@@ -13123,7 +13124,7 @@ snapshots:
 
   connect-history-api-fallback@2.0.0: {}
 
-  connect-redis@8.0.3(express-session@1.18.1):
+  connect-redis@8.1.0(express-session@1.18.1):
     dependencies:
       express-session: 1.18.1
 
