@@ -100,7 +100,7 @@
     "passport-local": "^1.0.0",
     "passport-strategy": "^1.0.0",
     "pg": "^8.16.0",
-    "push-all-in-one": "^4.4.2",
+    "push-all-in-one": "^4.4.3",
     "query-string": "^7.1.3",
     "rate-limit-redis": "^4.2.0",
     "reflect-metadata": "^0.2.1",
