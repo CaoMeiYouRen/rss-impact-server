@@ -1,5 +1,12 @@
 # rss-impact-server
 
+## [1.15.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.15.1...v1.15.2) (2025-05-31)
+
+
+### 🐛 Bug 修复
+
+* **api:** 添加 WxPusher 到支持的消息平台列表 ([6f71718](https://github.com/CaoMeiYouRen/rss-impact-server/commit/6f71718))
+
 ## [1.15.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.15.0...v1.15.1) (2025-03-01)
 
 
