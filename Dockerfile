@@ -1,4 +1,4 @@
-FROM caomeiyouren/alpine-nodejs:latest AS nodejs
+FROM caomeiyouren/alpine-nodejs:alpine3-node20 AS nodejs
 
 FROM caomeiyouren/alpine-nodejs-minimize:latest AS runtime
 
@@ -21,9 +21,8 @@ COPY package.json .npmrc pnpm-lock.yaml /app/
 RUN npm config set registry https://registry.npmjs.org/ && \
     pnpm config set registry https://registry.npmjs.org/ && \
     apk add --no-cache python3 make g++ git && \
-    # 解决 node-gyp 编译问题
-    npm i -g pnpm node-gyp@latest && pnpm i --frozen-lockfile && \
-    node -v && npm -v && pnpm -v && node-gyp -v && python -V
+    node -v && npm -v && pnpm -v && \
+    npm i -g pnpm && pnpm i --frozen-lockfile
 
 COPY . /app
 
