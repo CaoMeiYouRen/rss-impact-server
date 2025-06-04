@@ -20,7 +20,11 @@ COPY package.json .npmrc pnpm-lock.yaml /app/
 
 RUN npm config set registry https://registry.npmjs.org/ && \
     pnpm config set registry https://registry.npmjs.org/ && \
-    npm i -g pnpm node-gyp && pnpm i --frozen-lockfile
+    apk add --no-cache python3 make g++ git && \
+    # 解决 node-gyp 编译问题
+    npm config set python /usr/bin/python3 && \
+    npm i -g pnpm node-gyp@latest && pnpm i --frozen-lockfile && \
+    node -v && npm -v && pnpm -v && node-gyp -v && python -V
 
 COPY . /app
 
