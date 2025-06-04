@@ -20,7 +20,7 @@ COPY package.json .npmrc pnpm-lock.yaml /app/
 
 RUN npm config set registry https://registry.npmjs.org/ && \
     pnpm config set registry https://registry.npmjs.org/ && \
-    npm i -g pnpm && pnpm i --frozen-lockfile
+    npm i -g pnpm node-gyp && pnpm i --frozen-lockfile
 
 COPY . /app
 
