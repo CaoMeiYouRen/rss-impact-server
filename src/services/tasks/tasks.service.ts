@@ -1184,7 +1184,10 @@ EXAMPLE JSON ERROR OUTPUT:
                 this.logger.error(error?.message, error?.stack)
                 return article
             }
-        }).map((article) => plainToInstance(Article, article))
+        }).map((article) => plainToInstance(Article, article, {
+            enableCircularCheck: true,
+            excludeExtraneousValues: true,
+        }))
         await this.articleRepository.save(newArticles)
     }
 

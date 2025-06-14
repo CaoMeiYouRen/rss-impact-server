@@ -92,7 +92,10 @@ export class Hook extends AclBase {
     @BeforeInsert()
     @BeforeUpdate()
     protected async insertConfigValidate() { // 插入/更新前校验
-        const obj: HookConfig = plainToInstance(hookConfig[this.type] as any, this.config)
+        const obj: HookConfig = plainToInstance(hookConfig[this.type] as any, this.config, {
+            enableCircularCheck: true,
+            excludeExtraneousValues: true,
+        })
         const validationErrors = await validate(obj, {
             whitelist: true,
             skipUndefinedProperties: true, // 忽略 undefined。如果是 undefined ，表明该字段没有更新

@@ -174,6 +174,9 @@ export class FeedController {
                     categoryId: uncategorizedId,
                     userId: user.id,
                     hooks: [],
+                }, {
+                    enableCircularCheck: true,
+                    excludeExtraneousValues: true,
                 })
                 const [error, feed] = await to(this.create(newFeed, user))
                 if (error) {
@@ -193,6 +196,9 @@ export class FeedController {
                             categoryId: categories.find((e) => e.name === sub.text)?.id,
                             userId: user.id,
                             hooks: [],
+                        }, {
+                            enableCircularCheck: true,
+                            excludeExtraneousValues: true,
                         })
                         const [error, feed] = await to(this.create(newFeed, user))
                         if (error) {
