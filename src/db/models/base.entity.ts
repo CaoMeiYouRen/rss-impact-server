@@ -43,7 +43,7 @@ export abstract class Base {
     protected async insertValidate() {
         const obj = plainToInstance(this.constructor as any, this, {
             enableCircularCheck: true,
-            excludeExtraneousValues: true,
+
         }) as any
         const validationErrors = await validate(obj, {
             whitelist: true,
@@ -60,7 +60,7 @@ export abstract class Base {
     protected async updateValidate() {
         const obj = plainToInstance(this.constructor as any, this, {
             enableCircularCheck: true,
-            excludeExtraneousValues: true,
+
         }) as any
         const validationErrors = await validate(obj, {
             whitelist: true,

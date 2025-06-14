@@ -176,7 +176,7 @@ export class FeedController {
                     hooks: [],
                 }, {
                     enableCircularCheck: true,
-                    excludeExtraneousValues: true,
+
                 })
                 const [error, feed] = await to(this.create(newFeed, user))
                 if (error) {
@@ -198,7 +198,7 @@ export class FeedController {
                             hooks: [],
                         }, {
                             enableCircularCheck: true,
-                            excludeExtraneousValues: true,
+
                         })
                         const [error, feed] = await to(this.create(newFeed, user))
                         if (error) {

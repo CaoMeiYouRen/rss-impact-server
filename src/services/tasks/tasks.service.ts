@@ -1186,7 +1186,7 @@ EXAMPLE JSON ERROR OUTPUT:
             }
         }).map((article) => plainToInstance(Article, article, {
             enableCircularCheck: true,
-            excludeExtraneousValues: true,
+
         }))
         await this.articleRepository.save(newArticles)
     }

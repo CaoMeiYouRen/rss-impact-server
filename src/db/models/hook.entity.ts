@@ -94,7 +94,7 @@ export class Hook extends AclBase {
     protected async insertConfigValidate() { // 插入/更新前校验
         const obj: HookConfig = plainToInstance(hookConfig[this.type] as any, this.config, {
             enableCircularCheck: true,
-            excludeExtraneousValues: true,
+
         })
         const validationErrors = await validate(obj, {
             whitelist: true,
