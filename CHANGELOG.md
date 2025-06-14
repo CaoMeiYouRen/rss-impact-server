@@ -1,5 +1,14 @@
 # rss-impact-server
 
+## [1.15.3](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.15.2...v1.15.3) (2025-06-14)
+
+
+### 🐛 Bug 修复
+
+* 在多个地方添加 enableCircularCheck 和 excludeExtraneousValues 选项以增强数据验证 ([717a5a7](https://github.com/CaoMeiYouRen/rss-impact-server/commit/717a5a7))
+* 添加对 JSON.stringify 结果类型的验证以增强装饰器的健壮性 ([06e13c0](https://github.com/CaoMeiYouRen/rss-impact-server/commit/06e13c0))
+* 移除不必要的 excludeExtraneousValues 选项以简化数据验证配置 ([eb5f4ba](https://github.com/CaoMeiYouRen/rss-impact-server/commit/eb5f4ba))
+
 ## [1.15.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.15.1...v1.15.2) (2025-05-31)
 
 
