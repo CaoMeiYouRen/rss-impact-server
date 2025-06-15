@@ -7,7 +7,7 @@ settings:
 overrides:
   '@types/methods': ^1.1.4
   '@types/superagent': ^8.1.0
-  axios: ^1.9.0
+  axios: ^1.10.0
   compare-func: 2.0.0
   cron: 4.3.1
   formidable: ^3.2.4
@@ -84,8 +84,8 @@ importers:
         specifier: 4.13.2
         version: 4.13.2
       axios:
-        specifier: ^1.9.0
-        version: 1.9.0(debug@4.4.1)
+        specifier: ^1.10.0
+        version: 1.10.0(debug@4.4.1)
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1(encoding@0.1.13)
@@ -440,7 +440,7 @@ importers:
         version: 5.8.3
       vitepress:
         specifier: ^1.6.3
-        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.15.30)(axios@1.9.0(debug@4.4.1))(postcss@8.5.1)(search-insights@2.17.2)(terser@5.39.0)(typescript@5.8.3)
+        version: 1.6.3(@algolia/client-search@5.20.0)(@types/node@22.15.30)(axios@1.10.0(debug@4.4.1))(postcss@8.5.1)(search-insights@2.17.2)(terser@5.39.0)(typescript@5.8.3)
 
 packages:
 
@@ -2767,7 +2767,7 @@ packages:
     resolution: {integrity: sha512-HYLt8M6mjUfcoUOzyBcX2RjpfapIwHPBmQJtTmXOQW845Y/Osu9VuTJ5kPvnmWJ6IUa05WpblfOwZ+P0G4iZsQ==}
     peerDependencies:
       async-validator: ^4
-      axios: ^1.9.0
+      axios: ^1.10.0
       change-case: ^5
       drauu: ^0.4
       focus-trap: ^7
@@ -3215,8 +3215,8 @@ packages:
   aws4@1.13.0:
     resolution: {integrity: sha512-3AungXC4I8kKsS9PuS4JH2nc+0bVY/mjgrephHTIi8fpEeGsTHBUJeosp0Wc1myYMElmD0B3Oc4XL/HVJ4PV2g==}
 
-  axios@1.9.0:
-    resolution: {integrity: sha512-re4CqKTJaURpzbLHtIi6XpDv20/CnpXOtjRY5/CU32L8gU8ek9UIivcfvSWvmKEngmVbrUtPpdDwWDWL7DNHvg==}
+  axios@1.10.0:
+    resolution: {integrity: sha512-/1xYAC4MP/HEG+3duIhFr4ZQXR4sQXOIe+o6sdqzeykGLx6Upp/1p8MHqhINOvGeP7xyNHe7tsiJByc4SSVUxw==}
 
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
@@ -4769,8 +4769,8 @@ packages:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
     engines: {node: '>= 6'}
 
-  form-data@4.0.2:
-    resolution: {integrity: sha512-hGfm/slu0ZabnNt4oaRZ6uREyfCj6P4fT/n6A1rGV+Z0VdGXjfOhVUpkn6qVQONHGIFwmveGXyDs75+nr6FM8w==}
+  form-data@4.0.3:
+    resolution: {integrity: sha512-qsITQPfmvMOSAdeyZ+12I1c+CKSstAFAwu+97zrnWAbIr5u8wfsExUzCesVLC8NgHuRUqNN4Zy6UPWUTRGslcA==}
     engines: {node: '>= 6'}
 
   format@0.2.2:
@@ -11643,7 +11643,7 @@ snapshots:
   '@types/node-fetch@2.6.12':
     dependencies:
       '@types/node': 22.15.30
-      form-data: 4.0.2
+      form-data: 4.0.3
 
   '@types/node@18.19.111':
     dependencies:
@@ -11742,7 +11742,7 @@ snapshots:
       '@types/cookiejar': 2.1.5
       '@types/methods': 1.1.4
       '@types/node': 22.15.30
-      form-data: 4.0.2
+      form-data: 4.0.3
 
   '@types/supertest@6.0.3':
     dependencies:
@@ -12034,13 +12034,13 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/integrations@12.5.0(axios@1.9.0(debug@4.4.1))(focus-trap@7.6.4)(typescript@5.8.3)':
+  '@vueuse/integrations@12.5.0(axios@1.10.0(debug@4.4.1))(focus-trap@7.6.4)(typescript@5.8.3)':
     dependencies:
       '@vueuse/core': 12.5.0(typescript@5.8.3)
       '@vueuse/shared': 12.5.0(typescript@5.8.3)
       vue: 3.5.13(typescript@5.8.3)
     optionalDependencies:
-      axios: 1.9.0(debug@4.4.1)
+      axios: 1.10.0(debug@4.4.1)
       focus-trap: 7.6.4
     transitivePeerDependencies:
       - typescript
@@ -12539,10 +12539,10 @@ snapshots:
 
   aws4@1.13.0: {}
 
-  axios@1.9.0(debug@4.4.1):
+  axios@1.10.0(debug@4.4.1):
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.1)
-      form-data: 4.0.2
+      form-data: 4.0.3
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -14428,11 +14428,12 @@ snapshots:
       combined-stream: 1.0.8
       mime-types: 2.1.35
 
-  form-data@4.0.2:
+  form-data@4.0.3:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       es-set-tostringtag: 2.1.0
+      hasown: 2.0.2
       mime-types: 2.1.35
 
   format@0.2.2: {}
@@ -17004,7 +17005,7 @@ snapshots:
     dependencies:
       '@types/request': 2.48.12
       '@types/superagent': 8.1.9
-      axios: 1.9.0(debug@4.4.1)
+      axios: 1.10.0(debug@4.4.1)
       combos: 0.2.0
       fs-extra: 9.1.0
       js-yaml: 4.1.0
@@ -17458,7 +17459,7 @@ snapshots:
   push-all-in-one@4.4.3:
     dependencies:
       '@colors/colors': 1.6.0
-      axios: 1.9.0(debug@4.4.1)
+      axios: 1.10.0(debug@4.4.1)
       debug: 4.4.1
       https-proxy-agent: 7.0.6
       nodemailer: 6.10.1
@@ -18365,7 +18366,7 @@ snapshots:
       cookiejar: 2.1.4
       debug: 4.4.1
       fast-safe-stringify: 2.1.1
-      form-data: 4.0.2
+      form-data: 4.0.3
       formidable: 3.5.4
       methods: 1.1.2
       mime: 2.6.0
@@ -18982,7 +18983,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.39.0
 
-  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.15.30)(axios@1.9.0(debug@4.4.1))(postcss@8.5.1)(search-insights@2.17.2)(terser@5.39.0)(typescript@5.8.3):
+  vitepress@1.6.3(@algolia/client-search@5.20.0)(@types/node@22.15.30)(axios@1.10.0(debug@4.4.1))(postcss@8.5.1)(search-insights@2.17.2)(terser@5.39.0)(typescript@5.8.3):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.20.0)(search-insights@2.17.2)
@@ -18995,7 +18996,7 @@ snapshots:
       '@vue/devtools-api': 7.7.0
       '@vue/shared': 3.5.13
       '@vueuse/core': 12.5.0(typescript@5.8.3)
-      '@vueuse/integrations': 12.5.0(axios@1.9.0(debug@4.4.1))(focus-trap@7.6.4)(typescript@5.8.3)
+      '@vueuse/integrations': 12.5.0(axios@1.10.0(debug@4.4.1))(focus-trap@7.6.4)(typescript@5.8.3)
       focus-trap: 7.6.4
       mark.js: 8.11.1
       minisearch: 7.1.1
