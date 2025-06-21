@@ -44,3 +44,6 @@ updates:
       - dependency-name: bcrypt
         versions:
           - ">= 6.0.0" # 6.0.0 以上版本会导致 docker 无法启动
+      - dependency-name: "connect-redis"
+        versions:
+          - ">= 9.0.0" # 9.0.0 以上版本会导致 redis 无法连接
