@@ -145,7 +145,7 @@
     "@types/morgan": "^1.9.10",
     "@types/ms": "^0.7.34",
     "@types/multer": "^2.0.0",
-    "@types/node": "^24.0.7",
+    "@types/node": "^24.0.10",
     "@types/parse-torrent": "^5.8.7",
     "@types/passport-local": "^1.0.38",
     "@types/passport-strategy": "^0.2.38",
