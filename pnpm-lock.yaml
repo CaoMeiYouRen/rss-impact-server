@@ -9,7 +9,7 @@ overrides:
   '@types/superagent': ^8.1.0
   axios: ^1.10.0
   compare-func: 2.0.0
-  cron: 4.3.1
+  cron: 4.3.2
   formidable: ^3.2.4
   tough-cookie: ^4.1.3
   path-to-regexp: ^3.3.0
@@ -117,8 +117,8 @@ importers:
         specifier: ^0.9.16
         version: 0.9.16
       cron:
-        specifier: 4.3.1
-        version: 4.3.1
+        specifier: 4.3.2
+        version: 4.3.2
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -3972,8 +3972,8 @@ packages:
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
-  cron@4.3.1:
-    resolution: {integrity: sha512-7x7DoEOxV11t3OPWWMjj1xrL1PGkTV5RV+/54IJTZD7gStiaMploY43EkeBSkDZTLRbUwk+OISbQ0TR133oXyA==}
+  cron@4.3.2:
+    resolution: {integrity: sha512-JxBBnf5zRz+NhW9XcP16gwUKAKIimy2G0QCCQu8kk5XwM4aCGwMt+nntouAfXF9A57965XzB6hitBlJAz5Ts6w==}
     engines: {node: '>=18.x'}
 
   cross-argv@2.0.0:
@@ -6268,8 +6268,8 @@ packages:
     resolution: {integrity: sha512-Nv9KddBcQSlQopmBHXSsZVY5xsdlZkdH/Iey0BlcBYggMd4two7cZnKOK9vmy3nY0O5RGH99z1PCeTpPqszUYg==}
     engines: {bun: '>=1.0.0', deno: '>=1.30.0', node: '>=8.0.0'}
 
-  luxon@3.6.1:
-    resolution: {integrity: sha512-tJLxrKJhO2ukZ5z0gyjY1zPh3Rh88Ej9P7jNrZiHMUXHae1yvI2imgOZtL1TO8TW6biMMKfTtAOoEJANgtWBMQ==}
+  luxon@3.7.1:
+    resolution: {integrity: sha512-RkRWjA926cTvz5rAb1BqyWkKbbjzCGchDUIKMCUvNi17j6f6j8uHGDV82Aqcqtzd+icoYpELmG3ksgGiFNNcNg==}
     engines: {node: '>=12'}
 
   magic-string@0.30.17:
@@ -8222,6 +8222,7 @@ packages:
   superagent@10.2.1:
     resolution: {integrity: sha512-O+PCv11lgTNJUzy49teNAWLjBZfc+A1enOwTpLlH6/rsvKcTwcdTT8m9azGkVqM7HBl5jpyZ7KTPhHweokBcdg==}
     engines: {node: '>=14.18.0'}
+    deprecated: Please upgrade to superagent v10.2.2+, see release notes at https://github.com/forwardemail/superagent/releases/tag/v10.2.2 - maintenance is supported by Forward Email @ https://forwardemail.net
 
   superjson@2.2.2:
     resolution: {integrity: sha512-5JRxVqC8I8NuOUjzBbvVJAKNM8qoVuH0O77h4WInc/qC2q5IreqKxYwgkga3PfA22OayK2ikceb/B26dztPl+Q==}
@@ -8230,6 +8231,7 @@ packages:
   supertest@7.1.1:
     resolution: {integrity: sha512-aI59HBTlG9e2wTjxGJV+DygfNLgnWbGdZxiA/sgrnNNikIW8lbDvCtF6RnhZoJ82nU7qv7ZLjrvWqCEm52fAmw==}
     engines: {node: '>=14.18.0'}
+    deprecated: Please upgrade to supertest v7.1.3+, see release notes at https://github.com/forwardemail/supertest/releases/tag/v7.1.3 - maintenance is supported by Forward Email @ https://forwardemail.net
 
   supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
@@ -10603,7 +10605,7 @@ snapshots:
     dependencies:
       '@nestjs/common': 11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 10.4.18(@nestjs/common@11.1.3(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.18)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      cron: 4.3.1
+      cron: 4.3.2
 
   '@nestjs/schematics@11.0.5(chokidar@4.0.3)(typescript@5.8.3)':
     dependencies:
@@ -13495,10 +13497,10 @@ snapshots:
 
   create-require@1.1.1: {}
 
-  cron@4.3.1:
+  cron@4.3.2:
     dependencies:
       '@types/luxon': 3.6.2
-      luxon: 3.6.1
+      luxon: 3.7.1
 
   cross-argv@2.0.0: {}
 
@@ -16327,7 +16329,7 @@ snapshots:
 
   lru.min@1.1.2: {}
 
-  luxon@3.6.1: {}
+  luxon@3.7.1: {}
 
   magic-string@0.30.17:
     dependencies:
