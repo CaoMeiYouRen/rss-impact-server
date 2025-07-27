@@ -844,7 +844,7 @@
         "/api/auth/callback": {
             "post": {
                 "operationId": "Auth_callback",
-                "summary": "处理 Auth0 回调",
+                "summary": "处理 OIDC 回调",
                 "parameters": [],
                 "requestBody": {
                     "required": true,
@@ -858,6 +858,19 @@
                 },
                 "responses": {
                     "201": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "auth"
+                ]
+            },
+            "get": {
+                "operationId": "Auth_callbackGet",
+                "summary": "处理 OIDC GET 回调",
+                "parameters": [],
+                "responses": {
+                    "200": {
                         "description": ""
                     }
                 },

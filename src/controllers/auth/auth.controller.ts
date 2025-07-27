@@ -83,77 +83,114 @@ export class AuthController {
         })
     }
 
-    @ApiOperation({ summary: '处理 Auth0 回调' })
+    @ApiOperation({ summary: '处理 OIDC 回调' })
     @Post('callback')
     async callback(@Body() body: Auth0CallbackData, @Session() session: ISession, @Res() res: Response) {
-        // 处理 auth0 回调登录
+        // 处理 OIDC 回调登录
         try {
-            const idToken = body.id_token
-            // this.logger.debug(idToken, 'idToken')
-            const payload: JwtPayload = await validateJwt(idToken)
-            this.logger.debug(payload, 'payload')
-            // nickname 比 name 更友好，更接近用户设定的用户名
-            const { sub: auth0Id, email, email_verified, nickname, picture } = payload
-            // 根据 sub 判断登录的第三方账号
-            let user: User = null
-            // 检查该 sub 是否已经被绑定
-            user = await this.repository.findOne({ where: { auth0Id } })
-            // 如果该 sub 已经被绑定，则同步用户信息
-            if (user) {
-                // 同步用户信息
-                // user.username = user.username || name
-                user.email = email
-                user.emailVerified = email_verified
-                user.avatar = picture
-                user = await this.repository.save(user)
+            // 兼容两种模式：id_token 直接回调和 authorization_code 流程
+            let payload: JwtPayload
 
-                session.uid = user.id
-                session.save()
-                res.redirect(302, `/?state=auth0_login_${getRandomCode(16)}`)
-                return
+            if (body.id_token) {
+                // Auth0 模式：直接处理 id_token
+                payload = await validateJwt(body.id_token)
+            } else if (res.oidc && 'user' in res.oidc && res.oidc.user) {
+                // 标准 OIDC 模式：从中间件获取用户信息
+                payload = res.oidc.user as JwtPayload
+            } else {
+                throw new Error('未找到有效的用户信息')
             }
-            // 如果该 sub 没有被绑定，则检查邮箱是否已注册
-            user = await this.repository.findOne({ where: { email } })
-            // 如果该邮箱已经被注册，则同步用户信息
-            if (user) {
-                // 同步用户信息
-                user.auth0Id = auth0Id
-                // user.email = email
-                user.emailVerified = email_verified
-                user.avatar = picture
-                user = await this.repository.save(user)
 
-                session.uid = user.id
-                session.save()
-                res.redirect(302, `/?state=auth0_login_${getRandomCode(16)}`)
-                return
-            }
-            if (!ENABLE_REGISTER) {
-                throw new HttpError(400, '当前不允许注册新用户！')
-            }
-            // 如果邮箱未注册，则创建新用户
-            user = await this.repository.save(this.repository.create({
-                username: nickname, // nickname 比 name 更友好，更接近用户设定的用户名
-                auth0Id,
-                email,
-                emailVerified: email_verified,
-                avatar: picture,
-                roles: [Role.user],
-                accessToken: getAccessToken('rss-impact'),
-                password: getRandomCode(32), // 生成随机密码
-                disablePasswordLogin: true, // 不允许密码登录
-            }))
-            session.uid = user.id
-            session.save()
-            res.redirect(302, `/?state=auth0_login_${getRandomCode(16)}`)
-
+            return await this.processOIDCUser(payload, session, res)
         } catch (error) {
             this.logger.error(error)
             if (error instanceof HttpError) {
                 throw error
             }
-            throw new HttpError(400, '无效的 token')
+            throw new HttpError(400, `认证失败: ${error.message}`)
         }
+    }
+
+    @ApiOperation({ summary: '处理 OIDC GET 回调' })
+    @Get('callback')
+    async callbackGet(@Session() session: ISession, @Res() res: Response) {
+        // 处理标准 OIDC 的 GET 回调
+        try {
+            if (res.oidc && 'user' in res.oidc && res.oidc.user) {
+                const payload = res.oidc.user as JwtPayload
+                return await this.processOIDCUser(payload, session, res)
+            }
+            throw new Error('未找到有效的用户信息')
+        } catch (error) {
+            this.logger.error(error)
+            if (error instanceof HttpError) {
+                throw error
+            }
+            throw new HttpError(400, `认证失败: ${error.message}`)
+        }
+    }
+
+    /**
+     * 处理 OIDC 用户信息
+     */
+    private async processOIDCUser(payload: JwtPayload, session: ISession, res: Response) {
+        this.logger.debug(payload, 'OIDC payload')
+        // nickname 比 name 更友好，更接近用户设定的用户名
+        const { sub: auth0Id, email, email_verified, nickname, picture, name } = payload
+        const username = nickname || name || email?.split('@')[0] || 'user'
+
+        // 根据 sub 判断登录的第三方账号
+        let user: User = null
+        // 检查该 sub 是否已经被绑定
+        user = await this.repository.findOne({ where: { auth0Id } })
+        // 如果该 sub 已经被绑定，则同步用户信息
+        if (user) {
+            // 同步用户信息
+            // user.username = user.username || name
+            user.email = email
+            user.emailVerified = email_verified
+            user.avatar = picture
+            user = await this.repository.save(user)
+
+            session.uid = user.id
+            session.save()
+            res.redirect(302, `/?state=oidc_login_${getRandomCode(16)}`)
+            return
+        }
+        // 如果该 sub 没有被绑定，则检查邮箱是否已注册
+        user = await this.repository.findOne({ where: { email } })
+        // 如果该邮箱已经被注册，则同步用户信息
+        if (user) {
+            // 同步用户信息
+            user.auth0Id = auth0Id
+            // user.email = email
+            user.emailVerified = email_verified
+            user.avatar = picture
+            user = await this.repository.save(user)
+
+            session.uid = user.id
+            session.save()
+            res.redirect(302, `/?state=oidc_login_${getRandomCode(16)}`)
+            return
+        }
+        if (!ENABLE_REGISTER) {
+            throw new HttpError(400, '当前不允许注册新用户！')
+        }
+        // 如果邮箱未注册，则创建新用户
+        user = await this.repository.save(this.repository.create({
+            username,
+            auth0Id,
+            email,
+            emailVerified: email_verified,
+            avatar: picture,
+            roles: [Role.user],
+            accessToken: getAccessToken('rss-impact'),
+            password: getRandomCode(32), // 生成随机密码
+            disablePasswordLogin: true, // 不允许密码登录
+        }))
+        session.uid = user.id
+        session.save()
+        res.redirect(302, `/?state=oidc_login_${getRandomCode(16)}`)
     }
 
     @ApiResponse({ status: 201, type: ResponseDto })

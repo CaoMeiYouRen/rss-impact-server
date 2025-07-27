@@ -105,8 +105,22 @@ async function bootstrap() {
     })) // 解决单页应用程序(SPA)重定向问题
     if (ENABLE_AUTH0) {
         // 使用动态 import，否则 auth.middleware 未初始化会导致 Nest 启动失败
-        const { authMiddleware } = await import('./middlewares/auth.middleware')
-        app.use(authMiddleware)
+        const { createAuthMiddleware, authMiddleware } = await import('./middlewares/auth.middleware')
+
+        // 尝试使用自动检测的中间件，如果失败则使用默认配置
+        try {
+            const dynamicAuthMiddleware = await createAuthMiddleware()
+            app.use(dynamicAuthMiddleware)
+            logger.log('使用动态检测的 OIDC 配置')
+        } catch (error) {
+            logger.warn('动态 OIDC 配置失败，使用默认配置:', error.message)
+            if (authMiddleware) {
+                app.use(authMiddleware)
+                logger.log('使用默认 OIDC 配置')
+            } else {
+                logger.error('无法初始化 OIDC 中间件：缺少必要的配置')
+            }
+        }
     }
 
     await app.listen(PORT)

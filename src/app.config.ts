@@ -124,6 +124,12 @@ export const AUTH0_SECRET = env.AUTH0_SECRET || ''
 export const AUTH0_ISSUER_BASE_URL = env.AUTH0_ISSUER_BASE_URL || ''
 export const ENABLE_AUTH0 = Boolean(AUTH0_BASE_URL && AUTH0_CLIENT_ID && AUTH0_SECRET && AUTH0_ISSUER_BASE_URL)
 
+// OIDC 配置 - 兼容标准 OIDC 服务端
+export const OIDC_RESPONSE_TYPE = env.OIDC_RESPONSE_TYPE || 'id_token' // 默认使用 Auth0 的 id_token 模式
+export const OIDC_RESPONSE_MODE = env.OIDC_RESPONSE_MODE || 'form_post' // 默认使用 Auth0 的 form_post 模式
+export const OIDC_SCOPE = env.OIDC_SCOPE || 'openid profile email'
+export const OIDC_AUTO_DETECT = env.OIDC_AUTO_DETECT === 'true' // 是否自动检测 OIDC 服务端类型
+
 // 禁用账号密码登录，仅在配置 Auth0 后生效
 export const DISABLE_PASSWORD_LOGIN = env.DISABLE_PASSWORD_LOGIN === 'true' && ENABLE_AUTH0
 // 禁用账号密码注册，仅在配置 Auth0 后生效
