@@ -71,7 +71,7 @@
     "dayjs": "^1.11.13",
     "dotenv": "^17.2.0",
     "entities": "^6.0.1",
-    "express-openid-connect": "^2.18.1",
+    "express-openid-connect": "^2.19.2",
     "express-rate-limit": "^8.0.1",
     "express-session": "^1.18.2",
     "file-type": "16.5.4",
