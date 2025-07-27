@@ -129,8 +129,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       express-openid-connect:
-        specifier: ^2.18.1
-        version: 2.18.1(express@4.21.2)
+        specifier: ^2.19.2
+        version: 2.19.2(express@4.21.2)
       express-rate-limit:
         specifier: ^8.0.1
         version: 8.0.1(express@4.21.2)
@@ -4331,6 +4331,9 @@ packages:
   end-of-stream@1.4.4:
     resolution: {integrity: sha512-+uw1inIHVPQoaVuHzRyXd21icM+cnt4CzD5rW+NC1wjOUSTOs+Te7FOv7AhN7vS9x/oIyhLP5PR1H+phQAHu5Q==}
 
+  end-of-stream@1.4.5:
+    resolution: {integrity: sha512-ooEGc6HP26xXq/N+GCGOT0JKCLDGrq2bQUZrQ7gyrJiZANJ/8YDTxTpQBXGMn+WbIQXNVpyWymm7KYVICQnyOg==}
+
   enhanced-resolve@5.17.1:
     resolution: {integrity: sha512-LMHl3dXhTcfv8gM4kEzIUeTQ+7fpdA0l2tUf34BddXPkz2A5xJ5L/Pchd5BL6rdccM9QGvu0sWZzK1Z1t4wwyg==}
     engines: {node: '>=10.13.0'}
@@ -4708,8 +4711,8 @@ packages:
     resolution: {integrity: sha512-dDLGjnP2cKbEppxVICxI/Uf4YemmGMPNy0QytCbfafbpYk9AFQsxb8Uyrxii0RPK7FWgLGlSem+07WirwS3cFQ==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  express-openid-connect@2.18.1:
-    resolution: {integrity: sha512-trHqgwXxWF0n/XrDsRzsvQtnBNbU03iCNXbKR/sHwBqXlvCgup341bW7B8t6nr3L/CMoDpK+9gsTnx3qLCqdjQ==}
+  express-openid-connect@2.19.2:
+    resolution: {integrity: sha512-hRRRBS+mH9hrhVcbg7+APe+dIsYB4BDLILv7QfTmM1jSDyaU9NYpTxqWourAnlud/E4Gf4Q0qCVmSJguh4BTaA==}
     engines: {node: ^10.19.0 || >=12.0.0 < 13 || >=13.7.0 < 14 || >= 14.2.0}
     peerDependencies:
       express: '>= 4.17.0'
@@ -7016,10 +7019,6 @@ packages:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
     engines: {node: '>= 0.8'}
 
-  on-headers@1.0.2:
-    resolution: {integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==}
-    engines: {node: '>= 0.8'}
-
   on-headers@1.1.0:
     resolution: {integrity: sha512-737ZY3yNnXy37FHkQxPzt4UZ2UWPWiCZWLvFZ4fu5cueciegX0zGPnrlY6bwRg4FdQOe9YU8MkmJwGhoMybl8A==}
     engines: {node: '>= 0.8'}
@@ -7478,6 +7477,9 @@ packages:
 
   pump@3.0.2:
     resolution: {integrity: sha512-tUPXtzlGM8FE3P0ZL6DVs/3P58k9nk8/jZeQCurTJylQA8qFYzHFfhBJkuqyE0FifOsQ0uKWekiZ5g8wtr28cw==}
+
+  pump@3.0.3:
+    resolution: {integrity: sha512-todwxLMY7/heScKmntwQG8CXVkWUOdYxIvY2s0VWAAMh/nd8SoYiRaKjlr7+iCs984f2P8zvrfWcDDYVb73NfA==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -13832,6 +13834,10 @@ snapshots:
     dependencies:
       once: 1.4.0
 
+  end-of-stream@1.4.5:
+    dependencies:
+      once: 1.4.0
+
   enhanced-resolve@5.17.1:
     dependencies:
       graceful-fs: 4.2.11
@@ -14415,7 +14421,7 @@ snapshots:
       jest-mock: 30.0.2
       jest-util: 30.0.2
 
-  express-openid-connect@2.18.1(express@4.21.2):
+  express-openid-connect@2.19.2(express@4.21.2):
     dependencies:
       base64url: 3.0.1
       clone: 2.1.2
@@ -14426,7 +14432,7 @@ snapshots:
       http-errors: 1.8.1
       joi: 17.13.3
       jose: 2.0.7
-      on-headers: 1.0.2
+      on-headers: 1.1.0
       openid-client: 4.9.1
       url-join: 4.0.1
     transitivePeerDependencies:
@@ -14843,7 +14849,7 @@ snapshots:
 
   get-stream@5.2.0:
     dependencies:
-      pump: 3.0.2
+      pump: 3.0.3
 
   get-stream@6.0.1: {}
 
@@ -17238,8 +17244,6 @@ snapshots:
     dependencies:
       ee-first: 1.1.1
 
-  on-headers@1.0.2: {}
-
   on-headers@1.1.0: {}
 
   on-net-listen@1.1.2: {}
@@ -17748,6 +17752,11 @@ snapshots:
   pump@3.0.2:
     dependencies:
       end-of-stream: 1.4.4
+      once: 1.4.0
+
+  pump@3.0.3:
+    dependencies:
+      end-of-stream: 1.4.5
       once: 1.4.0
 
   punycode@2.3.1: {}
