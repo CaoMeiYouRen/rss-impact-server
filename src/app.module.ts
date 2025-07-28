@@ -25,6 +25,7 @@ import { SystemController } from './controllers/system/system.controller'
 import { FeedService } from './services/feed/feed.service'
 import { CategoryService } from './services/category/category.service'
 import { DailyCountController } from './controllers/daily-count/daily-count.controller'
+import { OIDCService } from './services/oidc/oidc.service'
 
 @Global()
 @Module({
@@ -44,6 +45,7 @@ import { DailyCountController } from './controllers/daily-count/daily-count.cont
         CacheService,
         FeedService,
         CategoryService,
+        OIDCService,
     ],
     controllers: [
         AppController,
@@ -72,6 +74,7 @@ import { DailyCountController } from './controllers/daily-count/daily-count.cont
         CacheService,
         FeedService,
         CategoryService,
+        OIDCService,
     ],
 })
 export class AppModule { }

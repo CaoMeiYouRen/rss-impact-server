@@ -868,7 +868,40 @@
             "get": {
                 "operationId": "Auth_callbackGet",
                 "summary": "处理 OIDC GET 回调",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "id_token",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "state",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sid",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": ""
@@ -5246,13 +5279,13 @@
                     "state": {
                         "type": "string"
                     },
+                    "code": {
+                        "type": "string"
+                    },
                     "sid": {
                         "type": "string"
                     }
-                },
-                "required": [
-                    "id_token"
-                ]
+                }
             },
             "RegisterDto": {
                 "type": "object",

@@ -1,6 +1,6 @@
 import { ConfigParams, SessionStore, auth } from 'express-openid-connect'
 import { sessionOptions } from './session.middleware'
-import { AUTH0_BASE_URL, AUTH0_CLIENT_ID, AUTH0_ISSUER_BASE_URL, AUTH0_SECRET, TIMEOUT, OIDC_RESPONSE_TYPE, OIDC_RESPONSE_MODE, OIDC_SCOPE, OIDC_AUTO_DETECT } from '@/app.config'
+import { AUTH0_BASE_URL, AUTH0_CLIENT_ID, AUTH0_ISSUER_BASE_URL, AUTH0_SECRET, TIMEOUT, OIDC_RESPONSE_TYPE, OIDC_RESPONSE_MODE, OIDC_SCOPE, OIDC_AUTO_DETECT, OIDC_REDIRECT_URL } from '@/app.config'
 import { detectOIDCConfig } from '@/utils/oidc-detector'
 
 // 创建异步函数来初始化配置
@@ -25,6 +25,8 @@ async function createAuthConfig(): Promise<ConfigParams> {
                 responseMode: detectionResult.responseMode,
                 isAuth0Compatible: detectionResult.isAuth0Compatible,
                 isStandardOIDC: detectionResult.isStandardOIDC,
+                hasTokenEndpoint: !!detectionResult.config?.token_endpoint,
+                hasUserinfoEndpoint: !!detectionResult.config?.userinfo_endpoint,
             })
         } catch (error) {
             console.warn('OIDC 自动检测失败，使用默认配置:', error.message)
@@ -36,7 +38,7 @@ async function createAuthConfig(): Promise<ConfigParams> {
         routes: {
             login: false, // 禁用默认的 /login 路由
             logout: false, // 禁用默认的 /logout 路由
-            // callback: false, // 禁用默认的 /callback 路由
+            callback: false, // 禁用默认的 /callback 路由
         },
         auth0Logout: true,
         secret: AUTH0_SECRET,
@@ -58,7 +60,7 @@ async function createAuthConfig(): Promise<ConfigParams> {
             response_type: responseType,
             response_mode: responseMode,
             scope,
-            // request_uri: `${AUTH0_BASE_URL}/auth/callback`,
+            redirect_uri: OIDC_REDIRECT_URL,
         },
     }
 
@@ -77,7 +79,7 @@ const defaultConfig: ConfigParams | null = AUTH0_SECRET ? {
     routes: {
         login: false, // 禁用默认的 /login 路由
         logout: false, // 禁用默认的 /logout 路由
-        // callback: false, // 禁用默认的 /callback 路由
+        callback: false, // 禁用默认的 /callback 路由
     },
     auth0Logout: true,
     secret: AUTH0_SECRET,
@@ -99,7 +101,7 @@ const defaultConfig: ConfigParams | null = AUTH0_SECRET ? {
         response_type: OIDC_RESPONSE_TYPE,
         response_mode: OIDC_RESPONSE_MODE,
         scope: OIDC_SCOPE,
-        // request_uri: `${AUTH0_BASE_URL}/auth/callback`,
+        redirect_uri: OIDC_REDIRECT_URL,
     },
 } : null
 

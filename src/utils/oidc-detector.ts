@@ -20,6 +20,20 @@ export interface OIDCConfiguration {
 let cachedOIDCConfig: OIDCConfiguration | null = null
 
 /**
+ * 清除缓存的OIDC配置
+ */
+export function clearOIDCConfigCache(): void {
+    cachedOIDCConfig = null
+}
+
+/**
+ * 获取缓存的OIDC配置（不发起网络请求）
+ */
+export function getCachedOIDCConfiguration(): OIDCConfiguration | null {
+    return cachedOIDCConfig
+}
+
+/**
  * 获取 OIDC 配置信息
  */
 export async function getOIDCConfiguration(): Promise<OIDCConfiguration | null> {
@@ -33,7 +47,7 @@ export async function getOIDCConfiguration(): Promise<OIDCConfiguration | null> 
 
     try {
         // 尝试获取 OIDC 配置
-        const wellKnownUrl = `${AUTH0_ISSUER_BASE_URL}/.well-known/openid_configuration`
+        const wellKnownUrl = `${AUTH0_ISSUER_BASE_URL}/.well-known/openid-configuration`
         const response = await ajax({
             url: wellKnownUrl,
             method: 'GET',
@@ -61,6 +75,7 @@ export async function detectOIDCConfig() {
             responseMode: 'form_post',
             isAuth0Compatible: true,
             isStandardOIDC: false,
+            config,
         }
     }
 

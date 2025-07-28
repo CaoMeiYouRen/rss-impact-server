@@ -2,13 +2,17 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator'
 
 export class Auth0CallbackData {
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
-    id_token: string
+    id_token?: string
 
     @IsOptional()
     @IsString()
     state?: string
+
+    @IsOptional()
+    @IsString()
+    code?: string
 
     @IsOptional()
     @IsString()

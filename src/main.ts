@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/order
-import { CI, ENABLE_AUTH0, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
+import { CI, ENABLE_AUTH0, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, SESSION_SECRET, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias from 'module-alias'
 import './utils/sentry'
@@ -12,15 +12,16 @@ import fs from 'fs-extra'
 import artTemplate from 'art-template'
 import ms from 'ms'
 import { Request } from 'express'
-import { DATABASE_DIR } from './db/database.module'
-import { AppModule } from './app.module'
-import { AllExceptionsFilter } from './filters/all-exceptions.filter'
-import { limiter } from './middlewares/limit.middleware'
-import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
-import { jsonLogger, logger } from './middlewares/logger.middleware'
-import { sessionMiddleware } from './middlewares/session.middleware'
-import { setRequestId } from './middlewares/request.middleware'
+import cookieParser from 'cookie-parser'
 import { getGitInfo } from './utils/git-info'
+import { setRequestId } from './middlewares/request.middleware'
+import { sessionMiddleware } from './middlewares/session.middleware'
+import { jsonLogger, logger } from './middlewares/logger.middleware'
+import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
+import { limiter } from './middlewares/limit.middleware'
+import { AllExceptionsFilter } from './filters/all-exceptions.filter'
+import { AppModule } from './app.module'
+import { DATABASE_DIR } from './db/database.module'
 
 moduleAlias.addAlias('@', path.join(__dirname, './'))
 
@@ -90,6 +91,9 @@ async function bootstrap() {
         // forbidNonWhitelisted: true,
         enableDebugMessages: __DEV__,
     }))
+    if (SESSION_SECRET) {
+        app.use(cookieParser(SESSION_SECRET))
+    }
     app.use(sessionMiddleware)
     app.use(history({
         rewrites: [

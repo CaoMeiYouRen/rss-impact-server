@@ -129,6 +129,7 @@ export const OIDC_RESPONSE_TYPE = env.OIDC_RESPONSE_TYPE || 'id_token' // 默认
 export const OIDC_RESPONSE_MODE = env.OIDC_RESPONSE_MODE || 'form_post' // 默认使用 Auth0 的 form_post 模式
 export const OIDC_SCOPE = env.OIDC_SCOPE || 'openid profile email'
 export const OIDC_AUTO_DETECT = env.OIDC_AUTO_DETECT === 'true' // 是否自动检测 OIDC 服务端类型
+export const OIDC_REDIRECT_URL = env.OIDC_REDIRECT_URL || `${BASE_URL}/api/auth/callback`
 
 // 禁用账号密码登录，仅在配置 Auth0 后生效
 export const DISABLE_PASSWORD_LOGIN = env.DISABLE_PASSWORD_LOGIN === 'true' && ENABLE_AUTH0

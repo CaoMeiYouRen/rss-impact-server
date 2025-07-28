@@ -49,7 +49,7 @@ const stream: StreamOptions = {
                 log.status = Number(log.status)
             }
             const { ip, method, url, httpVersion, status, responseTime, requestId } = log
-            if (__PROD__ && /(\/assets|\/vite\.svg|favicon\.ico)/.test(url)) { // 生产环境忽略静态文件日志
+            if (/(\/assets|\/vite\.svg|favicon\.ico)/.test(url)) { // 生产环境忽略静态文件日志
                 return
             }
             const message = `${ip} - "${requestId}" "${method} ${url}" "HTTP/${httpVersion}" ${status} - ${responseTime} ms`
