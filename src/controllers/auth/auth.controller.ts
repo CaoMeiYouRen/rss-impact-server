@@ -14,7 +14,7 @@ import { RegisterDto } from '@/models/register.dto'
 import { Role } from '@/constant/role'
 import { getAccessToken, getRandomCode, validateJwt } from '@/utils/helper'
 import { HttpError } from '@/models/http-error'
-import { AUTH0_BASE_URL, AUTH0_ISSUER_BASE_URL, DISABLE_PASSWORD_LOGIN, DISABLE_PASSWORD_REGISTER, ENABLE_AUTH0, ENABLE_REGISTER, OIDC_REDIRECT_URL, SESSION_SECRET } from '@/app.config'
+import { AUTH0_BASE_URL, AUTH0_ISSUER_BASE_URL, BASE_URL, DISABLE_PASSWORD_LOGIN, DISABLE_PASSWORD_REGISTER, ENABLE_AUTH0, ENABLE_REGISTER, OIDC_REDIRECT_URL, SESSION_SECRET } from '@/app.config'
 import { CategoryService } from '@/services/category/category.service'
 import { Auth0CallbackData } from '@/models/auth0-callback-data.dto'
 import { JwtPayload } from '@/interfaces/auth0'
@@ -65,7 +65,7 @@ export class AuthController {
             throw new HttpError(400, '未初始化 Auth0 相关配置！')
         }
         res.oidc.login({
-            returnTo: AUTH0_BASE_URL,
+            returnTo: BASE_URL,
         })
     }
 
@@ -79,7 +79,7 @@ export class AuthController {
             throw new HttpError(400, '未初始化 Auth0 相关配置！')
         }
         res.oidc.login({
-            returnTo: AUTH0_BASE_URL,
+            returnTo: BASE_URL,
             authorizationParams: {
                 screen_hint: 'signup',
             },
