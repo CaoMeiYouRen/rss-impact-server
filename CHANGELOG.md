@@ -1,5 +1,23 @@
 # rss-impact-server
 
+# [1.16.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.15.3...v1.16.0) (2025-08-02)
+
+
+### ⏪ 回退
+
+* 回滚 chore(deps): bump connect-redis from 8.1.0 to 9.0.0 ([ab6f462](https://github.com/CaoMeiYouRen/rss-impact-server/commit/ab6f462))
+
+
+### ✨ 新功能
+
+* **auth:** 支持 OIDC 兼容配置，添加动态检测和处理逻辑 ([2424afa](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2424afa))
+* 添加 OIDC 认证支持，更新相关配置和回调处理 ([614963a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/614963a))
+
+
+### 🐛 Bug 修复
+
+* 更新 Auth0 登录重定向 URL 为 BASE_URL ([dd4a5e5](https://github.com/CaoMeiYouRen/rss-impact-server/commit/dd4a5e5))
+
 ## [1.15.3](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.15.2...v1.15.3) (2025-06-14)
 
 
