@@ -28,8 +28,9 @@ overrides:
   tar-fs: ^2.1.3
   vite: ^5.4.19
   '@nestjs/common': ^11.0.11
-  multer: ^2.0.1
+  multer: ^2.0.2
   brace-expansion: ^2.0.2
+  form-data: ^4.0.4
 
 importers:
 
@@ -4908,18 +4909,6 @@ packages:
   form-data-encoder@1.7.2:
     resolution: {integrity: sha512-qfqtYan3rxrnCk1VYaA4H+Ms9xdpPqvLZa6xmMgFvhO32x7/3J/ExcTd6qpxM0vH2GdMI+poehyBZvqfMTto8A==}
 
-  form-data@2.3.3:
-    resolution: {integrity: sha512-1lLKB2Mu3aGP1Q/2eCOx0fNbRMe7XdwktwOruhfqqd0rIJWwN4Dh+E3hrPSlDCXnSR7UtZ1N38rVXm+6+MEhJQ==}
-    engines: {node: '>= 0.12'}
-
-  form-data@2.5.5:
-    resolution: {integrity: sha512-jqdObeR2rxZZbPSGL+3VckHMYtu+f9//KXBsVny6JSX/pa38Fy+bGjuG8eW/H6USNQWhLi8Num++cU2yOCNz4A==}
-    engines: {node: '>= 0.12'}
-
-  form-data@4.0.0:
-    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
-    engines: {node: '>= 6'}
-
   form-data@4.0.4:
     resolution: {integrity: sha512-KrGhL9Q4zjj0kiUt5OO4Mr/A/jlI2jDYs5eHBpYHPcBEVSiipAvn2Ko2HnPe20rmcuuvMHNdZFp+4IlGTMF0Ow==}
     engines: {node: '>= 6'}
@@ -5133,9 +5122,6 @@ packages:
   go-cqwebsocket@6.3.2:
     resolution: {integrity: sha512-+ki1VoMNOyqr4A2zglrepDCUpOuhZsHnxZCRhDNJaR6uMX79C2rQM55BFUGOWq3flekMZGiNaoPmd9Ptj34gDg==}
     engines: {node: '>=14'}
-
-  gopd@1.0.1:
-    resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
 
   gopd@1.2.0:
     resolution: {integrity: sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg==}
@@ -6716,8 +6702,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  multer@2.0.1:
-    resolution: {integrity: sha512-Ug8bXeTIUlxurg8xLTEskKShvcKDZALo1THEX5E41pYCD2sCVub5/kIRIGqWNoqV6szyLyQKV6mD4QUrWE5GCQ==}
+  multer@2.0.2:
+    resolution: {integrity: sha512-u7f2xaZ/UG8oLXHvtF/oWTRvT44p9ecwBBqTwgJVq0+4BW1g8OW01TyMEGWBHbyMOYVHXslaut7qEQ1meATXgw==}
     engines: {node: '>= 10.16.0'}
 
   mute-stream@0.0.8:
@@ -10621,7 +10607,7 @@ snapshots:
       body-parser: 1.20.3
       cors: 2.8.5
       express: 4.21.2
-      multer: 2.0.1
+      multer: 2.0.2
       tslib: 2.8.1
     transitivePeerDependencies:
       - supports-color
@@ -11945,7 +11931,7 @@ snapshots:
       '@types/caseless': 0.12.5
       '@types/node': 24.1.0
       '@types/tough-cookie': 4.0.5
-      form-data: 2.5.5
+      form-data: 4.0.4
 
   '@types/responselike@1.0.3':
     dependencies:
@@ -12822,7 +12808,7 @@ snapshots:
       cli-table3: 0.6.5
       color-support: 1.1.3
       cross-argv: 2.0.0
-      form-data: 4.0.0
+      form-data: 4.0.4
       has-async-hooks: 1.0.0
       hdr-histogram-js: 3.0.0
       hdr-histogram-percentiles-obj: 3.0.0
@@ -14733,27 +14719,6 @@ snapshots:
 
   form-data-encoder@1.7.2: {}
 
-  form-data@2.3.3:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
-
-  form-data@2.5.5:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      es-set-tostringtag: 2.1.0
-      hasown: 2.0.2
-      mime-types: 2.1.35
-      safe-buffer: 5.2.1
-
-  form-data@4.0.0:
-    dependencies:
-      asynckit: 0.4.0
-      combined-stream: 1.0.8
-      mime-types: 2.1.35
-
   form-data@4.0.4:
     dependencies:
       asynckit: 0.4.0
@@ -15031,10 +14996,6 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
-
-  gopd@1.0.1:
-    dependencies:
-      get-intrinsic: 1.3.0
 
   gopd@1.2.0: {}
 
@@ -17048,7 +17009,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  multer@2.0.1:
+  multer@2.0.2:
     dependencies:
       append-field: 1.0.0
       busboy: 1.6.0
@@ -18091,7 +18052,7 @@ snapshots:
       combined-stream: 1.0.8
       extend: 3.0.2
       forever-agent: 0.6.1
-      form-data: 2.3.3
+      form-data: 4.0.4
       har-validator: 5.1.5
       http-signature: 1.2.0
       is-typedarray: 1.0.0
@@ -18955,7 +18916,7 @@ snapshots:
 
   traverse@0.6.9:
     dependencies:
-      gopd: 1.0.1
+      gopd: 1.2.0
       typedarray.prototype.slice: 1.0.3
       which-typed-array: 1.1.15
 
