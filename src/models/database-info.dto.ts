@@ -51,4 +51,5 @@ export class DatabaseInfoDto {
     })
     @ApiProperty({ title: '索引数量', description: 'SQL 索引数量', example: 10 })
     indexCount: number
+
 }

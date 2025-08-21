@@ -1,4 +1,3 @@
-
 import { Entity, BeforeInsert, BeforeUpdate } from 'typeorm'
 import { hash } from 'bcrypt'
 import { IsEmail, IsUrl } from 'class-validator'
@@ -172,6 +171,8 @@ export class UpdateUser extends PartialType(OmitType(User, ['createdAt', 'update
 export class UpdateMe extends PartialType(PickType(User, ['id', 'username', 'email'] as const)) { }
 
 export class FindUser extends FindPlaceholderDto<User> {
+
     @ApiProperty({ type: () => [User] })
     declare data: User[]
+
 }

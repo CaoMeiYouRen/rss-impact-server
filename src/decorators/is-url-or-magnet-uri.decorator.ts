@@ -12,7 +12,7 @@ export function IsUrlOrMagnetUri(validationOptions?: ValidationOptions, isUrlOpt
             validator: {
                 validate(value: any) {
                     return isURL(value, {
-                        require_tld: __PROD__,   // 是否要顶级域名
+                        require_tld: __PROD__, // 是否要顶级域名
                         ...isUrlOptions,
                     }) || isMagnetURI(value)
                 },

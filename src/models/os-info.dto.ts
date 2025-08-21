@@ -101,4 +101,5 @@ export class OsInfoDto {
     })
     @ApiProperty({ title: '进程运行时间', description: '', example: '' })
     uptime: string
+
 }

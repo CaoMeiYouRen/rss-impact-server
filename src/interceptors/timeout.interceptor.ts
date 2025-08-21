@@ -6,6 +6,7 @@ import { HttpStatusCode } from '@/constant/http-status-code'
 
 @Injectable()
 export class TimeoutInterceptor implements NestInterceptor {
+
     intercept(context: ExecutionContext, next: CallHandler) {
         return next.handle().pipe(
             timeout(TIMEOUT),
@@ -17,4 +18,5 @@ export class TimeoutInterceptor implements NestInterceptor {
             }),
         )
     }
+
 }

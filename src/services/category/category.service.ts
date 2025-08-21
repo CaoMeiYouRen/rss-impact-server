@@ -47,4 +47,5 @@ export class CategoryService {
     public async findOrCreateUncategorizedCategory(user: User) {
         return this.findOrCreateCategory('未分类', user)
     }
+
 }

@@ -261,7 +261,7 @@ export class TasksService implements OnApplicationBootstrap {
         // 拉取最新的 hook 配置
         // ；如果有 反转触发下限，则大于 反转触发下限 才触发 && (hook.reverseLimit ? hook.reverseLimit > count : true)
         const hooks = (await this.feedRepository.findOne({ where: { id: feed.id }, relations: ['proxyConfig', 'hooks', 'hooks.proxyConfig'], select: ['hooks'] }))
-            ?.hooks   // 处理反转触发的 Hook；只触发 notification/webhook 类型的
+            ?.hooks // 处理反转触发的 Hook；只触发 notification/webhook 类型的
             ?.filter((hook) => hook.isReversed && ['notification', 'webhook'].includes(hook.type))
 
         if (!hooks?.length) {
@@ -296,7 +296,6 @@ export class TasksService implements OnApplicationBootstrap {
         }, {
             timeout: ms('10 m'),
         }))
-
     }
 
     // 反转触发通知
@@ -645,7 +644,6 @@ export class TasksService implements OnApplicationBootstrap {
             } finally {
                 await this.resourceRepository.save(newResource)
             }
-
         }, {
             timeout: ms('10 m'),
         }))
@@ -707,7 +705,7 @@ export class TasksService implements OnApplicationBootstrap {
                                 }
                                 this.logger.log(`正在下载资源：${shoutUrl}`)
                                 await qBittorrent.addMagnet(url, { savepath: downloadPath })
-                            } else if (isHttpURL(url)) {  // 如果是 http，则下载 bt 种子
+                            } else if (isHttpURL(url)) { // 如果是 http，则下载 bt 种子
                                 if (await this.resourceRepository.findOne({ where: { url, userId } })) {
                                     __DEV__ && this.logger.debug(`资源 ${shoutUrl} 已存在，跳过该资源下载`)
                                     return
@@ -758,7 +756,7 @@ export class TasksService implements OnApplicationBootstrap {
                                     name, // 名称
                                     path: '', // 文件在服务器上的地址，没有必要，故统一留空
                                     status: size ? 'success' : 'unknown',
-                                    size,  // 体积大小
+                                    size, // 体积大小
                                     type: 'application/x-bittorrent',
                                     hash,
                                     userId,
@@ -1590,4 +1588,5 @@ EXAMPLE JSON ERROR OUTPUT:
             this.logger.error(error?.message, error?.stack)
         }
     }
+
 }

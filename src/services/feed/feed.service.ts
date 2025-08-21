@@ -11,4 +11,5 @@ export class FeedService {
     constructor(
         @InjectRepository(Feed) private readonly feedRepository: Repository<Feed>,
     ) { }
+
 }

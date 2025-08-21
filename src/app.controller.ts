@@ -5,6 +5,7 @@ import { ResponseDto } from './models/response.dto'
 
 @Controller()
 export class AppController {
+
     constructor(private readonly appService: AppService) { }
 
     @ApiOkResponse({ // 200
@@ -24,4 +25,5 @@ export class AppController {
     postHello() {
         return this.appService.getHello()
     }
+
 }

@@ -34,6 +34,7 @@ import { getConditions } from '@/utils/check'
 @ApiTags('resource')
 @Controller('resource')
 export class ResourceController {
+
     constructor(
         @InjectRepository(Resource) private readonly repository: Repository<Resource>,
         private readonly resourceService: ResourceService) {
@@ -62,4 +63,5 @@ export class ResourceController {
     async delete(@Param('id') id: number, @CurrentUser() user: User) {
         return this.resourceService.delete(id, user)
     }
+
 }

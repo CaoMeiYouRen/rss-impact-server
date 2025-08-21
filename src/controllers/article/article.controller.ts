@@ -39,6 +39,7 @@ import { DATABASE_TYPE } from '@/app.config'
 @ApiTags('article')
 @Controller('article')
 export class ArticleController {
+
     constructor(
         @InjectRepository(Article) private readonly repository: Repository<Article>,
     ) { }
@@ -64,5 +65,6 @@ export class ArticleController {
             value: e.type,
         }))
     }
+
 }
 

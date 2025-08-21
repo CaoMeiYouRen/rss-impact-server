@@ -21,9 +21,9 @@ import { CustomLogger, winstonLogger } from '@/middlewares/logger.middleware'
 
 export const DATABASE_DIR = DATA_PATH
 
-export const DATABASE_PATH = __TEST__ ?
-    path.join(DATABASE_DIR, 'database.test.sqlite') :
-    path.join(DATABASE_DIR, 'database.sqlite')
+export const DATABASE_PATH = __TEST__
+    ? path.join(DATABASE_DIR, 'database.test.sqlite')
+    : path.join(DATABASE_DIR, 'database.sqlite')
 export const entities = [User, Feed, Category, Article, Hook, Resource, WebhookLog, ProxyConfig, CustomQuery, DailyCount]
 
 const lockFilePath = path.join(DATABASE_DIR, 'database.lock.json')
@@ -62,9 +62,11 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             // debug: __DEV__,
                             supportBigNumbers: true, // 处理数据库中的大数字
                             bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
-                            ssl: DATABASE_SSL ? {
-                                rejectUnauthorized: false,
-                            } : undefined,
+                            ssl: DATABASE_SSL
+                                ? {
+                                        rejectUnauthorized: false,
+                                    }
+                                : undefined,
                         } as MysqlConnectionOptions
                         // mysql 仅在第一次加载时同步，否则会丢失数据
                         if (!await fs.pathExists(lockFilePath)) {

@@ -9,6 +9,7 @@ import { ISession } from '@/interfaces/session'
 
 @Injectable()
 export class SessionStrategy extends PassportStrategy(Strategy, 'session') {
+
     constructor(
         private readonly userService: UserService,
     ) {
@@ -39,4 +40,5 @@ export class SessionStrategy extends PassportStrategy(Strategy, 'session') {
         }
         return user
     }
+
 }

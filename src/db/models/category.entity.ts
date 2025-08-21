@@ -78,6 +78,8 @@ export class CreateCategory extends OmitType(Category, ['id', 'createdAt', 'upda
 export class UpdateCategory extends PartialType(OmitType(Category, ['createdAt', 'updatedAt'] as const)) { }
 
 export class FindCategory extends FindPlaceholderDto<Category> {
+
     @ApiProperty({ type: () => [Category] })
     declare data: Category[]
+
 }

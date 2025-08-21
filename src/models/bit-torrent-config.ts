@@ -76,4 +76,5 @@ export class BitTorrentConfig {
     @IsBoolean()
     @IsOptional()
     autoRemove?: boolean
+
 }

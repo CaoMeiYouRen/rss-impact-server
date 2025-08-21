@@ -44,7 +44,6 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
             const res = e.getResponse()
             if (statusCode === HttpStatusCode.NOT_FOUND) { // 404
                 message = e.message
-
             } else if (Array.isArray(res['message'])) {
                 message = res['message'].join(', ')
             } else {
@@ -70,4 +69,5 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
                 }))
         }
     }
+
 }

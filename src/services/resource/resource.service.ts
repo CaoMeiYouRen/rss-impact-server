@@ -54,4 +54,5 @@ export class ResourceService {
         } // 尝试移除真实文件
         return document
     }
+
 }

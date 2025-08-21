@@ -42,7 +42,7 @@ function clonePropDecorators(from: unknown, to: unknown, name: string | symbol) 
         Reflect.defineMetadata(key, value, to, name)
     })
 }
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type, @typescript-eslint/no-empty-object-type
 interface TFunction extends Function { }
 
 export function initAvueCrudColumn(clazz: TFunction): Field[] {
@@ -376,7 +376,6 @@ export const AclCrud = (options: AclOptions): ClassDecorator => (target) => { //
                 // console.log(Controller.name, method, value?.type?.name, options.model.name, value?.type?.name === options.model.name)
                 return [key, value]
             })), controller[method])
-
         }
     }
 }

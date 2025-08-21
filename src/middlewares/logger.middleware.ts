@@ -145,6 +145,7 @@ function parametersFormat(parameters: any[]) {
 }
 
 export class CustomLogger implements Logger {
+
     constructor(private readonly loggerService: LoggerService) { }
 
     logQuery(query: string, parameters?: any[]): any {
@@ -183,4 +184,5 @@ export class CustomLogger implements Logger {
                 break
         }
     }
+
 }

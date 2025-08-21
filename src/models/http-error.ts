@@ -9,6 +9,7 @@ import { HttpStatusCode } from '@/constant/http-status-code'
  * @extends {Error}
  */
 export class HttpError extends HttpException {
+
     /**
      * statusCode 对应的 statusText
      *
@@ -20,4 +21,5 @@ export class HttpError extends HttpException {
         super(message, statusCode, options)
         this.error = HttpStatusCode[statusCode]
     }
+
 }

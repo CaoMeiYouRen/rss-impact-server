@@ -5,7 +5,7 @@ import { __PROD__ } from '@/app.config'
 
 export function IsCustomURL(options: IsURLOptions = {}, validationOptions?: ValidationOptions) {
     return applyDecorators(IsUrl({
-        require_tld: __PROD__,   // 是否要顶级域名
+        require_tld: __PROD__, // 是否要顶级域名
         ...options,
     }, validationOptions))
 }

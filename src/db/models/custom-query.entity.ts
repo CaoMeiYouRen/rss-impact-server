@@ -25,6 +25,7 @@ import { CustomColumn } from '@/decorators/custom-column.decorator'
  */
 @Entity()
 export class CustomQuery extends AclBase {
+
     @SetAclCrudField({
         search: true,
     })
@@ -178,6 +179,7 @@ export class CustomQuery extends AclBase {
         default: '{}',
     })
     filterout: FilterOut
+
 }
 
 export class CreateCustomQuery extends OmitType(CustomQuery, ['id', 'createdAt', 'updatedAt', 'key'] as const) { }
@@ -185,6 +187,8 @@ export class CreateCustomQuery extends OmitType(CustomQuery, ['id', 'createdAt',
 export class UpdateCustomQuery extends PartialType(OmitType(CustomQuery, ['createdAt', 'updatedAt', 'key'] as const)) { }
 
 export class FindCustomQuery extends FindPlaceholderDto<CustomQuery> {
+
     @ApiProperty({ type: () => [CustomQuery] })
     declare data: CustomQuery[]
+
 }

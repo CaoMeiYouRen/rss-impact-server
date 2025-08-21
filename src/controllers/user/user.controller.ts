@@ -167,7 +167,6 @@ export class UserController {
             emptyBtn: true,
             column,
         }
-
     }
 
     @UseSession()
@@ -240,4 +239,5 @@ export class UserController {
     async delete(@Param('id') id: number) {
         return this.userService.delete(id)
     }
+
 }

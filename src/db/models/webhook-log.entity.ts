@@ -153,6 +153,8 @@ export class WebhookLog extends AclBase {
 }
 
 export class FindWebhookLog extends FindPlaceholderDto<WebhookLog> {
+
     @ApiProperty({ type: () => [WebhookLog] })
     declare data: WebhookLog[]
+
 }

@@ -117,6 +117,8 @@ export class Resource extends AclBase {
 }
 
 export class FindResource extends FindPlaceholderDto<Resource> {
+
     @ApiProperty({ type: () => [Resource] })
     declare data: Resource[]
+
 }

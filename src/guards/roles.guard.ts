@@ -15,6 +15,7 @@ import { HttpStatusCode } from '@/constant/http-status-code'
  */
 @Injectable()
 export class RolesGuard implements CanActivate {
+
     constructor(private reflector: Reflector) { }
     canActivate(
         context: ExecutionContext,
@@ -31,4 +32,5 @@ export class RolesGuard implements CanActivate {
         }
         return result.length > 0
     }
+
 }

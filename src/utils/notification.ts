@@ -21,7 +21,7 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
     // }
     if (isMarkdown) {
         if (type === 'OneBot') {
-            desp = mdToCqcode(desp).replace(/(\n[\s|\t]*\r*\n)/g, '\n')  // 去除多余换行符
+            desp = mdToCqcode(desp).replace(/(\n[\s|\t]*\r*\n)/g, '\n') // 去除多余换行符
         } else if (['Dingtalk', 'WechatRobot', 'WechatApp'].includes(type)) {
             (option as any).msgtype = 'markdown'
         } else if (type === 'PushDeer') {

@@ -32,6 +32,7 @@ import { AvueCrudOption } from '@/models/avue.dto'
 @ApiTags('daily-count')
 @Controller('daily-count')
 export class DailyCountController {
+
     constructor(
         @InjectRepository(DailyCount) private readonly repository: Repository<DailyCount>,
         private readonly tasksService: TasksService,

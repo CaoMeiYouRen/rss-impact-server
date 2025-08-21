@@ -56,8 +56,8 @@ export class CategoryController {
         if (await this.repository.count({ where: { name, userId } })) {
             throw new HttpError(400, '已存在相同名称的分类！')
         }
-        delete body.user  // 以 userId 字段为准
-        body.userId = user.id  // 以 userId 字段为准
+        delete body.user // 以 userId 字段为准
+        body.userId = user.id // 以 userId 字段为准
 
         const category = await this.repository.save(this.repository.create(body))
 
@@ -70,7 +70,7 @@ export class CategoryController {
     async update(@Body() body: UpdateCategory, @CurrentUser() user: User) {
         __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const id = body.id
-        delete body.user  // 以 userId 字段为准
+        delete body.user // 以 userId 字段为准
         if (!body.userId) {
             body.userId = user.id
         }
@@ -101,4 +101,5 @@ export class CategoryController {
         const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
         return updatedDocument
     }
+
 }

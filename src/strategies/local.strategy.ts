@@ -47,4 +47,5 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
         delete user.password
         return user
     }
+
 }

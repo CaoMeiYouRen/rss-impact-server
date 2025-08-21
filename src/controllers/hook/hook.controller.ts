@@ -35,6 +35,8 @@ import { CreateHook, FindHook, Hook, UpdateHook } from '@/db/models/hook.entity'
 @ApiTags('hook')
 @Controller('hook')
 export class HookController {
+
     constructor(@InjectRepository(Hook) private readonly repository: Repository<Hook>) {
     }
+
 }

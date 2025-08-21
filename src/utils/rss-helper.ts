@@ -98,15 +98,14 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
         } else if (pubDate.isBefore(dayjs(0))) { // 过去时间
             article.pubDate = null
         }
-
-    }  // 如果没有 pubDate/isoDate 则留空
+    } // 如果没有 pubDate/isoDate 则留空
     article.author = item.author || item.creator || item['dc:creator']
     article.contentSnippet = item['content:encodedSnippet'] || item.contentSnippet
     article.summary = item.summary
     article.categories = item.categories
 
     let enclosure: Enclosure = item.enclosure || item.mediaContent // 解决部分情况下缺失 enclosure 的问题
-    if (!enclosure && /^(https?:\/\/).*(\.torrent$)/.test(article.link)) {  // 检测 link 后缀是否为 .torrent。例如 nyaa.si
+    if (!enclosure && /^(https?:\/\/).*(\.torrent$)/.test(article.link)) { // 检测 link 后缀是否为 .torrent。例如 nyaa.si
         enclosure = {
             url: article.link,
             type: 'application/x-bittorrent',

@@ -311,7 +311,6 @@ export function flattenValidationErrors(
             .filter((item) => !!item.constraints)
             .map((item) => Object.values(item.constraints)),
     )
-
 }
 
 function mapChildrenToValidationErrors(
@@ -638,18 +637,18 @@ export function timeFromNow(time: number) {
 }
 
 type FullText = {
-    title?: string | null      // 文章标题
-    content?: string | null    // 文章主要内容
-    author?: string | null     // 文章作者
+    title?: string | null // 文章标题
+    content?: string | null // 文章主要内容
+    author?: string | null // 文章作者
     date_published?: string | null // 文章发布日期
     lead_image_url?: string | null // 文章主要图片的 URL
-    dek?: string | null        // 文章的短描述(dek)
+    dek?: string | null // 文章的短描述(dek)
     next_page_url?: string | null // 文章下一页的 URL
-    url?: string | null        // 文章的 URL
-    domain?: string | null     // 文章 URL 的域名
-    excerpt?: string | null    // 文章的摘要或简介
+    url?: string | null // 文章的 URL
+    domain?: string | null // 文章 URL 的域名
+    excerpt?: string | null // 文章的摘要或简介
     word_count?: number | null // 文章的总字数
-    direction?: string | null  // 文章的文本方向(如"ltr"表示从左到右)
+    direction?: string | null // 文章的文本方向(如"ltr"表示从左到右)
     total_pages?: number | null // 文章的总页数
     rendered_pages?: number | null // 实际渲染的页数
 }

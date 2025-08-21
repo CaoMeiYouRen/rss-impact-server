@@ -145,7 +145,7 @@ export class FeedController {
     })
     @Post('import')
     @UseInterceptors(FileInterceptor('file'))
-    // eslint-disable-next-line no-undef
+
     async importByOpml(@UploadedFile() file: Express.Multer.File, @CurrentUser() user: User) {
         const fileText = file.buffer.toString('utf-8')
         const opmlResult = await opmlParse(fileText)
@@ -269,8 +269,8 @@ export class FeedController {
         if (await this.repository.count({ where: { url, userId } })) {
             throw new HttpError(400, '已存在相同 URL 的订阅！')
         }
-        delete body.user  // 以 userId 字段为准
-        body.userId = user.id  // 以 userId 字段为准
+        delete body.user // 以 userId 字段为准
+        body.userId = user.id // 以 userId 字段为准
 
         const feed = await this.repository.save(this.repository.create(body))
         if (feed.isEnabled) {
@@ -285,7 +285,7 @@ export class FeedController {
     async update(@Body() body: UpdateFeed, @CurrentUser() user: User) {
         __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const id = body.id
-        delete body.user  // 以 userId 字段为准
+        delete body.user // 以 userId 字段为准
         if (!body.userId) {
             body.userId = user.id
         }
@@ -348,4 +348,5 @@ export class FeedController {
         await this.tasksService.disableFeedTask(feed, true)
         return feed
     }
+
 }

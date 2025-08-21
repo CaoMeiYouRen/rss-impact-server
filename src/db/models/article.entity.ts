@@ -268,6 +268,8 @@ export class CreateArticle extends OmitType(Article, ['id', 'createdAt', 'update
 export class UpdateArticle extends PartialType(OmitType(Article, ['createdAt', 'updatedAt'] as const)) { }
 
 export class FindArticle extends FindPlaceholderDto<Article> {
+
     @ApiProperty({ type: () => [Article] })
     declare data: Article[]
+
 }

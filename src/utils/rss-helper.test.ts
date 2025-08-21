@@ -4,7 +4,6 @@ import { formatGuid, rssItemToArticle, filterArticles } from './rss-helper'
 import { Article } from '@/db/models/article.entity'
 
 describe('formatGuid', () => {
-
     it('should return guid if it is a URL', () => {
         const entry = { guid: 'https://example.com/article', link: 'https://example.com/article' }
         const result = formatGuid(entry)

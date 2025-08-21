@@ -37,4 +37,5 @@ export class ResponseDto {
      * @type {any}
      */
     data?: any
+
 }

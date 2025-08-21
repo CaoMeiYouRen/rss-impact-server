@@ -7,6 +7,7 @@ import { UserService } from '@/services/user/user.service'
 
 @Injectable()
 export class TokenStrategy extends PassportStrategy(Strategy, 'token') {
+
     constructor(
         private readonly userService: UserService,
     ) {
@@ -36,4 +37,5 @@ export class TokenStrategy extends PassportStrategy(Strategy, 'token') {
         }
         return user
     }
+
 }

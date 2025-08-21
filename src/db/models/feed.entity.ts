@@ -200,6 +200,7 @@ export class Feed extends AclBase {
     @IsOptional()
     @ManyToMany(() => CustomQuery, (customQuery) => customQuery.feeds) // JoinTable 在 CustomQuery 这边
     customQueries: CustomQuery[]
+
 }
 
 export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] as const) { }
@@ -207,8 +208,10 @@ export class CreateFeed extends OmitType(Feed, ['id', 'createdAt', 'updatedAt'] 
 export class UpdateFeed extends PartialType(OmitType(Feed, ['createdAt', 'updatedAt'] as const)) { }
 
 export class FindFeed extends FindPlaceholderDto<Feed> {
+
     @ApiProperty({ type: () => [Feed] })
     declare data: Feed[]
+
 }
 
 export class QuickCreateFeed extends PickType(Feed, ['url', 'cron', 'isEnabled', 'categoryId', 'hooks'] as const) { }

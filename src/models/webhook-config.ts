@@ -62,4 +62,5 @@ export class WebhookConfig implements AjaxConfig {
     @IsSafeNaturalNumber(3600)
     @IsOptional()
     timeout?: number
+
 }

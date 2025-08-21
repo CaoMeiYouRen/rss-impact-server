@@ -30,4 +30,5 @@ export class AppService implements OnApplicationBootstrap {
     async getHello() {
         return this.objStr
     }
+
 }

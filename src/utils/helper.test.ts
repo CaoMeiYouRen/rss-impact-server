@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-loss-of-precision */
 /* eslint-disable no-loss-of-precision */
 import dayjs from 'dayjs'
 import { Between, Equal, ILike, In, Like } from 'typeorm'
@@ -190,7 +189,6 @@ describe('mdToCqcode', () => {
         const expected = 'This is some text.\n\n[CQ:image,file=https://example.com/image.jpg,cache=0]\n\nMore text.'
         expect(mdToCqcode(markdown)).toBe(expected)
     })
-
 })
 
 describe('dataFormat', () => {

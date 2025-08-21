@@ -25,7 +25,7 @@ import { Filter } from '@/models/filter.dto'
 import { FilterOut } from '@/models/filter-out.dto'
 import { CustomColumn } from '@/decorators/custom-column.decorator'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 const hookConfig: Record<HookType, Function> = {
     notification: NotificationConfig,
     webhook: WebhookConfig,
@@ -207,6 +207,8 @@ export class CreateHook extends OmitType(Hook, ['id', 'createdAt', 'updatedAt'] 
 export class UpdateHook extends PartialType(OmitType(Hook, ['createdAt', 'updatedAt'] as const)) { }
 
 export class FindHook extends FindPlaceholderDto<Hook> {
+
     @ApiProperty({ type: () => [Hook] })
     declare data: Hook[]
+
 }

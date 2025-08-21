@@ -17,4 +17,5 @@ export class ResetPasswordDto {
     @ApiProperty({ title: '新密码', example: '654123' })
     @Length(6, 256, { message: '新密码不能短于6位' })
     newPassword: string
+
 }

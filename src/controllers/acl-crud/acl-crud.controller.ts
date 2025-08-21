@@ -28,6 +28,7 @@ import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { AvueCrudConfig, DicData } from '@/models/avue.dto'
 
 export class ICrudQuery implements CrudRouteForFind {
+
     /**
      * 查询条件
      */
@@ -54,6 +55,7 @@ export class ICrudQuery implements CrudRouteForFind {
      * 要关联其他表关系的字段
      */
     relations?: string[]
+
 }
 
 export const CrudQuery = createParamDecorator((name, ctx: ExecutionContext) => {
@@ -98,7 +100,7 @@ export class AclCrudController {
         }
         return {
             option: {
-                ...option,  // 非 admin 用户不显示 useId
+                ...option, // 非 admin 用户不显示 useId
                 column: option.column.filter((col) => col.prop !== 'userId'),
             },
         }
@@ -203,8 +205,8 @@ export class AclCrudController {
     async create(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
         __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
 
-        delete body.user  // 以 userId 字段为准
-        body.userId = user.id  // 以 userId 字段为准
+        delete body.user // 以 userId 字段为准
+        body.userId = user.id // 以 userId 字段为准
         if (body.id) {
             delete body.id
         }
@@ -224,7 +226,7 @@ export class AclCrudController {
     async update(@Body() body: CrudPlaceholderDto, @CurrentUser() user: User) {
         __DEV__ && this.logger.debug(JSON.stringify(body, null, 4))
         const id = body.id
-        delete body.user  // 以 userId 字段为准
+        delete body.user // 以 userId 字段为准
         if (!body.userId) {
             body.userId = user.id
         }
@@ -280,4 +282,5 @@ export class AclCrudController {
         //     throw new HttpError(500, '删除记录失败')
         // }
     }
+
 }

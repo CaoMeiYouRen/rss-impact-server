@@ -17,4 +17,5 @@ export class Auth0CallbackData {
     @IsOptional()
     @IsString()
     sid?: string
+
 }

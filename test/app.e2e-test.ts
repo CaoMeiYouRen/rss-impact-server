@@ -28,7 +28,6 @@ describe('AppController (e2e)', () => {
     }
 
     beforeAll(async () => {
-
         // 确保测试数据库文件存在
         const testDbPath = path.join(__dirname, '../data/database.test.sqlite')
         try {

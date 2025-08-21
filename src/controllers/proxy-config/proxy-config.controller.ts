@@ -43,6 +43,7 @@ import { Role } from '@/constant/role'
 @ApiTags('proxy-config')
 @Controller('proxy-config')
 export class ProxyConfigController {
+
     constructor(@InjectRepository(ProxyConfig) private readonly repository: Repository<ProxyConfig>) {
     }
 

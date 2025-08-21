@@ -27,7 +27,9 @@ import { FindWebhookLog, WebhookLog } from '@/db/models/webhook-log.entity'
 @ApiTags('webhook-log')
 @Controller('webhook-log')
 export class WebhookLogController {
+
     constructor(@InjectRepository(WebhookLog) private readonly repository: Repository<WebhookLog>) {
     }
+
 }
 

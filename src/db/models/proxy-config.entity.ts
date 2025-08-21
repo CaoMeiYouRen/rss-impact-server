@@ -46,6 +46,8 @@ export class CreateProxyConfig extends OmitType(ProxyConfig, ['id', 'createdAt',
 export class UpdateProxyConfig extends PartialType(OmitType(ProxyConfig, ['createdAt', 'updatedAt'] as const)) { }
 
 export class FindProxyConfig extends FindPlaceholderDto<ProxyConfig> {
+
     @ApiProperty({ type: () => [ProxyConfig] })
     declare data: ProxyConfig[]
+
 }

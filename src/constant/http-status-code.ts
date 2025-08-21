@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow,no-unused-vars */
 /**
  * Http状态码枚举定义
  *

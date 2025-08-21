@@ -79,4 +79,5 @@ export class Filter {
     @IsBetterBytesString()
     @IsOptional()
     enclosureLength?: number | string
+
 }

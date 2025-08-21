@@ -15,6 +15,7 @@ export interface TokenResponse {
 
 @Injectable()
 export class OIDCService {
+
     private readonly logger = new Logger(OIDCService.name)
     private cachedConfig: OIDCConfiguration | null = null
 
@@ -163,4 +164,5 @@ export class OIDCService {
         // 3. 使用访问令牌从userinfo端点获取用户信息
         return this.getUserInfo(tokenResponse.access_token)
     }
+
 }

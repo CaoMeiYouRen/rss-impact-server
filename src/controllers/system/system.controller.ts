@@ -83,7 +83,7 @@ export class SystemController {
                    FROM information_schema.TABLES
                    WHERE table_schema = ?;
                  `, [DATABASE_DATABASE])
-                info.tableCount = tableResults?.tableCount || 0  // 表数量
+                info.tableCount = tableResults?.tableCount || 0 // 表数量
 
                 const [indexResults] = await this.dataSource.query<[{ indexCount: number }]>(`
                    SELECT COUNT(*) AS \`indexCount\`
@@ -91,7 +91,6 @@ export class SystemController {
                    WHERE table_schema = ?;
                  `, [DATABASE_DATABASE])
                 info.indexCount = indexResults?.indexCount || 0 // 索引数量
-
             } catch (error) {
                 this.logger.error(error?.message, error?.stack)
             }
@@ -109,7 +108,6 @@ export class SystemController {
                 // 查询索引的数量
                 const [indexResults] = await this.dataSource.query<[{ count: number }]>('SELECT COUNT(*) FROM pg_indexes WHERE schemaname = \'public\';')
                 info.indexCount = indexResults.count || 0
-
             } catch (error) {
                 this.logger.error(error?.message, error?.stack)
             }
@@ -181,5 +179,6 @@ export class SystemController {
         await this.tasksService.disableEmptyFeeds()
         return new ResponseDto({ message: 'OK' })
     }
+
 }
 

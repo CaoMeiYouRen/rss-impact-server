@@ -25,4 +25,5 @@ export class DownloadConfig {
     @IsSafeNaturalNumber(3600)
     @IsOptional()
     timeout?: number
+
 }

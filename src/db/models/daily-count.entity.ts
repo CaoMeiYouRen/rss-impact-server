@@ -96,9 +96,12 @@ export class DailyCount extends Base {
         default: 0,
     })
     userCount: number
+
 }
 
 export class FindDailyCount extends FindPlaceholderDto<DailyCount> {
+
     @ApiProperty({ type: () => [DailyCount] })
     declare data: DailyCount[]
+
 }
