@@ -398,8 +398,8 @@ importers:
         specifier: ^9.33.0
         version: 9.33.0(jiti@1.21.0)
       eslint-config-cmyr:
-        specifier: 2.0.0-beta.9
-        version: 2.0.0-beta.9(@typescript-eslint/parser@8.40.0(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2))(eslint-plugin-react@7.34.2(eslint@9.33.0(jiti@1.21.0)))(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2)
+        specifier: 2.0.0-beta.15
+        version: 2.0.0-beta.15(@typescript-eslint/parser@8.40.0(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2))(eslint-plugin-react@7.34.2(eslint@9.33.0(jiti@1.21.0)))(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2)
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -1129,6 +1129,10 @@ packages:
 
   '@eslint/js@9.33.0':
     resolution: {integrity: sha512-5K1/mKhWaMfreBGJTwval43JJmkip0RmM+3+IuqupeSKNC/Th2Kc7ucaq5ovTSra/OOKB9c58CGSz3QMVbWt0A==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/js@9.34.0':
+    resolution: {integrity: sha512-EoyvqQnBNsV1CWaEJ559rxXL4c8V92gxirbawSmVUOWXlsRxxQXl6LmCpdUblgxgSkDIqKnhzba2SjRTI/A5Rw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/object-schema@2.1.6':
@@ -4479,8 +4483,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  eslint-config-cmyr@2.0.0-beta.9:
-    resolution: {integrity: sha512-yB9qb2W9AlgW0Nzf9NxpSY3FJDP9J4C6pC4+k0sib2FeV75CirnwourYUwdL8kQ/c6Ld37CvTCOGzkvzq0JIIg==}
+  eslint-config-cmyr@2.0.0-beta.15:
+    resolution: {integrity: sha512-qn7ZTWWzVBt5IxwRYRrepUuHH0plPS0CUitDmRhwK8WqZsLmQBmF1B1CPCIyVPgRc9DG7z11udgd0E5LEvuwKw==}
     engines: {node: '>=16'}
     peerDependencies:
       eslint: '>=9'
@@ -10086,6 +10090,8 @@ snapshots:
 
   '@eslint/js@9.33.0': {}
 
+  '@eslint/js@9.34.0': {}
+
   '@eslint/object-schema@2.1.6': {}
 
   '@eslint/plugin-kit@0.3.5':
@@ -14155,9 +14161,9 @@ snapshots:
       eslint: 9.33.0(jiti@1.21.0)
       semver: 7.7.2
 
-  eslint-config-cmyr@2.0.0-beta.9(@typescript-eslint/parser@8.40.0(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2))(eslint-plugin-react@7.34.2(eslint@9.33.0(jiti@1.21.0)))(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2):
+  eslint-config-cmyr@2.0.0-beta.15(@typescript-eslint/parser@8.40.0(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2))(eslint-plugin-react@7.34.2(eslint@9.33.0(jiti@1.21.0)))(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2):
     dependencies:
-      '@eslint/js': 9.33.0
+      '@eslint/js': 9.34.0
       '@stylistic/eslint-plugin': 5.2.3(eslint@9.33.0(jiti@1.21.0))
       eslint: 9.33.0(jiti@1.21.0)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.40.0(eslint@9.33.0(jiti@1.21.0))(typescript@5.9.2))(eslint@9.33.0(jiti@1.21.0))
@@ -17269,14 +17275,14 @@ snapshots:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.16.1
-      semver: 7.6.2
+      semver: 7.7.2
       validate-npm-package-license: 3.0.4
 
   normalize-package-data@6.0.1:
     dependencies:
       hosted-git-info: 7.0.2
       is-core-module: 2.16.1
-      semver: 7.6.2
+      semver: 7.7.2
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
