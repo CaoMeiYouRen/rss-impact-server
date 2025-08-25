@@ -4,8 +4,8 @@ updates:
     directory: /
     open-pull-requests-limit: 20
     schedule:
-      interval: weekly
-      time: "05:00"
+      interval: "monthly"
+      time: "04:00"
       timezone: Asia/Shanghai
     ignore:
       - dependency-name: semantic-release
@@ -41,3 +41,10 @@ updates:
       - dependency-name: "connect-redis"
         versions:
           - ">= 9.0.0" # 9.0.0 以上版本会导致 redis 无法连接
+  - package-ecosystem: github-actions
+    directory: /
+    open-pull-requests-limit: 20
+    schedule:
+      interval: "monthly"
+      time: "04:00"
+      timezone: Asia/Shanghai
