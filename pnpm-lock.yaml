@@ -383,8 +383,8 @@ importers:
         specifier: 1.0.0-beta.2
         version: 1.0.0-beta.2
       conventional-changelog-cmyr-config:
-        specifier: ^2.1.2
-        version: 2.1.2
+        specifier: ^3.0.0
+        version: 3.0.0
       cross-env:
         specifier: ^10.0.0
         version: 10.0.0
@@ -3892,9 +3892,9 @@ packages:
     resolution: {integrity: sha512-ROjNchA9LgfNMTTFSIWPzebCwOGFdgkEq45EnvvrmSLvCtAw0HSmrCs7/ty+wAeYUZyNay0YMUNYFTRL72PkBQ==}
     engines: {node: '>=16'}
 
-  conventional-changelog-cmyr-config@2.1.2:
-    resolution: {integrity: sha512-JucNefNoVC1StkGTSKeFRZgOLOsXnmqd3CoaxoI1QPZ093slTdhQrt1doTARJKzvmL+4RL80LiSRneH1mdRSmw==}
-    engines: {node: '>=12'}
+  conventional-changelog-cmyr-config@3.0.0:
+    resolution: {integrity: sha512-QhD/0545XRgspCcopi2d5L8ffFdiqsaqqcQfGRprv18CVH0NUQUtfORpbNqEOWwl1VxYj1pZUcVyxHTSfam1Xg==}
+    engines: {node: '>=18'}
 
   conventional-changelog-conventionalcommits@7.0.2:
     resolution: {integrity: sha512-NKXYmMR/Hr1DevQegFB4MwfM5Vv0m4UIxKZTTYuD98lpTknaZlSRrDOG4X7wIXpGkfsYxZTghUN+Qq+T0YQI7w==}
@@ -13430,11 +13430,10 @@ snapshots:
     dependencies:
       compare-func: 2.0.0
 
-  conventional-changelog-cmyr-config@2.1.2:
+  conventional-changelog-cmyr-config@3.0.0:
     dependencies:
       compare-func: 2.0.0
       debug: 4.4.1
-      q: 1.5.1
     transitivePeerDependencies:
       - supports-color
 
