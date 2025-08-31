@@ -380,8 +380,8 @@ importers:
         specifier: ^19.8.1
         version: 19.8.1(@types/node@24.3.0)(typescript@5.9.2)
       commitlint-config-cmyr:
-        specifier: 1.0.0-beta.2
-        version: 1.0.0-beta.2
+        specifier: 1.0.0
+        version: 1.0.0
       conventional-changelog-cmyr-config:
         specifier: ^3.0.0
         version: 3.0.0
@@ -3830,8 +3830,8 @@ packages:
     engines: {node: '>= 12'}
     hasBin: true
 
-  commitlint-config-cmyr@1.0.0-beta.2:
-    resolution: {integrity: sha512-q6m2kWXFvaKx73qBHtM/YwmZwLFGp1owEiYNbBov++IXmk5bPguNy8xYk+J9B0DzWjwE3v3oJzQv2ucvSeG47w==}
+  commitlint-config-cmyr@1.0.0:
+    resolution: {integrity: sha512-Tz+D9EUe0qq1/xkkPoSELol8sHF2pf0ziBN5zLSdgqfFG1kBFMYtJmi+UP78ehSBZGn1jrwmk2Qu9pFE8DWgJg==}
     engines: {node: '>=18'}
 
   commitlint@19.8.1:
@@ -13361,7 +13361,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  commitlint-config-cmyr@1.0.0-beta.2:
+  commitlint-config-cmyr@1.0.0:
     dependencies:
       '@commitlint/config-conventional': 19.8.1
 
