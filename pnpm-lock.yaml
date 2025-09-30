@@ -64,8 +64,8 @@ importers:
         specifier: ^10.4.15
         version: 10.4.18(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.18)
       '@nestjs/schedule':
-        specifier: ^6.0.0
-        version: 6.0.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.18)
+        specifier: ^6.0.1
+        version: 6.0.1(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.18)
       '@nestjs/serve-static':
         specifier: ^4.0.2
         version: 4.0.2(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.18)(express@4.21.2)
@@ -1635,8 +1635,8 @@ packages:
       '@nestjs/common': ^11.0.11
       '@nestjs/core': ^10.0.0
 
-  '@nestjs/schedule@6.0.0':
-    resolution: {integrity: sha512-aQySMw6tw2nhitELXd3EiRacQRgzUKD9mFcUZVOJ7jPLqIBvXOyvRWLsK9SdurGA+jjziAlMef7iB5ZEFFoQpw==}
+  '@nestjs/schedule@6.0.1':
+    resolution: {integrity: sha512-v3yO6cSPAoBSSyH67HWnXHzuhPhSNZhRmLY38JvCt2sqY8sPMOODpcU1D79iUMFf7k16DaMEbL4Mgx61ZhiC8Q==}
     peerDependencies:
       '@nestjs/common': ^11.0.11
       '@nestjs/core': ^10.0.0 || ^11.0.0
@@ -10969,7 +10969,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@nestjs/schedule@6.0.0(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.18)':
+  '@nestjs/schedule@6.0.1(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.18)':
     dependencies:
       '@nestjs/common': 11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 10.4.18(@nestjs/common@11.1.6(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.18)(encoding@0.1.13)(reflect-metadata@0.2.2)(rxjs@7.8.2)
