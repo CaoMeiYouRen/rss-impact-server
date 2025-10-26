@@ -1,8 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsIn, IsNotEmpty, IsObject, IsOptional } from 'class-validator'
+import { IsBoolean, IsIn, IsNotEmpty, IsObject, IsOptional, Length } from 'class-validator'
 import { MetaPushConfig, PushType, PushTypeList } from '@/interfaces/push-type'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
+import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
 
 export class NotificationConfig<T extends PushType = PushType> implements MetaPushConfig<PushType> {
 
@@ -67,5 +68,30 @@ export class NotificationConfig<T extends PushType = PushType> implements MetaPu
     @ApiProperty({ title: '最大长度', description: '一次推送文本的最大长度。默认值为 4096', example: 4096 })
     @IsSafeNaturalNumber(65535)
     maxLength: number
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '是否远程推送', description: '如果为否，则通过在本地调用 push-all-in-one 进行推送，可用性取决于本机网络；如果为是，则通过调用远程的 push-all-in-cloud 进行推送，适合服务器无法访问外网的情况', example: false })
+    @IsBoolean({})
+    isRemotePush: boolean
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '远程推送地址', description: '远程推送请设置本字段为 push-all-in-cloud 服务的地址。参考：https://github.com/CaoMeiYouRen/push-all-in-cloud', example: '' })
+    @IsOptional()
+    @IsCustomURL()
+    @Length(0, 1024)
+    remotePushUrl?: string
+
+
+    @SetAclCrudField({
+        labelWidth: 105,
+    })
+    @ApiProperty({ title: '远程推送KEY', description: '请替换为真实的 AUTH_FORWARD_KEY', example: '' })
+    @IsOptional()
+    @Length(0, 1024)
+    remoteForwardKey?: string
 
 }

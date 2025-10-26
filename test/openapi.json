@@ -5404,6 +5404,28 @@
                         "title": "最大长度",
                         "description": "一次推送文本的最大长度。默认值为 4096",
                         "example": 4096
+                    },
+                    "isRemotePush": {
+                        "type": "boolean",
+                        "title": "是否远程推送",
+                        "description": "如果为否，则通过在本地调用 push-all-in-one 进行推送，可用性取决于本机网络；如果为是，则通过调用远程的 push-all-in-cloud 进行推送，适合服务器无法访问外网的情况",
+                        "example": false
+                    },
+                    "remotePushUrl": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "远程推送地址",
+                        "description": "远程推送请设置本字段为 push-all-in-cloud 服务的地址。参考：https://github.com/CaoMeiYouRen/push-all-in-cloud",
+                        "example": ""
+                    },
+                    "remoteForwardKey": {
+                        "type": "string",
+                        "minLength": 0,
+                        "maxLength": 1024,
+                        "title": "远程推送KEY",
+                        "description": "请替换为真实的 AUTH_FORWARD_KEY",
+                        "example": ""
                     }
                 },
                 "required": [
@@ -5416,7 +5438,8 @@
                     "onlySummary",
                     "useAiSummary",
                     "appendAiSummary",
-                    "maxLength"
+                    "maxLength",
+                    "isRemotePush"
                 ]
             },
             "WebhookConfig": {

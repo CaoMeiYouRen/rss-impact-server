@@ -1,5 +1,6 @@
 import { runPushAllInOne as $runPushAllInOne } from 'push-all-in-one'
 import { mdToCqcode } from './helper'
+import { ajax } from './ajax'
 import { NotificationConfig } from '@/models/notification-config'
 import { logger } from '@/middlewares/logger.middleware'
 
@@ -14,7 +15,7 @@ import { logger } from '@/middlewares/logger.middleware'
  * @param pushConfig
  */
 export async function runPushAllInOne(title: string, desp: string, pushConfig: NotificationConfig, proxyUrl?: string) {
-    const { isMarkdown, type, config, option } = pushConfig
+    const { isMarkdown, type, config, option, isRemotePush } = pushConfig
     logger.debug('runPushAllInOne: %O', { title, desp, isMarkdown, type, config, option })
     // if (isMarkdown) {
     //     title = `${title.replace(/(\n[\s|\t]*\r*\n)/g, '\n')}\n`
@@ -44,9 +45,37 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
     if (['Telegram', 'Discord'].includes(type) && proxyUrl) { // 设置代理
         (config as any).PROXY_URL = proxyUrl
     }
+    if (isRemotePush) {
+        pushConfig.config = config
+        pushConfig.option = option
+        return runPushAllInCloud(title, desp, pushConfig, proxyUrl)
+    }
     return $runPushAllInOne(title, desp, {
         type,
         config,
         option,
     })
+}
+
+export async function runPushAllInCloud(title: string, desp: string, pushConfig: NotificationConfig, proxyUrl?: string) {
+    const { remotePushUrl, remoteForwardKey, type, config, option } = pushConfig
+    const payload = {
+        title,
+        desp,
+        type,
+        config,
+        option,
+    }
+    const url = new URL(remotePushUrl)
+    url.pathname = '/forward'
+    return (await ajax({
+        url: url.toString(),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(remoteForwardKey ? { AUTH_FORWARD_KEY: remoteForwardKey } : {}),
+        } as any,
+        data: payload,
+        proxyUrl,
+    }))?.data
 }

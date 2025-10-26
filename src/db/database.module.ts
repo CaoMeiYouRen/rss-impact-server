@@ -64,8 +64,8 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             bigNumberStrings: false, // 仅当它们无法用 JavaScript Number 对象准确表示时才会返回大数字作为 String 对象
                             ssl: DATABASE_SSL
                                 ? {
-                                        rejectUnauthorized: false,
-                                    }
+                                    rejectUnauthorized: false,
+                                }
                                 : undefined,
                         } as MysqlConnectionOptions
                         // mysql 仅在第一次加载时同步，否则会丢失数据
