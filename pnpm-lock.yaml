@@ -7,7 +7,7 @@ settings:
 overrides:
   '@types/methods': ^1.1.4
   '@types/superagent': ^8.1.0
-  axios: ^1.12.0
+  axios: ^1.13.1
   compare-func: 2.0.0
   cron: 4.3.3
   formidable: ^3.2.4
@@ -87,8 +87,8 @@ importers:
         specifier: 4.13.2
         version: 4.13.2
       axios:
-        specifier: ^1.12.0
-        version: 1.12.0(debug@4.4.3)
+        specifier: ^1.13.1
+        version: 1.13.1(debug@4.4.3)
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1(encoding@0.1.13)
@@ -440,7 +440,7 @@ importers:
         version: 5.9.2
       vitepress:
         specifier: ^1.6.4
-        version: 1.6.4(@algolia/client-search@5.35.0)(@types/node@24.6.0)(axios@1.12.0(debug@4.4.3))(postcss@8.5.6)(search-insights@2.17.2)(terser@5.43.1)(typescript@5.9.2)
+        version: 1.6.4(@algolia/client-search@5.35.0)(@types/node@24.6.0)(axios@1.13.1(debug@4.4.3))(postcss@8.5.6)(search-insights@2.17.2)(terser@5.43.1)(typescript@5.9.2)
 
 packages:
 
@@ -2974,7 +2974,7 @@ packages:
     resolution: {integrity: sha512-fbGYivgK5uBTRt7p5F3zy6VrETlV9RtZjBqd1/HxGdjdckBgBM4ugP8LHpjolqTj14TXTxSK1ZfgPbHYyGuH7g==}
     peerDependencies:
       async-validator: ^4
-      axios: ^1.12.0
+      axios: ^1.13.1
       change-case: ^5
       drauu: ^0.4
       focus-trap: ^7
@@ -3433,8 +3433,8 @@ packages:
   aws4@1.13.0:
     resolution: {integrity: sha512-3AungXC4I8kKsS9PuS4JH2nc+0bVY/mjgrephHTIi8fpEeGsTHBUJeosp0Wc1myYMElmD0B3Oc4XL/HVJ4PV2g==}
 
-  axios@1.12.0:
-    resolution: {integrity: sha512-oXTDccv8PcfjZmPGlWsPSwtOJCZ/b6W5jAMCNcfwJbCzDckwG0jrYJFaWH1yvivfCXjVzV/SPDEhMB3Q+DSurg==}
+  axios@1.13.1:
+    resolution: {integrity: sha512-hU4EGxxt+j7TQijx1oYdAjw4xuIp1wRQSsbMFwSthCWeBQur1eF+qJ5iQ5sN3Tw8YRzQNKb8jszgBdMDVqwJcw==}
 
   babel-jest@30.2.0:
     resolution: {integrity: sha512-0YiBEOxWqKkSQWL9nNGGEgndoeL0ZpWrbLMNL5u/Kaxrli3Eaxlt3ZtIDktEvXt4L/R9r3ODr2zKwGM/2BjxVw==}
@@ -12529,13 +12529,13 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/integrations@12.8.2(axios@1.12.0(debug@4.4.3))(focus-trap@7.6.5)(typescript@5.9.2)':
+  '@vueuse/integrations@12.8.2(axios@1.13.1(debug@4.4.3))(focus-trap@7.6.5)(typescript@5.9.2)':
     dependencies:
       '@vueuse/core': 12.8.2(typescript@5.9.2)
       '@vueuse/shared': 12.8.2(typescript@5.9.2)
       vue: 3.5.18(typescript@5.9.2)
     optionalDependencies:
-      axios: 1.12.0(debug@4.4.3)
+      axios: 1.13.1(debug@4.4.3)
       focus-trap: 7.6.5
     transitivePeerDependencies:
       - typescript
@@ -13043,7 +13043,7 @@ snapshots:
 
   aws4@1.13.0: {}
 
-  axios@1.12.0(debug@4.4.3):
+  axios@1.13.1(debug@4.4.3):
     dependencies:
       follow-redirects: 1.15.11(debug@4.4.3)
       form-data: 4.0.4
@@ -17548,7 +17548,7 @@ snapshots:
     dependencies:
       '@types/request': 2.48.12
       '@types/superagent': 8.1.9
-      axios: 1.12.0(debug@4.4.3)
+      axios: 1.13.1(debug@4.4.3)
       combos: 0.2.0
       fs-extra: 9.1.0
       js-yaml: 4.1.0
@@ -18009,7 +18009,7 @@ snapshots:
   push-all-in-one@4.4.7:
     dependencies:
       '@colors/colors': 1.6.0
-      axios: 1.12.0(debug@4.4.3)
+      axios: 1.13.1(debug@4.4.3)
       debug: 4.4.3
       https-proxy-agent: 7.0.6
       nodemailer: 7.0.10
@@ -19587,7 +19587,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.43.1
 
-  vitepress@1.6.4(@algolia/client-search@5.35.0)(@types/node@24.6.0)(axios@1.12.0(debug@4.4.3))(postcss@8.5.6)(search-insights@2.17.2)(terser@5.43.1)(typescript@5.9.2):
+  vitepress@1.6.4(@algolia/client-search@5.35.0)(@types/node@24.6.0)(axios@1.13.1(debug@4.4.3))(postcss@8.5.6)(search-insights@2.17.2)(terser@5.43.1)(typescript@5.9.2):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.35.0)(search-insights@2.17.2)
@@ -19600,7 +19600,7 @@ snapshots:
       '@vue/devtools-api': 7.7.7
       '@vue/shared': 3.5.18
       '@vueuse/core': 12.8.2(typescript@5.9.2)
-      '@vueuse/integrations': 12.8.2(axios@1.12.0(debug@4.4.3))(focus-trap@7.6.5)(typescript@5.9.2)
+      '@vueuse/integrations': 12.8.2(axios@1.13.1(debug@4.4.3))(focus-trap@7.6.5)(typescript@5.9.2)
       focus-trap: 7.6.5
       mark.js: 8.11.1
       minisearch: 7.1.2
