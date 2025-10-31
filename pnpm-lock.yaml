@@ -307,8 +307,8 @@ importers:
         specifier: ^1.5.4
         version: 1.5.4
       '@types/connect-sqlite3':
-        specifier: ^0.9.5
-        version: 0.9.5
+        specifier: ^0.9.6
+        version: 0.9.6
       '@types/cookie-parser':
         specifier: ^1.4.10
         version: 1.4.10(@types/express@5.0.3)
@@ -2463,8 +2463,8 @@ packages:
   '@types/connect-history-api-fallback@1.5.4':
     resolution: {integrity: sha512-n6Cr2xS1h4uAulPRdlw6Jl6s1oG8KrVilPN2yUITEs+K48EzMJJ3W1xy8K5eWuFvjp3R74AOIGSmp2UfBJ8HFw==}
 
-  '@types/connect-sqlite3@0.9.5':
-    resolution: {integrity: sha512-T9HqA7a+eOSM+0ktRZbS1z7WOsRw0ZF3gaQjaExEN8wOnjmnPClkCgM815ta7vyeDF7wxL3aPmDOwrWuYKMr+g==}
+  '@types/connect-sqlite3@0.9.6':
+    resolution: {integrity: sha512-XTzIvdMu71UPtc2J38KAi02VB0wGk6mBwMDGQg1JxRhqr47Sau4sV7P+i2RbcDSP01K699QfXisR7gfRO9pH1Q==}
 
   '@types/connect@3.4.36':
     resolution: {integrity: sha512-P63Zd/JUGq+PdrM1lv0Wv5SBYeA2+CORvbrXbngriYY0jzLUWfQMQQxOhjONEz/wlHOAxOdY7CY65rgQdTjq2w==}
@@ -11912,7 +11912,7 @@ snapshots:
       '@types/express-serve-static-core': 4.19.1
       '@types/node': 24.6.0
 
-  '@types/connect-sqlite3@0.9.5':
+  '@types/connect-sqlite3@0.9.6':
     dependencies:
       '@types/express': 5.0.3
 
