@@ -334,8 +334,8 @@ importers:
         specifier: ^4.17.20
         version: 4.17.20
       '@types/md5':
-        specifier: ^2.3.5
-        version: 2.3.5
+        specifier: ^2.3.6
+        version: 2.3.6
       '@types/module-alias':
         specifier: ^2.0.4
         version: 2.0.4
@@ -2571,8 +2571,8 @@ packages:
   '@types/markdown-it@14.1.2':
     resolution: {integrity: sha512-promo4eFwuiW+TfGxhi+0x3czqTYJkG8qB17ZUJiVF10Xm7NLVRSLUsfRTU/6h1e24VvRnXCx+hG7li58lkzog==}
 
-  '@types/md5@2.3.5':
-    resolution: {integrity: sha512-/i42wjYNgE6wf0j2bcTX6kuowmdL/6PE4IVitMpm2eYKBUuYCprdcWVK+xEF0gcV6ufMCRhtxmReGfc6hIK7Jw==}
+  '@types/md5@2.3.6':
+    resolution: {integrity: sha512-WD69gNXtRBnpknfZcb4TRQ0XJQbUPZcai/Qdhmka3sxUR3Et8NrXoeAoknG/LghYHTf4ve795rInVYHBTQdNVA==}
 
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -12142,7 +12142,7 @@ snapshots:
       '@types/linkify-it': 5.0.0
       '@types/mdurl': 2.0.0
 
-  '@types/md5@2.3.5': {}
+  '@types/md5@2.3.6': {}
 
   '@types/mdast@3.0.15':
     dependencies:
