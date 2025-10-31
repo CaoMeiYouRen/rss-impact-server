@@ -73,7 +73,7 @@
     "dotenv": "^17.2.3",
     "entities": "^7.0.0",
     "express-openid-connect": "^2.19.2",
-    "express-rate-limit": "^8.1.0",
+    "express-rate-limit": "^8.2.1",
     "express-session": "^1.18.2",
     "file-type": "16.5.4",
     "fs-extra": "^11.3.2",
