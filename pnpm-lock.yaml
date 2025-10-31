@@ -310,8 +310,8 @@ importers:
         specifier: ^0.9.5
         version: 0.9.5
       '@types/cookie-parser':
-        specifier: ^1.4.9
-        version: 1.4.9(@types/express@5.0.3)
+        specifier: ^1.4.10
+        version: 1.4.10(@types/express@5.0.3)
       '@types/debug':
         specifier: ^4.1.12
         version: 4.1.12
@@ -2476,8 +2476,8 @@ packages:
   '@types/conventional-commits-parser@5.0.1':
     resolution: {integrity: sha512-7uz5EHdzz2TqoMfV7ee61Egf5y6NkcO4FB/1iCCQnbeiI1F3xzv3vK5dBCXUCLQgGYS+mUeigK1iKQzvED+QnQ==}
 
-  '@types/cookie-parser@1.4.9':
-    resolution: {integrity: sha512-tGZiZ2Gtc4m3wIdLkZ8mkj1T6CEHb35+VApbL2T14Dew8HA7c+04dmKqsKRNC+8RJPm16JEK0tFSwdZqubfc4g==}
+  '@types/cookie-parser@1.4.10':
+    resolution: {integrity: sha512-B4xqkqfZ8Wek+rCOeRxsjMS9OgvzebEzzLYw7NHYuvzb7IdxOkI0ZHGgeEBX4PUM7QGVvNSK60T3OvWj3YfBRg==}
     peerDependencies:
       '@types/express': '*'
 
@@ -12020,7 +12020,7 @@ snapshots:
     dependencies:
       '@types/node': 24.6.0
 
-  '@types/cookie-parser@1.4.9(@types/express@5.0.3)':
+  '@types/cookie-parser@1.4.10(@types/express@5.0.3)':
     dependencies:
       '@types/express': 5.0.3
 
