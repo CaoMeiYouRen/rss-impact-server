@@ -126,8 +126,8 @@ importers:
         specifier: 4.3.3
         version: 4.3.3
       dayjs:
-        specifier: ^1.11.18
-        version: 1.11.18
+        specifier: ^1.11.19
+        version: 1.11.19
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
@@ -4161,8 +4161,8 @@ packages:
   daveutils@0.4.65:
     resolution: {integrity: sha512-OfR33yzbJsarKJ2wchckWeSaM1OI4iI1gjMqhccwnsfABBfKz2D4aAtQD4gX5WwQhq41usnPfjfkgx53uXnQSQ==}
 
-  dayjs@1.11.18:
-    resolution: {integrity: sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA==}
+  dayjs@1.11.19:
+    resolution: {integrity: sha512-t5EcLVS6QPBNqM2z8fakk/NKel+Xzshgt8FFKAn+qwlD1pzZWxh0nVCrvFK7ZDb6XucZeF9z8C7CBWTRIVApAw==}
 
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -14008,7 +14008,7 @@ snapshots:
     dependencies:
       request: 2.88.2
 
-  dayjs@1.11.18: {}
+  dayjs@1.11.19: {}
 
   debug@2.6.9:
     dependencies:
@@ -19452,7 +19452,7 @@ snapshots:
       ansis: 3.17.0
       app-root-path: 3.1.0
       buffer: 6.0.3
-      dayjs: 1.11.18
+      dayjs: 1.11.19
       debug: 4.4.3
       dedent: 1.7.0
       dotenv: 16.6.1
