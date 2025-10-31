@@ -222,8 +222,8 @@ importers:
         specifier: ^8.16.3
         version: 8.16.3
       push-all-in-one:
-        specifier: ^4.4.4
-        version: 4.4.4
+        specifier: ^4.4.7
+        version: 4.4.7
       query-string:
         specifier: ^7.1.3
         version: 7.1.3
@@ -6926,8 +6926,8 @@ packages:
   node-releases@2.0.21:
     resolution: {integrity: sha512-5b0pgg78U3hwXkCM8Z9b2FJdPZlr9Psr9V2gQPESdGHqbntyFJKFW4r5TeWGFzafGY3hzs1JC62VEQMbl1JFkw==}
 
-  nodemailer@7.0.6:
-    resolution: {integrity: sha512-F44uVzgwo49xboqbFgBGkRaiMgtoBrBEWCVincJPK9+S9Adkzt/wXCLKbf7dxucmxfTI5gHGB+bEmdyzN6QKjw==}
+  nodemailer@7.0.10:
+    resolution: {integrity: sha512-Us/Se1WtT0ylXgNFfyFSx4LElllVLJXQjWi2Xz17xWw7amDKO2MLtFnVp1WACy7GkVGs+oBlRopVNUzlrGSw1w==}
     engines: {node: '>=6.0.0'}
 
   nopt@5.0.0:
@@ -7587,8 +7587,8 @@ packages:
   pure-rand@7.0.1:
     resolution: {integrity: sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==}
 
-  push-all-in-one@4.4.4:
-    resolution: {integrity: sha512-7LwEVZWluJw2tdfTabQkYR1cm07ayTCuVprwkfKqLFtc78dBbuN7OSzu13MDPaymSg0SdovW36xAe0snw3lUWA==}
+  push-all-in-one@4.4.7:
+    resolution: {integrity: sha512-vsNrsvkGufFQ26m9UDmy4bPdHx5JTl8xkH+LAIr2/6Dy6VKZ9ljIfUD3BP5wIzA1f6AD2iEcLytH3bXFS2Vrow==}
     engines: {node: '>=20'}
 
   q@1.5.1:
@@ -17494,7 +17494,7 @@ snapshots:
 
   node-releases@2.0.21: {}
 
-  nodemailer@7.0.6: {}
+  nodemailer@7.0.10: {}
 
   nopt@5.0.0:
     dependencies:
@@ -18157,13 +18157,13 @@ snapshots:
 
   pure-rand@7.0.1: {}
 
-  push-all-in-one@4.4.4:
+  push-all-in-one@4.4.7:
     dependencies:
       '@colors/colors': 1.6.0
       axios: 1.12.0(debug@4.4.3)
       debug: 4.4.3
       https-proxy-agent: 7.0.6
-      nodemailer: 7.0.6
+      nodemailer: 7.0.10
       socks-proxy-agent: 8.0.5
     transitivePeerDependencies:
       - supports-color
