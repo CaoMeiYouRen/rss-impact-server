@@ -124,7 +124,7 @@
     "@nestjs/cli": "^11.0.10",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^10.4.15",
-    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
     "@types/autocannon": "^7.12.7",
     "@types/bcrypt": "^5.0.2",
     "@types/cache-manager": "^4.0.6",
