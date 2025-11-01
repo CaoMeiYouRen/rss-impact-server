@@ -17,7 +17,7 @@
     "pnpm": ">=9"
   },
   "scripts": {
-    "lint": "cross-env NODE_ENV=production eslint src test --fix --ext .ts,.js",
+    "lint": "cross-env NODE_ENV=production eslint --fix",
     "lint:md": "lint-md README.md docs/**/*.md .github/**/*.md --fix",
     "release": "semantic-release",
     "prebuild": "rimraf dist",

@@ -1,6 +1,5 @@
-/* eslint-disable no-console, @typescript-eslint/no-var-requires */
-const fs = require('fs-extra')
 const path = require('path')
+const fs = require('fs-extra')
 const { nodeFileTrace } = require('@vercel/nft');
 // !!! if any new dependencies are added, update the Dockerfile !!!
 
