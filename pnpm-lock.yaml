@@ -28,7 +28,7 @@ overrides:
   tar-fs: ^2.1.4
   tmp: ^0.2.4
   sha.js: ^2.4.12
-  vite: ^5.4.20
+  vite: ^5.4.21
   '@nestjs/common': ^11.0.11
   multer: ^2.0.2
   brace-expansion: ^2.0.2
@@ -2899,7 +2899,7 @@ packages:
     resolution: {integrity: sha512-7Yx/SXSOcQq5HiiV3orevHUFn+pmMB4cgbEkDYgnkUWb0WfeQ/wa2yFv6D5ICiCQOVpjA7vYDXrC7AGO8yjDHA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
-      vite: ^5.4.20
+      vite: ^5.4.21
       vue: ^3.2.25
 
   '@vue/compiler-core@3.5.18':
@@ -8924,8 +8924,8 @@ packages:
   vfile@6.0.3:
     resolution: {integrity: sha512-KzIbH/9tXat2u30jf+smMwFCsno4wHVdNmzFyL+T/L3UGqqk6JKfVqOFOZEpZSHADH1k40ab6NUIXZq422ov3Q==}
 
-  vite@5.4.20:
-    resolution: {integrity: sha512-j3lYzGC3P+B5Yfy/pfKNgVEg4+UtcIJcVRt2cDjIOmhLourAqPqf8P7acgxeiSgUB7E3p2P8/3gNIgDLpwzs4g==}
+  vite@5.4.21:
+    resolution: {integrity: sha512-o5a9xKjbtuhY6Bi5S3+HvbRERmouabWbyUcpXXUA1u+GNUKoROi9byOJ8M0nHbHYHkYICiMlqxkg1KkYmm25Sw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -12350,9 +12350,9 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vitejs/plugin-vue@5.2.4(vite@5.4.20(@types/node@24.9.2)(terser@5.43.1))(vue@3.5.18(typescript@5.9.3))':
+  '@vitejs/plugin-vue@5.2.4(vite@5.4.21(@types/node@24.9.2)(terser@5.43.1))(vue@3.5.18(typescript@5.9.3))':
     dependencies:
-      vite: 5.4.20(@types/node@24.9.2)(terser@5.43.1)
+      vite: 5.4.21(@types/node@24.9.2)(terser@5.43.1)
       vue: 3.5.18(typescript@5.9.3)
 
   '@vue/compiler-core@3.5.18':
@@ -19446,7 +19446,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@5.4.20(@types/node@24.9.2)(terser@5.43.1):
+  vite@5.4.21(@types/node@24.9.2)(terser@5.43.1):
     dependencies:
       esbuild: 0.25.10
       postcss: 8.5.6
@@ -19465,7 +19465,7 @@ snapshots:
       '@shikijs/transformers': 2.5.0
       '@shikijs/types': 2.5.0
       '@types/markdown-it': 14.1.2
-      '@vitejs/plugin-vue': 5.2.4(vite@5.4.20(@types/node@24.9.2)(terser@5.43.1))(vue@3.5.18(typescript@5.9.3))
+      '@vitejs/plugin-vue': 5.2.4(vite@5.4.21(@types/node@24.9.2)(terser@5.43.1))(vue@3.5.18(typescript@5.9.3))
       '@vue/devtools-api': 7.7.7
       '@vue/shared': 3.5.18
       '@vueuse/core': 12.8.2(typescript@5.9.3)
@@ -19474,7 +19474,7 @@ snapshots:
       mark.js: 8.11.1
       minisearch: 7.1.2
       shiki: 2.5.0
-      vite: 5.4.20(@types/node@24.9.2)(terser@5.43.1)
+      vite: 5.4.21(@types/node@24.9.2)(terser@5.43.1)
       vue: 3.5.18(typescript@5.9.3)
     optionalDependencies:
       postcss: 8.5.6
