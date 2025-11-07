@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsIn, IsNotEmpty, IsObject, IsOptional, Length } from 'class-validator'
+import { IsBoolean, IsIn, IsNotEmpty, IsObject, IsOptional, Length, ValidateIf } from 'class-validator'
 import { MetaPushConfig, PushType, PushTypeList } from '@/interfaces/push-type'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
@@ -83,6 +83,7 @@ export class NotificationConfig<T extends PushType = PushType> implements MetaPu
     @IsOptional()
     @IsCustomURL()
     @Length(0, 1024)
+    @ValidateIf((o) => o.isRemotePush === true)
     remotePushUrl?: string
 
 
@@ -92,6 +93,7 @@ export class NotificationConfig<T extends PushType = PushType> implements MetaPu
     @ApiProperty({ title: '远程推送KEY', description: '请替换为真实的 AUTH_FORWARD_KEY', example: '' })
     @IsOptional()
     @Length(0, 1024)
+    @ValidateIf((o) => o.isRemotePush === true)
     remoteForwardKey?: string
 
 }
