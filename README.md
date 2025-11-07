@@ -30,7 +30,10 @@
 >
 > 本项目为后端部分，前端部分请参考 [rss-impact-web](https://github.com/CaoMeiYouRen/rss-impact-web)。
 >
-> 当 RSS Impact 开发完毕的时候，您将收到通知邮件，**[点击链接立即加入等待名单](https://waitlist.cmyr.dev)**。
+> **问题反馈和交流群**：
+>
+>    - QQ 群: [807530287](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=K3QRQlxv_y7KqLhdEZmfouxKv9WHLN_v&authKey=pfdJX4EkvKGQXQrtM5BR968EbtFc9WnVvz8AtLiSUTGZRgw3P1wBWESSDcEjoCZB&noverify=0&group_code=807530287)
+>    - Discord: [草梅友仁的交流群](https://discord.gg/6bfPevfyr6)
 
 ## 🏠 主页
 
