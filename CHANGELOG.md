@@ -1,5 +1,12 @@
 # rss-impact-server
 
+## [1.17.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.17.0...v1.17.1) (2025-11-08)
+
+
+### 🐛 Bug 修复
+
+* **notification:** 添加基于isRemotePush的远程推送字段条件验证 ([0956af9](https://github.com/CaoMeiYouRen/rss-impact-server/commit/0956af9))
+
 ## 1.17.0 (2025-11-01)
 
 * chore: 移除旧的 commitlint 配置并添加新的配置 ([709c149](https://github.com/CaoMeiYouRen/rss-impact-server/commit/709c149))
