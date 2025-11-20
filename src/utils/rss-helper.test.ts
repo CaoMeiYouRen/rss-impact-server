@@ -27,6 +27,12 @@ describe('formatGuid', () => {
         const result = formatGuid(entry)
         expect(isUUID(result)).toBe(true)
     })
+
+    it('should return comments if guid, id, and link are not URLs', () => {
+        const entry = { guid: '1234567890', id: '0987654321', link: 'not-a-url', comments: 'https://example.com/comments' }
+        const result = formatGuid(entry)
+        expect(result).toBe(entry.comments)
+    })
 })
 
 describe('rssItemToArticle', () => {
@@ -159,6 +165,28 @@ describe('rssItemToArticle', () => {
         const article = rssItemToArticle(rssItem)
         expect(article.enclosureType).toEqual(expectedArticle.enclosureType)
         expect(article.enclosureUrl).toEqual(expectedArticle.enclosureUrl)
+    })
+
+    it('should use guid as link if link is not a URL but guid is', () => {
+        const rssItem = {
+            guid: 'https://example.com/article',
+            link: 'not-a-url',
+            title: 'Article Title',
+            'content:encoded': 'Article content',
+        }
+        const article = rssItemToArticle(rssItem)
+        expect(article.link).toBe('https://example.com/article')
+    })
+
+    it('should set link to null if neither link nor guid are URLs', () => {
+        const rssItem = {
+            guid: 'not-a-url',
+            link: 'not-a-url',
+            title: 'Article Title',
+            'content:encoded': 'Article content',
+        }
+        const article = rssItemToArticle(rssItem)
+        expect(article.link).toBeNull()
     })
 })
 
