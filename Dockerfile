@@ -1,6 +1,6 @@
-FROM caomeiyouren/alpine-nodejs:alpine3-node20 AS nodejs
+FROM caomeiyouren/alpine-nodejs:alpine3-node22 AS nodejs
 
-FROM caomeiyouren/alpine-nodejs-minimize:latest AS runtime
+FROM caomeiyouren/alpine-nodejs-minimize:alpine3-node22 AS runtime
 
 # 前端构建阶段
 FROM nodejs AS frontend-builder
