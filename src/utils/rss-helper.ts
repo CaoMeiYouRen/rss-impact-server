@@ -50,7 +50,14 @@ export function formatGuid(e: any): string {
     if (isURL(e.id)) {
         return e.id
     }
-    return e.link || uuid()
+    if (isURL(e.link)) {
+        return e.link
+    }
+    // jackett 中的 comments 为 url link。
+    if (isURL(e.comments)) {
+        return e.comments
+    }
+    return uuid()
 }
 
 /**
@@ -83,7 +90,14 @@ export function rssNormalize(rss: Record<string, any>) {
 export function rssItemToArticle(item: Record<string, any> & Item) {
     const article = new Article()
     article.guid = formatGuid(item)
-    article.link = item.link
+    if (isURL(item.link)) {
+        article.link = item.link
+    } else if (isURL(article.guid)) {
+        article.link = article.guid
+    } else {
+        article.link = null
+    }
+
     article.title = item.title
     article.content = item['content:encoded'] || item.content
     if (item.pubDate || item.isoDate) {
