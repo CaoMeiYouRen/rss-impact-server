@@ -1,5 +1,18 @@
 # rss-impact-server
 
+## [1.17.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.17.1...v1.17.2) (2025-11-22)
+
+
+### ✅ 测试
+
+* 添加 IsCustomURL 装饰器的单元测试 ([abd6c6e](https://github.com/CaoMeiYouRen/rss-impact-server/commit/abd6c6e))
+* 添加对 formatGuid 和 rssItemToArticle 函数的单元测试以增强测试覆盖率 ([70e462d](https://github.com/CaoMeiYouRen/rss-impact-server/commit/70e462d))
+
+
+### 🐛 Bug 修复
+
+* 更新 formatGuid 和 rssItemToArticle 函数以增强链接处理逻辑 ([c3c3204](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c3c3204))
+
 ## [1.17.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.17.0...v1.17.1) (2025-11-08)
 
 
