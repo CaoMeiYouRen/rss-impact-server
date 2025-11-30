@@ -165,7 +165,7 @@
     "jest-openapi": "^0.14.2",
     "lint-staged": "^16.2.6",
     "octokit": "^5.0.5",
-    "semantic-release": "^25.0.1",
+    "semantic-release": "^25.0.2",
     "semantic-release-cmyr-config": "^1.0.0",
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.4",
