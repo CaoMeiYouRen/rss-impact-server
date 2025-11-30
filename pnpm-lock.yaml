@@ -404,8 +404,8 @@ importers:
         specifier: ^0.14.2
         version: 0.14.2(debug@4.4.3)
       lint-staged:
-        specifier: ^16.2.6
-        version: 16.2.6
+        specifier: ^16.2.7
+        version: 16.2.7
       octokit:
         specifier: ^5.0.5
         version: 5.0.5
@@ -3204,6 +3204,10 @@ packages:
   ansi-escapes@4.3.2:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
     engines: {node: '>=8'}
+
+  ansi-escapes@7.2.0:
+    resolution: {integrity: sha512-g6LhBsl+GBPRWGWsBtutpzBYuIIdBkLEvad5C/va/74Db018+5TZiyA26cZJAr3Rft5lprVqOIPxf5Vid6tqAw==}
+    engines: {node: '>=18'}
 
   ansi-escapes@7.2.0:
     resolution: {integrity: sha512-g6LhBsl+GBPRWGWsBtutpzBYuIIdBkLEvad5C/va/74Db018+5TZiyA26cZJAr3Rft5lprVqOIPxf5Vid6tqAw==}
@@ -6090,8 +6094,8 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  lint-staged@16.2.6:
-    resolution: {integrity: sha512-s1gphtDbV4bmW1eylXpVMk2u7is7YsrLl8hzrtvC70h4ByhcMLZFY01Fx05ZUDNuv1H8HO4E+e2zgejV1jVwNw==}
+  lint-staged@16.2.7:
+    resolution: {integrity: sha512-lDIj4RnYmK7/kXMya+qJsmkRFkGolciXjrsZ6PC25GdTfWOAWetR0ZbsNXRAj1EHHImRSalc+whZFg56F5DVow==}
     engines: {node: '>=20.17'}
     hasBin: true
 
@@ -9205,8 +9209,8 @@ packages:
     resolution: {integrity: sha512-4wZWvE398hCP7O8n3nXKu/vdq1HcH01ixYlCREaJL5NUMwQ0g3MaGFUBNSlmBtKmhbtVG/Cm6lyYmSVTEVil8A==}
     engines: {node: ^14.17.0 || >=16.0.0}
 
-  yaml@2.8.1:
-    resolution: {integrity: sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw==}
+  yaml@2.8.2:
+    resolution: {integrity: sha512-mplynKqc1C2hTVYxd0PU2xQAc22TI1vShAYGksCCfxbn/dFwnHTNi1bvYsBTkhdUNtGIf5xNOg938rrSSYvS9A==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -12694,6 +12698,10 @@ snapshots:
   ansi-escapes@4.3.2:
     dependencies:
       type-fest: 0.21.3
+
+  ansi-escapes@7.2.0:
+    dependencies:
+      environment: 1.1.0
 
   ansi-escapes@7.2.0:
     dependencies:
@@ -16244,7 +16252,7 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  lint-staged@16.2.6:
+  lint-staged@16.2.7:
     dependencies:
       commander: 14.0.2
       listr2: 9.0.5
@@ -16252,7 +16260,7 @@ snapshots:
       nano-spawn: 2.0.0
       pidtree: 0.6.0
       string-argv: 0.3.2
-      yaml: 2.8.1
+      yaml: 2.8.2
 
   listr2@9.0.5:
     dependencies:
@@ -19812,9 +19820,9 @@ snapshots:
     dependencies:
       eslint-visitor-keys: 3.4.3
       lodash: 4.17.21
-      yaml: 2.8.1
+      yaml: 2.8.2
 
-  yaml@2.8.1: {}
+  yaml@2.8.2: {}
 
   yargs-parser@15.0.3:
     dependencies:
