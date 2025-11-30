@@ -259,8 +259,8 @@ importers:
         specifier: ^0.3.27
         version: 0.3.27(ioredis@5.8.2)(mysql2@3.15.3)(pg@8.16.3)(reflect-metadata@0.2.2)(sqlite3@5.1.7)(ts-node@10.9.2(@types/node@24.9.2)(typescript@5.9.3))
       validator:
-        specifier: ^13.15.20
-        version: 13.15.20
+        specifier: ^13.15.23
+        version: 13.15.23
       winston:
         specifier: ^3.18.3
         version: 3.18.3
@@ -365,8 +365,8 @@ importers:
         specifier: ^5.0.6
         version: 5.0.6
       '@types/validator':
-        specifier: ^13.15.4
-        version: 13.15.4
+        specifier: ^13.15.10
+        version: 13.15.10
       autocannon:
         specifier: ^8.0.0
         version: 8.0.0
@@ -2797,8 +2797,8 @@ packages:
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
-  '@types/validator@13.15.4':
-    resolution: {integrity: sha512-LSFfpSnJJY9wbC0LQxgvfb+ynbHftFo0tMsFOl/J4wexLnYMmDSPaj2ZyDv3TkfL1UePxPrxOWJfbiRS8mQv7A==}
+  '@types/validator@13.15.10':
+    resolution: {integrity: sha512-T8L6i7wCuyoK8A/ZeLYt1+q0ty3Zb9+qbSSvrIVitzT3YjZqkTZ40IbRsPanlB4h1QB3JVL1SYCdR6ngtFYcuA==}
 
   '@types/web-bluetooth@0.0.21':
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
@@ -9074,8 +9074,8 @@ packages:
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
-  validator@13.15.20:
-    resolution: {integrity: sha512-KxPOq3V2LmfQPP4eqf3Mq/zrT0Dqp2Vmx2Bn285LwVahLc+CsxOM0crBHczm8ijlcjZ0Q5Xd6LW3z3odTPnlrw==}
+  validator@13.15.23:
+    resolution: {integrity: sha512-4yoz1kEWqUjzi5zsPbAS/903QXSYp0UOtHsPpp7p9rHAw/W+dkInskAE386Fat3oKRROwO98d9ZB0G4cObgUyw==}
     engines: {node: '>= 0.10'}
 
   vary@1.1.2:
@@ -12292,7 +12292,7 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
-  '@types/validator@13.15.4': {}
+  '@types/validator@13.15.10': {}
 
   '@types/web-bluetooth@0.0.21': {}
 
@@ -13503,9 +13503,9 @@ snapshots:
 
   class-validator@0.14.2:
     dependencies:
-      '@types/validator': 13.15.4
+      '@types/validator': 13.15.10
       libphonenumber-js: 1.12.7
-      validator: 13.15.20
+      validator: 13.15.23
 
   clean-css@4.2.4:
     dependencies:
@@ -19682,7 +19682,7 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  validator@13.15.20: {}
+  validator@13.15.23: {}
 
   vary@1.1.2: {}
 
