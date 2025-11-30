@@ -136,8 +136,8 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0
       express-openid-connect:
-        specifier: ^2.19.2
-        version: 2.19.2(express@4.21.2)
+        specifier: ^2.19.3
+        version: 2.19.3(express@4.21.2)
       express-rate-limit:
         specifier: ^8.2.1
         version: 8.2.1(express@4.21.2)
@@ -3318,6 +3318,10 @@ packages:
     resolution: {integrity: sha512-Y7Wt51eKJSyi80hFrJCePGGNo5ktJCslFuboqJsbf57CCPcm5zztluPlc4/aD8sWsKvlwatezpV4U1efk8kpjg==}
     engines: {node: '>= 0.4'}
 
+  array.prototype.reduce@1.0.8:
+    resolution: {integrity: sha512-DwuEqgXFBwbmZSRqt3BpQigWNUoqw9Ml2dTWdF3B2zQlQX4OeUE0zyuzX0fX0IbTvjdkZbcBTU3idgpO78qkTw==}
+    engines: {node: '>= 0.4'}
+
   array.prototype.toreversed@1.1.2:
     resolution: {integrity: sha512-wwDCoT4Ck4Cz7sLtgUmzR5UV3YF5mFHUlbChCzZBQZ+0m2cl/DH3tKgvphv1nKgFsJ48oCSg6p91q2Vm0I/ZMA==}
 
@@ -4413,6 +4417,9 @@ packages:
     resolution: {integrity: sha512-WSzPgsdLtTcQwm4CROfS5ju2Wa1QQcVeT37jFjYzdFz1r9ahadC8B8/a4qxJxM+09F18iumCdRmlr96ZYkQvEg==}
     engines: {node: '>= 0.4'}
 
+  es-array-method-boxes-properly@1.0.0:
+    resolution: {integrity: sha512-wd6JXUmyHmt8T5a2xreUwKcGPq6f1f+WwIJkijUqiGcJz1qqnZgP6XIK+QyIWU5lT7imeNxUll48bziG+TSYcA==}
+
   es-define-property@1.0.1:
     resolution: {integrity: sha512-e3nRfgfUZ4rNGL232gUgX06QNyyez04KdjFrF+LTRoOXmrOgFKDg4BCdsjW8EnT69eqdYGmRpJwiPVYNrCaW3g==}
     engines: {node: '>= 0.4'}
@@ -4750,8 +4757,8 @@ packages:
     resolution: {integrity: sha512-u/feCi0GPsI+988gU2FLcsHyAHTU0MX1Wg68NhAnN7z/+C5wqG+CY8J53N9ioe8RXgaoz0nBR/TYMf3AycUuPw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  express-openid-connect@2.19.2:
-    resolution: {integrity: sha512-hRRRBS+mH9hrhVcbg7+APe+dIsYB4BDLILv7QfTmM1jSDyaU9NYpTxqWourAnlud/E4Gf4Q0qCVmSJguh4BTaA==}
+  express-openid-connect@2.19.3:
+    resolution: {integrity: sha512-3XTQBa6Bzuw1GozlIQcruJ7vaWkjHaSDHTTJFuAvQwq/B42Brzn/MiVQUsxPXHnLCs/tN9Scg+G12dS2RGgT4Q==}
     engines: {node: ^10.19.0 || >=12.0.0 < 13 || >=13.7.0 < 14 || >= 14.2.0}
     peerDependencies:
       express: '>= 4.17.0'
@@ -7013,6 +7020,10 @@ packages:
     resolution: {integrity: sha512-k6E21FzySsSK5a21KRADBd/NGneRegFO5pLHfdQLpRDETUNJueLXs3WCzyQ3tFRDYgbq3KHGXfTbi2bs8WQ6rQ==}
     engines: {node: '>= 0.4'}
 
+  object.getownpropertydescriptors@2.1.8:
+    resolution: {integrity: sha512-qkHIGe4q0lSYMv0XI4SsBTJz3WaURhLvd0lKSgtVuOsJ2krg4SgMw3PIRQFMp07yi++UR3se2mkcLqsBNpBb/A==}
+    engines: {node: '>= 0.8'}
+
   object.groupby@1.0.3:
     resolution: {integrity: sha512-+Lhy3TQTuzXI5hevh8sBGqbmurHbbIjAi0Z4S63nthVLmLxfbj4T54a4CfZrXIrt9iP4mVAPYMo/v99taj3wjQ==}
     engines: {node: '>= 0.4'}
@@ -7032,8 +7043,8 @@ packages:
   ofetch@1.3.4:
     resolution: {integrity: sha512-KLIET85ik3vhEfS+3fDlc/BAZiAp+43QEC/yCo5zkNoY2YaKvNkOaFr/6wCFgFH1kuYQM5pMNi0Tg8koiIemtw==}
 
-  oidc-token-hash@5.1.0:
-    resolution: {integrity: sha512-y0W+X7Ppo7oZX6eovsRkuzcSM40Bicg2JEJkDJ4irIt1wsYAP5MLSNv+QAogO8xivMffw/9OvV3um1pxXgt1uA==}
+  oidc-token-hash@5.2.0:
+    resolution: {integrity: sha512-6gj2m8cJZ+iSW8bm0FXdGF0YhIQbKrfP4yWTNzxc31U6MOjfEmB1rHvlYvxI1B7t7BCi1F2vYTT6YhtQRG4hxw==}
     engines: {node: ^10.13.0 || >=12.0.0}
 
   on-finished@2.3.0:
@@ -8878,6 +8889,9 @@ packages:
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+
+  util-promisify@3.0.0:
+    resolution: {integrity: sha512-uWRZJMjSWt/A1J1exfqz7xiKx2kVpAHR5qIDr6WwwBMQHDoKbo2I1kQN62iA2uXHxOSVpZRDvbm8do+4ijfkNA==}
 
   utils-merge@1.0.1:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
@@ -12814,6 +12828,17 @@ snapshots:
       es-abstract: 1.24.0
       es-shim-unscopables: 1.1.0
 
+  array.prototype.reduce@1.0.8:
+    dependencies:
+      call-bind: 1.0.8
+      call-bound: 1.0.4
+      define-properties: 1.2.1
+      es-abstract: 1.24.0
+      es-array-method-boxes-properly: 1.0.0
+      es-errors: 1.3.0
+      es-object-atoms: 1.1.1
+      is-string: 1.1.1
+
   array.prototype.toreversed@1.1.2:
     dependencies:
       call-bind: 1.0.8
@@ -14004,6 +14029,8 @@ snapshots:
       unbox-primitive: 1.1.0
       which-typed-array: 1.1.19
 
+  es-array-method-boxes-properly@1.0.0: {}
+
   es-define-property@1.0.1: {}
 
   es-errors@1.3.0: {}
@@ -14530,7 +14557,7 @@ snapshots:
       jest-mock: 30.2.0
       jest-util: 30.2.0
 
-  express-openid-connect@2.19.2(express@4.21.2):
+  express-openid-connect@2.19.3(express@4.21.2):
     dependencies:
       base64url: 3.0.1
       clone: 2.1.2
@@ -14544,6 +14571,7 @@ snapshots:
       on-headers: 1.1.0
       openid-client: 4.9.1
       url-join: 4.0.1
+      util-promisify: 3.0.0
     transitivePeerDependencies:
       - supports-color
 
@@ -17283,6 +17311,16 @@ snapshots:
       es-abstract: 1.24.0
       es-object-atoms: 1.1.1
 
+  object.getownpropertydescriptors@2.1.8:
+    dependencies:
+      array.prototype.reduce: 1.0.8
+      call-bind: 1.0.8
+      define-properties: 1.2.1
+      es-abstract: 1.24.0
+      es-object-atoms: 1.1.1
+      gopd: 1.2.0
+      safe-array-concat: 1.1.3
+
   object.groupby@1.0.3:
     dependencies:
       call-bind: 1.0.8
@@ -17322,7 +17360,7 @@ snapshots:
       node-fetch-native: 1.6.4
       ufo: 1.5.3
 
-  oidc-token-hash@5.1.0: {}
+  oidc-token-hash@5.2.0: {}
 
   on-finished@2.3.0:
     dependencies:
@@ -17411,7 +17449,7 @@ snapshots:
       lru-cache: 6.0.0
       make-error: 1.3.6
       object-hash: 2.2.0
-      oidc-token-hash: 5.1.0
+      oidc-token-hash: 5.2.0
 
   opml@0.5.7:
     dependencies:
@@ -19389,6 +19427,10 @@ snapshots:
       requires-port: 1.0.0
 
   util-deprecate@1.0.2: {}
+
+  util-promisify@3.0.0:
+    dependencies:
+      object.getownpropertydescriptors: 2.1.8
 
   utils-merge@1.0.1: {}
 
