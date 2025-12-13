@@ -68,7 +68,7 @@
     "connect-redis": "^8.1.0",
     "connect-sqlite3": "^0.9.16",
     "cookie-parser": "^1.4.7",
-    "cron": "4.3.3",
+    "cron": "4.4.0",
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "entities": "^7.0.0",
