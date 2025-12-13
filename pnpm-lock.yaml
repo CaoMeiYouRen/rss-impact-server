@@ -415,8 +415,8 @@ importers:
         specifier: ^25.0.2
         version: 25.0.2(typescript@5.9.3)
       semantic-release-cmyr-config:
-        specifier: ^1.0.0
-        version: 1.0.0(semantic-release@25.0.2(typescript@5.9.3))
+        specifier: ^1.0.1
+        version: 1.0.1(semantic-release@25.0.2(typescript@5.9.3))
       supertest:
         specifier: ^7.1.4
         version: 7.1.4
@@ -7853,8 +7853,8 @@ packages:
   search-params@3.0.0:
     resolution: {integrity: sha512-8CYNl/bjkEhXWbDTU/K7c2jQtrnqEffIPyOLMqygW/7/b+ym8UtQumcAZjOfMLjZKR6AxK5tOr9fChbQZCzPqg==}
 
-  semantic-release-cmyr-config@1.0.0:
-    resolution: {integrity: sha512-RCZjnZGhDz1xgVw1xsbOMJGKXHaSPZz+DlHKsgz4975fRvkkFjk7zAcappLMZohAWnJref9iQBQqEASHvfr/Sw==}
+  semantic-release-cmyr-config@1.0.1:
+    resolution: {integrity: sha512-0CnBAm8GGPQ0yRFNxaCksCF18YeyvYdLGB1uVCZ2uWsyuWT434jflvtwU+HyCZSah/jH1Urlj6eQDMp0dK6Fig==}
     engines: {node: '>=18'}
     peerDependencies:
       semantic-release: '>=24'
@@ -18225,7 +18225,7 @@ snapshots:
 
   search-params@3.0.0: {}
 
-  semantic-release-cmyr-config@1.0.0(semantic-release@25.0.2(typescript@5.9.3)):
+  semantic-release-cmyr-config@1.0.1(semantic-release@25.0.2(typescript@5.9.3)):
     dependencies:
       '@semantic-release/changelog': 6.0.3(semantic-release@25.0.2(typescript@5.9.3))
       '@semantic-release/git': 10.0.1(semantic-release@25.0.2(typescript@5.9.3))
