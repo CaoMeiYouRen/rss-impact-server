@@ -40,7 +40,7 @@
     "docs:preview": "vitepress preview ."
   },
   "dependencies": {
-    "@cao-mei-you-ren/postlight_parser": "^3.0.1",
+    "@cao-mei-you-ren/postlight_parser": "^3.0.2",
     "@cao-mei-you-ren/qbittorrent": "^1.1.0",
     "@cao-mei-you-ren/rss-parser": "^3.14.0",
     "@nestjs/cache-manager": "^2.3.0",
