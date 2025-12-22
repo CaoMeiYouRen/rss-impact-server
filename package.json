@@ -53,8 +53,8 @@
     "@nestjs/serve-static": "^4.0.2",
     "@nestjs/swagger": "^7.4.2",
     "@nestjs/typeorm": "^11.0.0",
-    "@sentry/nestjs": "^8.55.0",
-    "@sentry/profiling-node": "8.48.0",
+    "@sentry/nestjs": "^10.32.1",
+    "@sentry/profiling-node": "10.32.1",
     "art-template": "4.13.2",
     "axios": "^1.13.2",
     "bcrypt": "^5.1.1",
@@ -225,6 +225,9 @@
       "core-js-pure",
       "esbuild",
       "sqlite3"
+    ],
+    "ignoredBuiltDependencies": [
+      "@sentry-internal/node-cpu-profiler"
     ]
   },
   "config": {
