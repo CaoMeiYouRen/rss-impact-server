@@ -6,6 +6,7 @@ import fs from 'fs-extra'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
+import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions'
 import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
 import { Category } from './models/category.entity'
@@ -45,12 +46,16 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                 let synchronize: boolean = false
                 switch (DATABASE_TYPE) {
                     case 'sqlite': {
-                        options = { database: DATABASE_PATH } as SqliteConnectionOptions //  数据库路径。
+                        options = {
+                            type: 'better-sqlite3',
+                            database: DATABASE_PATH,
+                        } as BetterSqlite3ConnectionOptions as any //  数据库路径。
                         synchronize = true // 在数据库为 sqlite 的时候固定同步
                         break
                     }
                     case 'mysql': {
                         options = {
+                            type: 'mysql',
                             host: DATABASE_HOST,
                             port: DATABASE_PORT,
                             username: DATABASE_USERNAME,
@@ -80,6 +85,7 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                     }
                     case 'postgres': {
                         options = {
+                            type: 'postgres',
                             host: DATABASE_HOST,
                             port: DATABASE_PORT,
                             username: DATABASE_USERNAME,
@@ -110,7 +116,7 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                     logger: new CustomLogger(winstonLogger),
                     // loggerLevel: __DEV__ ? 'debug' : 'warn',
                     maxQueryExecutionTime: 3000, // 记录耗时长的查询
-                    type: DATABASE_TYPE as any,
+                    // type: DATABASE_TYPE as any,
                     entities,
                     synchronize,
                     autoLoadEntities: true,
