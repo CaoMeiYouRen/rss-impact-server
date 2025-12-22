@@ -124,9 +124,6 @@ importers:
       connect-redis:
         specifier: ^8.1.0
         version: 8.1.0(express-session@1.18.2)
-      connect-sqlite3:
-        specifier: ^0.9.16
-        version: 0.9.16
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
@@ -299,15 +296,15 @@ importers:
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
+      '@types/better-sqlite3':
+        specifier: ^7.6.13
+        version: 7.6.13
       '@types/cache-manager':
         specifier: ^4.0.6
         version: 4.0.6
       '@types/connect-history-api-fallback':
         specifier: ^1.5.4
         version: 1.5.4
-      '@types/connect-sqlite3':
-        specifier: ^0.9.6
-        version: 0.9.6
       '@types/cookie-parser':
         specifier: ^1.4.10
         version: 1.4.10(@types/express@5.0.5)
@@ -2433,6 +2430,9 @@ packages:
   '@types/bcrypt@5.0.2':
     resolution: {integrity: sha512-6atioO8Y75fNcbmj0G7UjI9lXN2pQ/IGJ2FWT4a/btd0Lk9lQalHLKhkgKVZ3r+spnmWUKfbMi1GEe9wyHQfNQ==}
 
+  '@types/better-sqlite3@7.6.13':
+    resolution: {integrity: sha512-NMv9ASNARoKksWtsq/SHakpYAYnhBrQgGD8zkLYk/jaK8jUGn08CfEdTRgYhMypUQAfzSP8W6gNLe0q19/t4VA==}
+
   '@types/body-parser@1.19.6':
     resolution: {integrity: sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g==}
 
@@ -2447,9 +2447,6 @@ packages:
 
   '@types/connect-history-api-fallback@1.5.4':
     resolution: {integrity: sha512-n6Cr2xS1h4uAulPRdlw6Jl6s1oG8KrVilPN2yUITEs+K48EzMJJ3W1xy8K5eWuFvjp3R74AOIGSmp2UfBJ8HFw==}
-
-  '@types/connect-sqlite3@0.9.6':
-    resolution: {integrity: sha512-XTzIvdMu71UPtc2J38KAi02VB0wGk6mBwMDGQg1JxRhqr47Sau4sV7P+i2RbcDSP01K699QfXisR7gfRO9pH1Q==}
 
   '@types/connect@3.4.36':
     resolution: {integrity: sha512-P63Zd/JUGq+PdrM1lv0Wv5SBYeA2+CORvbrXbngriYY0jzLUWfQMQQxOhjONEz/wlHOAxOdY7CY65rgQdTjq2w==}
@@ -3931,10 +3928,6 @@ packages:
     engines: {node: '>=18'}
     peerDependencies:
       express-session: '>=1'
-
-  connect-sqlite3@0.9.16:
-    resolution: {integrity: sha512-2gqo0QmcBBL8p8+eqpBETn7RgM/PaoKvpQGl8PfjEgwlr0VuMYNMxRJRrRCo3KR3fxMYeSsCw2tGNG0JKN9Nvg==}
-    engines: {node: '>=0.4.x'}
 
   consola@2.15.3:
     resolution: {integrity: sha512-9vAdYbHj6x2fLKC4+oPH0kFzY/orMZyG2Aj+kNylHxKGJ/Ed4dpNyAQYwJOdqO4zdM7XpVHmyejQDcQHrnuXbw==}
@@ -11725,6 +11718,10 @@ snapshots:
     dependencies:
       '@types/node': 25.0.1
 
+  '@types/better-sqlite3@7.6.13':
+    dependencies:
+      '@types/node': 25.0.1
+
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
@@ -11745,10 +11742,6 @@ snapshots:
     dependencies:
       '@types/express-serve-static-core': 4.19.1
       '@types/node': 25.0.1
-
-  '@types/connect-sqlite3@0.9.6':
-    dependencies:
-      '@types/express': 5.0.5
 
   '@types/connect@3.4.36':
     dependencies:
@@ -13468,13 +13461,6 @@ snapshots:
   connect-redis@8.1.0(express-session@1.18.2):
     dependencies:
       express-session: 1.18.2
-
-  connect-sqlite3@0.9.16:
-    dependencies:
-      sqlite3: 5.1.7
-    transitivePeerDependencies:
-      - bluebird
-      - supports-color
 
   consola@2.15.3: {}
 
@@ -17055,7 +17041,8 @@ snapshots:
 
   node-addon-api@5.1.0: {}
 
-  node-addon-api@7.1.0: {}
+  node-addon-api@7.1.0:
+    optional: true
 
   node-domexception@1.0.0: {}
 
@@ -18523,6 +18510,7 @@ snapshots:
     transitivePeerDependencies:
       - bluebird
       - supports-color
+    optional: true
 
   sqlstring@2.3.3: {}
 

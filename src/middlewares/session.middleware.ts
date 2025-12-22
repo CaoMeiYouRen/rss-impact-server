@@ -1,11 +1,12 @@
 import path from 'path'
 import session, { SessionOptions, Store } from 'express-session'
 import ms from 'ms'
-import ConnectSqlite3 from 'connect-sqlite3'
+import Database from 'better-sqlite3'
 import { RedisStore } from 'connect-redis'
 import { ENABLE_ORIGIN_LIST, REDIS_URL, SESSION_MAX_AGE, SESSION_SECRET, __PROD__ } from '@/app.config'
 import { DATABASE_PATH } from '@/db/database.module'
 import { getRedisClient } from '@/utils/redis'
+import { BetterSqlite3Store } from '@/utils/better-sqlite3-store'
 let store: Store
 
 if (REDIS_URL) {
@@ -15,10 +16,13 @@ if (REDIS_URL) {
         prefix: 'rss-impact:',
     })
 } else {
-    const SQLiteStore = ConnectSqlite3(session)
-    store = new SQLiteStore({
-        dir: path.dirname(DATABASE_PATH),
-        db: path.basename(DATABASE_PATH),
+    const db = new Database(DATABASE_PATH)
+    store = new BetterSqlite3Store({
+        client: db,
+        expired: {
+            clear: true,
+            intervalMs: 15 * 60 * 1000, // 15 minutes
+        },
     }) as Store
 }
 // TODO 考虑增加 session 管理
