@@ -250,9 +250,6 @@ importers:
       socks-proxy-agent:
         specifier: ^8.0.5
         version: 8.0.5
-      sqlite3:
-        specifier: ^5.1.7
-        version: 5.1.7
       swagger-ui-express:
         specifier: ^5.0.1
         version: 5.0.1(express@4.21.2)
