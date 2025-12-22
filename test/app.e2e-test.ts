@@ -1,4 +1,3 @@
-/* eslint-disable  @typescript-eslint/no-unused-vars */
 import path from 'path'
 import fs from 'fs-extra'
 import moduleAlias from 'module-alias'
@@ -23,7 +22,7 @@ describe('AppController (e2e)', () => {
     let app: INestApplication<Express>
     let cookie: string
     const tasksService = {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
+         
         onApplicationBootstrap: () => { },
     }
 
@@ -44,7 +43,7 @@ describe('AppController (e2e)', () => {
             const tempModule = await Test.createTestingModule({
                 imports: [
                     TypeOrmModule.forRoot({
-                        type: 'sqlite',
+                        type: 'better-sqlite3',
                         database: testDbPath,
                         entities,
                         synchronize: true,
