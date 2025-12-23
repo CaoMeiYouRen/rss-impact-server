@@ -9,7 +9,6 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { ValidationPipe } from '@nestjs/common'
 import history from 'connect-history-api-fallback'
 import fs from 'fs-extra'
-import artTemplate from 'art-template'
 import ms from 'ms'
 import { Request } from 'express'
 import cookieParser from 'cookie-parser'
@@ -24,8 +23,6 @@ import { AppModule } from './app.module'
 import { DATABASE_DIR } from './db/database.module'
 
 moduleAlias.addAlias('@', path.join(__dirname, './'))
-
-artTemplate.defaults.onerror = (error) => logger.error(error)
 
 async function bootstrap() {
     if (!await fs.pathExists(DATABASE_DIR)) {
