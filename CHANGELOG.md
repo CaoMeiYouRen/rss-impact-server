@@ -1,5 +1,24 @@
 # rss-impact-server
 
+# [1.18.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.17.2...v1.18.0) (2025-12-27)
+
+
+### ✅ 测试
+
+* 更新测试用例以使用 better-sqlite3 数据库驱动 ([b7ae27c](https://github.com/CaoMeiYouRen/rss-impact-server/commit/b7ae27c))
+
+
+### ✨ 新功能
+
+* 使用 feedsmith 替换 art-template 生成 Atom、RSS 和 JSON Feed ([bfdf856](https://github.com/CaoMeiYouRen/rss-impact-server/commit/bfdf856))
+
+
+### 🐛 Bug 修复
+
+* **db:** 升级数据库配置以支持 better-sqlite3 驱动 ([90552a2](https://github.com/CaoMeiYouRen/rss-impact-server/commit/90552a2))
+* 移除 connect-sqlite3 依赖，添加 better-sqlite3 支持的会话存储 ([6277adc](https://github.com/CaoMeiYouRen/rss-impact-server/commit/6277adc))
+* 重构 Atom 和 RSS 函数以增强可读性和错误处理 ([33185a0](https://github.com/CaoMeiYouRen/rss-impact-server/commit/33185a0))
+
 ## [1.17.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.17.1...v1.17.2) (2025-11-22)
 
 
