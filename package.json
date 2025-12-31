@@ -57,7 +57,7 @@
     "@sentry/profiling-node": "10.32.1",
     "axios": "^1.13.2",
     "bcrypt": "^5.1.1",
-    "better-bytes": "^1.2.4",
+    "better-bytes": "^1.2.6",
     "better-sqlite3": "^12.5.0",
     "cache-manager": "^5.7.6",
     "cache-manager-ioredis-yet": "^2.1.2",

@@ -95,8 +95,8 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1(encoding@0.1.13)
       better-bytes:
-        specifier: ^1.2.4
-        version: 1.2.4
+        specifier: ^1.2.6
+        version: 1.2.6
       better-sqlite3:
         specifier: ^12.5.0
         version: 12.5.0
@@ -3468,9 +3468,9 @@ packages:
   bep53-range@1.1.1:
     resolution: {integrity: sha512-ct6s33iiwRCUPp9KXnJ4QMWDgHIgaw36caK/5XEQ9L8dCzSQlJt1Vk6VmHh1VD4AlGCAI4C2zmtfItifBBPrhQ==}
 
-  better-bytes@1.2.4:
-    resolution: {integrity: sha512-lA8ZltmVDd7ThuUtZgZxKMsb2I7qLZYHsaT+CkuMZeHLIXxiCxqgqokNNG+1WKTccs+ybFjeAW6+pc3gnKdoRg==}
-    engines: {node: '>=16'}
+  better-bytes@1.2.6:
+    resolution: {integrity: sha512-4eznQOCU/S7C9SzRAksDM3VIPxHYsANTaWJSyF/9gjYWqXxtrWwjbP91tEkxg/Fu+ZxKZIF8iyPUJfB49nzuBw==}
+    engines: {node: '>=18'}
 
   better-sqlite3@12.5.0:
     resolution: {integrity: sha512-WwCZ/5Diz7rsF29o27o0Gcc1Du+l7Zsv7SYtVPG0X3G/uUI1LqdxrQI7c9Hs2FWpqXXERjW9hp6g3/tH7DlVKg==}
@@ -12923,7 +12923,7 @@ snapshots:
 
   bep53-range@1.1.1: {}
 
-  better-bytes@1.2.4:
+  better-bytes@1.2.6:
     dependencies:
       tslib: 2.8.1
 
