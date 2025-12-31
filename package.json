@@ -131,7 +131,7 @@
     "@types/connect-history-api-fallback": "^1.5.4",
     "@types/cookie-parser": "^1.4.10",
     "@types/debug": "^4.1.12",
-    "@types/express": "^5.0.5",
+    "@types/express": "^5.0.6",
     "@types/express-session": "^1.18.2",
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^30.0.0",
