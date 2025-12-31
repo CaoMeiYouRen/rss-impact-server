@@ -94,7 +94,7 @@
     "mysql2": "^3.16.0",
     "nest-winston": "^1.10.2",
     "openai": "^4.103.0",
-    "opml": "^0.5.7",
+    "opml": "^0.5.8",
     "p-queue": "^5.0.0",
     "parse-torrent": "9.1.5",
     "passport": "^0.7.0",
