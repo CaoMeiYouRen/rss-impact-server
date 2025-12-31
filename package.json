@@ -83,7 +83,7 @@
     "https-proxy-agent": "^7.0.6",
     "ioredis": "^5.8.2",
     "jelban.js": "^1.0.0",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "jwks-rsa": "^3.2.0",
     "lodash": "^4.17.21",
     "md5": "^2.3.0",
