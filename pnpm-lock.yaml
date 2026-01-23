@@ -179,8 +179,8 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       md5:
         specifier: ^2.3.0
         version: 2.3.0
@@ -6214,6 +6214,9 @@ packages:
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
@@ -6761,6 +6764,10 @@ packages:
 
   node-abi@3.85.0:
     resolution: {integrity: sha512-zsFhmbkAzwhTft6nd3VxcG0cvJsT70rL+BIGHWVq5fi6MwGrHwzqKaxXE+Hl2GmnGItnDKPPkO5/LQqjVkIdFg==}
+    engines: {node: '>=10'}
+
+  node-abi@3.87.0:
+    resolution: {integrity: sha512-+CGM1L1CgmtheLcBuleyYOn7NWPVu0s0EJH2C4puxgEZb9h8QpR9G2dBfZJOAUhi7VQxuBPMd0hiISWcTyiYyQ==}
     engines: {node: '>=10'}
 
   node-abort-controller@3.1.1:
@@ -7406,8 +7413,8 @@ packages:
     resolution: {integrity: sha512-frYz62rp/C9Ip+l0KrOuPuFfv9UhkczCUK6sITc+0AZ1z/8Lcr7brs8AQ38VjxBFmaEyL/ITjy6u0uHyFLV5RQ==}
     engines: {node: '>= 16'}
 
-  postman-request@2.88.1-postman.47:
-    resolution: {integrity: sha512-4bbEEFaQ4roz7RVJukfAPCVApNpM2NM9IiUuGqxQV5X1oaU/prZjk/7J8jnZf4LjrgNVeHXanAz1c+TIbK6HqA==}
+  postman-request@2.88.1-postman.48:
+    resolution: {integrity: sha512-E32FGh8ig2KDvzo4Byi7Ibr+wK2gNKPSqXoNsvjdCHgDBxSK4sCUwv+aa3zOBUwfiibPImHMy0WdlDSSCTqTuw==}
     engines: {node: '>= 16'}
 
   preact@10.27.0:
@@ -7509,6 +7516,10 @@ packages:
 
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
+    engines: {node: '>=0.6'}
+
+  qs@6.14.1:
+    resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
     engines: {node: '>=0.6'}
 
   qs@6.5.3:
@@ -8293,6 +8304,7 @@ packages:
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   telejson@7.2.0:
     resolution: {integrity: sha512-1QTEcJkJEhc8OnStBx/ILRu5J2p0GjvWsBx56bmZRqnrkdBMUe+nX92jxV+p3dB4CP6PZCdJMQJwCggkNBMzkQ==}
@@ -10549,7 +10561,7 @@ snapshots:
       commander: 9.5.0
       fs-extra: 10.1.0
       glob: 8.1.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       piscina: 3.2.0
       strip-ansi: 6.0.1
       text-table: 0.2.0
@@ -10563,7 +10575,7 @@ snapshots:
   '@lint-md/core@2.0.0':
     dependencies:
       '@lint-md/parser': 0.0.14
-      lodash: 4.17.21
+      lodash: 4.17.23
     transitivePeerDependencies:
       - supports-color
 
@@ -11398,7 +11410,7 @@ snapshots:
       '@semantic-release/error': 3.0.0
       aggregate-error: 3.1.0
       fs-extra: 11.3.3
-      lodash: 4.17.21
+      lodash: 4.17.23
       semantic-release: 25.0.2(typescript@5.9.3)
 
   '@semantic-release/commit-analyzer@13.0.1(semantic-release@25.0.2(typescript@5.9.3))':
@@ -11438,7 +11450,7 @@ snapshots:
       debug: 4.4.3
       dir-glob: 3.0.1
       execa: 5.1.1
-      lodash: 4.17.21
+      lodash: 4.17.23
       micromatch: 4.0.8
       p-reduce: 2.1.0
       semantic-release: 25.0.2(typescript@5.9.3)
@@ -13672,7 +13684,7 @@ snapshots:
 
   daveutils@0.4.74:
     dependencies:
-      request: postman-request@2.88.1-postman.47
+      request: postman-request@2.88.1-postman.48
     transitivePeerDependencies:
       - supports-color
 
@@ -14261,7 +14273,7 @@ snapshots:
       esquery: 1.6.0
       indent-string: 4.0.0
       is-builtin-module: 3.2.1
-      lodash: 4.17.21
+      lodash: 4.17.23
       pluralize: 8.0.0
       read-pkg-up: 7.0.1
       regexp-tree: 0.1.27
@@ -14288,7 +14300,7 @@ snapshots:
       debug: 4.4.3
       eslint: 9.39.2(jiti@2.6.1)
       eslint-compat-utils: 0.5.1(eslint@9.39.2(jiti@2.6.1))
-      lodash: 4.17.21
+      lodash: 4.17.23
       natural-compare: 1.4.0
       yaml-eslint-parser: 1.2.3
     transitivePeerDependencies:
@@ -15334,7 +15346,7 @@ snapshots:
       cli-width: 3.0.0
       external-editor: 3.1.0
       figures: 3.2.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       mute-stream: 0.0.8
       ora: 5.4.1
       run-async: 2.4.1
@@ -16267,6 +16279,8 @@ snapshots:
 
   lodash@4.17.21: {}
 
+  lodash@4.17.23: {}
+
   log-symbols@4.1.0:
     dependencies:
       chalk: 4.1.2
@@ -17014,6 +17028,11 @@ snapshots:
     dependencies:
       semver: 7.7.3
 
+  node-abi@3.87.0:
+    dependencies:
+      semver: 7.7.3
+    optional: true
+
   node-abort-controller@3.1.1: {}
 
   node-addon-api@3.2.1:
@@ -17028,7 +17047,7 @@ snapshots:
 
   node-emoji@1.11.0:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   node-emoji@2.2.0:
     dependencies:
@@ -17315,7 +17334,7 @@ snapshots:
     dependencies:
       daveutils: 0.4.74
       opmltojs: 0.4.14
-      request: postman-request@2.88.1-postman.47
+      request: postman-request@2.88.1-postman.48
       xml2js: 0.6.2
     transitivePeerDependencies:
       - supports-color
@@ -17323,7 +17342,7 @@ snapshots:
   opmltojs@0.4.14:
     dependencies:
       daveutils: 0.4.74
-      request: postman-request@2.88.1-postman.47
+      request: postman-request@2.88.1-postman.48
       xml2js: 0.6.2
     transitivePeerDependencies:
       - supports-color
@@ -17668,7 +17687,7 @@ snapshots:
       stream-length: 1.0.2
       uuid: 8.3.2
 
-  postman-request@2.88.1-postman.47:
+  postman-request@2.88.1-postman.48:
     dependencies:
       '@postman/form-data': 3.1.1
       '@postman/tough-cookie': 4.1.3-postman.1
@@ -17685,7 +17704,7 @@ snapshots:
       json-stringify-safe: 5.0.1
       mime-types: 2.1.35
       oauth-sign: 0.9.0
-      qs: 6.5.3
+      qs: 6.14.1
       safe-buffer: 5.2.1
       socks-proxy-agent: 8.0.5
       stream-length: 1.0.2
@@ -17718,7 +17737,7 @@ snapshots:
       minimist: 1.2.8
       mkdirp-classic: 0.5.3
       napi-build-utils: 2.0.0
-      node-abi: 3.85.0
+      node-abi: 3.87.0
       pump: 3.0.3
       rc: 1.2.8
       simple-get: 4.0.1
@@ -17814,6 +17833,10 @@ snapshots:
       side-channel: 1.1.0
 
   qs@6.14.0:
+    dependencies:
+      side-channel: 1.1.0
+
+  qs@6.14.1:
     dependencies:
       side-channel: 1.1.0
 
@@ -19422,7 +19445,7 @@ snapshots:
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
       esquery: 1.6.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
@@ -19693,7 +19716,7 @@ snapshots:
 
   wuzzy@0.1.8:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   xml-name-validator@4.0.0: {}
 
@@ -19724,7 +19747,7 @@ snapshots:
   yaml-eslint-parser@1.2.3:
     dependencies:
       eslint-visitor-keys: 3.4.3
-      lodash: 4.17.21
+      lodash: 4.17.23
       yaml: 2.8.1
 
   yaml@2.8.1: {}
