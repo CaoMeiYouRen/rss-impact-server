@@ -85,7 +85,7 @@
     "jelban.js": "^1.0.0",
     "jsonwebtoken": "^9.0.3",
     "jwks-rsa": "^3.2.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "md5": "^2.3.0",
     "module-alias": "^2.2.3",
     "moment-timezone": "^0.6.0",
