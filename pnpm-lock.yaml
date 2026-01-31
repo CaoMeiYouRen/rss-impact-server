@@ -120,7 +120,7 @@ importers:
         version: 2.0.0
       connect-redis:
         specifier: ^8.1.0
-        version: 8.1.0(express-session@1.18.2)
+        version: 8.1.0(express-session@1.19.0)
       cookie-parser:
         specifier: ^1.4.7
         version: 1.4.7
@@ -143,8 +143,8 @@ importers:
         specifier: ^8.2.1
         version: 8.2.1(express@4.21.2)
       express-session:
-        specifier: ^1.18.2
-        version: 1.18.2
+        specifier: ^1.19.0
+        version: 1.19.0
       feedsmith:
         specifier: ^2.8.0
         version: 2.8.0
@@ -4770,8 +4770,8 @@ packages:
     peerDependencies:
       express: '>= 4.11'
 
-  express-session@1.18.2:
-    resolution: {integrity: sha512-SZjssGQC7TzTs9rpPDuUrR23GNZ9+2+IkA/+IJWmvQilTr5OSliEHGF+D9scbIpdC6yGtTI0/VhaHoVes2AN/A==}
+  express-session@1.19.0:
+    resolution: {integrity: sha512-0csaMkGq+vaiZTmSMMGkfdCOabYv192VbytFypcvI0MANrp+4i/7yEkJ0sbAEhycQjntaKGzYfjfXQyVb7BHMA==}
     engines: {node: '>= 0.8.0'}
 
   express@4.21.2:
@@ -13407,9 +13407,9 @@ snapshots:
 
   connect-history-api-fallback@2.0.0: {}
 
-  connect-redis@8.1.0(express-session@1.18.2):
+  connect-redis@8.1.0(express-session@1.19.0):
     dependencies:
-      express-session: 1.18.2
+      express-session: 1.19.0
 
   consola@2.15.3: {}
 
@@ -14439,7 +14439,7 @@ snapshots:
       express: 4.21.2
       ip-address: 10.0.1
 
-  express-session@1.18.2:
+  express-session@1.19.0:
     dependencies:
       cookie: 0.7.2
       cookie-signature: 1.0.7
