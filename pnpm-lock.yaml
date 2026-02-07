@@ -176,8 +176,8 @@ importers:
         specifier: ^9.0.3
         version: 9.0.3
       jwks-rsa:
-        specifier: ^3.2.0
-        version: 3.2.0
+        specifier: ^3.2.2
+        version: 3.2.2
       lodash:
         specifier: ^4.17.23
         version: 4.17.23
@@ -2498,17 +2498,11 @@ packages:
   '@types/express-serve-static-core@4.19.1':
     resolution: {integrity: sha512-ej0phymbFLoCB26dbbq5PGScsf2JAJ4IJHjG10LalgUV36XKTmA4GdA+PVllKvRk0sEKt64X8975qFnkSi0hqA==}
 
-  '@types/express-serve-static-core@4.19.7':
-    resolution: {integrity: sha512-FvPtiIf1LfhzsaIXhv/PHan/2FeQBbtBDtfX2QfvPxdUelMDEckK08SM6nqo1MIZY3RUlfA+HV8+hFUSio78qg==}
-
   '@types/express-serve-static-core@5.1.0':
     resolution: {integrity: sha512-jnHMsrd0Mwa9Cf4IdOzbz543y4XJepXrbia2T4b6+spXC2We3t1y6K44D3mR8XMFSXMCf3/l7rCgddfx7UNVBA==}
 
   '@types/express-session@1.18.2':
     resolution: {integrity: sha512-k+I0BxwVXsnEU2hV77cCobC08kIsn4y44C3gC0b46uxZVMaXA04lSPgRLR/bSL2w0t0ShJiG8o4jPzRG/nscFg==}
-
-  '@types/express@4.17.25':
-    resolution: {integrity: sha512-dVd04UKsfpINUnK0yBoYHDF3xu7xVH4BuDotC/xGuycx4CgbP48X/KF/586bcObxT0HENHXEU8Nqtu6NR+eKhw==}
 
   '@types/express@5.0.6':
     resolution: {integrity: sha512-sKYVuV7Sv9fbPIt/442koC7+IIwK5olP1KWeD88e/idgoJqDm3JV/YUiPwkoKK92ylff2MGxSz1CSjsXelx0YA==}
@@ -2660,14 +2654,8 @@ packages:
   '@types/send@0.17.4':
     resolution: {integrity: sha512-x2EM6TJOybec7c52BX0ZspPodMsQUd5L6PRwOunVyVUhXiBSKf3AezDL8Dgvgt5o0UfKNfuA0eMLr2wLT4AiBA==}
 
-  '@types/send@0.17.6':
-    resolution: {integrity: sha512-Uqt8rPBE8SY0RK8JB1EzVOIZ32uqy8HwdxCnoCOsYrvnswqmFZ/k+9Ikidlk/ImhsdvBsloHbAlewb2IEBV/Og==}
-
   '@types/send@1.2.1':
     resolution: {integrity: sha512-arsCikDvlU99zl1g69TcAB3mzZPpxgw0UQnaHeC1Nwb015xp8bknZv5rIfri9xTOcMuaVgvabfIRA7PSZVuZIQ==}
-
-  '@types/serve-static@1.15.10':
-    resolution: {integrity: sha512-tRs1dB+g8Itk72rlSI2ZrW6vZg0YrLI81iQSTkMmOqnqCaNr/8Ek4VwWcN5vZgCYWbg/JJSGBlUaYGAOP73qBw==}
 
   '@types/serve-static@2.2.0':
     resolution: {integrity: sha512-8mam4H1NHLtu7nmtalF7eyBH14QyOASmcxHhSfEoRyr0nP/YdoesEtU+uSRvMe96TW/HPTtkoKqQLl53N7UXMQ==}
@@ -5968,8 +5956,8 @@ packages:
   jwa@1.4.2:
     resolution: {integrity: sha512-eeH5JO+21J78qMvTIDdBXidBd6nG2kZjg5Ohz/1fpa28Z4CcsWUzJ1ZZyFq/3z3N17aZy+ZuBoHljASbL1WfOw==}
 
-  jwks-rsa@3.2.0:
-    resolution: {integrity: sha512-PwchfHcQK/5PSydeKCs1ylNym0w/SSv8a62DgHJ//7x2ZclCoinlsjAfDxAAbpoTPybOum/Jgy+vkvMmKz89Ww==}
+  jwks-rsa@3.2.2:
+    resolution: {integrity: sha512-BqTyEDV+lS8F2trk3A+qJnxV5Q9EqKCBJOPti3W97r7qTympCZjb7h2X6f2kc+0K3rsSTY1/6YG2eaXKoj497w==}
     engines: {node: '>=14'}
 
   jws@3.2.3:
@@ -6166,6 +6154,10 @@ packages:
 
   lru-cache@11.2.4:
     resolution: {integrity: sha512-B5Y16Jr9LB9dHVkh6ZevG+vAbOsNOYCX+sXvFWFu7B3Iz5mijW3zdbMyhsh8ANd2mSWBYdJgnqi+mL7/LrOPYg==}
+    engines: {node: 20 || >=22}
+
+  lru-cache@11.2.5:
+    resolution: {integrity: sha512-vFrFJkWtJvJnD5hg+hJvVE8Lh/TcMzKnTgCWmtBipwI5yLX/iX+5UB2tfuyODF5E7k9xEzMdYgGqaSb1c0c5Yw==}
     engines: {node: 20 || >=22}
 
   lru-cache@5.1.1:
@@ -11682,13 +11674,6 @@ snapshots:
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
 
-  '@types/express-serve-static-core@4.19.7':
-    dependencies:
-      '@types/node': 25.2.1
-      '@types/qs': 6.14.0
-      '@types/range-parser': 1.2.7
-      '@types/send': 1.2.1
-
   '@types/express-serve-static-core@5.1.0':
     dependencies:
       '@types/node': 25.2.1
@@ -11699,13 +11684,6 @@ snapshots:
   '@types/express-session@1.18.2':
     dependencies:
       '@types/express': 5.0.6
-
-  '@types/express@4.17.25':
-    dependencies:
-      '@types/body-parser': 1.19.6
-      '@types/express-serve-static-core': 4.19.7
-      '@types/qs': 6.14.0
-      '@types/serve-static': 1.15.10
 
   '@types/express@5.0.6':
     dependencies:
@@ -11887,20 +11865,9 @@ snapshots:
       '@types/mime': 1.3.5
       '@types/node': 25.2.1
 
-  '@types/send@0.17.6':
-    dependencies:
-      '@types/mime': 1.3.5
-      '@types/node': 25.2.1
-
   '@types/send@1.2.1':
     dependencies:
       '@types/node': 25.2.1
-
-  '@types/serve-static@1.15.10':
-    dependencies:
-      '@types/http-errors': 2.0.5
-      '@types/node': 25.2.1
-      '@types/send': 0.17.6
 
   '@types/serve-static@2.2.0':
     dependencies:
@@ -15884,9 +15851,8 @@ snapshots:
       ecdsa-sig-formatter: 1.0.11
       safe-buffer: 5.2.1
 
-  jwks-rsa@3.2.0:
+  jwks-rsa@3.2.2:
     dependencies:
-      '@types/express': 4.17.25
       '@types/jsonwebtoken': 9.0.10
       debug: 4.4.3
       jose: 4.15.9
@@ -16065,6 +16031,8 @@ snapshots:
   lru-cache@10.4.3: {}
 
   lru-cache@11.2.4: {}
+
+  lru-cache@11.2.5: {}
 
   lru-cache@5.1.1:
     dependencies:
@@ -17287,7 +17255,7 @@ snapshots:
 
   path-scurry@2.0.1:
     dependencies:
-      lru-cache: 11.2.4
+      lru-cache: 11.2.5
       minipass: 7.1.2
 
   path-to-regexp@3.3.0: {}
