@@ -74,7 +74,7 @@
     "express-openid-connect": "^2.19.3",
     "express-rate-limit": "^8.2.1",
     "express-session": "^1.19.0",
-    "feedsmith": "^2.8.0",
+    "feedsmith": "^2.9.0",
     "file-type": "16.5.4",
     "fs-extra": "^11.3.3",
     "go-cqwebsocket": "^6.3.2",
