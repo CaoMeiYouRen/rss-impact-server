@@ -14,12 +14,12 @@
         "strictPropertyInitialization": false,
         "resolveJsonModule": true,
         "outDir": "./dist",
-        "baseUrl": "./",
         "incremental": true,
         "skipLibCheck": true,
+        "allowJs": true,
         "paths": {
             "@/*": [
-                "src/*"
+                "./src/*"
             ],
         },
         "lib": [
@@ -30,7 +30,13 @@
         ]
     },
     "include": [
-        "src"
+        "src",
+        "test",
+        "benchmarks",
+        "scripts",
+        "*.ts",
+        "*.mjs",
+        "*.js"
     ],
     "exclude": [
         "node_modules",

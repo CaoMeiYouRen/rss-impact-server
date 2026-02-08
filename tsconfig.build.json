@@ -7,6 +7,11 @@
         "node_modules",
         "test",
         "dist",
-        "**/*spec.ts"
+        "**/*spec.ts",
+        "benchmarks",
+        "scripts",
+        "*.ts",
+        "*.mjs",
+        "*.js"
     ]
 }
