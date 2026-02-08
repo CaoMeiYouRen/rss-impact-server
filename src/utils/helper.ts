@@ -158,7 +158,7 @@ export function deepTrim(obj: any) {
     return obj
 }
 
-type DownloadFileType = {
+interface DownloadFileType {
     size: number
     type: string
     hash: string
@@ -394,7 +394,7 @@ export function parseDataSize(data: number | string): number {
     return Number(betterBytes.parse(data))
 }
 
-type RetryBackoffConfig = {
+interface RetryBackoffConfig {
     /**
      * 最大重试次数
      */
@@ -636,7 +636,7 @@ export function timeFromNow(time: number) {
     return `${time.toFixed(2)} days`
 }
 
-type FullText = {
+interface FullText {
     title?: string | null // 文章标题
     content?: string | null // 文章主要内容
     author?: string | null // 文章作者

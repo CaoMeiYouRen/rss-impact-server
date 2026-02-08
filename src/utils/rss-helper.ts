@@ -141,7 +141,7 @@ export function rssItemToArticle(item: Record<string, any> & Item) {
     return article
 }
 
-export type ArticleFormatoption = {
+export interface ArticleFormatoption {
     // 是否为 Markdown 格式
     isMarkdown?: boolean
     // 是否为 纯文本（去除 HTML）
@@ -262,7 +262,7 @@ export function articlesFormat(articles: Article[], option: ArticleFormatoption 
     return text
 }
 
-type Condition = {
+interface Condition {
     filter: Filter
     filterout: FilterOut
 }
@@ -316,7 +316,7 @@ export function filterArticles(articles: Article[], condition: Condition): Artic
         .slice(0, filter.limit || 20) // 默认最多 20 条
 }
 
-type ArticleOption = {
+interface ArticleOption {
     useAiSummary?: boolean
     appendAiSummary?: boolean
 }

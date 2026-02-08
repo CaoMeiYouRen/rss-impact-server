@@ -119,12 +119,12 @@ export class BetterSqlite3Store extends Store {
         }
     }
 
-    all = (callback: (err: any, obj?: { [sid: string]: any } | null) => void) => {
+    all = (callback: (err: any, obj?: Record<string, any> | null) => void) => {
         try {
             const stmt = this.db.prepare(`SELECT sid, sess FROM ${this.tableName}`)
             const rows = stmt.all() as { sid: string, sess: string }[]
 
-            const sessions: { [sid: string]: any } = {}
+            const sessions: Record<string, any> = {}
             for (const row of rows) {
                 sessions[row.sid] = typeof row.sess === 'string' ? JSON.parse(row.sess) : row.sess
             }

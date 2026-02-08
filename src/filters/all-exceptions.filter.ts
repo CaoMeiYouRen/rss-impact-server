@@ -41,11 +41,11 @@ export class AllExceptionsFilter<T extends Error> implements ExceptionFilter {
             message = e.message
         } else if (e instanceof HttpException) {
             statusCode = e.getStatus()
-            const res = e.getResponse()
+            const res: any = e.getResponse()
             if (statusCode === HttpStatusCode.NOT_FOUND) { // 404
                 message = e.message
-            } else if (Array.isArray(res['message'])) {
-                message = res['message'].join(', ')
+            } else if (Array.isArray(res.message)) {
+                message = res.message.join(', ')
             } else {
                 message = ErrorMessageList.get(statusCode) || e.message
             }

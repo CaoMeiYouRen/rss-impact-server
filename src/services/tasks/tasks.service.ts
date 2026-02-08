@@ -525,7 +525,7 @@ export class TasksService implements OnApplicationBootstrap {
                 ...config,
                 proxyUrl,
                 timeout: (config?.timeout || 60) * 1000,
-                data: data as any,
+                data,
             })
             await this.webhookLogRepository.save(this.webhookLogRepository.create({
                 ...webhookLog,

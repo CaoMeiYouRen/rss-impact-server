@@ -279,7 +279,7 @@ export class AuthController {
             }
             session.destroy((err) => {
                 if (err) {
-                    reject(err)
+                    reject(err as Error)
                     return
                 }
                 resolve(new ResponseDto({

@@ -1,4 +1,4 @@
-export type DataItem = {
+export interface DataItem {
     title: string
     description?: string
     pubDate?: number | string | Date
@@ -34,7 +34,7 @@ export type DataItem = {
     }
 }
 
-export type Data = {
+export interface Data {
     title: string
     description?: string
     subtitle?: string

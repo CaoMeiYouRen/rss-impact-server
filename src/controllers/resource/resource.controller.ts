@@ -51,7 +51,7 @@ export class ResourceController {
             })
             .select('resource.type', 'type')// 选择要 distinct 的列
             .distinct(true) // 启用 distinct
-            .getRawMany() as { type: string }[]
+            .getRawMany()
         return data.filter((e) => e.type).map((e) => ({
             label: e.type,
             value: e.type,

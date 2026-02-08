@@ -276,6 +276,4 @@ export declare interface PaginateKeys extends Page {
     currentPage?: string
 }
 
-export declare interface Fields {
-    [key: string]: Field
-}
+export type Fields = Record<string, Field>
