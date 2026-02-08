@@ -11,5 +11,6 @@ export default defineConfig([cmyr, {
         '@stylistic/multiline-ternary': [1, 'always-multiline'], // 在三元表达式跨越多行时，强制操作符之间的换行。
         'no-useless-constructor': [1], // 禁止不必要的构造函数
         '@typescript-eslint/no-unsafe-enum-comparison': [1], // 允许不安全的枚举比较
+        '@typescript-eslint/no-unnecessary-type-assertion': 0, // 允许不必要的类型断言
     },
 }])
