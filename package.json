@@ -88,7 +88,7 @@
     "jwks-rsa": "^3.2.2",
     "lodash": "^4.17.23",
     "md5": "^2.3.0",
-    "module-alias": "^2.2.3",
+    "module-alias": "^2.3.4",
     "moment-timezone": "^0.6.0",
     "morgan": "^1.10.1",
     "ms": "^2.1.3",
