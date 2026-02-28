@@ -85,7 +85,7 @@
     "ioredis": "^5.9.2",
     "jelban.js": "^1.0.0",
     "jsonwebtoken": "^9.0.3",
-    "jwks-rsa": "^3.2.2",
+    "jwks-rsa": "^4.0.0",
     "lodash": "^4.17.23",
     "md5": "^2.3.0",
     "module-alias": "^2.2.3",
