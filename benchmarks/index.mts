@@ -1,6 +1,6 @@
 import os from 'os'
 import path from 'path'
-import autocannon, { Client, Options } from 'autocannon'
+import autocannon, { Options } from 'autocannon'
 import dotenv from 'dotenv'
 import { Octokit } from 'octokit'
 import * as betterBytes from 'better-bytes'
@@ -19,7 +19,7 @@ const PORT = Number(process.env.PORT || 3000)
 const BASE_URL = `http://localhost:${PORT}`
 
 const DATA_PATH = path.resolve(process.env.DATA_PATH || './data')
-const DATABASE_PATH = path.join(DATA_PATH, 'database.test.sqlite')
+// const DATABASE_PATH = path.join(DATA_PATH, 'database.test.sqlite')
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 

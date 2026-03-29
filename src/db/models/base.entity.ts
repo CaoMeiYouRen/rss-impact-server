@@ -44,8 +44,8 @@ export abstract class Base {
         const obj = plainToInstance(this.constructor as any, this, {
             enableCircularCheck: true,
 
-        }) as object
-        const validationErrors = await validate(obj, {
+        })
+        const validationErrors = await (validate as any)(obj, {
             whitelist: true,
         })
 
@@ -61,8 +61,8 @@ export abstract class Base {
         const obj = plainToInstance(this.constructor as any, this, {
             enableCircularCheck: true,
 
-        }) as object
-        const validationErrors = await validate(obj, {
+        })
+        const validationErrors = await (validate as any)(obj, {
             whitelist: true,
             skipUndefinedProperties: true,
         })

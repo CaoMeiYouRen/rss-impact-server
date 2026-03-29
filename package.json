@@ -224,7 +224,10 @@
       "better-sqlite3",
       "core-js",
       "core-js-pure",
-      "esbuild"
+      "esbuild",
+      "nice-napi",
+      "sqlite3",
+      "unrs-resolver"
     ],
     "ignoredBuiltDependencies": [
       "@sentry-internal/node-cpu-profiler"

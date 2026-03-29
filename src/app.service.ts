@@ -8,8 +8,6 @@ export class AppService implements OnApplicationBootstrap {
     private readonly logger = new Logger(AppService.name)
     private objStr: string
 
-    constructor() { }
-
     async onApplicationBootstrap() {
         const { version } = await fs.readJson('package.json')
         const { gitHash, gitDate } = await getGitInfo()
@@ -27,7 +25,7 @@ export class AppService implements OnApplicationBootstrap {
         this.objStr = JSON.stringify(obj, null, 4)
     }
 
-    async getHello() {
+    getHello() {
         return this.objStr
     }
 
