@@ -179,8 +179,8 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2
       lodash:
-        specifier: ^4.17.23
-        version: 4.17.23
+        specifier: ^4.18.0
+        version: 4.18.0
       md5:
         specifier: ^2.3.0
         version: 2.3.0
@@ -6203,6 +6203,9 @@ packages:
   lodash@4.17.23:
     resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
+  lodash@4.18.0:
+    resolution: {integrity: sha512-l1mfj2atMqndAHI3ls7XqPxEjV2J9ZkcNyHpoZA3r2T1LLwDB69jgkMWh71YKwhBbK0G2f4WSn05ahmQXVxupA==}
+
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
@@ -10566,7 +10569,7 @@ snapshots:
       commander: 9.5.0
       fs-extra: 10.1.0
       glob: 8.1.0
-      lodash: 4.17.23
+      lodash: 4.18.0
       piscina: 3.2.0
       strip-ansi: 6.0.1
       text-table: 0.2.0
@@ -10580,7 +10583,7 @@ snapshots:
   '@lint-md/core@2.0.0':
     dependencies:
       '@lint-md/parser': 0.0.14
-      lodash: 4.17.23
+      lodash: 4.18.0
     transitivePeerDependencies:
       - supports-color
 
@@ -11429,7 +11432,7 @@ snapshots:
       '@semantic-release/error': 3.0.0
       aggregate-error: 3.1.0
       fs-extra: 11.3.4
-      lodash: 4.17.23
+      lodash: 4.18.0
       semantic-release: 25.0.3(typescript@5.9.3)
 
   '@semantic-release/commit-analyzer@13.0.1(semantic-release@25.0.3(typescript@5.9.3))':
@@ -11469,7 +11472,7 @@ snapshots:
       debug: 4.4.3
       dir-glob: 3.0.1
       execa: 5.1.1
-      lodash: 4.17.23
+      lodash: 4.18.0
       micromatch: 4.0.8
       p-reduce: 2.1.0
       semantic-release: 25.0.3(typescript@5.9.3)
@@ -14236,7 +14239,7 @@ snapshots:
       esquery: 1.6.0
       indent-string: 4.0.0
       is-builtin-module: 3.2.1
-      lodash: 4.17.23
+      lodash: 4.18.0
       pluralize: 8.0.0
       read-pkg-up: 7.0.1
       regexp-tree: 0.1.27
@@ -14263,7 +14266,7 @@ snapshots:
       debug: 4.4.3
       eslint: 9.39.2(jiti@2.6.1)
       eslint-compat-utils: 0.5.1(eslint@9.39.2(jiti@2.6.1))
-      lodash: 4.17.23
+      lodash: 4.18.0
       natural-compare: 1.4.0
       yaml-eslint-parser: 1.2.3
     transitivePeerDependencies:
@@ -15337,7 +15340,7 @@ snapshots:
       cli-width: 3.0.0
       external-editor: 3.1.0
       figures: 3.2.0
-      lodash: 4.17.23
+      lodash: 4.18.0
       mute-stream: 0.0.8
       ora: 5.4.1
       run-async: 2.4.1
@@ -16257,6 +16260,8 @@ snapshots:
 
   lodash@4.17.23: {}
 
+  lodash@4.18.0: {}
+
   log-symbols@4.1.0:
     dependencies:
       chalk: 4.1.2
@@ -17027,7 +17032,7 @@ snapshots:
 
   node-emoji@1.11.0:
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.0
 
   node-emoji@2.2.0:
     dependencies:
@@ -19394,7 +19399,7 @@ snapshots:
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
       esquery: 1.6.0
-      lodash: 4.17.23
+      lodash: 4.18.0
       semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
@@ -19667,7 +19672,7 @@ snapshots:
 
   wuzzy@0.1.8:
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.0
 
   xml-name-validator@4.0.0: {}
 
@@ -19698,7 +19703,7 @@ snapshots:
   yaml-eslint-parser@1.2.3:
     dependencies:
       eslint-visitor-keys: 3.4.3
-      lodash: 4.17.23
+      lodash: 4.18.0
       yaml: 2.8.1
 
   yaml@2.8.1: {}
