@@ -185,8 +185,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0
       module-alias:
-        specifier: ^2.2.3
-        version: 2.2.3
+        specifier: ^2.3.4
+        version: 2.3.4
       moment-timezone:
         specifier: ^0.6.0
         version: 0.6.0
@@ -6620,8 +6620,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  module-alias@2.2.3:
-    resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
+  module-alias@2.3.4:
+    resolution: {integrity: sha512-bOclZt8hkpuGgSSoG07PKmvzTizROilUTvLNyrMqvlC9snhs7y7GzjNWAVbISIOlhCP1T14rH1PDAV9iNyBq/w==}
 
   module-details-from-path@1.0.4:
     resolution: {integrity: sha512-EGWKgxALGMgzvxYF1UyGTy0HXX/2vHLkw6+NvDKW2jypWbHpjQuj4UMcqQWXHERJhVGKikolT06G3bcKe4fi7w==}
@@ -16774,7 +16774,7 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
-  module-alias@2.2.3: {}
+  module-alias@2.3.4: {}
 
   module-details-from-path@1.0.4: {}
 
