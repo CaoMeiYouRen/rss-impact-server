@@ -137,8 +137,8 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
       express-openid-connect:
-        specifier: ^2.19.4
-        version: 2.19.4(express@4.21.2)
+        specifier: ^2.20.1
+        version: 2.20.1(express@4.21.2)
       express-rate-limit:
         specifier: ^8.3.2
         version: 8.3.2(express@4.21.2)
@@ -4764,8 +4764,8 @@ packages:
     resolution: {integrity: sha512-u/feCi0GPsI+988gU2FLcsHyAHTU0MX1Wg68NhAnN7z/+C5wqG+CY8J53N9ioe8RXgaoz0nBR/TYMf3AycUuPw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
-  express-openid-connect@2.19.4:
-    resolution: {integrity: sha512-3YFPZ4MgUPhwfHbCaJKEij7uTc0vF4KpGKsuc3D1IhNMooiP6w8p1HBaaDQOE2KaAas22UghxVECxPpcC/gfOA==}
+  express-openid-connect@2.20.1:
+    resolution: {integrity: sha512-Ka4qyKJgoC2fLJszQLpnoGFfmEPGCnq/uJgfhZxI+a8+3pvK8i+AKXIyavd29Z7V4lsK5JBs0Sjx/QSusMYNEw==}
     engines: {node: ^10.19.0 || >=12.0.0 < 13 || >=13.7.0 < 14 || >= 14.2.0}
     peerDependencies:
       express: '>= 4.17.0'
@@ -14466,7 +14466,7 @@ snapshots:
       jest-mock: 30.2.0
       jest-util: 30.2.0
 
-  express-openid-connect@2.19.4(express@4.21.2):
+  express-openid-connect@2.20.1(express@4.21.2):
     dependencies:
       base64url: 3.0.1
       clone: 2.1.2
