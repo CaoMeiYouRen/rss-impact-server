@@ -142,7 +142,7 @@
     "@types/module-alias": "^2.0.4",
     "@types/morgan": "^1.9.10",
     "@types/ms": "^0.7.34",
-    "@types/multer": "^2.0.0",
+    "@types/multer": "^2.1.0",
     "@types/node": "^25.5.0",
     "@types/parse-torrent": "^5.8.7",
     "@types/passport-local": "^1.0.38",
