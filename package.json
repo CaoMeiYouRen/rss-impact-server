@@ -59,7 +59,7 @@
     "axios": "^1.13.6",
     "bcrypt": "^5.1.1",
     "better-bytes": "^1.2.6",
-    "better-sqlite3": "^12.6.2",
+    "better-sqlite3": "^12.8.0",
     "cache-manager": "^5.7.6",
     "cache-manager-ioredis-yet": "^2.1.2",
     "class-transformer": "^0.5.1",
