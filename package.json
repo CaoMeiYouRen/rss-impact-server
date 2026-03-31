@@ -77,7 +77,7 @@
     "express-session": "^1.19.0",
     "feedsmith": "^2.9.0",
     "file-type": "16.5.4",
-    "fs-extra": "^11.3.3",
+    "fs-extra": "^11.3.4",
     "go-cqwebsocket": "^6.3.2",
     "gpt-3-encoder": "^1.1.4",
     "helmet": "^8.1.0",
