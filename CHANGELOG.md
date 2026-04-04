@@ -1,5 +1,23 @@
 # rss-impact-server
 
+## [1.18.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.0...v1.18.1) (2026-04-04)
+
+
+### ✅ 测试
+
+* 添加类型检查步骤以确保代码质量 ([9561979](https://github.com/CaoMeiYouRen/rss-impact-server/commit/9561979))
+
+
+### 🐛 Bug 修复
+
+* **deps:** repair duplicated mapping key in pnpm-lock.yaml ([3c9f1de](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3c9f1de))
+
+
+### 📦 代码重构
+
+* 修改类型断言以提高代码类型安全性 ([ad290a2](https://github.com/CaoMeiYouRen/rss-impact-server/commit/ad290a2))
+* 将类型定义从 type 更改为 interface 以提高可读性和一致性 ([70bd50b](https://github.com/CaoMeiYouRen/rss-impact-server/commit/70bd50b))
+
 # [1.18.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.17.2...v1.18.0) (2025-12-27)
 
 
