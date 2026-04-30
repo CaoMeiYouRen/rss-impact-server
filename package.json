@@ -60,7 +60,7 @@
     "bcrypt": "^5.1.1",
     "better-bytes": "^1.2.6",
     "better-sqlite3": "^12.9.0",
-    "cache-manager": "^5.7.6",
+    "cache-manager": "^7.2.8",
     "cache-manager-ioredis-yet": "^2.1.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.4",

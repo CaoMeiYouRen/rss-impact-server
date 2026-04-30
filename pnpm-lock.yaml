@@ -54,7 +54,7 @@ importers:
         version: 3.14.0
       '@nestjs/cache-manager':
         specifier: ^3.1.2
-        version: 3.1.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(cache-manager@5.7.6)(keyv@4.5.4)(rxjs@7.8.2)
+        version: 3.1.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(cache-manager@7.2.8)(keyv@5.6.0)(rxjs@7.8.2)
       '@nestjs/common':
         specifier: ^11.0.11
         version: 11.1.19(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -101,8 +101,8 @@ importers:
         specifier: ^12.9.0
         version: 12.9.0
       cache-manager:
-        specifier: ^5.7.6
-        version: 5.7.6
+        specifier: ^7.2.8
+        version: 7.2.8
       cache-manager-ioredis-yet:
         specifier: ^2.1.2
         version: 2.1.2
@@ -771,6 +771,9 @@ packages:
 
   '@borewit/text-codec@0.2.2':
     resolution: {integrity: sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ==}
+
+  '@cacheable/utils@2.4.1':
+    resolution: {integrity: sha512-eiFgzCbIneyMlLOmNG4g9xzF7Hv3Mga4LjxjcSC/ues6VYq2+gUbQI8JqNuw/ZM8tJIeIaBGpswAsqV2V7ApgA==}
 
   '@cao-mei-you-ren/avue-types@1.1.0':
     resolution: {integrity: sha512-+ueuoY3qHiBIf6dTk4GA5QQ5Rg1YHE48r6VK4NL8ZsQ72K56c0WzJyDPgu8zQUT0xqkKRfyteQnz74ekmqlIiQ==}
@@ -1495,6 +1498,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@keyv/serialize@1.1.1':
+    resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
   '@lint-md/cli@2.0.0':
     resolution: {integrity: sha512-swOuQMtrEtQJpbecIQYk7bXyAvLCNO/UZBsRQTGLOggIm+fpoow5QnDY1F34Fe0lUthvxucIRpHjLzKXlk3u2Q==}
@@ -3578,9 +3584,8 @@ packages:
     engines: {node: '>= 18'}
     deprecated: With cache-manager v6 we now are using Keyv
 
-  cache-manager@5.7.6:
-    resolution: {integrity: sha512-wBxnBHjDxF1RXpHCBD6HGvKER003Ts7IIm0CHpggliHzN1RZditb7rXoduE1rplc2DEFYKxhLKgFuchXMJje9w==}
-    engines: {node: '>= 18'}
+  cache-manager@7.2.8:
+    resolution: {integrity: sha512-0HDaDLBBY/maa/LmUVAr70XUOwsiQD+jyzCBjmUErYZUKdMS9dT59PqW59PpVqfGM7ve6H0J6307JTpkCYefHQ==}
 
   cacheable-lookup@5.0.4:
     resolution: {integrity: sha512-2/kNscPhpcxrOigMZzbiWF7dz8ilhb/nIHU3EyZiXWXpeq/au8qJ8VhdftMkty3n7Gj6HIGalQG8oiBNB3AJgA==}
@@ -5312,6 +5317,10 @@ packages:
   has-unicode@2.0.1:
     resolution: {integrity: sha512-8Rf9Y83NBReMnx0gFzA8JImQACstCYWUplepDa9xprwwtmgEZUF0h/i5xSA625zB/I37EtrswSST6OXxwaaIJQ==}
 
+  hashery@1.5.1:
+    resolution: {integrity: sha512-iZyKG96/JwPz1N55vj2Ie2vXbhu440zfUfJvSwEqEbeLluk7NnapfGqa7LH0mOsnDxTF85Mx8/dyR6HfqcbmbQ==}
+    engines: {node: '>=20'}
+
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
@@ -5353,6 +5362,9 @@ packages:
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
+
+  hookified@1.15.1:
+    resolution: {integrity: sha512-MvG/clsADq1GPM2KGo2nyfaWVyn9naPiXrqIe4jYjXNZQt238kWyOGrsyc/DmRAQ+Re6yeo6yX/yoNCG5KAEVg==}
 
   hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
@@ -6099,6 +6111,9 @@ packages:
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
+  keyv@5.6.0:
+    resolution: {integrity: sha512-CYDD3SOtsHtyXeEORYRx2qBtpDJFjRTGXUtmNEMGyzYOKj1TE3tycdlho7kA1Ufx9OYWZzg52QFBGALTirzDSw==}
+
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
@@ -6280,10 +6295,6 @@ packages:
   lowercase-keys@2.0.0:
     resolution: {integrity: sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==}
     engines: {node: '>=8'}
-
-  lru-cache@10.2.2:
-    resolution: {integrity: sha512-9hp3Vp2/hFQUiIwKo8XCeFVnrg8Pk3TYNPIR7tJADKi5YfcF7vEaK7avFHTlSy3kOKYaJQaalfEo6YuXdceBOQ==}
-    engines: {node: 14 || >=16.14}
 
   lru-cache@10.4.3:
     resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
@@ -7495,10 +7506,6 @@ packages:
   progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
-
-  promise-coalesce@1.1.2:
-    resolution: {integrity: sha512-zLaJ9b8hnC564fnJH6NFSOGZYYdzrAJn2JUUIwzoQb32fG2QAakpDNM+CZo1km6keXkRXRM+hml1BFAPVnPkxg==}
-    engines: {node: '>=16'}
 
   promise-inflight@1.0.1:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
@@ -9720,6 +9727,11 @@ snapshots:
 
   '@borewit/text-codec@0.2.2': {}
 
+  '@cacheable/utils@2.4.1':
+    dependencies:
+      hashery: 1.5.1
+      keyv: 5.6.0
+
   '@cao-mei-you-ren/avue-types@1.1.0':
     dependencies:
       tslib: 2.8.1
@@ -10588,6 +10600,8 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  '@keyv/serialize@1.1.1': {}
+
   '@lint-md/cli@2.0.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@attachments/eslint-config': 0.3.5(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -10658,12 +10672,12 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@nestjs/cache-manager@3.1.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(cache-manager@5.7.6)(keyv@4.5.4)(rxjs@7.8.2)':
+  '@nestjs/cache-manager@3.1.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(cache-manager@7.2.8)(keyv@5.6.0)(rxjs@7.8.2)':
     dependencies:
       '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.19(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.18)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      cache-manager: 5.7.6
-      keyv: 4.5.4
+      cache-manager: 7.2.8
+      keyv: 5.6.0
       rxjs: 7.8.2
 
   '@nestjs/cli@11.0.21(@types/node@25.5.0)(webpack-cli@5.1.4)':
@@ -13155,18 +13169,16 @@ snapshots:
 
   cache-manager-ioredis-yet@2.1.2:
     dependencies:
-      cache-manager: 5.7.6
+      cache-manager: 7.2.8
       ioredis: 5.10.1
       telejson: 7.2.0
     transitivePeerDependencies:
       - supports-color
 
-  cache-manager@5.7.6:
+  cache-manager@7.2.8:
     dependencies:
-      eventemitter3: 5.0.1
-      lodash.clonedeep: 4.5.0
-      lru-cache: 10.2.2
-      promise-coalesce: 1.1.2
+      '@cacheable/utils': 2.4.1
+      keyv: 5.6.0
 
   cacheable-lookup@5.0.4: {}
 
@@ -15234,6 +15246,10 @@ snapshots:
 
   has-unicode@2.0.1: {}
 
+  hashery@1.5.1:
+    dependencies:
+      hookified: 1.15.1
+
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
@@ -15285,6 +15301,8 @@ snapshots:
   hook-std@4.0.0: {}
 
   hookable@5.5.3: {}
+
+  hookified@1.15.1: {}
 
   hosted-git-info@2.8.9: {}
 
@@ -16287,6 +16305,10 @@ snapshots:
     dependencies:
       json-buffer: 3.0.1
 
+  keyv@5.6.0:
+    dependencies:
+      '@keyv/serialize': 1.1.1
+
   kind-of@6.0.3: {}
 
   kleur@4.1.5: {}
@@ -16441,8 +16463,6 @@ snapshots:
       js-tokens: 4.0.0
 
   lowercase-keys@2.0.0: {}
-
-  lru-cache@10.2.2: {}
 
   lru-cache@10.4.3: {}
 
@@ -17889,8 +17909,6 @@ snapshots:
   process-nextick-args@2.0.1: {}
 
   progress@2.0.3: {}
-
-  promise-coalesce@1.1.2: {}
 
   promise-inflight@1.0.1:
     optional: true
