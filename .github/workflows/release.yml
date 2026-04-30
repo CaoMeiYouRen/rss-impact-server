@@ -28,7 +28,7 @@ jobs:
           # fetch-depth: 10
           # fetch-tags: true
       - name: Setup pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6
         with:
           version: "latest"
       - name: Setup Node.js environment
