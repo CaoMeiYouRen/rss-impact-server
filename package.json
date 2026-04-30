@@ -122,7 +122,7 @@
     "@cao-mei-you-ren/avue-types": "^1.1.0",
     "@lint-md/cli": "^2.0.0",
     "@nestjs/cli": "^11.0.17",
-    "@nestjs/schematics": "^11.0.10",
+    "@nestjs/schematics": "^11.1.0",
     "@nestjs/testing": "^10.4.15",
     "@semantic-release/exec": "^7.1.0",
     "@types/autocannon": "^7.12.7",
