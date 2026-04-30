@@ -73,7 +73,7 @@
     "dotenv": "^17.3.1",
     "entities": "^7.0.1",
     "express-openid-connect": "^2.20.1",
-    "express-rate-limit": "^8.3.2",
+    "express-rate-limit": "^8.4.1",
     "express-session": "^1.19.0",
     "feedsmith": "^2.9.1",
     "file-type": "16.5.4",
