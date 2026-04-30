@@ -71,7 +71,7 @@
     "cron": "4.4.0",
     "dayjs": "^1.11.20",
     "dotenv": "^17.3.1",
-    "entities": "^7.0.1",
+    "entities": "^8.0.0",
     "express-openid-connect": "^2.20.1",
     "express-rate-limit": "^8.4.1",
     "express-session": "^1.19.0",
