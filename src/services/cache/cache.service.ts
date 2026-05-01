@@ -1,6 +1,6 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Inject, Injectable, Logger } from '@nestjs/common'
-import { Cache, Milliseconds } from 'cache-manager'
+import { Cache } from 'cache-manager'
 import { __DEV__, CACHE_EXPIRE } from '@/app.config'
 
 @Injectable()
@@ -13,7 +13,7 @@ export class CacheService {
     ) {
     }
 
-    async tryGet<T = unknown>(key: string, cb: () => T | Promise<T>, ttl: Milliseconds = CACHE_EXPIRE * 1000, refresh = false) {
+    async tryGet<T = unknown>(key: string, cb: () => T | Promise<T>, ttl = CACHE_EXPIRE * 1000, refresh = false) {
         const cacheKey = `rss-impact:${key}`
         let cacheData = await this.cacheManager.get<T>(cacheKey)
         if (cacheData) {
@@ -34,7 +34,7 @@ export class CacheService {
         return this.cacheManager.get<T>(cacheKey)
     }
 
-    async set<T = unknown>(key: string, value: T, ttl: Milliseconds = 300 * 1000) {
+    async set<T = unknown>(key: string, value: T, ttl = 300 * 1000) {
         const cacheKey = `rss-impact:${key}`
         return this.cacheManager.set(cacheKey, value, ttl)
     }
