@@ -1,5 +1,17 @@
 # rss-impact-server
 
+## [1.18.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.1...v1.18.2) (2026-05-02)
+
+
+### ✅ 测试
+
+* **cache:** 添加缓存服务的单元测试 ([69db314](https://github.com/CaoMeiYouRen/rss-impact-server/commit/69db314))
+
+
+### 🐛 Bug 修复
+
+* **deps:** 更新依赖项和缓存管理实现 ([2cc9aca](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2cc9aca))
+
 ## [1.18.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.0...v1.18.1) (2026-04-04)
 
 
