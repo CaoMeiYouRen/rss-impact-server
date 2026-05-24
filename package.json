@@ -14,7 +14,7 @@
   "main": "dist/main.js",
   "engines": {
     "node": ">=20",
-    "pnpm": ">=9"
+    "pnpm": ">=11"
   },
   "scripts": {
     "lint": "cross-env NODE_ENV=production eslint --fix",
@@ -121,7 +121,7 @@
   },
   "devDependencies": {
     "@cao-mei-you-ren/avue-types": "^1.1.0",
-    "@lint-md/cli": "^2.0.0",
+    "@lint-md/cli": "2.0.0",
     "@nestjs/cli": "^11.0.21",
     "@nestjs/schematics": "^11.1.0",
     "@nestjs/testing": "^10.4.15",
@@ -175,64 +175,6 @@
     "typescript": "^5.9.3",
     "vitepress": "^1.6.4"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/methods": "^1.1.4",
-      "@types/superagent": "^8.1.0",
-      "axios": "$axios",
-      "compare-func": "$compare-func",
-      "cron": "$cron",
-      "formidable": "^3.2.4",
-      "tough-cookie": "^4.1.3",
-      "path-to-regexp": "^3.3.0",
-      "nodemailer": "^7.0.11",
-      "html-minifier": "npm:html-minifier-terser@^7.2.0",
-      "request": "npm:postman-request@^2.88.1-postman.31",
-      "nth-check": "^2.1.1",
-      "cookie": "^0.7.0",
-      "katex": "^0.16.21",
-      "@sentry/node": "^8.49.0",
-      "esbuild": "^0.25.0",
-      "@octokit/plugin-paginate-rest": "^11.4.1",
-      "@octokit/request": "^9.2.1",
-      "@octokit/request-error": "^5.1.1",
-      "@babel/runtime-corejs2": "^7.26.10",
-      "@babel/helpers": "^7.26.10",
-      "@babel/runtime-corejs3": "^7.26.10",
-      "tar-fs": "^2.1.4",
-      "tmp": "^0.2.4",
-      "sha.js": "^2.4.12",
-      "vite": "^5.4.21",
-      "@nestjs/common": "^11.0.11",
-      "multer": "^2.0.2",
-      "brace-expansion": "^2.0.3",
-      "form-data": "^4.0.4",
-      "js-yaml": "^4.1.1",
-      "mdast-util-to-hast": "^13.2.1",
-      "jws": "^3.2.3"
-    },
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "express",
-        "webpack"
-      ]
-    },
-    "onlyBuiltDependencies": [
-      "@nestjs/core",
-      "@sentry/profiling-node",
-      "bcrypt",
-      "better-sqlite3",
-      "core-js",
-      "core-js-pure",
-      "esbuild",
-      "nice-napi",
-      "sqlite3",
-      "unrs-resolver"
-    ],
-    "ignoredBuiltDependencies": [
-      "@sentry-internal/node-cpu-profiler"
-    ]
-  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog-cmyr"
@@ -257,8 +199,7 @@
   "lint-staged": {
     "*.{js,ts}": [
       "npm run lint",
-      "npm run lint:md",
-      "git add"
+      "npm run lint:md"
     ]
   }
 }
