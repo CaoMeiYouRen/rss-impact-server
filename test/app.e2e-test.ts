@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs-extra'
-import moduleAlias from 'module-alias'
+import moduleAlias = require('module-alias')
 moduleAlias.addAlias('@', path.join(__dirname, '../src'))
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication, ValidationPipe } from '@nestjs/common'

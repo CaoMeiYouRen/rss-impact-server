@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/order
 import { CI, ENABLE_AUTH0, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, SESSION_SECRET, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
 import path from 'path'
-import moduleAlias from 'module-alias'
+import moduleAlias = require('module-alias')
 import './utils/sentry'
 import { NestFactory } from '@nestjs/core'
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger'
