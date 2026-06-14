@@ -15,13 +15,28 @@ function getPackageRoot(file) {
     return parts.slice(0, packageEndIndex + 1).join('/')
 }
 
-async function collectNativeArtifacts(projectRoot, packageRoots) {
+function getPublicPackagePath(packageRoot) {
+    const normalized = packageRoot.split(path.sep).join('/')
+    const parts = normalized.split('/')
+    const lastNodeModulesIndex = parts.lastIndexOf('node_modules')
+    if (lastNodeModulesIndex === -1 || lastNodeModulesIndex >= parts.length - 1) {
+        return null
+    }
+    const packageNameIndex = lastNodeModulesIndex + 1
+    const packageEndIndex = parts[packageNameIndex].startsWith('@') ? packageNameIndex + 1 : packageNameIndex
+    const publicPath = ['node_modules', ...parts.slice(packageNameIndex, packageEndIndex + 1)].join('/')
+    return publicPath === normalized ? null : publicPath
+}
+
+async function collectPackageArtifacts(projectRoot, packageRoots) {
     const extraEntries = []
     for (const packageRoot of packageRoots) {
-        for (const relativePath of ['build', 'prebuilds']) {
-            const fullPath = path.join(projectRoot, packageRoot, relativePath)
-            if (await fs.pathExists(fullPath)) {
-                extraEntries.push(path.join(packageRoot, relativePath))
+        extraEntries.push(packageRoot)
+        const publicPackagePath = getPublicPackagePath(packageRoot)
+        if (publicPackagePath) {
+            const publicPackageFullPath = path.join(projectRoot, publicPackagePath)
+            if (await fs.pathExists(publicPackageFullPath)) {
+                extraEntries.push(publicPackagePath)
             }
         }
     }
@@ -56,8 +71,8 @@ async function collectNativeArtifacts(projectRoot, packageRoots) {
     console.log('Total touchable files:', fileList.length)
     fileList = fileList.filter((file) => file.startsWith('node_modules')) // only need node_modules
     const packageRoots = Array.from(new Set(fileList.map(getPackageRoot).filter(Boolean)))
-    const nativeArtifacts = await collectNativeArtifacts(projectRoot, packageRoots)
-    fileList = Array.from(new Set([...fileList, ...nativeArtifacts]))
+    const packageArtifacts = await collectPackageArtifacts(projectRoot, packageRoots)
+    fileList = Array.from(new Set([...fileList, ...packageArtifacts]))
     console.log('Total files need to be copied (touchable files in node_modules):', fileList.length)
     console.log('Start copying files, destination:', resultFolder)
     return Promise.all(fileList.map((e) => fs.copy(path.join(projectRoot, e), path.join(resultFolder, e)).catch(console.error),
