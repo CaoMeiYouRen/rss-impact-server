@@ -35,9 +35,17 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
         // 处理 URL 可能会被风控的问题，例如 kisssub.org
         const linkRegex = /https?:\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/gi
         const links = desp.match(linkRegex)
-        if (links?.length && desp.includes('kisssub.org')) {
+        if (links?.length) {
+            const blockedDomains = ['kisssub.org']
             links.forEach((link) => {
-                desp = desp.replace(link, link.replaceAll('.', '\u200d.\u200d')) // 在点号上添加零宽字符
+                try {
+                    const url = new URL(link)
+                    if (blockedDomains.some((domain) => url.hostname === domain || url.hostname.endsWith(`.${domain}`))) {
+                        desp = desp.replace(link, link.replaceAll('.', '\u200d.\u200d')) // 在点号上添加零宽字符
+                    }
+                } catch {
+                    // 无效的 URL，跳过
+                }
             })
         }
     }
