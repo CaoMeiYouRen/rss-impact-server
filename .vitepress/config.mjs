@@ -34,6 +34,11 @@ export default defineConfig({
             provider: 'local'
         }
     },
+    vite: {
+        build: {
+            target: 'es2022'
+        }
+    },
     // 重定向路由
     rewrites: {
         'README.md': 'index.md',
