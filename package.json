@@ -60,7 +60,7 @@
     "axios": "^1.17.0",
     "bcrypt": "^6.0.0",
     "better-bytes": "^1.2.6",
-    "better-sqlite3": "^12.9.0",
+    "better-sqlite3": "12.9.0",
     "cache-manager": "^7.2.8",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.4",
