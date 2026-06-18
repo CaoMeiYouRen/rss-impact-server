@@ -5,7 +5,6 @@ import timezone from 'dayjs/plugin/timezone'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import _, { random } from 'lodash'
 import fs, { ReadStream } from 'fs-extra'
-import FileType from 'file-type'
 import Turndown from 'turndown'
 import { Equal, Like, ILike, Between, In } from 'typeorm'
 import { ValidationError } from 'class-validator'
@@ -181,7 +180,8 @@ export async function download(url: string, filepath: string, timeout = 60 * 100
     return new Promise<DownloadFileType>((resolve, reject) => {
         writer.on('finish', async () => {
             const stat = await fs.stat(filepath)
-            const mime = (await FileType.fromFile(filepath))?.mime
+            const { fileTypeFromFile } = await import('file-type')
+            const mime = (await fileTypeFromFile(filepath))?.mime
             const hash = await getMd5ByStream(filepath)
             resolve({
                 size: stat.size,

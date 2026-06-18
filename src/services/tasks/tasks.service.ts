@@ -9,7 +9,6 @@ import XRegExp from 'xregexp'
 import dayjs, { Dayjs } from 'dayjs'
 import fs from 'fs-extra'
 import md5 from 'md5'
-import FileType from 'file-type'
 import { QBittorrent } from '@cao-mei-you-ren/qbittorrent'
 import { plainToInstance } from 'class-transformer'
 import parseTorrent, { Instance, toMagnetURI } from 'parse-torrent'
@@ -598,7 +597,8 @@ export class TasksService implements OnApplicationBootstrap {
                 __DEV__ && this.logger.debug(`文件 ${filename} 已存在，跳过下载`)
                 // 同步到数据库
                 const stat = await fs.stat(filepath)
-                const { mime } = await FileType.fromFile(filepath)
+                const { fileTypeFromFile } = await import('file-type')
+                const { mime } = await fileTypeFromFile(filepath)
                 const hash = await getMd5ByStream(filepath)
                 const newResource = this.resourceRepository.create({
                     url,
