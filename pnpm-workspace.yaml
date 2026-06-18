@@ -79,4 +79,4 @@ allowBuilds:
   nice-napi: true
   sqlite3: true
   unrs-resolver: true
-  '@scarf/scarf': set this to true or false
+  '@scarf/scarf': true
