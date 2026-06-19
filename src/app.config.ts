@@ -106,6 +106,10 @@ export const DATABASE_SCHEMA = env.DATABASE_SCHEMA || 'public'
 export const DATABASE_SSL = env.DATABASE_SSL === 'true'
 
 export const DATABASE_INDEX_LENGTH = Number(env.DATABASE_INDEX_LENGTH || 1024)
+// 控制 TypeORM 是否自动同步表结构。未配置时由各数据库类型使用安全默认值。
+export const DATABASE_SYNCHRONIZE = env.DATABASE_SYNCHRONIZE === undefined
+    ? undefined
+    : env.DATABASE_SYNCHRONIZE === 'true'
 
 export const SESSION_MAX_AGE = env.SESSION_MAX_AGE
 

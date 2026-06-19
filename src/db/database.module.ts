@@ -17,7 +17,7 @@ import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
-import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_SSL, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
+import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_SSL, DATABASE_SYNCHRONIZE, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 import { CustomLogger, winstonLogger } from '@/middlewares/logger.middleware'
 
 export const DATABASE_DIR = DATA_PATH
@@ -50,7 +50,10 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                             type: 'better-sqlite3',
                             database: DATABASE_PATH,
                         } as BetterSqlite3ConnectionOptions as any //  数据库路径。
-                        synchronize = true // 在数据库为 sqlite 的时候固定同步
+                        // sqlite 在生产环境下默认不做 schema synchronize，避免每次启动都执行 DROP/ALTER。
+                        // 首次启动(数据库文件不存在)仍会自动建表，开发/测试环境维持自动同步。
+                        const dbFileExists = await fs.pathExists(DATABASE_PATH)
+                        synchronize = DATABASE_SYNCHRONIZE ?? (__DEV__ || __TEST__ || !dbFileExists)
                         break
                     }
                     case 'mysql': {
@@ -128,4 +131,3 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
     exports: [repositories],
 })
 export class DatabaseModule { }
-
