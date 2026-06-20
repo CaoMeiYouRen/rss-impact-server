@@ -16,7 +16,7 @@ if (REDIS_URL) {
     })
 } else {
     const db = new Database(DATABASE_PATH)
-    db.pragma('journal_mode = WAL')
+    db.pragma('journal_mode = DELETE')
     db.pragma('busy_timeout = 5000')
     store = new BetterSqlite3Store({
         client: db,
