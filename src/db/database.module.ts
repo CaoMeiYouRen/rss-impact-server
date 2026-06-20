@@ -1,11 +1,12 @@
 import path from 'path'
-import { Global, Module } from '@nestjs/common'
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
+import { Global, Module, Injectable, type OnModuleInit } from '@nestjs/common'
+import { TypeOrmModule, TypeOrmModuleOptions, InjectDataSource } from '@nestjs/typeorm'
 import ms from 'ms'
 import fs from 'fs-extra'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
 import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions'
+import { DataSource } from 'typeorm'
 import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
 import { Category } from './models/category.entity'
@@ -18,6 +19,40 @@ import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
 import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_SSL, DATABASE_SYNCHRONIZE, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 import { CustomLogger, winstonLogger } from '@/middlewares/logger.middleware'
+
+type SqliteDatabase = { pragma: (sql: string) => void }
+
+@Injectable()
+export class SqlitePragmaService implements OnModuleInit {
+
+    constructor(@InjectDataSource() private dataSource: DataSource) { }
+
+    onModuleInit() {
+        if (this.dataSource.options.type !== 'better-sqlite3') {
+            return
+        }
+        try {
+            const db = (this.dataSource.driver as any).databaseConnection as SqliteDatabase
+
+            // 关键修复：Docker bind mount 文件系统对 POSIX 锁支持不可靠。
+            // WAL 模式减少对文件锁的依赖，synchronous=NORMAL 避免在慢文件系统上超时。
+            // 如果 WAL 模式初始化失败（极少数文件系统不支持），回退 DELETE + busy_timeout。
+            try {
+                db.pragma('journal_mode = WAL')
+            } catch {
+                winstonLogger.warn?.('WAL 模式设置失败，使用 DELETE + busy_timeout 作为回退')
+                db.pragma('journal_mode = DELETE')
+            }
+            db.pragma('synchronous = NORMAL')
+            db.pragma('busy_timeout = 5000')
+
+            winstonLogger.log?.('SQLite PRAGMA 配置完成: journal_mode 已应用, synchronous=NORMAL, busy_timeout=5000')
+        } catch {
+            winstonLogger.warn?.('SQLite PRAGMA 设置失败，连接可能已处于异常状态')
+        }
+    }
+
+}
 
 export const DATABASE_DIR = DATA_PATH
 
@@ -128,5 +163,6 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
         repositories,
     ],
     exports: [repositories],
+    providers: [SqlitePragmaService],
 })
 export class DatabaseModule { }

@@ -91,11 +91,11 @@ export class TasksService implements OnApplicationBootstrap {
         }
     }
 
-    private async retryDbWrite<T>(operation: () => Promise<T>, retries = 3): Promise<T> {
+    private async retryDbWrite<T>(operation: () => Promise<T>, retries = 5): Promise<T> {
         return retryBackoff(operation, {
             maxRetries: retries,
             initialInterval: 100,
-            maxInterval: 5000,
+            maxInterval: 30000,
             shouldRetry: (error: Error) => {
                 if (error?.message?.includes('disk I/O error')
                     || error?.message?.includes('SQLITE_BUSY')

@@ -175,19 +175,7 @@ describe('TasksService retryDbWrite', () => {
     it('超出最大重试次数后应抛出最终错误', async () => {
         const operation = jest.fn().mockRejectedValue(new Error('SqliteError: disk I/O error'))
         await expect((service as any).retryDbWrite(operation)).rejects.toThrow()
-        // 默认 maxRetries=3，第1次调用 + 3次重试 = 4次
-        // 但 retryBackoff 在 maxRetries 次失败后抛出，所以调用次数 = maxRetries
-        // retryBackoff: do-while, first call fails, retry 1,2,3 then throw
-        // 所以 total calls = 3 (1 + 2 retries when maxRetries=3)
-        // Actually retryBackoff logic: if currentRetries >= maxRetries, throw
-        // Call 1: fails, retries=0, retry 1 -> succeeds/fails
-        // Call 2: fails, retries=1, retry 2 ->
-        // Call 3: fails, retries=2, retry 3 ->
-        // Call 4: fails, retries=3 >= maxRetries(3), throw
-        // So 3 calls total with maxRetries=3? Or 4?
-        // Looking at the code: do { try{ return cb() } catch{ retries++; if retries>=maxRetries throw; sleep; } } while(retries<maxRetries)
-        // So with maxRetries=3: first call fails, retries=1, sleep, second call fails, retries=2, sleep, third call fails, retries=3>=maxRetries, throw
-        // Total calls = 3
-        expect(operation).toHaveBeenCalledTimes(3)
+        // 默认 maxRetries=5，retryBackoff 在 retries>=maxRetries 时抛出
+        expect(operation).toHaveBeenCalledTimes(5)
     })
 })

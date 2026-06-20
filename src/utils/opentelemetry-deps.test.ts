@@ -72,23 +72,40 @@ describe('OpenTelemetry 核心依赖版本解析', () => {
 
 describe('SQLite journal mode 配置', () => {
     const sessionMiddlewarePath = resolve(__dirname, '../middlewares/session.middleware.ts')
+    const dbModulePath = resolve(__dirname, '../db/database.module.ts')
+    const packageJsonPath = resolve(__dirname, '../../package.json')
 
     describe('session.middleware.ts', () => {
-        it('不应设置 journal_mode Pragma，使用 SQLite 默认 DELETE 模式', () => {
-            // v1.18.2 基线：不设置任何 journal_mode，依赖 SQLite 默认 DELETE 模式。
-            // PRAGMA 设置在 Docker bind mount 上可能引入 mmap/POSIX 锁问题。
+        it('不应设置任何 PRAGMA（会话存储由 Redis 承载，SQLite 连接仅作回退）', () => {
             const content = readFileSync(sessionMiddlewarePath, 'utf8')
             expect(content).not.toMatch(/pragma\(['"]journal_mode/)
-        })
-
-        it('不应设置 synchronous Pragma', () => {
-            const content = readFileSync(sessionMiddlewarePath, 'utf8')
             expect(content).not.toMatch(/pragma\(['"]synchronous/)
+            expect(content).not.toMatch(/pragma\(['"]busy_timeout/)
+        })
+    })
+
+    describe('database.module.ts', () => {
+        it('SqlitePragmaService 应在 onModuleInit 中设置 WAL + NORMAL + busy_timeout', () => {
+            // Docker bind mount 上 POSIX 锁不可靠，WAL 模式减少对文件锁的依赖。
+            // synchronous=NORMAL 在 WAL 模式下安全且避免慢文件系统超时。
+            const content = readFileSync(dbModulePath, 'utf8')
+            expect(content).toMatch(/pragma\(['"]journal_mode = WAL/)
+            expect(content).toMatch(/pragma\(['"]synchronous = NORMAL/)
+            expect(content).toMatch(/pragma\(['"]busy_timeout = 5000/)
         })
 
-        it('不应设置 busy_timeout Pragma', () => {
-            const content = readFileSync(sessionMiddlewarePath, 'utf8')
-            expect(content).not.toMatch(/pragma\(['"]busy_timeout/)
+        it('WAL 失败时应回退 DELETE + busy_timeout', () => {
+            const content = readFileSync(dbModulePath, 'utf8')
+            expect(content).toMatch(/journal_mode = DELETE/)
+            expect(content).toMatch(/WAL.*失败.*DELETE.*回退/)
+        })
+    })
+
+    describe('package.json', () => {
+        it('better-sqlite3 应保持在 12.8.x，防止自动升级引入不兼容变更', () => {
+            const content = readFileSync(packageJsonPath, 'utf8')
+            const betterSqlite3 = JSON.parse(content).dependencies['better-sqlite3']
+            expect(betterSqlite3).toMatch(/^[\^]?12\.8\.\d+$/)
         })
     })
 })

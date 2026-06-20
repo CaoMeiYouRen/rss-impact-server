@@ -29,10 +29,10 @@ services:
       - redis
     deploy:
       resources:
-        # 资源上限
+        # 资源上限：SQLite 并发写入需要足够的 CPU 和内存
         limits:
-            cpus: 0.5
-            memory: 512M
+            cpus: 1.0
+            memory: 1G
   redis:
     image: redis:6-alpine
     restart: always

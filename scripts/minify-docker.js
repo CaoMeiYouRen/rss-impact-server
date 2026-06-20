@@ -75,8 +75,19 @@ async function collectPackageArtifacts(projectRoot, packageRoots) {
     fileList = Array.from(new Set([...fileList, ...packageArtifacts]))
     console.log('Total files need to be copied (touchable files in node_modules):', fileList.length)
     console.log('Start copying files, destination:', resultFolder)
-    return Promise.all(fileList.map((e) => fs.copy(path.join(projectRoot, e), path.join(resultFolder, e)).catch(console.error),
-    ))
+    const errors = []
+    for (const e of fileList) {
+        try {
+            await fs.copy(path.join(projectRoot, e), path.join(resultFolder, e))
+        } catch (err) {
+            errors.push({ file: e, error: err.message || err })
+        }
+    }
+    if (errors.length > 0) {
+        console.error('文件复制失败:', JSON.stringify(errors, null, 2))
+        process.exit(1)
+    }
+    console.log('文件复制完成，共', fileList.length, '个文件')
 })().catch((err) => {
     // fix unhandled promise rejections
     console.error(err, err.stack)
