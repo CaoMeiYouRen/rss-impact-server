@@ -41,35 +41,57 @@ export abstract class Base {
 
     @BeforeInsert()
     protected async insertValidate() {
-        const obj = plainToInstance(this.constructor as any, this, {
-            enableCircularCheck: true,
+        if (!this.constructor) {
+            winstonLogger.warn?.('insertValidate 跳过：实体原型链损坏')
+            return
+        }
+        try {
+            const obj = plainToInstance(this.constructor as any, this, {
+                enableCircularCheck: true,
 
-        })
-        const validationErrors = await (validate as any)(obj, {
-            whitelist: true,
-        })
+            })
+            const validationErrors = await (validate as any)(obj, {
+                whitelist: true,
+            })
 
-        const errors = flattenValidationErrors(validationErrors)
-        if (errors?.length) {
-            __DEV__ && winstonLogger.debug('插入前校验', validationErrors)
-            throw new HttpError(400, errors.join(', '))
+            const errors = flattenValidationErrors(validationErrors)
+            if (errors?.length) {
+                __DEV__ && winstonLogger.debug('插入前校验', validationErrors)
+                throw new HttpError(400, errors.join(', '))
+            }
+        } catch (error) {
+            if (error instanceof HttpError) {
+                throw error
+            }
+            winstonLogger.error('插入前校验失败，跳过验证', error?.stack)
         }
     }
 
     @BeforeUpdate()
     protected async updateValidate() {
-        const obj = plainToInstance(this.constructor as any, this, {
-            enableCircularCheck: true,
+        if (!this.constructor) {
+            winstonLogger.warn?.('updateValidate 跳过：实体原型链损坏')
+            return
+        }
+        try {
+            const obj = plainToInstance(this.constructor as any, this, {
+                enableCircularCheck: true,
 
-        })
-        const validationErrors = await (validate as any)(obj, {
-            whitelist: true,
-            skipUndefinedProperties: true,
-        })
-        const errors = flattenValidationErrors(validationErrors)
-        if (errors?.length) {
-            __DEV__ && winstonLogger.debug('更新前校验', validationErrors)
-            throw new HttpError(400, errors.join(', '))
+            })
+            const validationErrors = await (validate as any)(obj, {
+                whitelist: true,
+                skipUndefinedProperties: true,
+            })
+            const errors = flattenValidationErrors(validationErrors)
+            if (errors?.length) {
+                __DEV__ && winstonLogger.debug('更新前校验', validationErrors)
+                throw new HttpError(400, errors.join(', '))
+            }
+        } catch (error) {
+            if (error instanceof HttpError) {
+                throw error
+            }
+            winstonLogger.error('更新前校验失败，跳过验证', error?.stack)
         }
     }
 

@@ -76,12 +76,13 @@ describe('SQLite journal mode 配置', () => {
     const packageJsonPath = resolve(__dirname, '../../package.json')
 
     describe('session.middleware.ts', () => {
-        it('应使用 DELETE journal 模式，不应使用 WAL', () => {
-            // WAL 模式在 Docker bind mount (virtiofs/osxfs) 上因 mmap/POSIX 锁不可靠,
-            // 会导致 SQLITE_IOERR_WRITE。DELETE 模式兼容所有文件系统。
+        it('应使用 WAL journal 模式并设置 synchronous=NORMAL', () => {
+            // WAL 模式 + synchronous=NORMAL 在 Linux ext4/xfs 等主流文件系统上兼顾并发性能与数据安全。
+            // 仅在 macOS Docker Desktop (virtiofs/osxfs) 上可能因 mmap/POSIX 锁不可靠导致
+            // SQLITE_IOERR_WRITE，生产环境部署于 Linux 服务器时 WAL 模式是更好的选择。
             const content = readFileSync(sessionMiddlewarePath, 'utf8')
-            expect(content).toMatch(/journal_mode = DELETE/)
-            expect(content).not.toMatch(/journal_mode = WAL/)
+            expect(content).toMatch(/journal_mode = WAL/)
+            expect(content).toMatch(/synchronous = NORMAL/)
         })
 
         it('应设置 busy_timeout 防止并发写入冲突', () => {
@@ -91,14 +92,15 @@ describe('SQLite journal mode 配置', () => {
     })
 
     describe('database.module.ts', () => {
-        it('SqlitePragmaService 不应重复设置 journal_mode', () => {
-            // journal_mode 已在 session.middleware.ts 导入阶段设置（数据库级持久化）,
-            // 重复设置会与数据库中已有的 journal mode 产生冲突
+        it('SqlitePragmaService 应设置 journal_mode 和 synchronous 作为安全冗余', () => {
+            // journal_mode 由 session.middleware.ts 在导入阶段设置（数据库级持久化），
+            // SqlitePragmaService 中重复设置作为安全冗余，确保即使模块加载顺序变化也能正确配置
             const content = readFileSync(dbModulePath, 'utf8')
-            // 确保 onModuleInit 中没有调用 pragma('journal_mode ...')
             const onModuleInitMatch = content.match(/onModuleInit\(\)\s*\{[\s\S]*?\n {4}\}/)
             if (onModuleInitMatch) {
-                expect(onModuleInitMatch[0]).not.toMatch(/pragma\(['"]journal_mode/)
+                expect(onModuleInitMatch[0]).toMatch(/pragma\(['"]journal_mode = WAL/)
+                expect(onModuleInitMatch[0]).toMatch(/pragma\(['"]synchronous = NORMAL/)
+                expect(onModuleInitMatch[0]).toMatch(/pragma\(['"]busy_timeout = 5000/)
             }
         })
     })

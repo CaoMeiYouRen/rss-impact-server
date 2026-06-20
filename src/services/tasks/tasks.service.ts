@@ -77,10 +77,35 @@ export class TasksService implements OnApplicationBootstrap {
 
     private async fixDatabase() {
         try {
-            //
+            if (DATABASE_TYPE === 'sqlite') {
+                const result = await this.dataSource.query('PRAGMA integrity_check;')
+                const integrity = result?.[0]?.integrity_check
+                if (integrity !== 'ok') {
+                    this.logger.error(`SQLite 完整性检查失败: ${integrity}`)
+                } else {
+                    this.logger.log('SQLite 完整性检查通过')
+                }
+            }
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
         }
+    }
+
+    private async retryDbWrite<T>(operation: () => Promise<T>, retries = 3): Promise<T> {
+        return retryBackoff(operation, {
+            maxRetries: retries,
+            initialInterval: 100,
+            maxInterval: 5000,
+            shouldRetry: (error: Error) => {
+                if (error?.message?.includes('disk I/O error')
+                    || error?.message?.includes('SQLITE_BUSY')
+                    || error?.message?.includes('SQLITE_IOERR')) {
+                    this.logger.warn(`数据库写入失败，正在重试: ${error.message}`)
+                    return true
+                }
+                return false
+            },
+        })
     }
 
     private getAllFeeds() {
@@ -219,7 +244,7 @@ export class TasksService implements OnApplicationBootstrap {
                     return article
                 }))
             }
-            const newArticles = await this.articleRepository.save(diffArticles)
+            const newArticles = await this.retryDbWrite(() => this.articleRepository.save(diffArticles))
             this.triggerHooks(feed, newArticles)
         } catch (error) {
             this.logger.error(`url: ${url}\nproxyUrl: ${proxyUrl}\nmessage: ${error?.message}`, error?.stack)
@@ -334,23 +359,22 @@ export class TasksService implements OnApplicationBootstrap {
         try {
             this.logger.log(`正在执行推送渠道 ${config.type}`)
             const resp = await runPushAllInOne(title, desp, config, proxyUrl)
-            await this.webhookLogRepository.save(this.webhookLogRepository.create({
-                ...webhookLog,
-                ...pick(resp, ['data', 'statusText', 'headers']),
+            Object.assign(webhookLog, pick(resp, ['data', 'statusText', 'headers']), {
                 status: 'success',
                 statusCode: resp.status,
-            }))
+            })
+            await this.retryDbWrite(() => this.webhookLogRepository.save(webhookLog))
             this.logger.log(`执行推送渠道 ${config.type} 成功`)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
-            await this.webhookLogRepository.save(this.webhookLogRepository.create({
-                ...webhookLog,
+            Object.assign(webhookLog, {
                 data: error?.response?.data || error?.response || error,
                 statusCode: 500,
                 statusText: 'Internal Server Error',
                 headers: error?.response?.headers || {},
                 status: 'fail',
-            }))
+            })
+            await this.retryDbWrite(() => this.webhookLogRepository.save(webhookLog))
         }
     }
 
@@ -526,23 +550,22 @@ export class TasksService implements OnApplicationBootstrap {
                 timeout: (config?.timeout || 60) * 1000,
                 data,
             })
-            await this.webhookLogRepository.save(this.webhookLogRepository.create({
-                ...webhookLog,
-                ...pick(resp, ['data', 'statusText', 'headers']),
+            Object.assign(webhookLog, pick(resp, ['data', 'statusText', 'headers']), {
                 status: 'success',
                 statusCode: resp.status,
-            }))
+            })
+            await this.retryDbWrite(() => this.webhookLogRepository.save(webhookLog))
             this.logger.log(`触发 Webhook: ${config?.url} 成功`)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
-            await this.webhookLogRepository.save(this.webhookLogRepository.create({
-                ...webhookLog,
+            Object.assign(webhookLog, {
                 data: error?.response?.data || error?.response || error,
                 statusCode: 500,
                 statusText: 'Internal Server Error',
                 headers: error?.response?.headers || {},
                 status: 'fail',
-            }))
+            })
+            await this.retryDbWrite(() => this.webhookLogRepository.save(webhookLog))
         }
     }
 

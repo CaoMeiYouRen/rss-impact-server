@@ -25,15 +25,16 @@ export class SqlitePragmaService implements OnModuleInit {
 
     constructor(@InjectDataSource() private dataSource: DataSource) { }
     onModuleInit() {
-        // journal_mode=DELETE 已在 session.middleware.ts 导入阶段设置（数据库级持久化）。
-        // WAL 模式在 Docker bind mount (virtiofs/osxfs) 上因 mmap/POSIX 锁不可靠，
-        // 会导致 SQLITE_IOERR_WRITE。DELETE 模式兼容所有文件系统。
+        // WAL 模式支持并发读写，在 Linux ext4/xfs 等主流文件系统上可靠运行。
+        // synchronous=NORMAL 在 WAL 模式下兼顾性能与数据安全。
         if (this.dataSource.options.type === 'better-sqlite3') {
             try {
                 const db = (this.dataSource.driver as any).databaseConnection as { pragma: (sql: string) => void }
+                db.pragma('journal_mode = WAL')
+                db.pragma('synchronous = NORMAL')
                 db.pragma('busy_timeout = 5000')
             } catch {
-                winstonLogger.warn?.('SQLite busy_timeout 设置失败，连接可能已处于异常状态')
+                winstonLogger.warn?.('SQLite PRAGMA 设置失败，连接可能已处于异常状态')
             }
         }
     }
