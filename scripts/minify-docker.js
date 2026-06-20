@@ -15,32 +15,27 @@ function getPackageRoot(file) {
     return parts.slice(0, packageEndIndex + 1).join('/')
 }
 
-function getPublicPackagePath(packageRoot) {
-    const normalized = packageRoot.split(path.sep).join('/')
-    const parts = normalized.split('/')
-    const lastNodeModulesIndex = parts.lastIndexOf('node_modules')
-    if (lastNodeModulesIndex === -1 || lastNodeModulesIndex >= parts.length - 1) {
-        return null
-    }
-    const packageNameIndex = lastNodeModulesIndex + 1
-    const packageEndIndex = parts[packageNameIndex].startsWith('@') ? packageNameIndex + 1 : packageNameIndex
-    const publicPath = ['node_modules', ...parts.slice(packageNameIndex, packageEndIndex + 1)].join('/')
-    return publicPath === normalized ? null : publicPath
-}
+/**
+ * 收集 nft 静态分析无法追踪的原生工件目录。
+ * better-sqlite3 等包通过 bindings/prebuild-install 动态加载 .node 二进制，
+ * @vercel/nft 的 require() AST 分析无法静态解析这些动态路径。
+ *
+ * 策略：仅收集 build/、prebuilds/、Release/ 目录，不复制整个包根目录。
+ * 复制整个包根目录会导致 pnpm 符号链接被展开为真实目录，改变模块解析路径。
+ */
+const NATIVE_ARTIFACT_DIRS = ['build', 'prebuilds', 'Release']
 
-async function collectPackageArtifacts(projectRoot, packageRoots) {
-    const extraEntries = []
+async function collectNativeArtifacts(projectRoot, packageRoots) {
+    const entries = []
     for (const packageRoot of packageRoots) {
-        extraEntries.push(packageRoot)
-        const publicPackagePath = getPublicPackagePath(packageRoot)
-        if (publicPackagePath) {
-            const publicPackageFullPath = path.join(projectRoot, publicPackagePath)
-            if (await fs.pathExists(publicPackageFullPath)) {
-                extraEntries.push(publicPackagePath)
+        for (const dir of NATIVE_ARTIFACT_DIRS) {
+            const fullPath = path.join(projectRoot, packageRoot, dir)
+            if (await fs.pathExists(fullPath)) {
+                entries.push(path.join(packageRoot, dir))
             }
         }
     }
-    return extraEntries
+    return entries
 }
 
 (async () => {
@@ -71,8 +66,8 @@ async function collectPackageArtifacts(projectRoot, packageRoots) {
     console.log('Total touchable files:', fileList.length)
     fileList = fileList.filter((file) => file.startsWith('node_modules')) // only need node_modules
     const packageRoots = Array.from(new Set(fileList.map(getPackageRoot).filter(Boolean)))
-    const packageArtifacts = await collectPackageArtifacts(projectRoot, packageRoots)
-    fileList = Array.from(new Set([...fileList, ...packageArtifacts]))
+    const nativeArtifacts = await collectNativeArtifacts(projectRoot, packageRoots)
+    fileList = Array.from(new Set([...fileList, ...nativeArtifacts]))
     console.log('Total files need to be copied (touchable files in node_modules):', fileList.length)
     console.log('Start copying files, destination:', resultFolder)
     const errors = []

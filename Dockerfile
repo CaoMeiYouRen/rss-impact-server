@@ -34,7 +34,7 @@ FROM nodejs AS docker-minifier
 WORKDIR /app
 
 RUN pnpm config set registry https://registry.npmjs.org/ && \
-    pnpm add @vercel/nft@0.24.4 fs-extra@11.2.0 --save-prod
+    pnpm add @vercel/nft@1.10.2 fs-extra@11.2.0 --save-prod
 
 COPY --from=builder /app /app
 
