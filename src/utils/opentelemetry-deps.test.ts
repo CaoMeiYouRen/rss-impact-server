@@ -69,3 +69,45 @@ describe('OpenTelemetry 核心依赖版本解析', () => {
         })
     })
 })
+
+describe('SQLite journal mode 配置', () => {
+    const sessionMiddlewarePath = resolve(__dirname, '../middlewares/session.middleware.ts')
+    const dbModulePath = resolve(__dirname, '../db/database.module.ts')
+    const packageJsonPath = resolve(__dirname, '../../package.json')
+
+    describe('session.middleware.ts', () => {
+        it('应使用 DELETE journal 模式，不应使用 WAL', () => {
+            // WAL 模式在 Docker bind mount (virtiofs/osxfs) 上因 mmap/POSIX 锁不可靠,
+            // 会导致 SQLITE_IOERR_WRITE。DELETE 模式兼容所有文件系统。
+            const content = readFileSync(sessionMiddlewarePath, 'utf8')
+            expect(content).toMatch(/journal_mode = DELETE/)
+            expect(content).not.toMatch(/journal_mode = WAL/)
+        })
+
+        it('应设置 busy_timeout 防止并发写入冲突', () => {
+            const content = readFileSync(sessionMiddlewarePath, 'utf8')
+            expect(content).toMatch(/busy_timeout = 5000/)
+        })
+    })
+
+    describe('database.module.ts', () => {
+        it('SqlitePragmaService 不应重复设置 journal_mode', () => {
+            // journal_mode 已在 session.middleware.ts 导入阶段设置（数据库级持久化）,
+            // 重复设置会与数据库中已有的 journal mode 产生冲突
+            const content = readFileSync(dbModulePath, 'utf8')
+            // 确保 onModuleInit 中没有调用 pragma('journal_mode ...')
+            const onModuleInitMatch = content.match(/onModuleInit\(\)\s*\{[\s\S]*?\n {4}\}/)
+            if (onModuleInitMatch) {
+                expect(onModuleInitMatch[0]).not.toMatch(/pragma\(['"]journal_mode/)
+            }
+        })
+    })
+
+    describe('package.json', () => {
+        it('better-sqlite3 应锁定为 12.9.0，防止自动升级引入不兼容变更', () => {
+            const content = readFileSync(packageJsonPath, 'utf8')
+            const betterSqlite3 = JSON.parse(content).dependencies['better-sqlite3']
+            expect(betterSqlite3).toMatch(/^12\.9\.0$/)
+        })
+    })
+})
