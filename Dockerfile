@@ -30,14 +30,14 @@ RUN pnpm run build
 
 # 缩小阶段（临时禁用：排查 disk I/O error 根因）
 # FROM nodejs AS docker-minifier
-# 
+#
 # WORKDIR /app
-# 
+#
 # RUN pnpm config set registry https://registry.npmjs.org/ && \
 #     pnpm add @vercel/nft@1.10.2 fs-extra@11.2.0 --save-prod
-# 
+#
 # COPY --from=builder /app /app
-# 
+#
 # RUN export PROJECT_ROOT=/app/ && \
 #     node /app/scripts/minify-docker.js && \
 #     rm -rf /app/node_modules /app/scripts && \
@@ -53,9 +53,8 @@ ENV GIT_DATE ${GIT_DATE}
 
 WORKDIR /app
 # 后端部分（临时：全量复制 node_modules，跳过 minify-docker.js 以排查问题）
-COPY --from=builder /app/dist /app/dist
-COPY --from=builder /app/node_modules /app/node_modules
-COPY --from=builder /app/package.json /app/
+COPY --from=builder /app /app
+
 # 前端部分
 COPY --from=frontend-builder /frontend /app/public
 
