@@ -11,8 +11,7 @@ function extractCoreVersion(lockfileContent: string, entryPattern: RegExp): stri
     const lines = lockfileContent.split('\n')
     let inTarget = false
     let inDeps = false
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i]
+    for (const line of lines) {
         if (!inTarget && entryPattern.test(line)) {
             inTarget = true
             continue

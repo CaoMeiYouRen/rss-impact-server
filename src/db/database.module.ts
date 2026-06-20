@@ -1,12 +1,12 @@
 import path from 'path'
-import { Global, Module } from '@nestjs/common'
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
+import { Global, Module, Injectable, type OnModuleInit } from '@nestjs/common'
+import { TypeOrmModule, TypeOrmModuleOptions, InjectDataSource } from '@nestjs/typeorm'
 import ms from 'ms'
 import fs from 'fs-extra'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
-import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
 import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions'
+import { DataSource } from 'typeorm'
 import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
 import { Category } from './models/category.entity'
@@ -19,6 +19,20 @@ import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
 import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_SSL, DATABASE_SYNCHRONIZE, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 import { CustomLogger, winstonLogger } from '@/middlewares/logger.middleware'
+
+@Injectable()
+export class SqlitePragmaService implements OnModuleInit {
+
+    constructor(@InjectDataSource() private dataSource: DataSource) { }
+    async onModuleInit() {
+        if (this.dataSource.options.type === 'better-sqlite3') {
+            await this.dataSource.query('PRAGMA journal_mode = WAL')
+            await this.dataSource.query('PRAGMA busy_timeout = 5000')
+            winstonLogger.log?.('SQLite WAL 模式已启用, busy_timeout=5000ms')
+        }
+    }
+
+}
 
 export const DATABASE_DIR = DATA_PATH
 
@@ -129,5 +143,6 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
         repositories,
     ],
     exports: [repositories],
+    providers: [SqlitePragmaService],
 })
 export class DatabaseModule { }
