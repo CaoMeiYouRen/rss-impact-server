@@ -1,12 +1,11 @@
 import path from 'path'
-import { Global, Module, Injectable, type OnModuleInit } from '@nestjs/common'
-import { TypeOrmModule, TypeOrmModuleOptions, InjectDataSource } from '@nestjs/typeorm'
+import { Global, Module } from '@nestjs/common'
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import ms from 'ms'
 import fs from 'fs-extra'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
 import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions'
-import { DataSource } from 'typeorm'
 import { User } from './models/user.entity'
 import { Feed } from './models/feed.entity'
 import { Category } from './models/category.entity'
@@ -19,27 +18,6 @@ import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
 import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_SSL, DATABASE_SYNCHRONIZE, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 import { CustomLogger, winstonLogger } from '@/middlewares/logger.middleware'
-
-@Injectable()
-export class SqlitePragmaService implements OnModuleInit {
-
-    constructor(@InjectDataSource() private dataSource: DataSource) { }
-    onModuleInit() {
-        // WAL 模式支持并发读写，在 Linux ext4/xfs 等主流文件系统上可靠运行。
-        // synchronous=NORMAL 在 WAL 模式下兼顾性能与数据安全。
-        if (this.dataSource.options.type === 'better-sqlite3') {
-            try {
-                const db = (this.dataSource.driver as any).databaseConnection as { pragma: (sql: string) => void }
-                db.pragma('journal_mode = WAL')
-                db.pragma('synchronous = NORMAL')
-                db.pragma('busy_timeout = 5000')
-            } catch {
-                winstonLogger.warn?.('SQLite PRAGMA 设置失败，连接可能已处于异常状态')
-            }
-        }
-    }
-
-}
 
 export const DATABASE_DIR = DATA_PATH
 
@@ -150,6 +128,5 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
         repositories,
     ],
     exports: [repositories],
-    providers: [SqlitePragmaService],
 })
 export class DatabaseModule { }
