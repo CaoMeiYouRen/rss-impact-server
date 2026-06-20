@@ -25,11 +25,15 @@ export class SqlitePragmaService implements OnModuleInit {
 
     constructor(@InjectDataSource() private dataSource: DataSource) { }
     onModuleInit() {
+        // journal_mode=WAL 已在 session.middleware.ts 导入阶段设置（数据库级持久化），
+        // 此处仅设置 per-connection 的 busy_timeout，避免重复设置 WAL 引发 SQLITE_IOERR_WRITE
         if (this.dataSource.options.type === 'better-sqlite3') {
-            const db = (this.dataSource.driver as any).databaseConnection as { pragma: (sql: string) => void }
-            db.pragma('journal_mode = WAL')
-            db.pragma('busy_timeout = 5000')
-            winstonLogger.log?.('SQLite WAL 模式已启用, busy_timeout=5000ms')
+            try {
+                const db = (this.dataSource.driver as any).databaseConnection as { pragma: (sql: string) => void }
+                db.pragma('busy_timeout = 5000')
+            } catch {
+                winstonLogger.warn?.('SQLite busy_timeout 设置失败，连接可能已处于异常状态')
+            }
         }
     }
 
