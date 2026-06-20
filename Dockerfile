@@ -1,6 +1,6 @@
-FROM caomeiyouren/alpine-nodejs:latest AS nodejs
+FROM caomeiyouren/alpine-nodejs:alpine3.22-node24.16 AS nodejs
 
-FROM caomeiyouren/alpine-nodejs-minimize:latest AS runtime
+FROM caomeiyouren/alpine-nodejs-minimize:alpine3.22-node24.16 AS runtime
 
 # 前端构建阶段
 FROM nodejs AS frontend-builder
@@ -28,21 +28,21 @@ COPY . /app
 
 RUN pnpm run build
 
-# 缩小阶段（临时禁用：排查 disk I/O error 根因）
-# FROM nodejs AS docker-minifier
-#
-# WORKDIR /app
-#
-# RUN pnpm config set registry https://registry.npmjs.org/ && \
-#     pnpm add @vercel/nft@1.10.2 fs-extra@11.2.0 --save-prod
-#
-# COPY --from=builder /app /app
-#
-# RUN export PROJECT_ROOT=/app/ && \
-#     node /app/scripts/minify-docker.js && \
-#     rm -rf /app/node_modules /app/scripts && \
-#     mv /app/app-minimal/node_modules /app/ && \
-#     rm -rf /app/app-minimal
+# 缩小阶段
+FROM nodejs AS docker-minifier
+
+WORKDIR /app
+
+RUN pnpm config set registry https://registry.npmjs.org/ && \
+    pnpm add @vercel/nft@1.10.2 fs-extra@11.2.0 --save-prod
+
+COPY --from=builder /app /app
+
+RUN export PROJECT_ROOT=/app/ && \
+    node /app/scripts/minify-docker.js && \
+    rm -rf /app/node_modules /app/scripts && \
+    mv /app/app-minimal/node_modules /app/ && \
+    rm -rf /app/app-minimal
 
 # 生产阶段
 FROM runtime
@@ -52,9 +52,8 @@ ENV GIT_HASH ${GIT_HASH}
 ENV GIT_DATE ${GIT_DATE}
 
 WORKDIR /app
-# 后端部分（临时：全量复制 node_modules，跳过 minify-docker.js 以排查问题）
-COPY --from=builder /app /app
-
+# 后端部分
+COPY --from=docker-minifier /app /app
 # 前端部分
 COPY --from=frontend-builder /frontend /app/public
 
