@@ -1,5 +1,23 @@
 # rss-impact-server
 
+## [1.18.3](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.2...v1.18.3) (2026-06-20)
+
+
+### ✅ 测试
+
+* **db:** 添加 SQLite journal mode 和 better-sqlite3 版本锁定测试 ([98f11d8](https://github.com/CaoMeiYouRen/rss-impact-server/commit/98f11d8))
+* **db:** 添加 SQLite 磁盘 I/O 错误写入测试用例 ([c1e3390](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c1e3390))
+
+
+### 🐛 Bug 修复
+
+* **db:** 为 SQLite 启用 WAL 模式解决并发 disk I/O 错误 ([a99867f](https://github.com/CaoMeiYouRen/rss-impact-server/commit/a99867f))
+* **db:** 使用 better-sqlite3 原生 pragma 替代 TypeORM query 执行 PRAGMA ([f918542](https://github.com/CaoMeiYouRen/rss-impact-server/commit/f918542))
+* **db:** 将 SQLite journal 模式从 WAL 改为 DELETE ([c11d936](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c11d936))
+* **db:** 更新 SQLite journal 模式为 WAL 并设置 synchronous=NORMAL ([696cbc7](https://github.com/CaoMeiYouRen/rss-impact-server/commit/696cbc7))
+* **db:** 移除 SQLite PRAGMA 配置回归 v1.18.2 基线，降级 better-sqlite3 至 ^12.8.0 ([fbfa5f8](https://github.com/CaoMeiYouRen/rss-impact-server/commit/fbfa5f8))
+* **db:** 移除 TypeORM 连接上的 WAL pragma 重复设置 ([2dbb0d6](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2dbb0d6))
+
 ## [1.18.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.1...v1.18.2) (2026-05-02)
 
 
