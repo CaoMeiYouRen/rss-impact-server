@@ -24,10 +24,11 @@ import { CustomLogger, winstonLogger } from '@/middlewares/logger.middleware'
 export class SqlitePragmaService implements OnModuleInit {
 
     constructor(@InjectDataSource() private dataSource: DataSource) { }
-    async onModuleInit() {
+    onModuleInit() {
         if (this.dataSource.options.type === 'better-sqlite3') {
-            await this.dataSource.query('PRAGMA journal_mode = WAL')
-            await this.dataSource.query('PRAGMA busy_timeout = 5000')
+            const db = (this.dataSource.driver as any).databaseConnection as { pragma: (sql: string) => void }
+            db.pragma('journal_mode = WAL')
+            db.pragma('busy_timeout = 5000')
             winstonLogger.log?.('SQLite WAL 模式已启用, busy_timeout=5000ms')
         }
     }
