@@ -1,5 +1,18 @@
 # rss-impact-server
 
+## [1.18.4](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.3...v1.18.4) (2026-06-27)
+
+
+### ✅ 测试
+
+* **opentelemetry-deps:** 跳过 package.json 测试以防止不兼容变更 ([c9bacc3](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c9bacc3))
+
+
+### 🐛 Bug 修复
+
+* **db:** 启用 SQLite WAL + synchronous=NORMAL + busy_timeout 并优化 Docker 构建 ([a2742c3](https://github.com/CaoMeiYouRen/rss-impact-server/commit/a2742c3))
+* **docker:** 更新 @vercel/nft 版本至 1.10.2 ([7734cd9](https://github.com/CaoMeiYouRen/rss-impact-server/commit/7734cd9))
+
 ## [1.18.3](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.2...v1.18.3) (2026-06-20)
 
 
