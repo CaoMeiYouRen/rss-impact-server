@@ -63,7 +63,6 @@ overrides:
   ws: ^8.21.0
   diff: 4.0.4
   joi: 17.13.4
-  "@opentelemetry/core": ^2.8.0
   webpack: ^5.104.1
   piscina: ^4.9.3
 
