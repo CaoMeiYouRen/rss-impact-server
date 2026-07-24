@@ -50,6 +50,8 @@ overrides:
   jws: ^3.2.3
   lodash: 4.18.1
   lodash-es: 4.18.1
+  body-parser: ^2.2.0
+  typeorm: ^0.3.31
   minimatch@3: 3.1.4
   minimatch@9: 9.0.7
   picomatch@2: 2.3.2
