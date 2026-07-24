@@ -39,7 +39,7 @@ overrides:
   form-data: ^4.0.6
   js-yaml: ^4.2.0
   mdast-util-to-hast: ^13.2.1
-  fast-uri: 3.1.2
+  fast-uri: ^3.1.4
   fast-xml-builder: 1.1.7
   fast-xml-parser: ^5.7.0
   flatted: 3.4.2
@@ -60,6 +60,7 @@ overrides:
   ws: ^8.21.0
   diff: 4.0.4
   joi: 17.13.4
+  "@opentelemetry/core": ^2.8.0
   webpack: ^5.104.1
   piscina: ^4.9.3
 
