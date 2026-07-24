@@ -35,10 +35,13 @@ overrides:
   vite: ^6.4.3
   "@nestjs/common": ^11.0.11
   multer: ^2.2.0
-  brace-expansion: ^2.0.3
+  brace-expansion@^1: ^1.1.16
+  brace-expansion@^2: ^2.0.3
+  brace-expansion@^5: ^5.0.7
   form-data: ^4.0.6
-  js-yaml: ^4.2.0
+  js-yaml: ^4.3.0
   mdast-util-to-hast: ^13.2.1
+  postcss: ^8.5.16
   fast-uri: ^3.1.4
   fast-xml-builder: 1.1.7
   fast-xml-parser: ^5.7.0

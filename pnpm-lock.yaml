@@ -36,10 +36,13 @@ overrides:
   vite: ^6.4.3
   '@nestjs/common': ^11.0.11
   multer: ^2.2.0
-  brace-expansion: ^2.0.3
+  brace-expansion@^1: ^1.1.16
+  brace-expansion@^2: ^2.0.3
+  brace-expansion@^5: ^5.0.7
   form-data: ^4.0.6
-  js-yaml: ^4.2.0
+  js-yaml: ^4.3.0
   mdast-util-to-hast: ^13.2.1
+  postcss: ^8.5.16
   fast-uri: ^3.1.4
   fast-xml-builder: 1.1.7
   fast-xml-parser: ^5.7.0
@@ -77,7 +80,7 @@ importers:
         version: 1.1.0
       '@cao-mei-you-ren/rss-parser':
         specifier: ^3.14.0
-        version: 3.14.0(postcss@8.5.15)
+        version: 3.14.0(postcss@8.5.22)
       '@keyv/redis':
         specifier: ^5.1.6
         version: 5.1.6(@opentelemetry/api@1.9.1)(keyv@5.6.0)
@@ -309,7 +312,7 @@ importers:
         version: 2.0.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       '@nestjs/cli':
         specifier: ^11.0.21
-        version: 11.0.23(@types/node@25.9.3)(postcss@8.5.15)(webpack-cli@5.1.4)
+        version: 11.0.23(@types/node@25.9.3)(postcss@8.5.22)(webpack-cli@5.1.4)
       '@nestjs/schematics':
         specifier: ^11.1.0
         version: 11.1.0(chokidar@4.0.3)(typescript@5.9.3)
@@ -462,7 +465,7 @@ importers:
         version: 5.9.3
       vitepress:
         specifier: ^1.6.4
-        version: 1.6.4(@algolia/client-search@5.55.0)(@types/node@25.9.3)(axios@1.18.0(debug@4.4.3))(jiti@2.6.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(tsx@4.22.4)(typescript@5.9.3)(yaml@2.9.0)
+        version: 1.6.4(@algolia/client-search@5.55.0)(@types/node@25.9.3)(axios@1.18.0(debug@4.4.3))(jiti@2.6.1)(postcss@8.5.22)(search-insights@2.17.3)(terser@5.48.0)(tsx@4.22.4)(typescript@5.9.3)(yaml@2.9.0)
 
 packages:
 
@@ -3546,6 +3549,10 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
+  balanced-match@4.0.4:
+    resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
+    engines: {node: 18 || 20 || >=22}
+
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
@@ -3611,8 +3618,15 @@ packages:
   bottleneck@2.19.5:
     resolution: {integrity: sha512-VHiNCbI1lKdl44tGrhNfU3lup0Tj/ZBMJB5/2ZbNXRCPuRCO7ed2mgcK4r17y+KB2EfuYuRaVlwNbAeaWGSpbw==}
 
+  brace-expansion@1.1.16:
+    resolution: {integrity: sha512-IDw48K2/2kRkg9LdJxurvq3lV3aBgq0REY89duEqFRthjlPdXHKMj7EnQOXVckxzgisinf3nHfrcE2FufFLXMw==}
+
   brace-expansion@2.1.1:
     resolution: {integrity: sha512-WR1cURNjuvBLMZBMbqM0UoE+WAfdUcEV1ccD8PVBVOI+Z3ND4+SZbN8RsfT2bMuG1qwz5RFvPukSZm5fF2D5eA==}
+
+  brace-expansion@5.0.8:
+    resolution: {integrity: sha512-JZyDyq3D4AUifKTPOB7DELf6XsB3WdPuNxCtob1vFXPsSXhdAiHBWJ/tJ8HAc9aH84BK+5JFZLNkJKx3G9kzQg==}
+    engines: {node: 20 || >=22}
 
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
@@ -3967,6 +3981,9 @@ packages:
 
   component-emitter@1.3.1:
     resolution: {integrity: sha512-T0+barUSQRTUQASh8bx02dl+DhF54GtIDY13Y3m9oWTklKbb3Wv974meRpeZ3lp1JpLVECWWNHC4vaG2XHXouQ==}
+
+  concat-map@0.0.1:
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
   concat-stream@2.0.0:
     resolution: {integrity: sha512-MWufYdFw53ccGjCA+Ol7XJYpAlW6/prSMzuPOTRnJGcGzuhLn4Scrz7qf6o8bROZ514ltazcIFJZevcfbo0x7A==}
@@ -5938,8 +5955,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@4.2.0:
-    resolution: {integrity: sha512-ePWsvanv0DWuDRsW8dnt+R4jQ31SCRCQ7hhNcPXZPsoBZiemuZNYGf7adZdqX2D86j6rvKp3RpCxVTSb8WQlOw==}
+  js-yaml@4.3.0:
+    resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
     hasBin: true
 
   jsbn@0.1.1:
@@ -6581,8 +6598,8 @@ packages:
     resolution: {integrity: sha512-Tz09sEL2EEuv5fFowm419c1+a/jSMiBjI9gHxVLrVdbUkkNUUfjsVYs9pVZu5oCon/kmRh9TfLEObFtkVxmY0w==}
     engines: {node: '>=8.0.0'}
 
-  nanoid@3.3.13:
-    resolution: {integrity: sha512-sPdqC6ByMVVGvF1ynvvMo0/o+oD1VX7DaHhijt1bFgjvBkHBib4t49GoNDhf2NDta4oeUNlaGbSt5K7qjZ955Q==}
+  nanoid@3.3.16:
+    resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -7185,8 +7202,8 @@ packages:
     resolution: {integrity: sha512-bIoJLOmjCO1S9XdY/DcnR5hJxvrDir1PbGChrzXG3vw0/FOliy/fA3dmdhQ441kah4gKv+TwckGzex6wNS5cnQ==}
     engines: {node: '>=4'}
 
-  postcss@8.5.15:
-    resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
+  postcss@8.5.22:
+    resolution: {integrity: sha512-KBDEIpLrvpv16pp3K0Fw+UCoZfopFjjgeB+0tA/aaThfEE74kKDLrgg603YvOWJyg3+WYtyq3xYsQWsIyZlPqQ==}
     engines: {node: ^10 || ^12 || >=14}
 
   postgres-array@2.0.0:
@@ -8597,7 +8614,7 @@ packages:
     hasBin: true
     peerDependencies:
       markdown-it-mathjax3: ^4
-      postcss: ^8
+      postcss: ^8.5.16
     peerDependenciesMeta:
       markdown-it-mathjax3:
         optional: true
@@ -9400,10 +9417,10 @@ snapshots:
       ufo: 1.6.4
       uint8array-extras: 1.5.0
 
-  '@cao-mei-you-ren/rss-parser@3.14.0(postcss@8.5.15)':
+  '@cao-mei-you-ren/rss-parser@3.14.0(postcss@8.5.22)':
     dependencies:
       entities: 2.2.0
-      webpack: 5.107.2(postcss@8.5.15)(webpack-cli@5.1.4)
+      webpack: 5.107.2(postcss@8.5.22)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.107.2)
       xml2js: 0.5.0
     transitivePeerDependencies:
@@ -9800,7 +9817,7 @@ snapshots:
       globals: 14.0.0
       ignore: 5.3.2
       import-fresh: 3.3.1
-      js-yaml: 4.2.0
+      js-yaml: 4.3.0
       minimatch: 3.1.4
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
@@ -9999,7 +10016,7 @@ snapshots:
       camelcase: 5.3.1
       find-up: 4.1.0
       get-package-type: 0.1.0
-      js-yaml: 4.2.0
+      js-yaml: 4.3.0
       resolve-from: 5.0.0
 
   '@istanbuljs/schema@0.1.6': {}
@@ -10367,7 +10384,7 @@ snapshots:
       keyv: 5.6.0
       rxjs: 7.8.2
 
-  '@nestjs/cli@11.0.23(@types/node@25.9.3)(postcss@8.5.15)(webpack-cli@5.1.4)':
+  '@nestjs/cli@11.0.23(@types/node@25.9.3)(postcss@8.5.22)(webpack-cli@5.1.4)':
     dependencies:
       '@angular-devkit/core': 19.2.27(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.2.27(chokidar@4.0.3)
@@ -10385,7 +10402,7 @@ snapshots:
       tsconfig-paths: 4.2.0
       tsconfig-paths-webpack-plugin: 4.2.0
       typescript: 5.9.3
-      webpack: 5.107.2(postcss@8.5.15)(webpack-cli@5.1.4)
+      webpack: 5.107.2(postcss@8.5.22)(webpack-cli@5.1.4)
       webpack-node-externals: 3.0.0
     transitivePeerDependencies:
       - '@minify-html/node'
@@ -10495,7 +10512,7 @@ snapshots:
       '@nestjs/common': 11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.22)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/mapped-types': 2.0.5(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-transformer@0.5.1)(class-validator@0.14.4)(reflect-metadata@0.2.2)
-      js-yaml: 4.2.0
+      js-yaml: 4.3.0
       lodash: 4.18.1
       path-to-regexp: 3.3.0
       reflect-metadata: 0.2.2
@@ -12037,7 +12054,7 @@ snapshots:
       '@vue/shared': 3.5.38
       estree-walker: 2.0.2
       magic-string: 0.30.21
-      postcss: 8.5.15
+      postcss: 8.5.22
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.38':
@@ -12193,17 +12210,17 @@ snapshots:
 
   '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4)(webpack@5.107.2)':
     dependencies:
-      webpack: 5.107.2(postcss@8.5.15)(webpack-cli@5.1.4)
+      webpack: 5.107.2(postcss@8.5.22)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.107.2)
 
   '@webpack-cli/info@2.0.2(webpack-cli@5.1.4)(webpack@5.107.2)':
     dependencies:
-      webpack: 5.107.2(postcss@8.5.15)(webpack-cli@5.1.4)
+      webpack: 5.107.2(postcss@8.5.22)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.107.2)
 
   '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4)(webpack@5.107.2)':
     dependencies:
-      webpack: 5.107.2(postcss@8.5.15)(webpack-cli@5.1.4)
+      webpack: 5.107.2(postcss@8.5.22)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.107.2)
 
   '@xtuc/ieee754@1.2.0': {}
@@ -12569,6 +12586,8 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
+  balanced-match@4.0.4: {}
+
   base64-js@1.5.1: {}
 
   base64url@3.0.1: {}
@@ -12640,9 +12659,18 @@ snapshots:
 
   bottleneck@2.19.5: {}
 
+  brace-expansion@1.1.16:
+    dependencies:
+      balanced-match: 1.0.2
+      concat-map: 0.0.1
+
   brace-expansion@2.1.1:
     dependencies:
       balanced-match: 1.0.2
+
+  brace-expansion@5.0.8:
+    dependencies:
+      balanced-match: 4.0.4
 
   braces@3.0.3:
     dependencies:
@@ -13001,6 +13029,8 @@ snapshots:
 
   component-emitter@1.3.1: {}
 
+  concat-map@0.0.1: {}
+
   concat-stream@2.0.0:
     dependencies:
       buffer-from: 1.1.2
@@ -13103,7 +13133,7 @@ snapshots:
   cosmiconfig@8.3.6(typescript@5.9.3):
     dependencies:
       import-fresh: 3.3.1
-      js-yaml: 4.2.0
+      js-yaml: 4.3.0
       parse-json: 5.2.0
       path-type: 4.0.0
     optionalDependencies:
@@ -13113,7 +13143,7 @@ snapshots:
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
-      js-yaml: 4.2.0
+      js-yaml: 4.3.0
       parse-json: 5.2.0
     optionalDependencies:
       typescript: 5.9.3
@@ -14281,7 +14311,7 @@ snapshots:
       semver: 7.8.4
       tapable: 2.3.3
       typescript: 5.9.3
-      webpack: 5.107.2(postcss@8.5.15)(webpack-cli@5.1.4)
+      webpack: 5.107.2(postcss@8.5.22)(webpack-cli@5.1.4)
 
   form-data-encoder@1.7.2: {}
 
@@ -15475,7 +15505,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@4.2.0:
+  js-yaml@4.3.0:
     dependencies:
       argparse: 2.0.1
 
@@ -16221,11 +16251,11 @@ snapshots:
 
   minimatch@10.2.5:
     dependencies:
-      brace-expansion: 2.1.1
+      brace-expansion: 5.0.8
 
   minimatch@3.1.4:
     dependencies:
-      brace-expansion: 2.1.1
+      brace-expansion: 1.1.16
 
   minimatch@5.1.9:
     dependencies:
@@ -16233,7 +16263,7 @@ snapshots:
 
   minimatch@9.0.7:
     dependencies:
-      brace-expansion: 2.1.1
+      brace-expansion: 5.0.8
 
   minimist@1.2.8: {}
 
@@ -16306,7 +16336,7 @@ snapshots:
     dependencies:
       lru.min: 1.1.4
 
-  nanoid@3.3.13: {}
+  nanoid@3.3.16: {}
 
   napi-build-utils@2.0.0: {}
 
@@ -16563,7 +16593,7 @@ snapshots:
       axios: 1.18.0(debug@4.4.3)
       combos: 0.2.0
       fs-extra: 9.1.0
-      js-yaml: 4.2.0
+      js-yaml: 4.3.0
       openapi-response-validator: 9.3.1
       openapi-schema-validator: 9.3.1
       path-parser: 6.1.0
@@ -16876,9 +16906,9 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss@8.5.15:
+  postcss@8.5.22:
     dependencies:
-      nanoid: 3.3.13
+      nanoid: 3.3.16
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -17923,15 +17953,15 @@ snapshots:
       type-fest: 2.19.0
       unique-string: 3.0.0
 
-  terser-webpack-plugin@5.6.1(postcss@8.5.15)(webpack@5.107.2):
+  terser-webpack-plugin@5.6.1(postcss@8.5.22)(webpack@5.107.2):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.48.0
-      webpack: 5.107.2(postcss@8.5.15)(webpack-cli@5.1.4)
+      webpack: 5.107.2(postcss@8.5.22)(webpack-cli@5.1.4)
     optionalDependencies:
-      postcss: 8.5.15
+      postcss: 8.5.22
 
   terser@5.48.0:
     dependencies:
@@ -18430,7 +18460,7 @@ snapshots:
       esbuild: 0.28.1
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
-      postcss: 8.5.15
+      postcss: 8.5.22
       rollup: 4.59.0
       tinyglobby: 0.2.17
     optionalDependencies:
@@ -18441,7 +18471,7 @@ snapshots:
       tsx: 4.22.4
       yaml: 2.9.0
 
-  vitepress@1.6.4(@algolia/client-search@5.55.0)(@types/node@25.9.3)(axios@1.18.0(debug@4.4.3))(jiti@2.6.1)(postcss@8.5.15)(search-insights@2.17.3)(terser@5.48.0)(tsx@4.22.4)(typescript@5.9.3)(yaml@2.9.0):
+  vitepress@1.6.4(@algolia/client-search@5.55.0)(@types/node@25.9.3)(axios@1.18.0(debug@4.4.3))(jiti@2.6.1)(postcss@8.5.22)(search-insights@2.17.3)(terser@5.48.0)(tsx@4.22.4)(typescript@5.9.3)(yaml@2.9.0):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.55.0)(search-insights@2.17.3)
@@ -18462,7 +18492,7 @@ snapshots:
       vite: 6.4.3(@types/node@25.9.3)(jiti@2.6.1)(terser@5.48.0)(tsx@4.22.4)(yaml@2.9.0)
       vue: 3.5.38(typescript@5.9.3)
     optionalDependencies:
-      postcss: 8.5.15
+      postcss: 8.5.22
     transitivePeerDependencies:
       - '@algolia/client-search'
       - '@types/node'
@@ -18560,7 +18590,7 @@ snapshots:
       import-local: 3.2.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.107.2(postcss@8.5.15)(webpack-cli@5.1.4)
+      webpack: 5.107.2(postcss@8.5.22)(webpack-cli@5.1.4)
       webpack-merge: 5.10.0
 
   webpack-merge@5.10.0:
@@ -18573,7 +18603,7 @@ snapshots:
 
   webpack-sources@3.5.0: {}
 
-  webpack@5.107.2(postcss@8.5.15)(webpack-cli@5.1.4):
+  webpack@5.107.2(postcss@8.5.22)(webpack-cli@5.1.4):
     dependencies:
       '@types/estree': 1.0.9
       '@types/json-schema': 7.0.15
@@ -18595,7 +18625,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.1(postcss@8.5.15)(webpack@5.107.2)
+      terser-webpack-plugin: 5.6.1(postcss@8.5.22)(webpack@5.107.2)
       watchpack: 2.5.2
       webpack-sources: 3.5.0
     optionalDependencies:
