@@ -35,6 +35,7 @@ overrides:
   vite: ^6.4.3
   "@nestjs/common": ^11.0.11
   multer: ^2.2.0
+  brace-expansion: ^2.1.2
   brace-expansion@^1: ^1.1.16
   brace-expansion@^2: ^2.0.3
   brace-expansion@^5: ^5.0.7
@@ -67,6 +68,7 @@ overrides:
   joi: 17.13.4
   webpack: ^5.104.1
   piscina: ^4.9.3
+  "@opentelemetry/core": ^2.8.0
 
 peerDependencyRules:
   ignoreMissing:
