@@ -2741,6 +2741,9 @@ packages:
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
+  '@types/ms@2.1.0':
+    resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
+
   '@types/multer@2.1.0':
     resolution: {integrity: sha512-zYZb0+nJhOHtPpGDb3vqPjwpdeGlGC157VpkqNQL+UU2qwoacoQ7MpsAmUptI/0Oa127X32JzWDqQVEXp2RcIA==}
 
@@ -11551,7 +11554,7 @@ snapshots:
 
   '@types/debug@4.1.13':
     dependencies:
-      '@types/ms': 0.7.34
+      '@types/ms': 2.1.0
 
   '@types/esrecurse@4.3.1': {}
 
@@ -11614,7 +11617,7 @@ snapshots:
 
   '@types/jsonwebtoken@9.0.10':
     dependencies:
-      '@types/ms': 0.7.34
+      '@types/ms': 2.1.0
       '@types/node': 25.9.3
 
   '@types/katex@0.16.8': {}
@@ -11659,6 +11662,8 @@ snapshots:
       '@types/node': 25.9.3
 
   '@types/ms@0.7.34': {}
+
+  '@types/ms@2.1.0': {}
 
   '@types/multer@2.1.0':
     dependencies:
