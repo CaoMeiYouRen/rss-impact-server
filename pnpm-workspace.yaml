@@ -68,7 +68,6 @@ overrides:
   joi: 17.13.4
   webpack: ^5.104.1
   piscina: ^4.9.3
-  "@opentelemetry/core": ^2.8.0
 
 peerDependencyRules:
   ignoreMissing:
