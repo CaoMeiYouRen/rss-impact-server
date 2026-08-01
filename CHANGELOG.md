@@ -1,5 +1,12 @@
 # rss-impact-server
 
+## [1.18.5](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.4...v1.18.5) (2026-08-01)
+
+
+### 🐛 Bug 修复
+
+* **deps:** 移除 @opentelemetry/core v2 覆写，恢复兼容性 ([2488ab2](https://github.com/CaoMeiYouRen/rss-impact-server/commit/2488ab2))
+
 ## [1.18.4](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.3...v1.18.4) (2026-06-27)
 
 
