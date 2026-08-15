@@ -100,6 +100,9 @@ jobs:
           tags: ${{ steps.metadata.outputs.tags }}
           labels: ${{ steps.metadata.outputs.labels }}
           platforms: linux/amd64,linux/arm64
+          # 关闭默认 provenance 证明，否则 manifest 包含 OCI empty 描述符，
+          # 阿里云 ACR 会拒绝推送（denied: unknown manifest class for application/vnd.oci.empty.v1+json）
+          provenance: false
           # build-args: |
           #   VITE_BAIDU_STATISTICS=${{ secrets.VITE_BAIDU_STATISTICS }}
           #   VITE_DOMAIN=${{ secrets.VITE_DOMAIN }}
