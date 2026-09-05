@@ -1,5 +1,13 @@
 # rss-impact-server
 
+## [1.18.6](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.5...v1.18.6) (2026-09-05)
+
+
+### 🐛 Bug 修复
+
+* **deps:** bump brace-expansion, browserslist, fast-uri, ip-address, js-yaml, nanoid, undici, decode-uri-component, postcss, qs ([3376aca](https://github.com/CaoMeiYouRen/rss-impact-server/commit/3376aca))
+* **deps:** remove decode-uri-component override to fix Jest ESM compatibility ([9fe327a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/9fe327a))
+
 ## [1.18.5](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.4...v1.18.5) (2026-08-01)
 
 
