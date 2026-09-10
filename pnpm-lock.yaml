@@ -228,8 +228,8 @@ importers:
         specifier: ^0.6.1
         version: 0.6.2
       morgan:
-        specifier: ^1.10.1
-        version: 1.11.0(supports-color@8.1.1)
+        specifier: ^1.12.0
+        version: 1.12.0(supports-color@8.1.1)
       ms:
         specifier: ^2.1.3
         version: 2.1.3
@@ -6577,8 +6577,8 @@ packages:
   moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
 
-  morgan@1.11.0:
-    resolution: {integrity: sha512-zSkVu3t18r39pw4ixfBKvfZi3y2UOqr7d4WYwcj3m8nXpEQK4rPO6GLzs/CExoRgmX3y9EjmmcXqv6jq0SK46g==}
+  morgan@1.12.0:
+    resolution: {integrity: sha512-OHpTRQwn2ezasILW8iKe+Yww1XsfWsZIpUOLF7RDb2g5GwO3trPaRwi7+8BDiJ7HFx2Kg2mfUdCBcVhwYlOz2g==}
     engines: {node: '>= 0.8.0'}
 
   mri@1.2.0:
@@ -16317,7 +16317,7 @@ snapshots:
 
   moment@2.30.1: {}
 
-  morgan@1.11.0(supports-color@8.1.1):
+  morgan@1.12.0(supports-color@8.1.1):
     dependencies:
       basic-auth: 2.0.1
       debug: 2.6.9(supports-color@8.1.1)
