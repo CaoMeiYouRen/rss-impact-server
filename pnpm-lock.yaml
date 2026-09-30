@@ -6559,8 +6559,8 @@ packages:
   moment-timezone@0.6.2:
     resolution: {integrity: sha512-lDsQv8FoGdBUdf0+TjGsq2orxKuXdwFlQ6Zw6TX3xIcTwTfEpCLyKqvEauvCHJ8iu3KBV8+uPhlv70YsNGdUBQ==}
 
-  moment@2.30.1:
-    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
+  moment@2.31.0:
+    resolution: {integrity: sha512-0acOTfMiWOheYS4eoWb80yYMb/JLvVv9SHbs2PehaDzfUG0Bw855SKyk0IKTnPGa5+U2bmi3W68l1+sGLX/pvw==}
 
   morgan@1.12.1:
     resolution: {integrity: sha512-tljKC0ex20AjO58Ob/eZ53JloycbVswbVNCHx6V6VLGzqt/w8dIynVGL0G8qVjNKwiA7sYSogCrN6QtJ82IV+g==}
@@ -9379,7 +9379,7 @@ snapshots:
       cheerio: 1.2.0
       ellipsize: 0.1.0
       iconv-lite: 0.5.0
-      moment: 2.30.1
+      moment: 2.31.0
       moment-parseformat: 3.0.0
       postman-request: 2.88.1-postman.48(supports-color@8.1.1)
       string-direction: 0.1.2
@@ -14198,7 +14198,7 @@ snapshots:
 
   file-stream-rotator@0.6.1:
     dependencies:
-      moment: 2.30.1
+      moment: 2.31.0
 
   file-type@21.3.4(supports-color@8.1.1):
     dependencies:
@@ -16244,9 +16244,9 @@ snapshots:
 
   moment-timezone@0.6.2:
     dependencies:
-      moment: 2.30.1
+      moment: 2.31.0
 
-  moment@2.30.1: {}
+  moment@2.31.0: {}
 
   morgan@1.12.1(supports-color@8.1.1):
     dependencies:
