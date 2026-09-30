@@ -195,8 +195,8 @@ importers:
         specifier: ^1.1.4
         version: 1.1.4
       helmet:
-        specifier: ^8.1.0
-        version: 8.2.0
+        specifier: ^8.3.0
+        version: 8.3.0
       https-proxy-agent:
         specifier: ^7.0.6
         version: 7.0.6(supports-color@8.1.1)
@@ -5319,8 +5319,8 @@ packages:
   hdr-histogram-percentiles-obj@3.0.0:
     resolution: {integrity: sha512-7kIufnBqdsBGcSZLPJwqHT3yhk1QTsSlFsVD3kx5ixH/AlgBs9yM1q6DPhXZ8f8gtdqgh7N7/5btRLpQsS2gHw==}
 
-  helmet@8.2.0:
-    resolution: {integrity: sha512-DRgTIUgnWcJ62KyarxxziuqYxKGnR6Rgg19BlbucN/dpmJbl1XOit6qvoOX0ZT+HhWe5OUVhU/a1zpGyc1xA0Q==}
+  helmet@8.3.0:
+    resolution: {integrity: sha512-Qgpiaws3Sm30Av8Eah6sjMCZZwjlBu+E68rhpCWBshY1lb09HtLwj5GviX0OyQIn+ulUS0iX0AxN5n3tLZzz1w==}
     engines: {node: '>=18.0.0'}
 
   highlight.js@10.7.3:
@@ -14662,7 +14662,7 @@ snapshots:
 
   hdr-histogram-percentiles-obj@3.0.0: {}
 
-  helmet@8.2.0: {}
+  helmet@8.3.0: {}
 
   highlight.js@10.7.3: {}
 
