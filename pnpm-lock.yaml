@@ -264,8 +264,8 @@ importers:
         specifier: ^8.23.0
         version: 8.23.0
       push-all-in-one:
-        specifier: ^4.5.1
-        version: 4.5.2(supports-color@8.1.1)
+        specifier: ^4.5.4
+        version: 4.5.4(supports-color@8.1.1)
       query-string:
         specifier: ^7.1.3
         version: 7.1.3
@@ -7302,8 +7302,8 @@ packages:
   pure-rand@7.0.1:
     resolution: {integrity: sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==}
 
-  push-all-in-one@4.5.2:
-    resolution: {integrity: sha512-6peEgBiKlYYiP2LSms3dHRriPWLaMz1/pKYwqHRX4b4T3t48U7na4+zCy8GEb3MrdlVLZjl8hWYCRckAj+jxlw==}
+  push-all-in-one@4.5.4:
+    resolution: {integrity: sha512-oKZ21LFbM8vxDfpMgPstgpdoSu8DPH0q8qPiqBzh1kIs6h8nqTBxbZiAniX5k8iNacqaIA/pVRkcZ5gpePb8mA==}
     engines: {node: '>=20'}
 
   qs@6.16.0:
@@ -7722,6 +7722,10 @@ packages:
   smart-buffer@4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
+
+  socks-proxy-agent@10.1.0:
+    resolution: {integrity: sha512-WlMj/67cEJ6MDI1OcsnjuYKDNDoyPCCYZ249kuuXPiMDw9F8PXkVaQ7YWu3siTydfQ/4BEZcvGzu+aYvz7dDCQ==}
+    engines: {node: '>= 20'}
 
   socks-proxy-agent@8.0.5:
     resolution: {integrity: sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==}
@@ -16983,15 +16987,16 @@ snapshots:
 
   pure-rand@7.0.1: {}
 
-  push-all-in-one@4.5.2(supports-color@8.1.1):
+  push-all-in-one@4.5.4(supports-color@8.1.1):
     dependencies:
       '@colors/colors': 1.6.0
       axios: 1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
       debug: 4.4.3(supports-color@8.1.1)
-      https-proxy-agent: 7.0.6(supports-color@8.1.1)
+      https-proxy-agent: 9.1.0(supports-color@8.1.1)
       nodemailer: 9.1.1
-      socks-proxy-agent: 8.0.5(supports-color@8.1.1)
+      socks-proxy-agent: 10.1.0(supports-color@8.1.1)
     transitivePeerDependencies:
+      - kerberos
       - supports-color
 
   qs@6.16.0:
@@ -17567,6 +17572,14 @@ snapshots:
   slash@3.0.0: {}
 
   smart-buffer@4.2.0: {}
+
+  socks-proxy-agent@10.1.0(supports-color@8.1.1):
+    dependencies:
+      agent-base: 9.0.0
+      debug: 4.4.3(supports-color@8.1.1)
+      socks: 2.8.9
+    transitivePeerDependencies:
+      - supports-color
 
   socks-proxy-agent@8.0.5(supports-color@8.1.1):
     dependencies:
