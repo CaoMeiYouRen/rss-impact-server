@@ -127,7 +127,7 @@
     "@nestjs/testing": "^10.4.15",
     "@semantic-release/exec": "^7.1.0",
     "@types/autocannon": "^7.12.7",
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcrypt": "^6.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/connect-history-api-fallback": "^1.5.4",
     "@types/cookie-parser": "^1.4.10",
