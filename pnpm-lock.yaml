@@ -162,8 +162,8 @@ importers:
         specifier: 4.4.0
         version: 4.4.0
       dayjs:
-        specifier: ^1.11.20
-        version: 1.11.21
+        specifier: ^1.11.23
+        version: 1.11.23
       dotenv:
         specifier: ^17.3.1
         version: 17.4.2
@@ -4192,8 +4192,8 @@ packages:
   daveutils@0.4.75:
     resolution: {integrity: sha512-XDk1XIxXjRr+qJiEdZm/PsVQLMJWmyzXTCP1o9y5MKZYteNjntmyA5xRvty8di9F8DxGgqW/kb+eijEfhy4zGg==}
 
-  dayjs@1.11.21:
-    resolution: {integrity: sha512-98IT+HOahAisibz/yjKbzuOBwYcjJ7BCLPzARyHiyEBmRz4fatF+KPJszEHXsGYjUG234aH/cOjW1wwTbKUZlA==}
+  dayjs@1.11.23:
+    resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
 
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -13253,7 +13253,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  dayjs@1.11.21: {}
+  dayjs@1.11.23: {}
 
   debug@2.6.9(supports-color@8.1.1):
     dependencies:
@@ -18226,7 +18226,7 @@ snapshots:
       ansis: 4.3.1
       app-root-path: 3.1.0
       buffer: 6.0.3
-      dayjs: 1.11.21
+      dayjs: 1.11.23
       debug: 4.4.3(supports-color@8.1.1)
       dedent: 1.7.2
       dotenv: 16.6.1
