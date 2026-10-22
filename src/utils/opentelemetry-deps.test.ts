@@ -73,31 +73,46 @@ describe('OpenTelemetry 核心依赖版本解析', () => {
 describe('SQLite journal mode 配置', () => {
     const sessionMiddlewarePath = resolve(__dirname, '../middlewares/session.middleware.ts')
     const dbModulePath = resolve(__dirname, '../db/database.module.ts')
+    const sqliteHelperPath = resolve(__dirname, '../db/sqlite.ts')
+    const appConfigPath = resolve(__dirname, '../app.config.ts')
     const packageJsonPath = resolve(__dirname, '../../package.json')
 
     describe('session.middleware.ts', () => {
-        it('不应设置任何 PRAGMA（会话存储由 Redis 承载，SQLite 连接仅作回退）', () => {
+        it('应复用统一的 SQLite PRAGMA 配置，而不是自行硬编码 journal_mode', () => {
             const content = readFileSync(sessionMiddlewarePath, 'utf8')
+            expect(content).toMatch(/configureSqliteConnection/)
             expect(content).not.toMatch(/pragma\(['"]journal_mode/)
-            expect(content).not.toMatch(/pragma\(['"]synchronous/)
-            expect(content).not.toMatch(/pragma\(['"]busy_timeout/)
         })
     })
 
     describe('database.module.ts', () => {
-        it('SqlitePragmaService 应在 onModuleInit 中设置 WAL + NORMAL + busy_timeout', () => {
-            // Docker bind mount 上 POSIX 锁不可靠，WAL 模式减少对文件锁的依赖。
-            // synchronous=NORMAL 在 WAL 模式下安全且避免慢文件系统超时。
+        it('SqlitePragmaService 应复用统一的 SQLite PRAGMA 配置', () => {
             const content = readFileSync(dbModulePath, 'utf8')
-            expect(content).toMatch(/pragma\(['"]journal_mode = WAL/)
-            expect(content).toMatch(/pragma\(['"]synchronous = NORMAL/)
-            expect(content).toMatch(/pragma\(['"]busy_timeout = 5000/)
+            expect(content).toMatch(/configureSqliteConnection/)
+        })
+    })
+
+    describe('sqlite.ts', () => {
+        it('应先设置 busy_timeout，再切换 journal_mode 并校验实际结果', () => {
+            const content = readFileSync(sqliteHelperPath, 'utf8')
+            const busyTimeoutIndex = content.indexOf('busy_timeout = ')
+            const journalModeIndex = content.indexOf('journal_mode = ')
+            expect(busyTimeoutIndex).toBeGreaterThan(-1)
+            expect(journalModeIndex).toBeGreaterThan(busyTimeoutIndex)
+            expect(content).toMatch(/actualJournalMode !== journalMode/)
         })
 
-        it('WAL 失败时应回退 DELETE + busy_timeout', () => {
-            const content = readFileSync(dbModulePath, 'utf8')
-            expect(content).toMatch(/journal_mode = DELETE/)
-            expect(content).toMatch(/WAL.*失败.*DELETE.*回退/)
+        it('DELETE 模式应使用 FULL，WAL 模式应使用 NORMAL', () => {
+            const content = readFileSync(sqliteHelperPath, 'utf8')
+            expect(content).toMatch(/journalMode === 'wal' \? 'NORMAL' : 'FULL'/)
+        })
+    })
+
+    describe('app.config.ts', () => {
+        it('默认使用兼容性更好的 delete，并允许通过环境变量切换', () => {
+            const content = readFileSync(appConfigPath, 'utf8')
+            expect(content).toMatch(/env\.DATABASE_JOURNAL_MODE \|\| 'delete'/)
+            expect(content).toMatch(/DATABASE_JOURNAL_MODES = \['delete', 'wal'\]/)
         })
     })
 

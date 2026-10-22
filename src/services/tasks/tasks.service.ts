@@ -91,7 +91,7 @@ export class TasksService implements OnApplicationBootstrap {
         }
     }
 
-    private async retryDbWrite<T>(operation: () => Promise<T>, retries = 5): Promise<T> {
+    private async retryDb<T>(operation: () => Promise<T>, retries = 5): Promise<T> {
         return retryBackoff(operation, {
             maxRetries: retries,
             initialInterval: 100,
@@ -100,7 +100,7 @@ export class TasksService implements OnApplicationBootstrap {
                 if (error?.message?.includes('disk I/O error')
                     || error?.message?.includes('SQLITE_BUSY')
                     || error?.message?.includes('SQLITE_IOERR')) {
-                    this.logger.warn(`数据库写入失败，正在重试: ${error.message}`)
+                    this.logger.warn(`数据库操作失败，正在重试: ${error.message}`)
                     return true
                 }
                 return false
@@ -109,12 +109,12 @@ export class TasksService implements OnApplicationBootstrap {
     }
 
     private getAllFeeds() {
-        return this.feedRepository.find({
+        return this.retryDb(() => this.feedRepository.find({
             where: {
                 isEnabled: true,
             },
             relations: ['proxyConfig'],
-        })
+        }))
     }
 
     private async initFeedTasks() {
@@ -193,21 +193,21 @@ export class TasksService implements OnApplicationBootstrap {
             }
             if (!feed.description && rss.description) { // 解决部分情况下未设置 description 的问题
                 feed.description = rss.description?.trim()
-                await this.feedRepository.save(feed)
+                await this.retryDb(() => this.feedRepository.save(feed))
             }
             if (!feed.imageUrl && rss?.image?.url) { // 解决部分情况下未设置 imageUrl 的问题
                 feed.imageUrl = rss.image.url
-                await this.feedRepository.save(feed)
+                await this.retryDb(() => this.feedRepository.save(feed))
             }
             // 根据 guid 去重复 | 每个 user 的 不重复
             const guids = rss.items.map((e) => e.guid)
-            const existingArticles = await this.articleRepository.find({
+            const existingArticles = await this.retryDb(() => this.articleRepository.find({
                 where: {
                     guid: In(guids),
                     userId: uid,
                 },
                 select: ['guid'],
-            })
+            }))
             const date = dayjs().hour(0).minute(0).second(0).millisecond(0).add(-ARTICLE_SAVE_DAYS, 'day')
             let diffArticles = differenceWith(rss.items, existingArticles, (a, b) => a.guid === b.guid)
                 .map((item) => {
@@ -244,7 +244,7 @@ export class TasksService implements OnApplicationBootstrap {
                     return article
                 }))
             }
-            const newArticles = await this.retryDbWrite(() => this.articleRepository.save(diffArticles))
+            const newArticles = await this.retryDb(() => this.articleRepository.save(diffArticles))
             this.triggerHooks(feed, newArticles)
         } catch (error) {
             this.logger.error(`url: ${url}\nproxyUrl: ${proxyUrl}\nmessage: ${error?.message}`, error?.stack)
@@ -363,7 +363,7 @@ export class TasksService implements OnApplicationBootstrap {
                 status: 'success',
                 statusCode: resp.status,
             })
-            await this.retryDbWrite(() => this.webhookLogRepository.save(webhookLog))
+            await this.retryDb(() => this.webhookLogRepository.save(webhookLog))
             this.logger.log(`执行推送渠道 ${config.type} 成功`)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
@@ -374,7 +374,7 @@ export class TasksService implements OnApplicationBootstrap {
                 headers: error?.response?.headers || {},
                 status: 'fail',
             })
-            await this.retryDbWrite(() => this.webhookLogRepository.save(webhookLog))
+            await this.retryDb(() => this.webhookLogRepository.save(webhookLog))
         }
     }
 
@@ -554,7 +554,7 @@ export class TasksService implements OnApplicationBootstrap {
                 status: 'success',
                 statusCode: resp.status,
             })
-            await this.retryDbWrite(() => this.webhookLogRepository.save(webhookLog))
+            await this.retryDb(() => this.webhookLogRepository.save(webhookLog))
             this.logger.log(`触发 Webhook: ${config?.url} 成功`)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
@@ -565,7 +565,7 @@ export class TasksService implements OnApplicationBootstrap {
                 headers: error?.response?.headers || {},
                 status: 'fail',
             })
-            await this.retryDbWrite(() => this.webhookLogRepository.save(webhookLog))
+            await this.retryDb(() => this.webhookLogRepository.save(webhookLog))
         }
     }
 

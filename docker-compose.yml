@@ -23,6 +23,8 @@ services:
       ENABLE_ORIGIN_LIST: 'http://localhost:3000,http://127.0.0.1:3000'
       REDIS_URL: 'redis://redis:6379'
     volumes:
+      # SQLite 数据库必须放在本地磁盘或 Docker 命名卷上。
+      # 不要使用 NFS/SMB、Docker Desktop virtiofs/osxfs 等共享目录，否则可能报 disk I/O error。
       - ./data:/app/data
       - ./logs:/app/logs
     depends_on:

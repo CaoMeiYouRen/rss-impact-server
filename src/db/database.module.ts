@@ -1,4 +1,5 @@
 import path from 'path'
+import { statfsSync } from 'fs'
 import { Global, Module, Injectable, type OnModuleInit } from '@nestjs/common'
 import { TypeOrmModule, TypeOrmModuleOptions, InjectDataSource } from '@nestjs/typeorm'
 import ms from 'ms'
@@ -17,10 +18,9 @@ import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
+import { configureSqliteConnection, SqliteConnection } from './sqlite'
 import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_SSL, DATABASE_SYNCHRONIZE, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 import { CustomLogger, winstonLogger } from '@/middlewares/logger.middleware'
-
-type SqliteDatabase = { pragma: (sql: string) => void }
 
 @Injectable()
 export class SqlitePragmaService implements OnModuleInit {
@@ -32,23 +32,25 @@ export class SqlitePragmaService implements OnModuleInit {
             return
         }
         try {
-            const db = (this.dataSource.driver as any).databaseConnection as SqliteDatabase
+            const db = (this.dataSource.driver as any).databaseConnection as SqliteConnection
+            const pragma = configureSqliteConnection(db)
 
-            // 关键修复：Docker bind mount 文件系统对 POSIX 锁支持不可靠。
-            // WAL 模式减少对文件锁的依赖，synchronous=NORMAL 避免在慢文件系统上超时。
-            // 如果 WAL 模式初始化失败（极少数文件系统不支持），回退 DELETE + busy_timeout。
+            winstonLogger.log?.(`SQLite PRAGMA 配置完成: journal_mode=${pragma.journalMode}, synchronous=${pragma.synchronous}, busy_timeout=${pragma.busyTimeout}`)
+
+            // 记录数据目录所在文件系统的可用空间，便于在磁盘写满导致 SQLITE_IOERR 时快速定位。
             try {
-                db.pragma('journal_mode = WAL')
-            } catch {
-                winstonLogger.warn?.('WAL 模式设置失败，使用 DELETE + busy_timeout 作为回退')
-                db.pragma('journal_mode = DELETE')
+                const stat = statfsSync(DATABASE_DIR)
+                const freeSpace = Number(stat.bavail) * Number(stat.bsize)
+                const freeSpaceMiB = (freeSpace / 1024 / 1024).toFixed(2)
+                winstonLogger.log?.(`SQLite 数据目录可用空间: ${freeSpaceMiB} MiB`)
+                if (freeSpace < 100 * 1024 * 1024) {
+                    winstonLogger.warn?.(`SQLite 数据目录可用空间不足 100 MiB（当前 ${freeSpaceMiB} MiB），可能导致 disk I/O error`)
+                }
+            } catch (error) {
+                winstonLogger.warn?.(`读取 SQLite 数据目录文件系统信息失败: ${error.message}`)
             }
-            db.pragma('synchronous = NORMAL')
-            db.pragma('busy_timeout = 5000')
-
-            winstonLogger.log?.('SQLite PRAGMA 配置完成: journal_mode 已应用, synchronous=NORMAL, busy_timeout=5000')
-        } catch {
-            winstonLogger.warn?.('SQLite PRAGMA 设置失败，连接可能已处于异常状态')
+        } catch (error) {
+            winstonLogger.error?.(`SQLite PRAGMA 设置失败: ${error.message}`)
         }
     }
 

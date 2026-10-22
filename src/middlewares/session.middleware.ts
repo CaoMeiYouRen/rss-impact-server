@@ -4,6 +4,8 @@ import Database from 'better-sqlite3'
 import { RedisStore } from 'connect-redis'
 import { ENABLE_ORIGIN_LIST, REDIS_URL, SESSION_MAX_AGE, SESSION_SECRET, __PROD__ } from '@/app.config'
 import { DATABASE_PATH } from '@/db/database.module'
+import { configureSqliteConnection } from '@/db/sqlite'
+import { winstonLogger } from '@/middlewares/logger.middleware'
 import { getRedisClient } from '@/utils/redis'
 import { BetterSqlite3Store } from '@/utils/better-sqlite3-store'
 let store: Store
@@ -16,6 +18,11 @@ if (REDIS_URL) {
     })
 } else {
     const db = new Database(DATABASE_PATH)
+    try {
+        configureSqliteConnection(db)
+    } catch (error) {
+        winstonLogger.error?.(`会话存储 SQLite PRAGMA 设置失败: ${error.message}`)
+    }
     store = new BetterSqlite3Store({
         client: db,
         expired: {

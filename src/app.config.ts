@@ -106,6 +106,19 @@ export const DATABASE_SCHEMA = env.DATABASE_SCHEMA || 'public'
 export const DATABASE_SSL = env.DATABASE_SSL === 'true'
 
 export const DATABASE_INDEX_LENGTH = Number(env.DATABASE_INDEX_LENGTH || 1024)
+
+// SQLite journal 模式。WAL 依赖 -shm 共享内存和可靠的 POSIX 锁，
+// 在 Docker bind mount、NFS/SMB、virtiofs/osxfs 上可能间歇性触发 SQLITE_IOERR。
+// 默认使用兼容性更好的 DELETE；仅在确认数据目录位于本地 ext4/xfs 等可靠文件系统时可改为 wal。
+export const DATABASE_JOURNAL_MODES = ['delete', 'wal'] as const
+export type DatabaseJournalMode = typeof DATABASE_JOURNAL_MODES[number]
+export const DATABASE_JOURNAL_MODE = (() => {
+    const mode = (env.DATABASE_JOURNAL_MODE || 'delete').toLowerCase()
+    if (!DATABASE_JOURNAL_MODES.includes(mode as DatabaseJournalMode)) {
+        throw new Error(`DATABASE_JOURNAL_MODE 仅支持 ${DATABASE_JOURNAL_MODES.join(' / ')}，当前为 ${mode}`)
+    }
+    return mode as DatabaseJournalMode
+})()
 // 控制 TypeORM 是否自动同步表结构。未配置时由各数据库类型使用安全默认值。
 export const DATABASE_SYNCHRONIZE = env.DATABASE_SYNCHRONIZE === undefined
     ? undefined

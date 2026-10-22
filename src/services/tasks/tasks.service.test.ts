@@ -79,7 +79,7 @@ jest.mock('@/utils/notification', () => ({
     runPushAllInOne: jest.fn(),
 }))
 
-describe('TasksService retryDbWrite', () => {
+describe('TasksService retryDb', () => {
     let service: TasksService
 
     const mockRepo = () => ({
@@ -118,7 +118,7 @@ describe('TasksService retryDbWrite', () => {
 
     it('操作成功时应直接返回结果', async () => {
         const operation = jest.fn().mockResolvedValue('success')
-        const result = await (service as any).retryDbWrite(operation)
+        const result = await (service as any).retryDb(operation)
         expect(result).toBe('success')
         expect(operation).toHaveBeenCalledTimes(1)
     })
@@ -132,7 +132,7 @@ describe('TasksService retryDbWrite', () => {
             }
             return 'recovered'
         })
-        const result = await (service as any).retryDbWrite(operation)
+        const result = await (service as any).retryDb(operation)
         expect(result).toBe('recovered')
         expect(operation).toHaveBeenCalledTimes(3)
     })
@@ -146,7 +146,7 @@ describe('TasksService retryDbWrite', () => {
             }
             return 'ok'
         })
-        const result = await (service as any).retryDbWrite(operation)
+        const result = await (service as any).retryDb(operation)
         expect(result).toBe('ok')
         expect(operation).toHaveBeenCalledTimes(2)
     })
@@ -160,21 +160,21 @@ describe('TasksService retryDbWrite', () => {
             }
             return 'ok'
         })
-        const result = await (service as any).retryDbWrite(operation)
+        const result = await (service as any).retryDb(operation)
         expect(result).toBe('ok')
         expect(operation).toHaveBeenCalledTimes(2)
     })
 
     it('非数据库 I/O 错误不应重试', async () => {
         const operation = jest.fn().mockRejectedValue(new Error('Some other error'))
-        await expect((service as any).retryDbWrite(operation)).rejects.toThrow('Some other error')
+        await expect((service as any).retryDb(operation)).rejects.toThrow('Some other error')
         // shouldRetry 返回 false，因此只调用 1 次
         expect(operation).toHaveBeenCalledTimes(1)
     })
 
     it('超出最大重试次数后应抛出最终错误', async () => {
         const operation = jest.fn().mockRejectedValue(new Error('SqliteError: disk I/O error'))
-        await expect((service as any).retryDbWrite(operation)).rejects.toThrow()
+        await expect((service as any).retryDb(operation)).rejects.toThrow()
         // 默认 maxRetries=5，retryBackoff 在 retries>=maxRetries 时抛出
         expect(operation).toHaveBeenCalledTimes(5)
     })
