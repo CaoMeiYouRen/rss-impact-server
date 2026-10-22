@@ -11,6 +11,9 @@ FROM ${NODE_IMAGE} AS nodejs
 # 构建期兜底：即使通过 build-arg 替换了基础镜像，也拒绝使用未修复的 Node.js
 RUN node -e "const [M,m,p]=process.versions.node.split('.').map(Number);const fixed=(M===22&&(m>23||(m===23&&p>=4)))||(M===24&&(m>22||(m===22&&p>=1)))||(M===26&&(m>12||(m===12&&p>=1)))||M>26;if(!fixed){console.error('Node.js '+process.versions.node+' 未包含 2026-10-21 安全修复，拒绝构建；请升级到 22.23.4 / 24.22.1 / 26.12.1 或更高版本');process.exit(1)}console.log('Node.js '+process.versions.node+' 已包含 2026-10-21 安全修复')"
 
+# 官方 node:alpine 镜像不含 git/pnpm，补齐原自建镜像已预装的构建工具
+RUN apk add --no-cache git && npm i -g pnpm
+
 FROM ${NODE_IMAGE} AS runtime
 
 # 前端构建阶段
