@@ -44,7 +44,13 @@ export async function ajax<T = any>(config: AjaxConfig): Promise<AxiosResponse<T
         const httpAgent = getHttpAgent(proxyUrl)
         const resp = await axiosInstance(url, {
             method,
-            headers,
+            headers: {
+                // 不声明 br，降低服务端返回 Brotli 压缩响应的概率。
+                // 注意：忽略 Accept-Encoding 的服务端仍可能返回 br，且 axios 会按响应头自动解压；
+                // 根治需要 Node.js >= 24.22.1（修复 CVE-2026-111497）。
+                'Accept-Encoding': 'gzip, deflate',
+                ...headers,
+            },
             params: query,
             data,
             timeout,

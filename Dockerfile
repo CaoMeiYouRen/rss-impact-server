@@ -1,6 +1,17 @@
-FROM caomeiyouren/alpine-nodejs:alpine3.22-node24.16 AS nodejs
+# 安全基线：Node.js 24.22.1 修复了 2026-10-21 公布的安全问题，其中包括
+# CVE-2026-111497（Brotli 解码越界写入，可导致远程代码执行）。
+# 原先钉死的自建镜像 alpine3.22-node24.16 不含该修复，且其 apk add nodejs
+# 的构建方式依赖 Alpine 仓库更新，无法保证及时跟进。
+# 待 caomeiyouren/alpine-nodejs 重建到 24.22.1 后，可通过
+# --build-arg NODE_IMAGE=caomeiyouren/alpine-nodejs:<新 tag> 切回自建镜像。
+ARG NODE_IMAGE=node:24.22.1-alpine
 
-FROM caomeiyouren/alpine-nodejs-minimize:alpine3.22-node24.16 AS runtime
+FROM ${NODE_IMAGE} AS nodejs
+
+# 构建期兜底：即使通过 build-arg 替换了基础镜像，也拒绝使用未修复的 Node.js
+RUN node -e "const [M,m,p]=process.versions.node.split('.').map(Number);const fixed=(M===22&&(m>23||(m===23&&p>=4)))||(M===24&&(m>22||(m===22&&p>=1)))||(M===26&&(m>12||(m===12&&p>=1)))||M>26;if(!fixed){console.error('Node.js '+process.versions.node+' 未包含 2026-10-21 安全修复，拒绝构建；请升级到 22.23.4 / 24.22.1 / 26.12.1 或更高版本');process.exit(1)}console.log('Node.js '+process.versions.node+' 已包含 2026-10-21 安全修复')"
+
+FROM ${NODE_IMAGE} AS runtime
 
 # 前端构建阶段
 FROM nodejs AS frontend-builder

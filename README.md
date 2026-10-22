@@ -10,7 +10,7 @@
   <a href="https://github.com/CaoMeiYouRen/rss-impact-server/actions?query=workflow%3ARelease" target="_blank">
     <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/CaoMeiYouRen/rss-impact-server/release.yml?branch=master">
   </a>
-  <img src="https://img.shields.io/badge/node-%3E%3D20-blue.svg" />
+  <img src="https://img.shields.io/badge/node-%5E22.23.4%20%7C%7C%20%3E%3D24.22.1-blue.svg" />
   <a href="https://github.com/CaoMeiYouRen/rss-impact-server#readme" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
@@ -75,7 +75,7 @@ https://rss-demo.cmyr.dev
 
 ## 📦 依赖要求
 
-- node >=20
+- node ^22.23.4 || >=24.22.1
 
 ## 🚀 部署
 
