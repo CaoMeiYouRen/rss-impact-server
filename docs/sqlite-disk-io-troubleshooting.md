@@ -141,7 +141,7 @@ DATABASE_JOURNAL_MODE='wal'
 
 | 原因 | 说明 | 排查方式 |
 | --- | --- | --- |
-| 数据目录位于跨主机/虚拟化共享文件系统 | NFS、SMB、virtiofs/osxfs 对锁与 `fsync` 的支持不完整 | `findmnt -T <data>`、`docker inspect <container> --format '{{json .Mounts}}'` |
+| 数据目录位于跨主机/虚拟化共享文件系统 | NFS、SMB、virtiofs/osxfs 对锁与 `fsync` 的支持不完整 | `findmnt -T <data>`、`docker inspect <container> \| jq '.[0].Mounts'` |
 | 磁盘或 inode 耗尽 | 下载资源、日志、备份占满磁盘 | `df -h`、`df -i` |
 | 宿主机磁盘 I/O 异常 | 硬盘、RAID、云盘返回 EIO | `dmesg -T \| grep -iE "I/O error\|ext4\|xfs\|nvme\|raid"` |
 | 新旧容器同时写库 | 滚动部署期间两个进程同时打开数据库 | `docker ps` 确认没有重复容器 |
