@@ -18,7 +18,7 @@ import { WebhookLog } from './models/webhook-log.entity'
 import { ProxyConfig } from './models/proxy-config.entity'
 import { CustomQuery } from './models/custom-query.entity'
 import { DailyCount } from './models/daily-count.entity'
-import { configureSqliteConnection, SqliteConnection } from './sqlite'
+import { configureSqliteConnection, formatSqliteWriteError, probeSqliteWritable, SqliteConnection } from './sqlite'
 import { __DEV__, __TEST__, DATA_PATH, DATABASE_CHARSET, DATABASE_DATABASE, DATABASE_HOST, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_SCHEMA, DATABASE_SSL, DATABASE_SYNCHRONIZE, DATABASE_TIMEZONE, DATABASE_TYPE, DATABASE_USERNAME } from '@/app.config'
 import { CustomLogger, winstonLogger } from '@/middlewares/logger.middleware'
 
@@ -52,6 +52,16 @@ export class SqlitePragmaService implements OnModuleInit {
         } catch (error) {
             winstonLogger.error?.(`SQLite PRAGMA 设置失败: ${error.message}`)
         }
+
+        // PRAGMA 只能证明连接可用，无法证明真的能落盘。
+        // 部分宿主环境（旧版 Docker/containerd 的 seccomp 策略）会让 pwritev2 直接返回 EPERM，
+        // 表现为“查询正常、写入报 disk I/O error”，这里启动时主动写入一次以便尽早暴露。
+        const writeProbe = probeSqliteWritable(DATABASE_DIR)
+        if (writeProbe.ok) {
+            winstonLogger.log?.('SQLite 写入探测通过')
+            return
+        }
+        winstonLogger.error?.(`数据目录: ${DATABASE_DIR}\n${formatSqliteWriteError(writeProbe.error)}`)
     }
 
 }
