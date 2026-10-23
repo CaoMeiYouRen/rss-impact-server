@@ -2,9 +2,14 @@
 # CVE-2026-111497（Brotli 解码越界写入，可导致远程代码执行）。
 # 原先钉死的自建镜像 alpine3.22-node24.16 不含该修复，且其 apk add nodejs
 # 的构建方式依赖 Alpine 仓库更新，无法保证及时跟进。
-# 待 caomeiyouren/alpine-nodejs 重建到 24.22.1 后，可通过
-# --build-arg NODE_IMAGE=caomeiyouren/alpine-nodejs:<新 tag> 切回自建镜像。
-ARG NODE_IMAGE=node:24.22.1-alpine
+#
+# 基础镜像固定 Alpine 3.23（musl 1.2.5）而不是默认的 Alpine 3.24：
+# Alpine 3.24 的 musl 1.2.6 将 pwrite() 改为先调用 pwritev2(RWF_NOAPPEND)，
+# 且只在 EOPNOTSUPP / ENOSYS 时回退到 pwrite。旧版 Docker/containerd 的 seccomp
+# 策略会以 EPERM 拦截 pwritev2，导致镜像内 SQLite（better-sqlite3）所有写入
+# 都报 disk I/O error，而读取正常。确认宿主运行时允许 pwritev2 后可切回
+# --build-arg NODE_IMAGE=node:24.22.1-alpine。
+ARG NODE_IMAGE=node:24.22.1-alpine3.23
 
 FROM ${NODE_IMAGE} AS nodejs
 

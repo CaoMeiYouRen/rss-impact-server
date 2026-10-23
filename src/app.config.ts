@@ -107,9 +107,10 @@ export const DATABASE_SSL = env.DATABASE_SSL === 'true'
 
 export const DATABASE_INDEX_LENGTH = Number(env.DATABASE_INDEX_LENGTH || 1024)
 
-// SQLite journal 模式。WAL 依赖 -shm 共享内存和可靠的 POSIX 锁，
-// 在 Docker bind mount、NFS/SMB、virtiofs/osxfs 上可能间歇性触发 SQLITE_IOERR。
-// 默认使用兼容性更好的 DELETE；仅在确认数据目录位于本地 ext4/xfs 等可靠文件系统时可改为 wal。
+// SQLite journal 模式。WAL 并发读性能更好，但依赖 -shm 共享内存，
+// 部分共享/网络文件系统对 WAL 支持不佳时可改用 delete。
+// 注意：该选项不影响 "disk I/O error"（Alpine 3.24 的 musl 1.2.6 与宿主 seccomp 冲突），
+// 详见 docs/sqlite-disk-io-troubleshooting.md。
 export const DATABASE_JOURNAL_MODES = ['delete', 'wal'] as const
 export type DatabaseJournalMode = typeof DATABASE_JOURNAL_MODES[number]
 export const DATABASE_JOURNAL_MODE = (() => {

@@ -252,7 +252,9 @@ SENTRY_DSN=''
 
 如果你修改了 `DATA_PATH`，则数据库文件在 `DATA_PATH + "/database.sqlite"` 路径下。
 
-> 数据目录必须位于本地磁盘（或 Docker 命名卷）。不要放在 NFS/SMB、Docker Desktop 的 virtiofs/osxfs 等跨主机共享目录上，否则 SQLite 可能报 `disk I/O error`。排查与迁移步骤见 [SQLite disk I/O error 排查](./sqlite-disk-io-troubleshooting.md)。
+> 数据目录必须位于本地磁盘（或 Docker 命名卷）。不要放在 NFS/SMB、Docker Desktop 的 virtiofs/osxfs 等跨主机共享目录上，否则 SQLite 可能报 `disk I/O error`。
+>
+> 如果日志表现为“查询正常、写入失败”的 `disk I/O error`，则是 Alpine 3.24 / musl 1.2.6 的 `pwritev2` 被宿主 seccomp 拦截，处理方式见 [SQLite disk I/O error 排查](./sqlite-disk-io-troubleshooting.md)。
 
 ## 使用 MySQL 数据库
 

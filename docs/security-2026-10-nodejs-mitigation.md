@@ -37,15 +37,15 @@ axios 1.18 在 `lib/adapters/http.js` 中根据响应的 `content-encoding` 自�
 
 | 文件 | 修改 |
 | --- | --- |
-| `Dockerfile` | 基础镜像由 `caomeiyouren/alpine-nodejs:alpine3.22-node24.16` 改为 `node:24.22.1-alpine`；增加构建期版本校验，低于修复版本时直接失败 |
+| `Dockerfile` | 基础镜像由 `caomeiyouren/alpine-nodejs:alpine3.22-node24.16` 改为 `node:24.22.1-alpine3.23`（Alpine 3.24 的 musl 1.2.6 会导致 SQLite 写入失败，见 [排查文档](./sqlite-disk-io-troubleshooting.md)）；增加构建期版本校验，低于修复版本时直接失败 |
 | `package.json` | `engines.node` 由 `>=20` 改为 `^22.23.4 \|\| >=24.22.1` |
 | `README.md` | 同步 Node.js 版本要求 |
 | `src/utils/ajax.ts` | 默认请求头改为 `Accept-Encoding: gzip, deflate`，减少 Brotli 响应；保留调用方覆盖能力 |
 
-Dockerfile 保留 `NODE_IMAGE` 构建参数。待自建镜像 `caomeiyouren/alpine-nodejs` 重建到 24.22.1 后，可用以下方式切回：
+Dockerfile 保留 `NODE_IMAGE` 构建参数。宿主运行时已放行 `pwritev2`（或未来 Alpine 修复 musl 回退逻辑）后，可切回标准 Alpine 3.24 镜像：
 
 ```sh
-docker build --build-arg NODE_IMAGE=caomeiyouren/alpine-nodejs:<新 tag> -t rss-impact-server .
+docker build --build-arg NODE_IMAGE=node:24.22.1-alpine -t rss-impact-server .
 ```
 
 ## 部署与验证

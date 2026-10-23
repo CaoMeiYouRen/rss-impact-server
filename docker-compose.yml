@@ -25,6 +25,8 @@ services:
     volumes:
       # SQLite 数据库必须放在本地磁盘或 Docker 命名卷上。
       # 不要使用 NFS/SMB、Docker Desktop virtiofs/osxfs 等共享目录，否则可能报 disk I/O error。
+      # 若出现“可读不可写”的 disk I/O error，还可能是宿主 seccomp 拦截了 pwritev2，
+      # 见 docs/sqlite-disk-io-troubleshooting.md。
       - ./data:/app/data
       - ./logs:/app/logs
     depends_on:
