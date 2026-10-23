@@ -57,6 +57,19 @@ jobs:
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
+      - name: Build amd64 image for runtime smoke
+        run: docker buildx build --load --platform linux/amd64 -t rss-impact-server:ci .
+      - name: Verify SQLite writes in runtime image
+        run: |
+          docker run --rm --entrypoint node \
+            -v "${{ github.workspace }}/scripts/ci:/ci:ro" \
+            rss-impact-server:ci /ci/sqlite-write-test.mjs /tmp/sqlite-write-test
+      - name: Verify SQLite writes without pwritev2
+        run: |
+          docker run --rm --entrypoint node \
+            --security-opt "seccomp=${{ github.workspace }}/scripts/ci/deny-pwritev2.seccomp.json" \
+            -v "${{ github.workspace }}/scripts/ci:/ci:ro" \
+            rss-impact-server:ci /ci/sqlite-write-test.mjs /tmp/sqlite-write-test
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v4.6.0
         with:

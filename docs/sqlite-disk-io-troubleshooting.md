@@ -200,6 +200,35 @@ WAL 模式下只复制 `database.sqlite` 可能丢失最近事务。正确做法
 - 停止容器后复制整个数据目录；或
 - 使用 `sqlite3 database.sqlite ".backup '/path/to/backup.sqlite'"`。
 
+## CI 防护
+
+SQLite 写入依赖基础镜像的 libc 与宿主运行时策略的组合，普通单元测试和默认 CI 内核都发现不了。
+仓库新增了两层 Docker 环境测试：
+
+| 测试 | 位置 | 作用 |
+| --- | --- | --- |
+| 基础镜像写入契约 | `.github/workflows/test.yml` → `Docker Runtime` | 从 Dockerfile 读取 `NODE_IMAGE`，在基础镜像上执行写入与 better-sqlite3 写入测试 |
+| 产物镜像写入冒烟 | `.github/workflows/docker.yml`、`release.yml` | 构建 amd64 镜像后，在真实产物中执行同一测试，覆盖 minify 阶段与原生模块打包 |
+
+两层测试都会跑两次：
+
+1. 默认 seccomp：验证正常运行；
+2. `scripts/ci/deny-pwritev2.seccomp.json`：用 seccomp 让 `pwritev2` 返回 EPERM，模拟旧版
+   Docker/containerd。**这一步是关键**——新内核会返回 `EOPNOTSUPP` 并让 musl 正常回退，
+   只有强制 EPERM 才能复现“能读不能写”的问题。
+
+本地执行：
+
+```sh
+pnpm test:docker
+```
+
+脚本会从 `Dockerfile` 的 `NODE_IMAGE` 解析基础镜像；也可以显式传入镜像来验证某个版本：
+
+```sh
+sh scripts/ci/test-docker-sqlite.sh node:24.22.1-alpine
+```
+
 ## 代码侧加固
 
 - 所有 SQLite 连接统一先设置 `busy_timeout=10000`，再切换 `journal_mode` 并校验实际值。

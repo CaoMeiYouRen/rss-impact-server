@@ -1,0 +1,16 @@
+# CI 专用：在基础镜像上验证 SQLite 写入能力。
+# 用于模拟旧版 Docker/containerd 的 seccomp 策略（拒绝 pwritev2）。
+ARG BASE_IMAGE=node:24.22.1-alpine3.23
+ARG SQLITE_VERSION=^12.11.1
+
+FROM ${BASE_IMAGE}
+
+WORKDIR /ci
+
+COPY sqlite-write-test.mjs /ci/sqlite-write-test.mjs
+
+RUN npm init -y >/dev/null 2>&1 \
+    && npm i "better-sqlite3@${SQLITE_VERSION}" --no-audit --no-fund \
+    && npm cache clean --force >/dev/null 2>&1
+
+ENTRYPOINT ["node", "/ci/sqlite-write-test.mjs", "/tmp/sqlite-write-test"]

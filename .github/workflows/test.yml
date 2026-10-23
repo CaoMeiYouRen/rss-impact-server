@@ -31,3 +31,11 @@ jobs:
         uses: codecov/codecov-action@v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+  docker:
+    name: Docker Runtime
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify SQLite writes on base image
+        run: sh scripts/ci/test-docker-sqlite.sh
