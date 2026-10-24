@@ -1,5 +1,26 @@
 # rss-impact-server
 
+# [1.19.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.6...v1.19.0) (2026-10-24)
+
+
+### ✅ 测试
+
+* **docker:** 增加 SQLite 写入运行时冒烟测试 ([c50f406](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c50f406))
+
+
+### ✨ 新功能
+
+* **db:** 启动时探测 SQLite 写入并提示 pwritev2/seccomp 问题 ([7295b83](https://github.com/CaoMeiYouRen/rss-impact-server/commit/7295b83))
+
+
+### 🐛 Bug 修复
+
+* **ci:** 补齐官方 Node 镜像缺失的 git 与 pnpm ([89150c0](https://github.com/CaoMeiYouRen/rss-impact-server/commit/89150c0))
+* **db:** 默认使用 DELETE journal 模式并加固 SQLite I/O 错误处理 ([c9c365a](https://github.com/CaoMeiYouRen/rss-impact-server/commit/c9c365a))
+* **docker:** 基础镜像固定 Alpine 3.23 规避 SQLite 写入失败 ([db69311](https://github.com/CaoMeiYouRen/rss-impact-server/commit/db69311))
+* **docs:** 避免 VitePress 将 docker inspect 模板解析为插值 ([d1417cd](https://github.com/CaoMeiYouRen/rss-impact-server/commit/d1417cd))
+* **security:** 升级运行时到 Node.js 24.22.1 修复 2026-10 安全问题 ([4970343](https://github.com/CaoMeiYouRen/rss-impact-server/commit/4970343))
+
 ## [1.18.6](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.5...v1.18.6) (2026-09-05)
 
 
