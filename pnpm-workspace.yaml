@@ -17,7 +17,7 @@ overrides:
   request: npm:postman-request@^2.88.1-postman.31
   nth-check: ^2.1.1
   cookie: ^0.7.0
-  katex: ^0.16.21
+  katex: ^0.18.2
   "@sentry/node": ^8.49.0
   esbuild: ^0.28.1
   "@octokit/plugin-paginate-rest": ^11.4.1
@@ -71,6 +71,13 @@ overrides:
   "@vue/server-renderer": ^3.5.42
   browserslist: ^4.28.7
   nanoid: ^3.3.18
+  "@opentelemetry/instrumentation-knex": ^0.65.0
+  "@opentelemetry/instrumentation-mongoose": ^0.67.0
+  "@opentelemetry/instrumentation-mysql": ^0.67.0
+  "@opentelemetry/instrumentation-mysql2": ^0.67.0
+  "@opentelemetry/instrumentation-pg": ^0.73.0
+  "@opentelemetry/instrumentation-tedious": ^0.40.0
+  decode-uri-component: ^0.5.0
 
 peerDependencyRules:
   ignoreMissing:
