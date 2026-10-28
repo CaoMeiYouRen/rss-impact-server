@@ -1,6 +1,6 @@
 import { isUUID } from 'class-validator'
 import dayjs from 'dayjs'
-import { formatGuid, rssItemToArticle, filterArticles } from './rss-helper'
+import { formatGuid, rssItemToArticle, filterArticles, mergeUrlQuery, rssParser, rssParserURL } from './rss-helper'
 import { Article } from '@/db/models/article.entity'
 
 describe('formatGuid', () => {
@@ -303,5 +303,32 @@ describe('filterArticles', () => {
 
         expect(filteredArticles).toHaveLength(1)
         expect(filteredArticles[0].guid).toBe('4')
+    })
+})
+
+describe('mergeUrlQuery', () => {
+    it('应保留 url 原有的查询参数', () => {
+        expect(mergeUrlQuery('https://example.com/rss.xml?foo=bar')).toBe('https://example.com/rss.xml?foo=bar')
+    })
+
+    it('应合并传入的查询参数，且同名参数以传入值为准', () => {
+        expect(mergeUrlQuery('https://example.com/rss.xml?foo=bar&page=1', { page: 2 })).toBe('https://example.com/rss.xml?foo=bar&page=2')
+    })
+
+    it('应支持数组形式的查询参数', () => {
+        expect(mergeUrlQuery('https://example.com/rss.xml', { tag: ['a', 'b'] })).toBe('https://example.com/rss.xml?tag=a&tag=b')
+    })
+
+    it('应忽略值为 null 或 undefined 的查询参数', () => {
+        expect(mergeUrlQuery('https://example.com/rss.xml', { foo: null, bar: undefined })).toBe('https://example.com/rss.xml')
+    })
+})
+
+describe('rssParserURL', () => {
+    it('应使用合并后的 url 解析 rss', async () => {
+        const parseURL = jest.spyOn(rssParser, 'parseURL').mockResolvedValue({ items: [] } as any)
+        await rssParserURL('https://example.com/rss.xml?foo=bar', { page: 2 })
+        expect(parseURL).toHaveBeenCalledWith('https://example.com/rss.xml?foo=bar&page=2')
+        parseURL.mockRestore()
     })
 })

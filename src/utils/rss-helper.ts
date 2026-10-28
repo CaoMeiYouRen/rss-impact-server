@@ -1,6 +1,5 @@
 import { promisify } from 'util'
 import Parser, { Output, Item, Enclosure } from '@cao-mei-you-ren/rss-parser'
-import queryString from 'query-string'
 import dayjs from 'dayjs'
 import { isURL } from 'class-validator'
 import XRegExp from 'xregexp'
@@ -14,6 +13,28 @@ import { FilterOut } from '@/models/filter-out.dto'
 export const rssParser = new Parser()
 
 /**
+ * 合并 url 中已有的查询参数与传入的查询参数
+ *
+ * @author CaoMeiYouRen
+ * @date 2026-10-28
+ * @export
+ * @param url
+ * @param [query={}]
+ */
+export function mergeUrlQuery(url: string, query: Record<string, any> = {}) {
+    const _url = new URL(url)
+    Object.entries(query).forEach(([key, value]) => {
+        if (value === undefined || value === null) {
+            return
+        }
+        _url.searchParams.delete(key)
+        const values = Array.isArray(value) ? value : [value]
+        values.forEach((item) => _url.searchParams.append(key, String(item)))
+    })
+    return _url.toString()
+}
+
+/**
  * 从 url 解析 rss
  *
  * @author CaoMeiYouRen
@@ -23,8 +44,7 @@ export const rssParser = new Parser()
  * @param [query={}]
  */
 export async function rssParserURL(url: string, query: Record<string, any> = {}) {
-    const _url = queryString.parseUrl(url)
-    const rss = await rssParser.parseURL(`${_url.url}?${queryString.stringify(Object.assign({}, _url.query, query))}`)
+    const rss = await rssParser.parseURL(mergeUrlQuery(url, query))
     return rssNormalize(rss)
 }
 
