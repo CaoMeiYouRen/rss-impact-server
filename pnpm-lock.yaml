@@ -182,8 +182,8 @@ importers:
         specifier: ^3.4.0
         version: 3.4.0(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1)
       express-rate-limit:
-        specifier: ^8.7.0
-        version: 8.7.0(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1)
+        specifier: ^8.7.1
+        version: 8.7.1(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1)
       express-session:
         specifier: ^1.19.0
         version: 1.19.0(supports-color@8.1.1)
@@ -276,7 +276,7 @@ importers:
         version: 4.5.2(supports-color@8.1.1)
       rate-limit-redis:
         specifier: ^4.3.1
-        version: 4.3.1(express-rate-limit@8.7.0(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1))
+        version: 4.3.1(express-rate-limit@8.7.1(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1))
       reflect-metadata:
         specifier: ^0.2.1
         version: 0.2.2
@@ -4893,8 +4893,8 @@ packages:
     peerDependencies:
       express: '>= 4.17.0'
 
-  express-rate-limit@8.7.0:
-    resolution: {integrity: sha512-hOwV7WOxXfjRpAM1DSJWZDXx3GhplwD8IfwuwvogD8i1Qnkgosw/H45s4ZnFAUHDAhPjlY9hLBvJhKmGMyY26g==}
+  express-rate-limit@8.7.1:
+    resolution: {integrity: sha512-2FXbqkygil3mZiXzEtM0IjE/UBmBNot0J1GEVrJT4JbrvwOSoEtqtO+wHbiMQELWe1eNvHoYRg2dkjOid+6JkA==}
     engines: {node: '>= 16'}
     peerDependencies:
       express: '>= 4.11'
@@ -14113,7 +14113,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  express-rate-limit@8.7.0(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1):
+  express-rate-limit@8.7.1(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       express: 4.22.1(supports-color@8.1.1)
@@ -17068,9 +17068,9 @@ snapshots:
 
   range-parser@1.2.1: {}
 
-  rate-limit-redis@4.3.1(express-rate-limit@8.7.0(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1)):
+  rate-limit-redis@4.3.1(express-rate-limit@8.7.1(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1)):
     dependencies:
-      express-rate-limit: 8.7.0(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1)
+      express-rate-limit: 8.7.1(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1)
 
   raw-body@3.0.2:
     dependencies:
