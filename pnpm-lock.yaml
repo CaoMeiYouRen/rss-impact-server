@@ -87,7 +87,7 @@ importers:
     dependencies:
       '@cao-mei-you-ren/postlight_parser':
         specifier: ^3.0.3
-        version: 3.0.3(jquery@3.7.1)(moment-timezone@0.6.2)(supports-color@8.1.1)
+        version: 3.0.3(moment-timezone@0.6.2)(supports-color@8.1.1)
       '@cao-mei-you-ren/qbittorrent':
         specifier: ^1.1.0
         version: 1.1.0
@@ -5061,8 +5061,8 @@ packages:
   focus-trap@7.8.0:
     resolution: {integrity: sha512-/yNdlIkpWbM0ptxno3ONTuf+2g318kh2ez3KSeZN5dZ8YC6AAmgeWz+GasYYiBJPFaYcSAPeu4GfhUaChzIJXA==}
 
-  follow-redirects@1.16.1:
-    resolution: {integrity: sha512-FNvFGzoMLWmE6Yj9spb/zjd7yiNCHiAW9/Tg9CXrQ8wuu32HtlJOwWO11OJafl5FfY3DxTdQ0vj42zU1kvv5jg==}
+  follow-redirects@1.16.2:
+    resolution: {integrity: sha512-/kVP2U8z596Ia0gwFrwyIeo74ta5aVmSeU1FfAUMAmcEP5EP7zydmag3SLiN64NaRKef3lxsq7i/g7ltJQDGow==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -9064,7 +9064,7 @@ snapshots:
   '@angular-devkit/core@19.2.24(chokidar@5.0.0)':
     dependencies:
       ajv: 8.18.0
-      ajv-formats: 3.0.1(ajv@8.18.0)
+      ajv-formats: 3.0.1
       jsonc-parser: 3.3.1
       picomatch: 4.0.4
       rxjs: 7.8.1
@@ -9075,7 +9075,7 @@ snapshots:
   '@angular-devkit/core@22.1.8(chokidar@5.0.0)':
     dependencies:
       ajv: 8.20.0
-      ajv-formats: 3.0.1(ajv@8.20.0)
+      ajv-formats: 3.0.1
       jsonc-parser: 3.3.1
       picomatch: 4.0.4
       rxjs: 7.8.2
@@ -9086,7 +9086,7 @@ snapshots:
   '@angular-devkit/core@22.2.0(chokidar@5.0.0)':
     dependencies:
       ajv: 8.20.0
-      ajv-formats: 3.0.1(ajv@8.20.0)
+      ajv-formats: 3.0.1
       jsonc-parser: 3.3.1
       picomatch: 4.0.4
       rxjs: 7.8.2
@@ -9449,13 +9449,14 @@ snapshots:
 
   '@cao-mei-you-ren/crypto-hash@3.0.0': {}
 
-  '@cao-mei-you-ren/postlight_parser@3.0.3(jquery@3.7.1)(moment-timezone@0.6.2)(supports-color@8.1.1)':
+  '@cao-mei-you-ren/postlight_parser@3.0.3(moment-timezone@0.6.2)(supports-color@8.1.1)':
     dependencies:
       '@babel/runtime-corejs2': 7.29.7
       '@postlight/ci-failed-test-reporter': 1.0.26
       cheerio: 1.2.0
       ellipsize: 0.1.0
       iconv-lite: 0.5.0
+      jquery: 3.7.1
       moment: 2.31.0
       moment-parseformat: 3.0.0
       postman-request: 2.88.1-postman.48(supports-color@8.1.1)
@@ -9466,7 +9467,6 @@ snapshots:
       wuzzy: 0.1.8
       yargs-parser: 15.0.3
     optionalDependencies:
-      jquery: 3.7.1
       moment-timezone: 0.6.2
     transitivePeerDependencies:
       - encoding
@@ -12333,16 +12333,12 @@ snapshots:
       clean-stack: 5.3.0
       indent-string: 5.0.0
 
-  ajv-formats@2.1.1(ajv@8.20.0):
-    optionalDependencies:
+  ajv-formats@2.1.1:
+    dependencies:
       ajv: 8.20.0
 
-  ajv-formats@3.0.1(ajv@8.18.0):
-    optionalDependencies:
-      ajv: 8.18.0
-
-  ajv-formats@3.0.1(ajv@8.20.0):
-    optionalDependencies:
+  ajv-formats@3.0.1:
+    dependencies:
       ajv: 8.20.0
 
   ajv-keywords@3.5.2(ajv@6.15.0):
@@ -12582,7 +12578,7 @@ snapshots:
 
   axios@1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
-      follow-redirects: 1.16.1(debug@4.4.3(supports-color@8.1.1))
+      follow-redirects: 1.16.2(debug@4.4.3(supports-color@8.1.1))
       form-data: 4.0.6
       https-proxy-agent: 5.0.1(supports-color@8.1.1)
       proxy-from-env: 2.1.0
@@ -14343,7 +14339,7 @@ snapshots:
     dependencies:
       tabbable: 6.4.0
 
-  follow-redirects@1.16.1(debug@4.4.3(supports-color@8.1.1)):
+  follow-redirects@1.16.2(debug@4.4.3(supports-color@8.1.1)):
     optionalDependencies:
       debug: 4.4.3(supports-color@8.1.1)
 
@@ -15527,8 +15523,7 @@ snapshots:
 
   jose@6.2.12: {}
 
-  jquery@3.7.1:
-    optional: true
+  jquery@3.7.1: {}
 
   js-tokens@4.0.0: {}
 
@@ -16601,7 +16596,7 @@ snapshots:
   openapi-schema-validator@9.3.1:
     dependencies:
       ajv: 8.20.0
-      ajv-formats: 2.1.1(ajv@8.20.0)
+      ajv-formats: 2.1.1
       lodash.merge: 4.6.2
       openapi-types: 9.3.1
 
@@ -17436,7 +17431,7 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
-      ajv-formats: 2.1.1(ajv@8.20.0)
+      ajv-formats: 2.1.1
       ajv-keywords: 5.1.0(ajv@8.20.0)
 
   search-insights@2.17.3: {}
