@@ -1,5 +1,12 @@
 # rss-impact-server
 
+## [1.19.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.19.0...v1.19.1) (2026-10-31)
+
+
+### 🐛 Bug 修复
+
+* **deps:** 补回 ajv-formats@2.1.1 缺失的 ajv 依赖 ([262fa0f](https://github.com/CaoMeiYouRen/rss-impact-server/commit/262fa0f))
+
 # [1.19.0](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.18.6...v1.19.0) (2026-10-24)
 
 
