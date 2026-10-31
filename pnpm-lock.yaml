@@ -87,7 +87,7 @@ importers:
     dependencies:
       '@cao-mei-you-ren/postlight_parser':
         specifier: ^3.0.3
-        version: 3.0.3(moment-timezone@0.6.2)(supports-color@8.1.1)
+        version: 3.0.3(moment-timezone@0.6.5)(supports-color@8.1.1)
       '@cao-mei-you-ren/qbittorrent':
         specifier: ^1.1.0
         version: 1.1.0
@@ -233,8 +233,8 @@ importers:
         specifier: ^2.2.3
         version: 2.3.4
       moment-timezone:
-        specifier: ^0.6.1
-        version: 0.6.2
+        specifier: ^0.6.5
+        version: 0.6.5
       morgan:
         specifier: ^1.12.1
         version: 1.12.1(supports-color@8.1.1)
@@ -6606,8 +6606,8 @@ packages:
   moment-parseformat@3.0.0:
     resolution: {integrity: sha512-dVgXe6b6DLnv4CHG7a1zUe5mSXaIZ3c6lSHm/EKeVeQI2/4pwe0VRde8OyoCE1Ro2lKT5P6uT9JElF7KDLV+jw==}
 
-  moment-timezone@0.6.2:
-    resolution: {integrity: sha512-lDsQv8FoGdBUdf0+TjGsq2orxKuXdwFlQ6Zw6TX3xIcTwTfEpCLyKqvEauvCHJ8iu3KBV8+uPhlv70YsNGdUBQ==}
+  moment-timezone@0.6.5:
+    resolution: {integrity: sha512-KKzZAxGv2Qx4cnk6eSlvf4C+DLFW52vmMY5MN7UARY7GONbozkutylQG3DrrtmLCTXdQ5XZrqao9cI16bLFzXA==}
 
   moment@2.31.0:
     resolution: {integrity: sha512-0acOTfMiWOheYS4eoWb80yYMb/JLvVv9SHbs2PehaDzfUG0Bw855SKyk0IKTnPGa5+U2bmi3W68l1+sGLX/pvw==}
@@ -9449,7 +9449,7 @@ snapshots:
 
   '@cao-mei-you-ren/crypto-hash@3.0.0': {}
 
-  '@cao-mei-you-ren/postlight_parser@3.0.3(moment-timezone@0.6.2)(supports-color@8.1.1)':
+  '@cao-mei-you-ren/postlight_parser@3.0.3(moment-timezone@0.6.5)(supports-color@8.1.1)':
     dependencies:
       '@babel/runtime-corejs2': 7.29.7
       '@postlight/ci-failed-test-reporter': 1.0.26
@@ -9467,7 +9467,7 @@ snapshots:
       wuzzy: 0.1.8
       yargs-parser: 15.0.3
     optionalDependencies:
-      moment-timezone: 0.6.2
+      moment-timezone: 0.6.5
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -16305,7 +16305,7 @@ snapshots:
 
   moment-parseformat@3.0.0: {}
 
-  moment-timezone@0.6.2:
+  moment-timezone@0.6.5:
     dependencies:
       moment: 2.31.0
 
