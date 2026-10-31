@@ -272,8 +272,8 @@ importers:
         specifier: ^8.23.0
         version: 8.23.0
       push-all-in-one:
-        specifier: 4.5.2
-        version: 4.5.2(supports-color@8.1.1)
+        specifier: 4.7.0
+        version: 4.7.0(supports-color@8.1.1)
       rate-limit-redis:
         specifier: ^4.3.1
         version: 4.3.1(express-rate-limit@8.7.0(express@4.22.1(supports-color@8.1.1))(supports-color@8.1.1))
@@ -7343,9 +7343,9 @@ packages:
   pure-rand@7.0.1:
     resolution: {integrity: sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==}
 
-  push-all-in-one@4.5.2:
-    resolution: {integrity: sha512-6peEgBiKlYYiP2LSms3dHRriPWLaMz1/pKYwqHRX4b4T3t48U7na4+zCy8GEb3MrdlVLZjl8hWYCRckAj+jxlw==}
-    engines: {node: '>=20'}
+  push-all-in-one@4.7.0:
+    resolution: {integrity: sha512-dM9mHz2+Mtmw3JH8H7BRc1LHktHb0utgKyyE/nGpkbXkHUCfZQl7uksLuazi5RAs4pCK9ZGet2bPghXPyGf4Vw==}
+    engines: {node: ^22.23.4 || ^24.22.1 || >=26.12.1}
 
   qs@6.17.0:
     resolution: {integrity: sha512-5LK5BZ2XDHMvcUJaf0CQ5HL3aVgKbpklvByC7qLSxYkfE8COEEbJg5xCHWCTqzqi0Gs4Jn5Mv5v3R38W6edscA==}
@@ -7766,6 +7766,10 @@ packages:
   smart-buffer@4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
+
+  socks-proxy-agent@10.1.0:
+    resolution: {integrity: sha512-WlMj/67cEJ6MDI1OcsnjuYKDNDoyPCCYZ249kuuXPiMDw9F8PXkVaQ7YWu3siTydfQ/4BEZcvGzu+aYvz7dDCQ==}
+    engines: {node: '>= 20'}
 
   socks-proxy-agent@8.0.5:
     resolution: {integrity: sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==}
@@ -17049,15 +17053,16 @@ snapshots:
 
   pure-rand@7.0.1: {}
 
-  push-all-in-one@4.5.2(supports-color@8.1.1):
+  push-all-in-one@4.7.0(supports-color@8.1.1):
     dependencies:
       '@colors/colors': 1.6.0
       axios: 1.20.0(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
       debug: 4.4.3(supports-color@8.1.1)
-      https-proxy-agent: 7.0.6(supports-color@8.1.1)
+      https-proxy-agent: 9.1.0(supports-color@8.1.1)
       nodemailer: 10.2.1
-      socks-proxy-agent: 8.0.5(supports-color@8.1.1)
+      socks-proxy-agent: 10.1.0(supports-color@8.1.1)
     transitivePeerDependencies:
+      - kerberos
       - supports-color
 
   qs@6.17.0:
@@ -17636,6 +17641,14 @@ snapshots:
   slash@3.0.0: {}
 
   smart-buffer@4.2.0: {}
+
+  socks-proxy-agent@10.1.0(supports-color@8.1.1):
+    dependencies:
+      agent-base: 9.0.0
+      debug: 4.4.3(supports-color@8.1.1)
+      socks: 2.8.9
+    transitivePeerDependencies:
+      - supports-color
 
   socks-proxy-agent@8.0.5(supports-color@8.1.1):
     dependencies:
