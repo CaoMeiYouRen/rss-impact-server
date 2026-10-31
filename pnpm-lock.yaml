@@ -188,8 +188,8 @@ importers:
         specifier: ^1.19.0
         version: 1.19.0(supports-color@8.1.1)
       feedsmith:
-        specifier: ^2.9.1
-        version: 2.9.4
+        specifier: ^3.0.1
+        version: 3.0.1
       file-type:
         specifier: ^21.3.1
         version: 21.3.4(supports-color@8.1.1)
@@ -4982,8 +4982,9 @@ packages:
   fecha@4.2.3:
     resolution: {integrity: sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==}
 
-  feedsmith@2.9.4:
-    resolution: {integrity: sha512-mjBxjSQ52mZQQZmSwSwB4e+Ig6KHadjUG9rwNOb6t6s6F1mO/qFrijBi5TKjtjExfi6/eJ6v30TsaPgcYlQeNA==}
+  feedsmith@3.0.1:
+    resolution: {integrity: sha512-P4puSPGXvIcA5wYvJJCap+nbO2tVemZ39fpkx68ZtkbAGtzw4eNJ0BDm8tLb25UWD8yL8j47eDG2uwfzprTiZA==}
+    engines: {node: '>=14'}
 
   figures@2.0.0:
     resolution: {integrity: sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==}
@@ -14225,7 +14226,7 @@ snapshots:
 
   fecha@4.2.3: {}
 
-  feedsmith@2.9.4:
+  feedsmith@3.0.1:
     dependencies:
       entities: 7.0.1
       fast-xml-parser: 5.9.2
