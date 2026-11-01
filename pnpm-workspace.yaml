@@ -63,7 +63,7 @@ overrides:
   uuid: 11.1.1
   ws: ^8.21.0
   diff: 4.0.4
-  joi: 17.13.8
+  joi: ^17.13.9
   webpack: ^5.104.1
   piscina: ^4.9.4
   brace-expansion@5: ^5.0.12

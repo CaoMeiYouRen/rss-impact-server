@@ -66,7 +66,7 @@ overrides:
   uuid: 11.1.1
   ws: ^8.21.0
   diff: 4.0.4
-  joi: 17.13.8
+  joi: ^17.13.9
   webpack: ^5.104.1
   piscina: ^4.9.4
   brace-expansion@5: ^5.0.12
@@ -87,7 +87,7 @@ importers:
     dependencies:
       '@cao-mei-you-ren/postlight_parser':
         specifier: ^3.0.3
-        version: 3.0.3(moment-timezone@0.6.5)(supports-color@8.1.1)
+        version: 3.0.3(jquery@3.7.1)(moment-timezone@0.6.5)(supports-color@8.1.1)
       '@cao-mei-you-ren/qbittorrent':
         specifier: ^1.1.0
         version: 1.1.0
@@ -5986,8 +5986,8 @@ packages:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
-  joi@17.13.8:
-    resolution: {integrity: sha512-iPKOGmiRw1jxf/JOPwxmCcUQAOdF359mdzYiP2DJ+TMX0YK2zjK3D+zYOaGjpumWxOFF/l2xVWjRVK5bGSLdEw==}
+  joi@17.13.9:
+    resolution: {integrity: sha512-llFCT2rVtfwgBCaIqxtjim+iHqrgss4ONiGSYiiGH9jnjWq90ppSRffqmqKvwpa8W+YfILyQV6XyGcegXX2T4g==}
 
   jose@4.15.9:
     resolution: {integrity: sha512-1vUQX+IdDMVPj4k8kOxgUqlcK518yluMuGZwqlr44FS1ppZB/5GWh4rZG89erpOBOJjU/OBsnCVFfapsRz6nEA==}
@@ -9069,7 +9069,7 @@ snapshots:
   '@angular-devkit/core@19.2.24(chokidar@5.0.0)':
     dependencies:
       ajv: 8.18.0
-      ajv-formats: 3.0.1
+      ajv-formats: 3.0.1(ajv@8.20.0)
       jsonc-parser: 3.3.1
       picomatch: 4.0.4
       rxjs: 7.8.1
@@ -9080,7 +9080,7 @@ snapshots:
   '@angular-devkit/core@22.1.8(chokidar@5.0.0)':
     dependencies:
       ajv: 8.20.0
-      ajv-formats: 3.0.1
+      ajv-formats: 3.0.1(ajv@8.20.0)
       jsonc-parser: 3.3.1
       picomatch: 4.0.4
       rxjs: 7.8.2
@@ -9091,7 +9091,7 @@ snapshots:
   '@angular-devkit/core@22.2.0(chokidar@5.0.0)':
     dependencies:
       ajv: 8.20.0
-      ajv-formats: 3.0.1
+      ajv-formats: 3.0.1(ajv@8.20.0)
       jsonc-parser: 3.3.1
       picomatch: 4.0.4
       rxjs: 7.8.2
@@ -9454,14 +9454,13 @@ snapshots:
 
   '@cao-mei-you-ren/crypto-hash@3.0.0': {}
 
-  '@cao-mei-you-ren/postlight_parser@3.0.3(moment-timezone@0.6.5)(supports-color@8.1.1)':
+  '@cao-mei-you-ren/postlight_parser@3.0.3(jquery@3.7.1)(moment-timezone@0.6.5)(supports-color@8.1.1)':
     dependencies:
       '@babel/runtime-corejs2': 7.29.7
       '@postlight/ci-failed-test-reporter': 1.0.26
       cheerio: 1.2.0
       ellipsize: 0.1.0
       iconv-lite: 0.5.0
-      jquery: 3.7.1
       moment: 2.31.0
       moment-parseformat: 3.0.0
       postman-request: 2.88.1-postman.48(supports-color@8.1.1)
@@ -9472,6 +9471,7 @@ snapshots:
       wuzzy: 0.1.8
       yargs-parser: 15.0.3
     optionalDependencies:
+      jquery: 3.7.1
       moment-timezone: 0.6.5
     transitivePeerDependencies:
       - encoding
@@ -12334,12 +12334,12 @@ snapshots:
       clean-stack: 5.3.0
       indent-string: 5.0.0
 
-  ajv-formats@2.1.1:
-    dependencies:
+  ajv-formats@2.1.1(ajv@8.20.0):
+    optionalDependencies:
       ajv: 8.20.0
 
-  ajv-formats@3.0.1:
-    dependencies:
+  ajv-formats@3.0.1(ajv@8.20.0):
+    optionalDependencies:
       ajv: 8.20.0
 
   ajv-keywords@3.5.2(ajv@6.15.0):
@@ -14119,7 +14119,7 @@ snapshots:
       debug: 4.4.3(supports-color@8.1.1)
       express: 4.22.1(supports-color@8.1.1)
       http-errors: 1.8.1
-      joi: 17.13.8
+      joi: 17.13.9
       jose: 6.2.12
       on-headers: 1.1.0
       openid-client: 6.8.8
@@ -15522,7 +15522,7 @@ snapshots:
 
   jiti@2.6.1: {}
 
-  joi@17.13.8:
+  joi@17.13.9:
     dependencies:
       '@hapi/hoek': 9.3.0
       '@hapi/topo': 5.1.0
@@ -15534,7 +15534,8 @@ snapshots:
 
   jose@6.2.12: {}
 
-  jquery@3.7.1: {}
+  jquery@3.7.1:
+    optional: true
 
   js-tokens@4.0.0: {}
 
@@ -16607,7 +16608,7 @@ snapshots:
   openapi-schema-validator@9.3.1:
     dependencies:
       ajv: 8.20.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1(ajv@8.20.0)
       lodash.merge: 4.6.2
       openapi-types: 9.3.1
 
@@ -17444,7 +17445,7 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
       ajv: 8.20.0
-      ajv-formats: 2.1.1
+      ajv-formats: 2.1.1(ajv@8.20.0)
       ajv-keywords: 5.1.0(ajv@8.20.0)
 
   search-insights@2.17.3: {}
