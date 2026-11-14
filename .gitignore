@@ -49,3 +49,4 @@ audit.json
 .gitinfo
 # dependfix
 dependfix-reports/
+*.tsbuildinfo
