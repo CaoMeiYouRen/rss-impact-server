@@ -1,6 +1,7 @@
 import path from 'path'
 import type { Config } from 'jest'
 import ms from 'ms'
+import { transform, transformIgnorePatterns } from './jest.shared'
 
 const config: Config = {
     moduleNameMapper: {
@@ -13,9 +14,8 @@ const config: Config = {
     ],
     rootDir: 'src',
     testRegex: '.test.ts$',
-    transform: {
-        '^.+\\.(t|j)s$': 'ts-jest',
-    },
+    transform,
+    transformIgnorePatterns,
     coverageDirectory: path.resolve('./coverage'),
     testEnvironment: 'node',
     testTimeout: ms('2m'),

@@ -1,5 +1,6 @@
 import path from 'path'
 import type { Config } from 'jest'
+import { transform, transformIgnorePatterns } from '../jest.shared'
 
 const config: Config = {
     moduleFileExtensions: [
@@ -10,9 +11,8 @@ const config: Config = {
     rootDir: '.',
     testEnvironment: 'node',
     testRegex: '.e2e-test.ts$',
-    transform: {
-        '^.+\\.(t|j)s$': 'ts-jest',
-    },
+    transform,
+    transformIgnorePatterns,
     moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/../src/$1',
     },
