@@ -1,7 +1,8 @@
+const path = require('path')
 const { createTransformer } = require('ts-jest').default
 
 const tsJestTransformer = createTransformer({
-    tsconfig: { allowJs: true },
+    tsconfig: path.resolve(__dirname, 'tsconfig.json'),
 })
 
 /**

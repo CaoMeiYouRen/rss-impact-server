@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "rootDir": "./src",
         "sourceMap": true,
     },
     "extends": "./tsconfig.json",

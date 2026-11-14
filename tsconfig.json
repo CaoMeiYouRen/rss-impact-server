@@ -1,6 +1,14 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "moduleResolution": "node10",
+        "ignoreDeprecations": "6.0",
+        "strict": false,
+        "types": [
+            "node",
+            "jest",
+            "multer"
+        ],
         "target": "esnext",
         "declaration": false,
         "noImplicitAny": false,
