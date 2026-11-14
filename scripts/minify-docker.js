@@ -1,6 +1,14 @@
 const path = require('path')
 const fs = require('fs-extra')
-const { nodeFileTrace } = require('@vercel/nft')
+let nodeFileTrace
+try {
+    ({ nodeFileTrace } = require('@vercel/nft'))
+} catch (error) {
+    console.error('无法加载 @vercel/nft，请检查安装位置与 NODE_PATH')
+    console.error('NODE_PATH =', process.env.NODE_PATH)
+    console.error('解析路径 =', require.resolve.paths('@vercel/nft'))
+    throw error
+}
 // !!! if any new dependencies are added, update the Dockerfile !!!
 
 function getPackageRoot(file) {
@@ -52,9 +60,11 @@ async function collectNativeArtifacts(projectRoot, packageRoots) {
         }
     }
     if (!mainPath) {
+        console.error('未找到入口文件，已检查:', mainPaths.map((key) => path.join(projectRoot, key)))
+        console.error('package.json main =', pkg.main, '| projectRoot =', projectRoot)
         process.exit(1)
     }
-    const files = [mainPath, 'dist/workers/login-worker.js']
+    const files = [mainPath, path.join(projectRoot, 'dist/workers/login-worker.js')]
     console.log('Start analyzing, project root:', projectRoot)
     const { fileList: fileSet } = await nodeFileTrace(files, {
         base: projectRoot,

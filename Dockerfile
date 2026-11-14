@@ -50,7 +50,8 @@ RUN pnpm run build
 # 缩小阶段
 FROM nodejs AS docker-minifier
 
-WORKDIR /app
+# @vercel/nft 与 fs-extra 单独安装在 /opt/minifier，避免被下面 COPY 的 node_modules 覆盖
+WORKDIR /opt/minifier
 
 RUN pnpm config set registry https://registry.npmjs.org/ && \
     pnpm add @vercel/nft@1.10.2 fs-extra@11.2.0 --save-prod
@@ -58,6 +59,7 @@ RUN pnpm config set registry https://registry.npmjs.org/ && \
 COPY --from=builder /app /app
 
 RUN export PROJECT_ROOT=/app/ && \
+    export NODE_PATH=/opt/minifier/node_modules && \
     node /app/scripts/minify-docker.js && \
     rm -rf /app/node_modules /app/scripts && \
     mv /app/app-minimal/node_modules /app/ && \
