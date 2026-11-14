@@ -3,6 +3,9 @@ packages:
 strictPeerDependencies: false
 overrides:
   "@lint-md/cli": 2.0.0
+  # express 4 与 @nestjs/serve-static 仍使用旧版 API，限定覆盖到这两个依赖，避免影响 express 5
+  "express>path-to-regexp": ^3.3.0
+  "@nestjs/serve-static>path-to-regexp": ^3.3.0
   "@commitlint/cli>yargs": 18.0.0
   "@types/methods": ^1.1.4
   "@types/superagent": ^8.1.0
