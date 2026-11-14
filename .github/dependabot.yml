@@ -7,6 +7,18 @@ updates:
       interval: "monthly"
       time: "04:00"
       timezone: Asia/Shanghai
+    groups:
+      npm-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      npm-major:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
     ignore:
       - dependency-name: "file-type"
         versions:
@@ -38,6 +50,9 @@ updates:
       - dependency-name: "connect-redis"
         versions:
           - ">= 9.0.0" # 9.0.0 以上版本会导致 redis 无法连接
+      - dependency-name: "typescript"
+        versions:
+          - ">= 7.0.0" # 7.0 为原生编译器重写版本，需单独评估迁移
   - package-ecosystem: github-actions
     directory: /
     open-pull-requests-limit: 20
@@ -45,3 +60,7 @@ updates:
       interval: "monthly"
       time: "04:00"
       timezone: Asia/Shanghai
+    groups:
+      github-actions:
+        patterns:
+          - "*"
