@@ -2,6 +2,7 @@
 
 > 评估日期：2026-07-25
 > 基于项目：rss-impact-server@1.18.4
+> **2026-11-14 更新**：相关依赖已全部升级完成，无需整体迁移 ESM。实际方案见文末「实际解决方案」。
 
 ## 背景
 
@@ -12,8 +13,8 @@
 | 项目 | 值 | 说明 |
 |---|---|---|
 | NestJS | ^11.1.19 | 官方仍输出 CJS，v12（2026 Q3）将原生支持 ESM |
-| TypeScript | ^5.9.3 | 已支持完整 CJS/ESM interop |
-| Node.js | >=20（实际 24） | 支持 `--experimental-require-module` |
+| TypeScript | ^6.0.3 | 已支持完整 CJS/ESM interop |
+| Node.js | ^22.23.4 \|\| >=24.22.1 | 原生支持 `require()` ESM，无需实验性参数 |
 | 当前模块 | CommonJS | `tsconfig: module: commonjs`，`package.json` 无 `type` 字段 |
 
 ## 受影响的依赖
@@ -131,3 +132,40 @@ NestJS v12 发布后（2026 Q3），按官方迁移指南统一迁移：
 
 - 评估是否完全迁移或保留 Webpack 构建（`nest build` 自动处理 ESM/CJS 混用）
 - 监控上游依赖的 ESM 支持状态
+
+## 实际解决方案（2026-11）
+
+项目保持 CommonJS 构建，通过 Node.js 原生 `require()` ESM 与 Jest 转译解决依赖升级问题，未执行整体 ESM 迁移。
+
+### 运行时
+
+Node.js 22.12+ 起 `require()` 可以加载同步 ESM 模块，项目 `engines` 已要求 `^22.23.4 || >=24.22.1`，因此 `entities@8`、`jwks-rsa@4`、`https-proxy-agent@9`、`@nestjs/typeorm@12` 等 ESM-only 依赖可直接在 CJS 产物中 `require`。
+
+### 测试
+
+Jest 的模块加载器不支持 `require(ESM)`，因此新增了测试侧的转译层：
+
+| 文件 | 作用 |
+|---|---|
+| `jest.shared.ts` | 维护 ESM-only 依赖列表（`ESM_ONLY_PACKAGES`）与 `transformIgnorePatterns` |
+| `jest-esm-transformer.cjs` | 基于 ts-jest 的转译器，并将 ESM 中不合法的 `import.meta.url` 替换为 `__filename` |
+
+主测试与 e2e 配置均引用 `jest.shared.ts`。**新增 ESM-only 依赖时，需要把包名补充到 `ESM_ONLY_PACKAGES`**，否则对应测试会报 `Cannot use import statement outside a module`。
+
+同时移除了 e2e 的 `--experimental-vm-modules`：该参数会让 Jest 按 `type: module` 解析被转译为 CJS 的依赖，反而导致 `exports is not defined`。
+
+### 已升级依赖
+
+| 依赖 | 原版本 | 当前版本 |
+|---|---|---|
+| entities | 7.x | 8.x |
+| jwks-rsa | 3.x | 4.x |
+| https-proxy-agent | 7.x | 9.x |
+| @nestjs/typeorm | 11.x | 12.x |
+| push-all-in-one | 4.5.2 | 4.7.0 |
+
+### 其他注意事项
+
+- `https-proxy-agent@9` 未声明顶层 `types` 字段，`tsconfig.json` 通过 `paths` 指向其 `dist/index.d.ts`。
+- `openai@7` 移除了 `httpAgent`，`src/utils/proxy-fetch.ts` 使用 axios + 现有代理 Agent 提供 fetch 适配器，保持 http/https/socks 代理能力。
+- TypeScript 6 默认开启 `strict` 且 `types` 默认为空，`tsconfig.json` 已显式声明 `strict: false`、`types` 与 `moduleResolution: node10`；`tsconfig.build.json` 显式设置 `rootDir: ./src` 以保持 `dist/main.js` 输出位置。
