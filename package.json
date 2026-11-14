@@ -104,7 +104,7 @@
     "passport-local": "^1.0.0",
     "passport-strategy": "^1.0.0",
     "pg": "^8.23.0",
-    "push-all-in-one": "4.5.2",
+    "push-all-in-one": "4.7.0",
     "rate-limit-redis": "^4.3.1",
     "reflect-metadata": "^0.2.1",
     "rimraf": "^6.1.3",
