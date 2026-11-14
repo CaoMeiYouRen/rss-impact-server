@@ -289,8 +289,8 @@ importers:
         specifier: ^7.8.2
         version: 7.8.2
       socks-proxy-agent:
-        specifier: ^8.0.5
-        version: 8.0.5(supports-color@8.1.1)
+        specifier: ^10.1.0
+        version: 10.1.0(supports-color@8.1.1)
       swagger-ui-express:
         specifier: ^5.0.1
         version: 5.0.1(express@5.2.1(supports-color@8.1.1))

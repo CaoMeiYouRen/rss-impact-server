@@ -32,6 +32,10 @@
             // https-proxy-agent 9 为 ESM-only 且未声明顶层 types 字段，node10 模块解析无法定位类型定义
             "https-proxy-agent": [
                 "./node_modules/https-proxy-agent/dist/index.d.ts"
+            ],
+            // socks-proxy-agent 10 为 ESM-only 且未声明顶层 types 字段，node10 模块解析无法定位类型定义
+            "socks-proxy-agent": [
+                "./node_modules/socks-proxy-agent/dist/index.d.ts"
             ]
         },
         "lib": [
