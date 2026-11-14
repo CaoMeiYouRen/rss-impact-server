@@ -7,7 +7,6 @@ settings:
 overrides:
   '@lint-md/cli': 2.0.0
   express>path-to-regexp: ^3.3.0
-  '@nestjs/serve-static>path-to-regexp': ^3.3.0
   '@commitlint/cli>yargs': 18.0.0
   '@types/methods': ^1.1.4
   '@types/superagent': ^8.1.0
@@ -122,8 +121,8 @@ importers:
         specifier: ^6.1.0
         version: 6.1.3(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)
       '@nestjs/serve-static':
-        specifier: ^4.0.2
-        version: 4.0.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(express@5.2.1(supports-color@8.1.1))
+        specifier: ^5.0.5
+        version: 5.0.5(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(express@5.2.1(supports-color@8.1.1))
       '@nestjs/swagger':
         specifier: ^7.4.2
         version: 7.4.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
@@ -818,11 +817,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     peerDependencies:
-      jquery: ^3.5.0
       moment-timezone: 0.5.37
     peerDependenciesMeta:
-      jquery:
-        optional: true
       moment-timezone:
         optional: true
 
@@ -1959,14 +1955,14 @@ packages:
       prettier:
         optional: true
 
-  '@nestjs/serve-static@4.0.2':
-    resolution: {integrity: sha512-cT0vdWN5ar7jDI2NKbhf4LcwJzU4vS5sVpMkVrHuyLcltbrz6JdGi1TfIMMatP2pNiq5Ie/uUdPSFDVaZX/URQ==}
+  '@nestjs/serve-static@5.0.5':
+    resolution: {integrity: sha512-AhYx3N9aMwR2cb0w5Nlb5nHNYiAcF74ea/D/xna+PxlXwjmwGN/PpC/5fuMtOwmPBMgOTxNPOnB8C9LDZBSgyw==}
     peerDependencies:
-      '@fastify/static': ^6.5.0 || ^7.0.0
+      '@fastify/static': ^8.0.4 || ^9.0.0
       '@nestjs/common': ^11.0.11
-      '@nestjs/core': ^9.0.0 || ^10.0.0
-      express: ^4.18.1
-      fastify: ^4.7.0
+      '@nestjs/core': ^11.0.2
+      express: ^5.0.1
+      fastify: ^5.2.1
     peerDependenciesMeta:
       '@fastify/static':
         optional: true
@@ -10792,11 +10788,11 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@nestjs/serve-static@4.0.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(express@5.2.1(supports-color@8.1.1))':
+  '@nestjs/serve-static@5.0.5(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(express@5.2.1(supports-color@8.1.1))':
     dependencies:
       '@nestjs/common': 11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
       '@nestjs/core': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/platform-express@11.2.9)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      path-to-regexp: 3.3.0
+      path-to-regexp: 8.4.2
     optionalDependencies:
       express: 5.2.1(supports-color@8.1.1)
 
