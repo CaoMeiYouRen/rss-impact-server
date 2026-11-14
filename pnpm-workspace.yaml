@@ -84,6 +84,7 @@ peerDependencyRules:
     - webpack
 allowBuilds:
   "@nestjs/core": true
+  "@parcel/watcher": false
   "@sentry/profiling-node": true
   "@sentry-internal/node-cpu-profiler": false
   bcrypt: true
