@@ -123,7 +123,7 @@ importers:
         version: 6.1.3(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)
       '@nestjs/serve-static':
         specifier: ^4.0.2
-        version: 4.0.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(express@5.0.0-beta.3(supports-color@8.1.1))
+        version: 4.0.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(express@5.2.1(supports-color@8.1.1))
       '@nestjs/swagger':
         specifier: ^7.4.2
         version: 7.4.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
@@ -183,10 +183,10 @@ importers:
         version: 8.1.0
       express-openid-connect:
         specifier: ^3.4.0
-        version: 3.4.0(express@5.0.0-beta.3(supports-color@8.1.1))(supports-color@8.1.1)
+        version: 3.4.0(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1)
       express-rate-limit:
         specifier: ^8.7.4
-        version: 8.7.4(express@5.0.0-beta.3(supports-color@8.1.1))(supports-color@8.1.1)
+        version: 8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1)
       express-session:
         specifier: ^1.19.0
         version: 1.19.0(supports-color@8.1.1)
@@ -279,7 +279,7 @@ importers:
         version: 4.7.0(supports-color@8.1.1)
       rate-limit-redis:
         specifier: ^4.3.1
-        version: 4.3.1(express-rate-limit@8.7.4(express@5.0.0-beta.3(supports-color@8.1.1))(supports-color@8.1.1))
+        version: 4.3.1(express-rate-limit@8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1))
       reflect-metadata:
         specifier: ^0.2.1
         version: 0.2.2
@@ -294,7 +294,7 @@ importers:
         version: 8.0.5(supports-color@8.1.1)
       swagger-ui-express:
         specifier: ^5.0.1
-        version: 5.0.1(express@5.0.0-beta.3(supports-color@8.1.1))
+        version: 5.0.1(express@5.2.1(supports-color@8.1.1))
       tslib:
         specifier: ^2.9.1
         version: 2.9.1
@@ -831,8 +831,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     peerDependencies:
+      jquery: ^3.5.0
       moment-timezone: 0.5.37
     peerDependenciesMeta:
+      jquery:
+        optional: true
       moment-timezone:
         optional: true
 
@@ -3544,10 +3547,6 @@ packages:
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
 
-  accepts@1.3.8:
-    resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
-    engines: {node: '>= 0.6'}
-
   accepts@2.0.0:
     resolution: {integrity: sha512-5cvg6CtKwfgdmVqY1WIiXKc3Q1bkRqGLi+2W/6ao+6Y7gu/RCwRuAhGEzh5B4KlszSuTLgZYuqFqo5bImjNKng==}
     engines: {node: '>= 0.6'}
@@ -3699,9 +3698,6 @@ packages:
   array-buffer-byte-length@1.0.2:
     resolution: {integrity: sha512-LHE+8BuR7RYGDKvnrmcuSq3tDcKv9OFEXQt/HpbZhY7V6h0zlUXutnAD82GiFx9rdieCMjkvtcsPqBwgUl1Iiw==}
     engines: {node: '>= 0.4'}
-
-  array-flatten@3.0.0:
-    resolution: {integrity: sha512-zPMVc3ZYlGLNk4mpK1NzP2wg0ml9t7fUgDsayR5Y5rSzxQilzR9FGu/EH2jQOcKSAeAfWeylyW8juy3OkWRvNA==}
 
   array-ify@1.0.0:
     resolution: {integrity: sha512-c5AMf34bKdvPhQ7tBGhqkgKNUzMr4WUs+WDtC2ZUGOUncbxKMTvqxYctiseW3+L4bA8ec+GcZ6/A/FW4m8ukng==}
@@ -4255,10 +4251,6 @@ packages:
     peerDependencies:
       express-session: '>=1'
 
-  content-disposition@0.5.4:
-    resolution: {integrity: sha512-FveZTNuGw04cxlAiWbzi6zTAL/lhehaWbTtgluJh4/E95DqMwTmha3KZN1aAWA8cFIhHzMZUvLevkw5Rqk+tSQ==}
-    engines: {node: '>= 0.6'}
-
   content-disposition@1.1.0:
     resolution: {integrity: sha512-5jRCH9Z/+DRP7rkvY83B+yGIGX96OYdJmzngqnw2SBSxqCFPd0w2km3s5iawpGX8krnwSGmF0FW5Nhr0Hfai3g==}
     engines: {node: '>=18'}
@@ -4469,14 +4461,6 @@ packages:
       supports-color:
         optional: true
 
-  debug@3.1.0:
-    resolution: {integrity: sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
   debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
     peerDependencies:
@@ -4563,10 +4547,6 @@ packages:
 
   destr@2.0.5:
     resolution: {integrity: sha512-ugFTXCtDZunbzasqBxrK93Ik/DRYsO6S/fedkWEMKqt04xZ4csmnmwGDBAb07QWNaGMAmnTIemsYZCksjATwsA==}
-
-  destroy@1.2.0:
-    resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
-    engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
 
   detect-file@1.0.0:
     resolution: {integrity: sha512-DtCOLG98P007x7wiiOmfI0fi3eIKyWiLTGJ2MDnVi/E04lWGbf+JzrRHMm0rgIIZJGtHpKpbVgLWHrv8xXpc3Q==}
@@ -4694,10 +4674,6 @@ packages:
 
   enabled@2.0.0:
     resolution: {integrity: sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==}
-
-  encodeurl@1.0.4:
-    resolution: {integrity: sha512-ImAQpWtQZKdkUxvj9CMNzB8M4IGg0DkRTZzmOHqgVFrf71JDmUacbt+iKljfIpD2yHcxI+HR76d8bwvdvtSvGA==}
-    engines: {node: '>= 0.8'}
 
   encodeurl@2.0.0:
     resolution: {integrity: sha512-Q0n9HRi4m6JuGIV1eFlmvJB7ZEVxu93IrMyiMsGC0lrMJMWzRgx6WGquyfQgZVb31vhGgXnfmPNNXmxnOkRBrg==}
@@ -5134,10 +5110,6 @@ packages:
     resolution: {integrity: sha512-0csaMkGq+vaiZTmSMMGkfdCOabYv192VbytFypcvI0MANrp+4i/7yEkJ0sbAEhycQjntaKGzYfjfXQyVb7BHMA==}
     engines: {node: '>= 0.8.0'}
 
-  express@5.0.0-beta.3:
-    resolution: {integrity: sha512-e7Qizw4gMBVe1Ky2oNi5C1h6oS8aWDcY2yYxvRMy5aMc6t2aqobuHpQRfR3LRC9NAW/c6081SeGWMGBorLXePg==}
-    engines: {node: '>= 4'}
-
   express@5.2.1:
     resolution: {integrity: sha512-hIS4idWWai69NezIdRt2xFVofaF4j+6INOpJlVOLDO8zXGpUVEVzIYk12UUi2JzjEzWL3IOAxcTubgz9Po0yXw==}
     engines: {node: '>= 18'}
@@ -5246,10 +5218,6 @@ packages:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
 
-  finalhandler@1.2.0:
-    resolution: {integrity: sha512-5uXcUVftlQMFnWC9qu/svkWv3GTd2PfUhK/3PLkYNAe7FbqJMt3515HaxE6eRL74GdsriiwujiawdaB1BpEISg==}
-    engines: {node: '>= 0.8'}
-
   finalhandler@2.1.1:
     resolution: {integrity: sha512-S8KoZgRZN+a5rNwqTxlZZePjT/4cnm0ROV70LedRHZ0p8u9fRID0hJUZQpkKLzro8LfmC8sx23bY6tVNxv8pQA==}
     engines: {node: '>= 18.0.0'}
@@ -5345,10 +5313,6 @@ packages:
 
   forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
-    engines: {node: '>= 0.6'}
-
-  fresh@0.5.2:
-    resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
 
   fresh@2.0.0:
@@ -5648,10 +5612,6 @@ packages:
   http-errors@1.8.1:
     resolution: {integrity: sha512-Kpk9Sm7NmI+RHhnj6OIWDI1d6fIoFAtFt9RLaTMRlg/8w49juAStsrBgp0Dp4OdxdVbRIeKhtCUvoi/RuAhO4g==}
     engines: {node: '>= 0.6'}
-
-  http-errors@2.0.0:
-    resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
-    engines: {node: '>= 0.8'}
 
   http-errors@2.0.1:
     resolution: {integrity: sha512-4FbRdAX+bSdmo4AUFuS0WNiPz8NgFt+r8ThgNWmlrjQjt1Q7ZR9+zTlce2859x4KSXrwIsaeTqDoKQmtP8pLmQ==}
@@ -6616,9 +6576,6 @@ packages:
     resolution: {integrity: sha512-pxQJQzB6djGPXh08dacEloMFopsOqGVRKFPYvPOt9XDZ1HasbgDZA74CJGreSU4G3Ak7EFJGoiH2auq+yXISgA==}
     engines: {node: '>=18'}
 
-  merge-descriptors@1.0.1:
-    resolution: {integrity: sha512-cCi6g3/Zr1iqQi6ySbseM1Xvooa98N0w31jzUYrXPX2xqObmFGHJ0tQ5u74H3mVh7wLouTseZyYIq39g8cNp1w==}
-
   merge-descriptors@2.0.0:
     resolution: {integrity: sha512-Snk314V5ayFLhp3fkUREub6WtjBfPdCPY1Ln8/8munuLuiYhsABgBVWsozAG+MWMbVEvcdcpbi9R7ww22l9Q3g==}
     engines: {node: '>=18'}
@@ -6916,10 +6873,6 @@ packages:
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
-
-  negotiator@0.6.3:
-    resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
-    engines: {node: '>= 0.6'}
 
   negotiator@1.1.0:
     resolution: {integrity: sha512-NMPBRMJgiQHjbd8phG3Vebdx4kZ1H121rbl5IkMqeOsahptB9BKo/d7oJ3zTXqTgagn2bWlNSXkh0QUGM31RYg==}
@@ -7419,9 +7372,6 @@ packages:
     resolution: {integrity: sha512-1pTbQqH1wIwMi/eleQ5leFTTCkzFsPcgXNjwOA8YGGW/W4/kHT3dssE7Z6NH+zuqNLOzOB0uaD61yl7cAcVhgg==}
     engines: {node: 18 || 20 || >=22}
 
-  path-to-regexp@3.2.0:
-    resolution: {integrity: sha512-jczvQbCUS7XmS7o+y1aEO9OBVFeZBQ1MDSEqmO7xSoPgOPoowY/SxLpZ6Vh97/8qHZOteiCKb7gkG9gA2ZUxJA==}
-
   path-to-regexp@3.3.0:
     resolution: {integrity: sha512-qyCH421YQPS2WFDxDjftfc1ZR5WKQzVzqsp4n9M2kQhVOo/ByahFoUNJfl58kOcEGfQ//7weFTDhm+ss8Ecxgw==}
 
@@ -7858,10 +7808,6 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  router@2.0.0-beta.2:
-    resolution: {integrity: sha512-ascmzrv4IAB64SpWzFwYOA+jz6PaUbrzHLPsQrPjQ3uQTL2qlhwY9S2sRvvBMgUISQptQG457jcWWcWqtwrbag==}
-    engines: {node: '>= 0.10'}
-
   router@2.2.0:
     resolution: {integrity: sha512-nLTrUKm2UyiL7rlhapu/Zl45FwNgkZGaCpZbIHajDYgwlJCOzLSk+cIPAnsEqV955GjILJnKbdQC1nVPz+gAYQ==}
     engines: {node: '>= 18'}
@@ -7965,17 +7911,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  send@1.0.0-beta.2:
-    resolution: {integrity: sha512-k1yHu/FNK745PULKdsGpQ+bVSXYNwSk+bWnYzbxGZbt5obZc0JKDVANsCRuJD1X/EG15JtP9eZpwxkhUxIYEcg==}
-    engines: {node: '>= 0.10'}
-
   send@1.2.1:
     resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
-
-  serve-static@2.0.0-beta.2:
-    resolution: {integrity: sha512-Ge718g4UJjzYoXFEGLY/VLSuTHp0kQcUV65QA98J8d3XREsVIHu53GBh9NWjDy4u2xwsSwRzu9nu7Q+b4o6Xyw==}
-    engines: {node: '>= 0.10'}
 
   serve-static@2.2.1:
     resolution: {integrity: sha512-xRXBn0pPqQTVQiC8wyQrKs2MOlX24zQ0POGaj0kultvoOCstBQM5yvOhAVSUwOMjQtTvsPWoNCHfPGwaaQJhTw==}
@@ -8153,10 +8091,6 @@ packages:
   statuses@1.5.0:
     resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
     engines: {node: '>= 0.6'}
-
-  statuses@2.0.1:
-    resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
-    engines: {node: '>= 0.8'}
 
   statuses@2.0.2:
     resolution: {integrity: sha512-DvEy55V3DB7uknRo+4iOGT5fP1slR8wQohVdknigZPMpMstaKJQWhwiYBACJE3Ul2pTnATihhBYnRhZQHGBiRw==}
@@ -10970,13 +10904,13 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@nestjs/serve-static@4.0.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(express@5.0.0-beta.3(supports-color@8.1.1))':
+  '@nestjs/serve-static@4.0.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(express@5.2.1(supports-color@8.1.1))':
     dependencies:
       '@nestjs/common': 11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
       '@nestjs/core': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/platform-express@11.2.9)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       path-to-regexp: 3.3.0
     optionalDependencies:
-      express: 5.0.0-beta.3(supports-color@8.1.1)
+      express: 5.2.1(supports-color@8.1.1)
 
   '@nestjs/swagger@7.4.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)':
     dependencies:
@@ -12734,11 +12668,6 @@ snapshots:
 
   '@xtuc/long@4.2.2': {}
 
-  accepts@1.3.8:
-    dependencies:
-      mime-types: 2.1.35
-      negotiator: 0.6.3
-
   accepts@2.0.0:
     dependencies:
       mime-types: 3.0.2
@@ -12891,8 +12820,6 @@ snapshots:
     dependencies:
       call-bound: 1.0.4
       is-array-buffer: 3.0.5
-
-  array-flatten@3.0.0: {}
 
   array-ify@1.0.0: {}
 
@@ -13525,10 +13452,6 @@ snapshots:
     dependencies:
       express-session: 1.19.0(supports-color@8.1.1)
 
-  content-disposition@0.5.4:
-    dependencies:
-      safe-buffer: 5.2.1
-
   content-disposition@1.1.0: {}
 
   content-type@1.0.5: {}
@@ -13746,12 +13669,6 @@ snapshots:
     optionalDependencies:
       supports-color: 8.1.1
 
-  debug@3.1.0(supports-color@8.1.1):
-    dependencies:
-      ms: 2.0.0
-    optionalDependencies:
-      supports-color: 8.1.1
-
   debug@3.2.7(supports-color@8.1.1):
     dependencies:
       ms: 2.1.3
@@ -13813,8 +13730,6 @@ snapshots:
   dequal@2.0.3: {}
 
   destr@2.0.5: {}
-
-  destroy@1.2.0: {}
 
   detect-file@1.0.0: {}
 
@@ -13921,8 +13836,6 @@ snapshots:
   emojilib@2.4.0: {}
 
   enabled@2.0.0: {}
-
-  encodeurl@1.0.4: {}
 
   encodeurl@2.0.0: {}
 
@@ -14580,13 +14493,13 @@ snapshots:
       jest-mock: 30.5.2
       jest-util: 30.5.1
 
-  express-openid-connect@3.4.0(express@5.0.0-beta.3(supports-color@8.1.1))(supports-color@8.1.1):
+  express-openid-connect@3.4.0(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
       base64url: 3.0.1
       clone: 2.1.2
       cookie: 0.7.2
       debug: 4.4.3(supports-color@8.1.1)
-      express: 5.0.0-beta.3(supports-color@8.1.1)
+      express: 5.2.1(supports-color@8.1.1)
       http-errors: 1.8.1
       joi: 17.13.9
       jose: 6.2.12
@@ -14597,10 +14510,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  express-rate-limit@8.7.4(express@5.0.0-beta.3(supports-color@8.1.1))(supports-color@8.1.1):
+  express-rate-limit@8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
-      express: 5.0.0-beta.3(supports-color@8.1.1)
+      express: 5.2.1(supports-color@8.1.1)
       ip-address: 10.7.4
     transitivePeerDependencies:
       - supports-color
@@ -14615,44 +14528,6 @@ snapshots:
       parseurl: 1.3.3
       safe-buffer: 5.2.1
       uid-safe: 2.1.5
-    transitivePeerDependencies:
-      - supports-color
-
-  express@5.0.0-beta.3(supports-color@8.1.1):
-    dependencies:
-      accepts: 1.3.8
-      array-flatten: 3.0.0
-      body-parser: 2.4.0(supports-color@8.1.1)
-      content-disposition: 0.5.4
-      content-type: 1.0.5
-      cookie: 0.7.2
-      cookie-signature: 1.0.6
-      debug: 3.1.0(supports-color@8.1.1)
-      depd: 2.0.0
-      encodeurl: 1.0.4
-      escape-html: 1.0.3
-      etag: 1.8.1
-      finalhandler: 1.2.0(supports-color@8.1.1)
-      fresh: 0.5.2
-      http-errors: 2.0.0
-      merge-descriptors: 1.0.1
-      methods: 1.1.2
-      mime-types: 2.1.35
-      on-finished: 2.4.1
-      parseurl: 1.3.3
-      path-is-absolute: 1.0.1
-      proxy-addr: 2.0.8
-      qs: 6.17.0
-      range-parser: 1.2.1
-      router: 2.0.0-beta.2
-      safe-buffer: 5.2.1
-      send: 1.0.0-beta.2(supports-color@8.1.1)
-      serve-static: 2.0.0-beta.2(supports-color@8.1.1)
-      setprototypeof: 1.2.0
-      statuses: 2.0.1
-      type-is: 1.6.18
-      utils-merge: 1.0.1
-      vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
 
@@ -14796,18 +14671,6 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  finalhandler@1.2.0(supports-color@8.1.1):
-    dependencies:
-      debug: 2.6.9(supports-color@8.1.1)
-      encodeurl: 1.0.4
-      escape-html: 1.0.3
-      on-finished: 2.4.1
-      parseurl: 1.3.3
-      statuses: 2.0.1
-      unpipe: 1.0.0
-    transitivePeerDependencies:
-      - supports-color
-
   finalhandler@2.1.1(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
@@ -14921,8 +14784,6 @@ snapshots:
   forwarded-parse@2.1.2: {}
 
   forwarded@0.2.0: {}
-
-  fresh@0.5.2: {}
 
   fresh@2.0.0: {}
 
@@ -15257,14 +15118,6 @@ snapshots:
       inherits: 2.0.4
       setprototypeof: 1.2.0
       statuses: 1.5.0
-      toidentifier: 1.0.1
-
-  http-errors@2.0.0:
-    dependencies:
-      depd: 2.0.0
-      inherits: 2.0.4
-      setprototypeof: 1.2.0
-      statuses: 2.0.1
       toidentifier: 1.0.1
 
   http-errors@2.0.1:
@@ -16538,8 +16391,6 @@ snapshots:
 
   meow@13.2.0: {}
 
-  merge-descriptors@1.0.1: {}
-
   merge-descriptors@2.0.0: {}
 
   merge-stream@2.0.0: {}
@@ -16933,8 +16784,6 @@ snapshots:
   natural-compare-lite@1.4.0: {}
 
   natural-compare@1.4.0: {}
-
-  negotiator@0.6.3: {}
 
   negotiator@1.1.0:
     dependencies:
@@ -17414,8 +17263,6 @@ snapshots:
       lru-cache: 11.5.1
       minipass: 7.1.3
 
-  path-to-regexp@3.2.0: {}
-
   path-to-regexp@3.3.0: {}
 
   path-to-regexp@8.4.2: {}
@@ -17649,9 +17496,9 @@ snapshots:
 
   range-parser@1.2.1: {}
 
-  rate-limit-redis@4.3.1(express-rate-limit@8.7.4(express@5.0.0-beta.3(supports-color@8.1.1))(supports-color@8.1.1)):
+  rate-limit-redis@4.3.1(express-rate-limit@8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1)):
     dependencies:
-      express-rate-limit: 8.7.4(express@5.0.0-beta.3(supports-color@8.1.1))(supports-color@8.1.1)
+      express-rate-limit: 8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1)
 
   raw-body@3.0.2:
     dependencies:
@@ -17948,16 +17795,6 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.59.0
       fsevents: 2.3.3
 
-  router@2.0.0-beta.2:
-    dependencies:
-      array-flatten: 3.0.0
-      is-promise: 4.0.0
-      methods: 1.1.2
-      parseurl: 1.3.3
-      path-to-regexp: 3.2.0
-      setprototypeof: 1.2.0
-      utils-merge: 1.0.1
-
   router@2.2.0(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
@@ -18093,23 +17930,6 @@ snapshots:
 
   semver@7.8.5: {}
 
-  send@1.0.0-beta.2(supports-color@8.1.1):
-    dependencies:
-      debug: 3.1.0(supports-color@8.1.1)
-      destroy: 1.2.0
-      encodeurl: 1.0.4
-      escape-html: 1.0.3
-      etag: 1.8.1
-      fresh: 0.5.2
-      http-errors: 2.0.0
-      mime-types: 2.1.35
-      ms: 2.1.3
-      on-finished: 2.4.1
-      range-parser: 1.2.1
-      statuses: 2.0.1
-    transitivePeerDependencies:
-      - supports-color
-
   send@1.2.1(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
@@ -18123,15 +17943,6 @@ snapshots:
       on-finished: 2.4.1
       range-parser: 1.2.1
       statuses: 2.0.2
-    transitivePeerDependencies:
-      - supports-color
-
-  serve-static@2.0.0-beta.2(supports-color@8.1.1):
-    dependencies:
-      encodeurl: 1.0.4
-      escape-html: 1.0.3
-      parseurl: 1.3.3
-      send: 1.2.1(supports-color@8.1.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -18342,8 +18153,6 @@ snapshots:
 
   statuses@1.5.0: {}
 
-  statuses@2.0.1: {}
-
   statuses@2.0.2: {}
 
   stdin-discarder@0.3.2: {}
@@ -18545,9 +18354,9 @@ snapshots:
     dependencies:
       '@scarf/scarf': 1.4.0
 
-  swagger-ui-express@5.0.1(express@5.0.0-beta.3(supports-color@8.1.1)):
+  swagger-ui-express@5.0.1(express@5.2.1(supports-color@8.1.1)):
     dependencies:
-      express: 5.0.0-beta.3(supports-color@8.1.1)
+      express: 5.2.1(supports-color@8.1.1)
       swagger-ui-dist: 5.32.6
 
   synckit@0.11.13:
