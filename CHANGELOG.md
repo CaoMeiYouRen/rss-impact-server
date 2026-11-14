@@ -1,5 +1,13 @@
 # rss-impact-server
 
+## [1.19.2](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.19.1...v1.19.2) (2026-11-14)
+
+
+### 🐛 Bug 修复
+
+* **deps:** 升级 @nestjs/serve-static 至 5.x 以兼容 express 5 ([#1186](https://github.com/CaoMeiYouRen/rss-impact-server/issues/1186)) ([8298270](https://github.com/CaoMeiYouRen/rss-impact-server/commit/8298270))
+* **deps:** 限定 path-to-regexp 覆盖范围 ([#1167](https://github.com/CaoMeiYouRen/rss-impact-server/issues/1167)) ([ac79893](https://github.com/CaoMeiYouRen/rss-impact-server/commit/ac79893))
+
 ## [1.19.1](https://github.com/CaoMeiYouRen/rss-impact-server/compare/v1.19.0...v1.19.1) (2026-10-31)
 
 
