@@ -7,18 +7,96 @@ updates:
       interval: "monthly"
       time: "04:00"
       timezone: Asia/Shanghai
+    # 仅当多个包之间存在 peer/直接依赖关系、单独升级可能出错时才放在同一个分组。
+    # 其余依赖保持 Dependabot 默认行为（每个依赖单独一个 PR）。
     groups:
-      npm-minor-patch:
+      typeorm:
         patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
-      npm-major:
+          - "@nestjs/typeorm"
+          - typeorm
+          - better-sqlite3
+          - "@types/better-sqlite3"
+          - pg
+          - "@types/pg"
+          - mysql2
+      cache:
         patterns:
-          - "*"
-        update-types:
-          - "major"
+          - "@nestjs/cache-manager"
+          - cache-manager
+          - keyv
+          - "@keyv/*"
+          - ioredis
+      session:
+        patterns:
+          - express-session
+          - connect-redis
+      rate-limit:
+        patterns:
+          - express-rate-limit
+          - rate-limit-redis
+      passport:
+        patterns:
+          - "@nestjs/passport"
+          - passport
+          - passport-local
+          - passport-strategy
+          - "@types/passport-local"
+          - "@types/passport-strategy"
+      nestjs-cli:
+        patterns:
+          - "@nestjs/cli"
+          - "@nestjs/schematics"
+      nestjs:
+        patterns:
+          - "@nestjs/common"
+          - "@nestjs/core"
+          - "@nestjs/platform-express"
+          - "@nestjs/testing"
+          - "@nestjs/config"
+          - "@nestjs/schedule"
+          - "@nestjs/serve-static"
+          - "@nestjs/swagger"
+          - reflect-metadata
+          - rxjs
+      test:
+        patterns:
+          - jest
+          - ts-jest
+          - jest-openapi
+          - "@types/jest"
+      lint:
+        patterns:
+          - eslint
+          - eslint-config-cmyr
+          - commitlint
+          - commitlint-config-cmyr
+          - commitizen
+          - cz-conventional-changelog-cmyr
+      release:
+        patterns:
+          - semantic-release
+          - semantic-release-cmyr-config
+          - "@semantic-release/exec"
+      sentry:
+        patterns:
+          - "@sentry/nestjs"
+          - "@sentry/profiling-node"
+      winston:
+        patterns:
+          - winston
+          - nest-winston
+          - winston-daily-rotate-file
+      typescript:
+        patterns:
+          - typescript
+          - ts-node
+      content:
+        patterns:
+          - "@cao-mei-you-ren/rss-parser"
+          - "@cao-mei-you-ren/postlight_parser"
+          - feedsmith
+          - entities
+          - fast-xml-parser
     ignore:
       - dependency-name: "file-type"
         versions:
