@@ -168,4 +168,5 @@ Jest 的模块加载器不支持 `require(ESM)`，因此新增了测试侧的转
 
 - `https-proxy-agent@9` 未声明顶层 `types` 字段，`tsconfig.json` 通过 `paths` 指向其 `dist/index.d.ts`。
 - `openai@7` 移除了 `httpAgent`，`src/utils/proxy-fetch.ts` 使用 axios + 现有代理 Agent 提供 fetch 适配器，保持 http/https/socks 代理能力。
+- 修改依赖后重新生成 lockfile 时，pnpm 11 可能移除 `ajv-formats@2.1.1` 对 `ajv` 的依赖（可选 peer），需确认 `pnpm-lock.yaml` 中该条目仍包含 `ajv: 8.20.0`，否则 e2e 会因解析到 ajv@6 失败。
 - TypeScript 6 默认开启 `strict` 且 `types` 默认为空，`tsconfig.json` 已显式声明 `strict: false`、`types` 与 `moduleResolution: node10`；`tsconfig.build.json` 显式设置 `rootDir: ./src` 以保持 `dist/main.js` 输出位置。
