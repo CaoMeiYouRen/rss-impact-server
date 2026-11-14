@@ -26,7 +26,8 @@ import { getAllUrls, download, getMd5ByStream, timeFormat, isHttpURL, to, limitT
 import { ArticleFormatoption, articleItemFormat, articlesFormat, filterArticles, getArticleContent, rssItemToArticle, rssParserString } from '@/utils/rss-helper'
 import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
-import { ajax, getHttpAgent } from '@/utils/ajax'
+import { ajax } from '@/utils/ajax'
+import { createProxyFetch } from '@/utils/proxy-fetch'
 import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
 import { runPushAllInOne } from '@/utils/notification'
@@ -1033,11 +1034,12 @@ export class TasksService implements OnApplicationBootstrap {
 
         switch (type) {
             case 'openAI': {
+                const proxyFetch = createProxyFetch(proxyUrl)
                 const openai = new OpenAI({
                     apiKey,
                     timeout: (timeout || 2 * 60) * 1000,
                     baseURL: endpoint,
-                    httpAgent: getHttpAgent(proxyUrl),
+                    ...(proxyFetch ? { fetch: proxyFetch } : {}),
                 })
 
                 let systemPrompt = ''
