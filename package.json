@@ -71,7 +71,7 @@
     "cookie-parser": "^1.4.7",
     "cron": "4.4.0",
     "dayjs": "^1.11.23",
-    "dotenv": "^17.3.1",
+    "dotenv": "^18.0.10",
     "entities": "^9.0.0",
     "express-openid-connect": "^3.4.0",
     "express-rate-limit": "^8.7.4",
