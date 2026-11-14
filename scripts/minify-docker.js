@@ -64,7 +64,7 @@ async function collectNativeArtifacts(projectRoot, packageRoots) {
         console.error('package.json main =', pkg.main, '| projectRoot =', projectRoot)
         process.exit(1)
     }
-    const files = [mainPath, 'dist/workers/login-worker.js']
+    const files = [mainPath, path.join(projectRoot, 'dist/workers/login-worker.js')]
     console.log('Start analyzing, project root:', projectRoot)
     const { fileList: fileSet } = await nodeFileTrace(files, {
         base: projectRoot,
