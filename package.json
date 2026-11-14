@@ -105,7 +105,7 @@
     "passport-strategy": "^1.0.0",
     "pg": "^8.23.1",
     "push-all-in-one": "4.7.0",
-    "rate-limit-redis": "^4.3.1",
+    "rate-limit-redis": "^6.0.2",
     "reflect-metadata": "^0.2.1",
     "rimraf": "^6.1.4",
     "rxjs": "^7.8.2",

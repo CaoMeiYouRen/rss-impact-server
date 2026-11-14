@@ -278,8 +278,8 @@ importers:
         specifier: 4.7.0
         version: 4.7.0(supports-color@8.1.1)
       rate-limit-redis:
-        specifier: ^4.3.1
-        version: 4.3.1(express-rate-limit@8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1))
+        specifier: ^6.0.2
+        version: 6.0.2(express-rate-limit@8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1))
       reflect-metadata:
         specifier: ^0.2.1
         version: 0.2.2
@@ -7534,11 +7534,11 @@ packages:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
 
-  rate-limit-redis@4.3.1:
-    resolution: {integrity: sha512-+a1zU8+D7L8siDK9jb14refQXz60vq427VuiplgnaLk9B2LnvGe/APLTfhwb4uNIL7eWVknh8GnRp/unCj+lMA==}
+  rate-limit-redis@6.0.2:
+    resolution: {integrity: sha512-EpUHNriVypMSM/DyaSaweK496XMgTj+FgDXzqoxZIFuLZPfDPOpGhAZS4eDgJmseOaR1nlJNhBJd1oifDAj5qg==}
     engines: {node: '>= 16'}
     peerDependencies:
-      express-rate-limit: '>= 6'
+      express-rate-limit: '>= 8.6.0'
 
   raw-body@3.0.2:
     resolution: {integrity: sha512-K5zQjDllxWkf7Z5xJdV0/B0WTNqx6vxG70zJE4N0kBs4LovmEYWJzQGxC9bS9RAKu3bgM40lrd5zoLJ12MQ5BA==}
@@ -17328,7 +17328,7 @@ snapshots:
 
   range-parser@1.2.1: {}
 
-  rate-limit-redis@4.3.1(express-rate-limit@8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1)):
+  rate-limit-redis@6.0.2(express-rate-limit@8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1)):
     dependencies:
       express-rate-limit: 8.7.4(express@5.2.1(supports-color@8.1.1))(supports-color@8.1.1)
 
