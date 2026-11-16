@@ -14,7 +14,7 @@
 |---|---|---|
 | NestJS | ^11.1.19 | 官方仍输出 CJS，v12（2026 Q3）将原生支持 ESM |
 | TypeScript | ^6.0.3 | 已支持完整 CJS/ESM interop |
-| Node.js | ^22.23.4 \|\| >=24.22.1 | 原生支持 `require()` ESM，无需实验性参数 |
+| Node.js | ^22.23.5 \|\| >=24.22.3 | 原生支持 `require()` ESM，无需实验性参数 |
 | 当前模块 | CommonJS | `tsconfig: module: commonjs`，`package.json` 无 `type` 字段 |
 
 ## 受影响的依赖
@@ -139,7 +139,7 @@ NestJS v12 发布后（2026 Q3），按官方迁移指南统一迁移：
 
 ### 运行时
 
-Node.js 22.12+ 起 `require()` 可以加载同步 ESM 模块，项目 `engines` 已要求 `^22.23.4 || >=24.22.1`，因此 `entities@8`、`jwks-rsa@4`、`https-proxy-agent@9`、`@nestjs/typeorm@12` 等 ESM-only 依赖可直接在 CJS 产物中 `require`。
+Node.js 22.12+ 起 `require()` 可以加载同步 ESM 模块，项目 `engines` 已要求 `^22.23.5 || >=24.22.3`，因此 `entities@8`、`jwks-rsa@4`、`https-proxy-agent@9`、`@nestjs/typeorm@12` 等 ESM-only 依赖可直接在 CJS 产物中 `require`。
 
 ### 测试
 

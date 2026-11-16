@@ -40,7 +40,7 @@ musl 不会回退到 `pwrite`，而是把 EPERM 直接返回；SQLite 将其映�
 | --- | --- | --- | --- | --- |
 | `caomeiyouren/alpine-nodejs-minimize:alpine3.22-node24.16`（旧运行时） | 3.23.4 | 1.2.5 | 仅 `pwrite64` | 正常 |
 | `node:24.22.1-alpine` | 3.24.3 | 1.2.6 | `pwritev2(RWF_NOAPPEND)` → `pwrite64` | `disk I/O error` |
-| `node:24.22.1-alpine3.23`（当前使用） | 3.23.7 | 1.2.5 | 仅 `pwrite64` | 正常 |
+| `node:24.22.1-alpine3.23`（2026-10 变更后使用） | 3.23.7 | 1.2.5 | 仅 `pwrite64` | 正常 |
 
 端到端验证：同一份数据库与同一个 `PUT /api/feed` 请求，在 `node:24.22.1-alpine` +
 `pwritev2=EPERM` 下登录会话写入即失败并返回 500；在 `node:24.22.1-alpine3.23` + 同样的
@@ -110,7 +110,7 @@ docker run --security-opt seccomp=unconfined ...
 使用 Alpine 3.23（musl 1.2.5）作为基础镜像。本仓库 Dockerfile 已默认使用：
 
 ```dockerfile
-ARG NODE_IMAGE=node:24.22.1-alpine3.23
+ARG NODE_IMAGE=caomeiyouren/alpine-nodejs:alpine3.23.8-node26.13.1
 ```
 
 其他使用 `caomeiyouren/alpine-nodejs*` 的项目需要在共享基础镜像侧同样固定 Alpine 3.23，

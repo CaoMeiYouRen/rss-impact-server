@@ -1,6 +1,6 @@
 # CI 专用：在基础镜像上验证 SQLite 写入能力。
 # 用于模拟旧版 Docker/containerd 的 seccomp 策略（拒绝 pwritev2）。
-ARG BASE_IMAGE=node:24.22.1-alpine3.23
+ARG BASE_IMAGE=caomeiyouren/alpine-nodejs:alpine3.23.8-node26.13.1
 ARG SQLITE_VERSION=^12.11.1
 
 FROM ${BASE_IMAGE}

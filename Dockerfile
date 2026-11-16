@@ -1,22 +1,26 @@
-# 安全基线：Node.js 24.22.1 修复了 2026-10-21 公布的安全问题，其中包括
-# CVE-2026-111497（Brotli 解码越界写入，可导致远程代码执行）。
-# 原先钉死的自建镜像 alpine3.22-node24.16 不含该修复，且其 apk add nodejs
-# 的构建方式依赖 Alpine 仓库更新，无法保证及时跟进。
+# 安全基线：Node.js 26.13.1 修复了 2026-11-11 公布的安全问题（16 个 CVE，7 个 HIGH），
+# 其中包括 CVE-2026-123863（HTTP/2 会话拆除断言，未认证客户端可远程 abort）、
+# CVE-2026-123864（HTTPS 零长 TLS 写导致服务端堆内存被拷入请求体），
+# 以及 llhttp / undici / sqlite 等依赖修复。
 #
-# 基础镜像固定 Alpine 3.23（musl 1.2.5）而不是默认的 Alpine 3.24：
-# Alpine 3.24 的 musl 1.2.6 将 pwrite() 改为先调用 pwritev2(RWF_NOAPPEND)，
-# 且只在 EOPNOTSUPP / ENOSYS 时回退到 pwrite。旧版 Docker/containerd 的 seccomp
-# 策略会以 EPERM 拦截 pwritev2，导致镜像内 SQLite（better-sqlite3）所有写入
-# 都报 disk I/O error，而读取正常。确认宿主运行时允许 pwritev2 后可切回
-# --build-arg NODE_IMAGE=node:24.22.1-alpine。
-ARG NODE_IMAGE=node:24.22.1-alpine3.23
+# 基础镜像使用自建镜像的精确版本 tag：内置官方 Node.js 26.13.1 的 musl 构建、
+# Alpine 3.23.8（musl 1.2.5）、git 与 pnpm 11，并自带 musl pwrite 门禁与 Node 版本门禁；
+# 本轮安全基线由下面的构建期校验兜底。该 tag 同时固定 Alpine 补丁版本与 Node 版本，便于审计。
+#
+# 固定 Alpine 3.23（musl 1.2.5）而不是 3.24：Alpine 3.24 的 musl 1.2.6 将 pwrite()
+# 改为先调用 pwritev2(RWF_NOAPPEND)，且只在 EOPNOTSUPP / ENOSYS 时回退到 pwrite。
+# 旧版 Docker/containerd 的 seccomp 策略会以 EPERM 拦截 pwritev2，导致镜像内
+# SQLite（better-sqlite3）所有写入都报 disk I/O error，而读取正常。
+# 确认宿主运行时允许 pwritev2 后可改用官方镜像：
+# --build-arg NODE_IMAGE=node:26.13.1-alpine3.23
+ARG NODE_IMAGE=caomeiyouren/alpine-nodejs:alpine3.23.8-node26.13.1
 
 FROM ${NODE_IMAGE} AS nodejs
 
 # 构建期兜底：即使通过 build-arg 替换了基础镜像，也拒绝使用未修复的 Node.js
-RUN node -e "const [M,m,p]=process.versions.node.split('.').map(Number);const fixed=(M===22&&(m>23||(m===23&&p>=4)))||(M===24&&(m>22||(m===22&&p>=1)))||(M===26&&(m>12||(m===12&&p>=1)))||M>26;if(!fixed){console.error('Node.js '+process.versions.node+' 未包含 2026-10-21 安全修复，拒绝构建；请升级到 22.23.4 / 24.22.1 / 26.12.1 或更高版本');process.exit(1)}console.log('Node.js '+process.versions.node+' 已包含 2026-10-21 安全修复')"
+RUN node -e "const [M,m,p]=process.versions.node.split('.').map(Number);const fixed=(M===22&&(m>23||(m===23&&p>=5)))||(M===24&&(m>22||(m===22&&p>=3)))||(M===26&&(m>13||(m===13&&p>=1)))||M>26;if(!fixed){console.error('Node.js '+process.versions.node+' 未包含 2026-11-11 安全修复，拒绝构建；请升级到 22.23.5 / 24.22.3 / 26.13.1 或更高版本');process.exit(1)}console.log('Node.js '+process.versions.node+' 已包含 2026-11-11 安全修复')"
 
-# 官方 node:alpine 镜像不含 git/pnpm，补齐原自建镜像已预装的构建工具
+# 自建镜像已预装 git/pnpm；这里兜底补装，兼容通过 --build-arg 换成官方 node 镜像的场景
 RUN apk add --no-cache git && npm i -g pnpm
 
 FROM ${NODE_IMAGE} AS runtime

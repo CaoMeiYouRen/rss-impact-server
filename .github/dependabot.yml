@@ -142,3 +142,16 @@ updates:
       github-actions:
         patterns:
           - "*"
+  # Docker 镜像。注意 Dependabot 只扫描 FROM 直写的镜像，且 tag 必须能解析出版本号：
+  # 当前 Dockerfile 通过 ARG NODE_IMAGE 引用自建镜像的 alpine3.23.8-node26.13.1，
+  # 该 tag 无法被解析，基础镜像升级仍需手动修改。
+  # redis 的主版本升级需要先验证兼容性，不交给自动更新。
+  - package-ecosystem: docker
+    directory: /
+    open-pull-requests-limit: 5
+    schedule:
+      interval: "monthly"
+      time: "04:00"
+      timezone: Asia/Shanghai
+    ignore:
+      - dependency-name: "redis"
