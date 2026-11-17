@@ -7,7 +7,6 @@ import { NestFactory } from '@nestjs/core'
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { ValidationPipe } from '@nestjs/common'
-import history from 'connect-history-api-fallback'
 import fs from 'fs-extra'
 import ms from 'ms'
 import { Request } from 'express'
@@ -15,6 +14,7 @@ import cookieParser from 'cookie-parser'
 import { getGitInfo } from './utils/git-info'
 import { setRequestId } from './middlewares/request.middleware'
 import { sessionMiddleware } from './middlewares/session.middleware'
+import { spaFallback } from './middlewares/history.middleware'
 import { jsonLogger, logger } from './middlewares/logger.middleware'
 import { TimeoutInterceptor } from './interceptors/timeout.interceptor'
 import { limiter } from './middlewares/limit.middleware'
@@ -92,18 +92,7 @@ async function bootstrap() {
         app.use(cookieParser(SESSION_SECRET))
     }
     app.use(sessionMiddleware)
-    app.use(history({
-        rewrites: [
-            // 匹配 /api 开头的路由,不进行回退
-            {
-                from: /^\/api\/.*$/,
-                to(context) {
-                    return context.parsedUrl.pathname
-                },
-            },
-        ],
-        htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
-    })) // 解决单页应用程序(SPA)重定向问题
+    app.use(spaFallback) // 解决单页应用程序(SPA)重定向问题
     if (ENABLE_AUTH0) {
         // 使用动态 import，否则 auth.middleware 未初始化会导致 Nest 启动失败
         const { createAuthMiddleware, authMiddleware } = await import('./middlewares/auth.middleware')

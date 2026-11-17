@@ -79,9 +79,12 @@ export class CustomQueryController {
         if (!isId(id)) {
             throw new HttpError(400, '无效的 Id！')
         }
-        const cacheKey = `custom-query-rss:${id}`
+        if (!key) {
+            throw new HttpError(403, '错误的 key，没有权限访问！')
+        }
+        const cacheKey = `custom-query-rss:${id}:${key}`
         const cacheData = await this.cacheService.tryGet(cacheKey, async () => {
-            const custom = await this.repository.findOne({ where: { id, key }, relations: ['categories', 'categories.feeds', 'feeds'] })
+            const custom = await this.repository.findOne({ where: { id }, relations: ['categories', 'categories.feeds', 'feeds'] })
             if (!custom) {
                 throw new HttpError(404, '该 Id 对应的资源不存在！')
             }
@@ -186,7 +189,7 @@ export class CustomQueryController {
         }
         const updatedDocument = await this.repository.save(this.repository.create(body)) // 使用 save 解决多对多的情况下保存的问题
         // 删除原有缓存
-        const cacheKey = `custom-query-rss:${id}`
+        const cacheKey = `custom-query-rss:${id}:${document.key}`
         await to(this.cacheService.del(cacheKey)) // 忽略错误
         return updatedDocument
     }
