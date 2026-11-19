@@ -128,7 +128,7 @@ importers:
         version: 7.4.2(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
       '@nestjs/typeorm':
         specifier: ^12.0.2
-        version: 12.0.3(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(better-sqlite3@13.0.3)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3)))
+        version: 12.0.3(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(better-sqlite3@13.2.0)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3)))
       '@sentry/nestjs':
         specifier: ^11.12.0
         version: 11.12.0(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(supports-color@8.1.1)
@@ -145,8 +145,8 @@ importers:
         specifier: ^1.2.6
         version: 1.2.6
       better-sqlite3:
-        specifier: ^13.0.3
-        version: 13.0.3
+        specifier: ^13.2.0
+        version: 13.2.0
       cache-manager:
         specifier: ^7.2.9
         version: 7.2.9
@@ -302,7 +302,7 @@ importers:
         version: 7.2.5
       typeorm:
         specifier: ^0.3.31
-        version: 0.3.31(better-sqlite3@13.0.3)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3))
+        version: 0.3.31(better-sqlite3@13.2.0)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3))
       validator:
         specifier: ^13.15.26
         version: 13.15.35
@@ -817,8 +817,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     peerDependencies:
+      jquery: ^3.5.0
       moment-timezone: 0.5.37
     peerDependenciesMeta:
+      jquery:
+        optional: true
       moment-timezone:
         optional: true
 
@@ -3828,8 +3831,8 @@ packages:
     resolution: {integrity: sha512-4eznQOCU/S7C9SzRAksDM3VIPxHYsANTaWJSyF/9gjYWqXxtrWwjbP91tEkxg/Fu+ZxKZIF8iyPUJfB49nzuBw==}
     engines: {node: '>=18'}
 
-  better-sqlite3@13.0.3:
-    resolution: {integrity: sha512-RbOBxmLBG8uvFUc15X9+9SFemKcQ0WBuISBVkpuiaUB2qblC8UWlHEjdWVoZ8AdhSwmoEgsiXKfopX0CQxaACQ==}
+  better-sqlite3@13.2.0:
+    resolution: {integrity: sha512-Z8Q/9x/uNyKxA1v4FNodyItRVRw1TeKBrmj32JhxhR0ceNcBY+wMobt/Bv7M7TzwPAXjnZRtNaEsATnUZSKWZQ==}
     engines: {node: '>=22'}
 
   birpc@2.9.0:
@@ -10819,13 +10822,13 @@ snapshots:
     optionalDependencies:
       '@nestjs/platform-express': 11.2.9(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(supports-color@8.1.1)
 
-  '@nestjs/typeorm@12.0.3(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(better-sqlite3@13.0.3)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3)))':
+  '@nestjs/typeorm@12.0.3(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@11.1.27)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.31(better-sqlite3@13.2.0)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3)))':
     dependencies:
       '@nestjs/common': 11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1)
       '@nestjs/core': 11.1.27(@nestjs/common@11.1.27(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/platform-express@11.2.9)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 0.3.31(better-sqlite3@13.0.3)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3))
+      typeorm: 0.3.31(better-sqlite3@13.2.0)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3))
 
   '@noble/hashes@1.8.0': {}
 
@@ -12926,7 +12929,7 @@ snapshots:
     dependencies:
       tslib: 2.9.1
 
-  better-sqlite3@13.0.3:
+  better-sqlite3@13.2.0:
     dependencies:
       node-addon-api: 8.8.0
 
@@ -18450,7 +18453,7 @@ snapshots:
 
   typeof@1.0.0: {}
 
-  typeorm@0.3.31(better-sqlite3@13.0.3)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3)):
+  typeorm@0.3.31(better-sqlite3@13.2.0)(ioredis@5.11.1(supports-color@8.1.1))(mysql2@3.24.6(@types/node@26.6.6))(pg@8.23.1)(supports-color@8.1.1)(ts-node@10.9.2(@types/node@26.6.6)(typescript@6.0.3)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.3.1
@@ -18468,7 +18471,7 @@ snapshots:
       uuid: 11.1.1
       yargs: 17.7.3
     optionalDependencies:
-      better-sqlite3: 13.0.3
+      better-sqlite3: 13.2.0
       ioredis: 5.11.1(supports-color@8.1.1)
       mysql2: 3.24.6(@types/node@26.6.6)
       pg: 8.23.1
