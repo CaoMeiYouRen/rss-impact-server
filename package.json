@@ -20,7 +20,7 @@
     "lint": "cross-env NODE_ENV=production eslint --fix",
     "lint:md": "lint-md README.md docs/**/*.md .github/**/*.md --fix",
     "release": "semantic-release",
-    "prebuild": "rimraf dist",
+    "prebuild": "rimraf dist tsconfig.build.tsbuildinfo",
     "build": "nest build",
     "start:dev": "nest start",
     "start:benchmarks": "cross-env NODE_ENV=test BENCHMARKS_TEST=true node dist/main",

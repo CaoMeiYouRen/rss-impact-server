@@ -12,8 +12,62 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  # 发布前门禁：任何一项失败都不会进入 release 作业，避免先发布版本、再发现构建或镜像不可用
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: "11"
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v7
+        with:
+          node-version: "lts/*"
+          cache: "pnpm"
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm run lint
+      - run: pnpm run lint:md
+      - run: pnpm run typecheck
+      - run: pnpm run build
+      # nest build 在增量缓存失效时可能以 0 退出码跳过产出，必须显式校验入口文件
+      - name: Verify build output
+        run: test -f dist/main.js
+      - run: pnpm run test:startup
+      - run: pnpm run docs:build
+      - run: pnpm run test
+      - run: pnpm run test:e2e
+      - name: Get git info
+        run: |
+          chmod +x scripts/git.sh
+          scripts/git.sh
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Build amd64 image for runtime smoke
+        run: docker buildx build --load --platform linux/amd64 -t rss-impact-server:ci .
+      - name: Verify SQLite writes in runtime image
+        run: |
+          docker run --rm --entrypoint node \
+            -v "${{ github.workspace }}/scripts/ci:/ci:ro" \
+            rss-impact-server:ci /ci/sqlite-write-test.mjs /tmp/sqlite-write-test
+      - name: Verify SQLite writes without pwritev2
+        run: |
+          docker run --rm --entrypoint node \
+            --security-opt "seccomp=${{ github.workspace }}/scripts/ci/deny-pwritev2.seccomp.json" \
+            -v "${{ github.workspace }}/scripts/ci:/ci:ro" \
+            rss-impact-server:ci /ci/sqlite-write-test.mjs /tmp/sqlite-write-test
   release:
     name: Release
+    needs: verify # 门禁全部通过后才允许发布
     runs-on: ubuntu-latest
     timeout-minutes: 60
     permissions:
@@ -37,12 +91,6 @@ jobs:
           node-version: "lts/*"
           cache: "pnpm"
       - run: pnpm i --frozen-lockfile
-      - run: pnpm run lint
-      - run: pnpm run lint:md
-      - run: pnpm run typecheck
-      - run: pnpm run build
-      - run: pnpm run test
-      - run: pnpm run test:e2e
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm run release
@@ -57,34 +105,21 @@ jobs:
         uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
-      - name: Build amd64 image for runtime smoke
-        if: ${{ env.GIT_TAG }}
-        run: docker buildx build --load --platform linux/amd64 -t rss-impact-server:ci .
-      - name: Verify SQLite writes in runtime image
-        if: ${{ env.GIT_TAG }}
-        run: |
-          docker run --rm --entrypoint node \
-            -v "${{ github.workspace }}/scripts/ci:/ci:ro" \
-            rss-impact-server:ci /ci/sqlite-write-test.mjs /tmp/sqlite-write-test
-      - name: Verify SQLite writes without pwritev2
-        if: ${{ env.GIT_TAG }}
-        run: |
-          docker run --rm --entrypoint node \
-            --security-opt "seccomp=${{ github.workspace }}/scripts/ci/deny-pwritev2.seccomp.json" \
-            -v "${{ github.workspace }}/scripts/ci:/ci:ro" \
-            rss-impact-server:ci /ci/sqlite-write-test.mjs /tmp/sqlite-write-test
       - name: Login to GitHub Container Registry
+        if: ${{ env.GIT_TAG }}
         uses: docker/login-action@v4.8.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to Docker Hub
+        if: ${{ env.GIT_TAG }}
         uses: docker/login-action@v4.8.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Login to Alibaba Cloud Container Registry
+        if: ${{ env.GIT_TAG }}
         uses: docker/login-action@v4.8.0
         with:
           registry: registry.cn-hangzhou.aliyuncs.com

@@ -51,6 +51,10 @@ COPY . /app
 
 RUN pnpm run build
 
+# 构建产物门禁：nest build 在增量缓存失效时可能以 0 退出码跳过产出，
+# 这里显式校验入口文件，避免把空 dist 带入缩小阶段（历史问题见 release 工作流）
+RUN test -f /app/dist/main.js
+
 # 缩小阶段
 FROM nodejs AS docker-minifier
 

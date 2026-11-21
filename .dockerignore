@@ -1,4 +1,8 @@
 node_modules
+# 宿主机构建产物不得进入镜像，避免增量编译缓存导致 dist 未重新生成
+dist
+app-minimal
+*.tsbuildinfo
 npm-debug.log
 Dockerfile*
 docker-compose*
