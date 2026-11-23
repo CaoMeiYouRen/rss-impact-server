@@ -2,9 +2,9 @@
 
 ## Supported Version/支持的版本
 
-Latest commits in master branch
+Latest release and the latest commits in the master branch.
 
-主分支中的最新提交
+最新发布版本以及主分支中的最新提交。安全修复会优先以 patch 版本发布，建议生产环境保持更新。
 
 ## Reporting a Vulnerability/报告漏洞
 

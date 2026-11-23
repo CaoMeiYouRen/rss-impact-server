@@ -234,7 +234,14 @@ SENTRY_DSN=''
 
 ## 第三方登录配置
 
-参考 [OIDC 兼容配置指南](./oidc-compatibility.md)
+参考 [OIDC 兼容配置指南](./oidc-compatibility.md)。
+
+启用 OIDC 前请确认：
+
+-   IdP 会返回 `email_verified`，并且建议开启 “Require Email Verification”。
+-   不需要公开注册时，关闭 IdP 的 Sign Ups。
+-   `ADMIN_EMAIL` 使用真实可控邮箱，不要保留示例值。
+-   `ENABLE_REGISTER=false` 不能阻止已有账号被 OIDC 绑定，安全修复必须升级到包含该修复的版本。
 
 # 🗄️ 数据库配置
 
