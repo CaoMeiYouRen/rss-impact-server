@@ -19,7 +19,6 @@ overrides:
   nth-check: ^2.1.1
   cookie: ^0.7.0
   katex: ^0.18.2
-  "@sentry/node": ^8.49.0
   esbuild: ^0.28.1
   "@octokit/plugin-paginate-rest": ^11.4.1
   "@octokit/request": ^9.2.1
@@ -52,11 +51,16 @@ overrides:
   lodash-es: 4.18.1
   body-parser: ^2.2.0
   typeorm: ^0.3.31
+  "ajv-formats@2.1.1>ajv": ^8.0.0
   minimatch@3: 3.1.4
-  minimatch@9: 9.0.7
+  minimatch@9: 11.0.1
+  minimatch@10: 11.0.1
+  minimatch@11: 11.0.1
   picomatch@2: 2.3.2
   picomatch@4: 4.0.4
   preact: 10.27.3
+  glob@10: 14.0.2
+  glob@13: 14.0.2
   qs: ^6.16.1
   rollup: 4.59.0
   serialize-javascript: 7.0.5
@@ -87,6 +91,7 @@ allowBuilds:
   "@nestjs/core": true
   "@parcel/watcher": false
   "@sentry/profiling-node": true
+  "@sentry/node-cpu-profiler": true
   "@sentry-internal/node-cpu-profiler": false
   bcrypt: true
   better-sqlite3: true

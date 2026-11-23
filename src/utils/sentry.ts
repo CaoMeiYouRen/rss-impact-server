@@ -9,8 +9,9 @@ if (__PROD__ && SENTRY_DSN) {
         ],
         // 性能追踪
         tracesSampleRate: 0.1,
-        // 性能分析
-        profilesSampleRate: 0.1,
+        // 性能分析：跟随 trace 生命周期采样
+        profileSessionSampleRate: 0.1,
+        profileLifecycle: 'trace',
     })
 }
 
