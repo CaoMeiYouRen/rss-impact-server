@@ -9,7 +9,7 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { ValidationPipe } from '@nestjs/common'
 import fs from 'fs-extra'
 import ms from 'ms'
-import { Request } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import { getGitInfo } from './utils/git-info'
 import { setRequestId } from './middlewares/request.middleware'
@@ -21,6 +21,7 @@ import { limiter } from './middlewares/limit.middleware'
 import { AllExceptionsFilter } from './filters/all-exceptions.filter'
 import { AppModule } from './app.module'
 import { DATABASE_DIR } from './db/database.module'
+import { OIDCUserService } from './services/oidc/oidc-user.service'
 
 moduleAlias.addAlias('@', path.join(__dirname, './'))
 
@@ -95,21 +96,35 @@ async function bootstrap() {
     app.use(spaFallback) // 解决单页应用程序(SPA)重定向问题
     if (ENABLE_AUTH0) {
         // 使用动态 import，否则 auth.middleware 未初始化会导致 Nest 启动失败
-        const { createAuthMiddleware, authMiddleware } = await import('./middlewares/auth.middleware')
+        const { createAuthMiddleware } = await import('./middlewares/auth.middleware')
 
-        // 尝试使用自动检测的中间件，如果失败则使用默认配置
         try {
-            const dynamicAuthMiddleware = await createAuthMiddleware()
-            app.use(dynamicAuthMiddleware)
-            logger.log('使用动态检测的 OIDC 配置')
+            const oidcUserService = app.get(OIDCUserService)
+            const oidcMiddleware = await createAuthMiddleware(oidcUserService)
+            app.use(oidcMiddleware)
+            // express-openid-connect 在 Nest 之外，错误不会经过 Nest 的异常过滤器。
+            // 这里统一把回调失败转成 4xx，避免默认 500 泄露堆栈。
+            app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
+                if (res.headersSent) {
+                    next(err)
+                    return
+                }
+                let status = 400
+                if (typeof err?.status === 'number') {
+                    status = err.status
+                } else if (typeof err?.statusCode === 'number') {
+                    status = err.statusCode
+                }
+                logger.warn(`OIDC 回调失败: ${err?.message || err}`)
+                res.status(status).json({
+                    statusCode: status,
+                    message: status === 403 ? '无法完成 OIDC 登录' : '认证失败',
+                })
+            })
+            logger.log('OIDC 中间件初始化成功')
         } catch (error) {
-            logger.warn('动态 OIDC 配置失败，使用默认配置:', error.message)
-            if (authMiddleware) {
-                app.use(authMiddleware)
-                logger.log('使用默认 OIDC 配置')
-            } else {
-                logger.error('无法初始化 OIDC 中间件：缺少必要的配置')
-            }
+            // 失败时关闭 OIDC 而不是带着不完整的回调启动
+            logger.error('无法初始化 OIDC 中间件，OIDC 登录已禁用:', error.message)
         }
     }
 

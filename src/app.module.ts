@@ -25,7 +25,7 @@ import { SystemController } from './controllers/system/system.controller'
 import { FeedService } from './services/feed/feed.service'
 import { CategoryService } from './services/category/category.service'
 import { DailyCountController } from './controllers/daily-count/daily-count.controller'
-import { OIDCService } from './services/oidc/oidc.service'
+import { OIDCUserService } from './services/oidc/oidc-user.service'
 
 @Global()
 @Module({
@@ -45,7 +45,7 @@ import { OIDCService } from './services/oidc/oidc.service'
         CacheService,
         FeedService,
         CategoryService,
-        OIDCService,
+        OIDCUserService,
     ],
     controllers: [
         AppController,
@@ -74,7 +74,7 @@ import { OIDCService } from './services/oidc/oidc.service'
         CacheService,
         FeedService,
         CategoryService,
-        OIDCService,
+        OIDCUserService,
     ],
 })
 export class AppModule { }
