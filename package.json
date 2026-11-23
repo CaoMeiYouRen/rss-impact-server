@@ -32,6 +32,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest.config.e2e.ts",
+    "test:oidc-e2e": "node scripts/ci/oidc-e2e.mjs",
+    "test:oidc-e2e:code": "cross-env OIDC_E2E_MODE=code node scripts/ci/oidc-e2e.mjs",
     "test:startup": "tsx scripts/ci/check-startup.mts",
     "test:docker": "sh scripts/ci/test-docker-sqlite.sh",
     "test:benchmarks": "tsx benchmarks/index.mts",
