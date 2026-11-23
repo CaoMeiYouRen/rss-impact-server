@@ -767,16 +767,7 @@
             "get": {
                 "operationId": "Auth_loginByAuth0",
                 "summary": "基于 Auth0 登录",
-                "parameters": [
-                    {
-                        "name": "redirect",
-                        "required": true,
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": ""
@@ -791,16 +782,7 @@
             "get": {
                 "operationId": "Auth_registerByAuth0",
                 "summary": "基于 Auth0 注册",
-                "parameters": [
-                    {
-                        "name": "redirect",
-                        "required": true,
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": ""
@@ -834,77 +816,6 @@
                                 }
                             }
                         }
-                    }
-                },
-                "tags": [
-                    "auth"
-                ]
-            }
-        },
-        "/api/auth/callback": {
-            "post": {
-                "operationId": "Auth_callback",
-                "summary": "处理 OIDC 回调",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Auth0CallbackData"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": ""
-                    }
-                },
-                "tags": [
-                    "auth"
-                ]
-            },
-            "get": {
-                "operationId": "Auth_callbackGet",
-                "summary": "处理 OIDC GET 回调",
-                "parameters": [
-                    {
-                        "name": "id_token",
-                        "required": false,
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "state",
-                        "required": false,
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "code",
-                        "required": false,
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "sid",
-                        "required": false,
-                        "in": "query",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": ""
                     }
                 },
                 "tags": [
@@ -5270,23 +5181,6 @@
                     "password"
                 ]
             },
-            "Auth0CallbackData": {
-                "type": "object",
-                "properties": {
-                    "id_token": {
-                        "type": "string"
-                    },
-                    "state": {
-                        "type": "string"
-                    },
-                    "code": {
-                        "type": "string"
-                    },
-                    "sid": {
-                        "type": "string"
-                    }
-                }
-            },
             "RegisterDto": {
                 "type": "object",
                 "properties": {
@@ -5339,6 +5233,7 @@
                             "WechatApp",
                             "WechatRobot",
                             "WxPusher",
+                            "WPush",
                             "XiZhi"
                         ],
                         "type": "string",
