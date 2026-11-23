@@ -161,6 +161,11 @@ const SUPPORTED_DATABASE_TYPES = ['sqlite', 'mysql', 'postgres']
                 }
                 return {
                     ...options,
+                    // 严格处理 where 中的 undefined/null，避免条件被静默忽略后命中任意行
+                    invalidWhereValuesBehavior: {
+                        undefined: 'throw',
+                        null: 'throw',
+                    },
                     // logging: __DEV__ || ['error', 'warn'], // 是否启用日志记录
                     logger: new CustomLogger(winstonLogger),
                     // loggerLevel: __DEV__ ? 'debug' : 'warn',
