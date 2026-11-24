@@ -13,6 +13,12 @@ const allowPrivateOptions = {
     blockedCidrs: [],
 }
 
+function invokeLookup(lookup: SafeLookupFunction, hostname: string, options: dns.LookupOptions = {}) {
+    return new Promise<{ error: NodeJS.ErrnoException | null, address?: string | dns.LookupAddress[], family?: number }>((resolve) => {
+        lookup(hostname, options, (error, address, family) => resolve({ error, address, family }))
+    })
+}
+
 describe('normalizeHostname', () => {
     it('should strip brackets and trailing dots', () => {
         expect(normalizeHostname('[::1]')).toBe('::1')
@@ -168,12 +174,6 @@ describe('isSafeHttpUrl', () => {
 })
 
 describe('createSafeLookup', () => {
-    function invokeLookup(lookup: SafeLookupFunction, hostname: string, options: dns.LookupOptions = {}) {
-        return new Promise<{ error: NodeJS.ErrnoException | null, address?: string | dns.LookupAddress[], family?: number }>((resolve) => {
-            lookup(hostname, options, (error, address, family) => resolve({ error, address, family }))
-        })
-    }
-
     it('should reject a hostname resolving to loopback', async () => {
         const { error } = await invokeLookup(createSafeLookup(strictOptions), 'localhost')
         expect(error).toBeInstanceOf(SsrfBlockedError)
@@ -190,5 +190,17 @@ describe('createSafeLookup', () => {
         const { error, address } = await invokeLookup(createSafeLookup(allowPrivateOptions), 'localhost')
         expect(error).toBeNull()
         expect(typeof address).toBe('string')
+    })
+
+    it('should reject when DNS returns a mix of public and private addresses (rebinding)', async () => {
+        jest.spyOn(dns, 'lookup').mockImplementation(((_hostname: string, _options: dns.LookupOptions, callback: (error: NodeJS.ErrnoException | null, addresses: dns.LookupAddress[]) => void) => {
+            callback(null, [
+                { address: '93.184.216.34', family: 4 },
+                { address: '127.0.0.1', family: 4 },
+            ])
+        }) as any)
+        const { error } = await invokeLookup(createSafeLookup(strictOptions), 'example.com')
+        expect(error).toBeInstanceOf(SsrfBlockedError)
+        jest.restoreAllMocks()
     })
 })
