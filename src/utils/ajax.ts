@@ -19,7 +19,7 @@ export interface AjaxConfig {
 const axiosInstance = axios.create({}) // 创建 axios 实例，防止全局污染
 
 const REDIRECT_STATUS_CODES = [301, 302, 303, 307, 308]
-const MAX_REDIRECTS = 5
+const MAX_REDIRECTS = 21 // 与 axios/follow-redirects 的默认值保持一致
 const CONFIDENTIAL_HEADER_PATTERN = /^(?:(?:proxy-)?authorization|cookie)$/i
 
 export function getHttpAgent(proxyUrl: string) {
