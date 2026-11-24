@@ -110,7 +110,26 @@ describe('CustomQueryController.customQuery', () => {
             where: { id: 13 },
         }))
         expect(articleRepository.find).toHaveBeenCalled()
+        const findOptions = articleRepository.find.mock.calls[0][0] as { where: Record<string, unknown> }
+        expect(Object.keys(findOptions.where)).toEqual(['userId'])
         expect(res.status).toHaveBeenCalledWith(200)
         expect(res.send).toHaveBeenCalledWith(expect.stringContaining('<rss'))
+    })
+
+    it('配置了过滤时间或查询范围时应生成对应条件', async () => {
+        const custom = createCustomQuery({
+            filter: { time: 3600 } as CustomQuery['filter'],
+            scope: 'feed',
+            feeds: [{ id: 1 }, { id: 2 }] as CustomQuery['feeds'],
+        })
+        const { controller, articleRepository } = createController({ custom })
+        const res = createResponse()
+
+        await controller.customQuery(13, customQueryKey, res)
+
+        const findOptions = articleRepository.find.mock.calls[0][0] as { where: Record<string, unknown> }
+        expect(findOptions.where.pubDate).toBeDefined()
+        expect(findOptions.where.feedId).toBeDefined()
+        expect(findOptions.where.userId).toBe(1)
     })
 })

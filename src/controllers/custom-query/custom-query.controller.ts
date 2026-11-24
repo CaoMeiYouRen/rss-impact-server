@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Put, Query, Res } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { InjectRepository } from '@nestjs/typeorm'
-import { FindOperator, In, MoreThanOrEqual, Repository } from 'typeorm'
+import { FindOptionsWhere, In, MoreThanOrEqual, Repository } from 'typeorm'
 import dayjs from 'dayjs'
 import { Response } from 'express'
 import { UseSession } from '@/decorators/use-session.decorator'
@@ -93,26 +93,30 @@ export class CustomQueryController {
             }
             const { name, format, filter = {}, url, scope, categories = [], feeds = [], useAiSummary, appendAiSummary } = custom
             const { limit, time } = filter
-            let feedId: number | FindOperator<number>
-            const pubDate = time ? MoreThanOrEqual(dayjs().add(-time, 'seconds').toDate()) : undefined
+            if (!custom.userId) {
+                throw new HttpError(403, '该自定义查询未绑定用户！')
+            }
+            // TypeORM 的 invalidWhereValuesBehavior 会对 undefined 抛错，可选条件必须按需加入
+            const where: FindOptionsWhere<Article> = {
+                userId: custom.userId,
+            }
+            if (time) {
+                where.pubDate = MoreThanOrEqual(dayjs().add(-time, 'seconds').toDate())
+            }
             if (scope === 'feed') {
                 if (!feeds?.length) {
                     throw new HttpError(400, '指定订阅时必须要选择订阅！')
                 }
-                feedId = In(feeds.map((e) => e.id))
+                where.feedId = In(feeds.map((e) => e.id))
             } else if (scope === 'category') {
                 if (!categories?.length) {
                     throw new HttpError(400, '指定分类时必须要选择分类！')
                 }
-                feedId = In(categories.map((e) => e?.feeds?.map((f) => f?.id))?.flat()?.filter(Boolean))
+                where.feedId = In(categories.map((e) => e?.feeds?.map((f) => f?.id))?.flat()?.filter(Boolean))
             }
 
             const articles = await this.articlerepository.find({
-                where: {
-                    pubDate,
-                    feedId,
-                    userId: custom.userId,
-                },
+                where,
                 take: limit || 20,
                 order: {
                     pubDate: 'DESC',

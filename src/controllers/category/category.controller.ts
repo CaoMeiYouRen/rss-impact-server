@@ -89,12 +89,14 @@ export class CategoryController {
 
         const userId = user.id
         const { name } = body
-        const oldCategory = await this.repository.findOne({
-            where: {
-                name,
-                userId,
-            },
-        })
+        const oldCategory = name
+            ? await this.repository.findOne({
+                where: {
+                    name,
+                    userId,
+                },
+            })
+            : null
         if (oldCategory && oldCategory.id !== id) {
             throw new HttpError(400, '已存在相同名称的分类！')
         }

@@ -306,12 +306,14 @@ export class FeedController {
         }
         const userId = user.id
         const { url } = body
-        const oldFeed = await this.repository.findOne({
-            where: {
-                url,
-                userId,
-            },
-        })
+        const oldFeed = url
+            ? await this.repository.findOne({
+                where: {
+                    url,
+                    userId,
+                },
+            })
+            : null
         if (oldFeed && oldFeed.id !== id) {
             throw new HttpError(400, '已存在相同 URL 的订阅！')
         }
