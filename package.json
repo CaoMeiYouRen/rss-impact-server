@@ -18,7 +18,7 @@
   },
   "scripts": {
     "lint": "cross-env NODE_ENV=production eslint --fix",
-    "lint:md": "lint-md README.md docs/**/*.md .github/**/*.md --fix",
+    "lint:md": "lint-md README.md SECURITY.md docs/**/*.md .github/**/*.md --fix",
     "release": "semantic-release",
     "prebuild": "rimraf dist tsconfig.build.tsbuildinfo",
     "build": "nest build",
