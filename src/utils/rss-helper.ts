@@ -5,6 +5,7 @@ import { isURL } from 'class-validator'
 import XRegExp from 'xregexp'
 import opml, { Opml } from 'opml'
 import { collapseWhitespace, deepTrim, htmlToMarkdown, isHttpURL, parseDataSize, timeFormat, uuid } from './helper'
+import { ajax } from './ajax'
 import { Article } from '@/db/models/article.entity'
 import { DataItem } from '@/interfaces/data'
 import { Filter } from '@/models/filter.dto'
@@ -44,8 +45,12 @@ export function mergeUrlQuery(url: string, query: Record<string, any> = {}) {
  * @param [query={}]
  */
 export async function rssParserURL(url: string, query: Record<string, any> = {}) {
-    const rss = await rssParser.parseURL(mergeUrlQuery(url, query))
-    return rssNormalize(rss)
+    // 统一走 ajax，确保出站请求经过 SSRF 校验（rss-parser 自带的请求不会经过守卫）
+    const response = await ajax<string>({
+        url: mergeUrlQuery(url, query),
+        timeout: 60 * 1000,
+    })
+    return rssParserString(response.data)
 }
 
 /**

@@ -1,7 +1,12 @@
 import { isUUID } from 'class-validator'
 import dayjs from 'dayjs'
 import { formatGuid, rssItemToArticle, filterArticles, mergeUrlQuery, rssParser, rssParserURL } from './rss-helper'
+import { ajax } from './ajax'
 import { Article } from '@/db/models/article.entity'
+
+jest.mock('./ajax', () => ({
+    ajax: jest.fn(),
+}))
 
 describe('formatGuid', () => {
     it('should return guid if it is a URL', () => {
@@ -325,10 +330,22 @@ describe('mergeUrlQuery', () => {
 })
 
 describe('rssParserURL', () => {
-    it('应使用合并后的 url 解析 rss', async () => {
-        const parseURL = jest.spyOn(rssParser, 'parseURL').mockResolvedValue({ items: [] } as any)
-        await rssParserURL('https://example.com/rss.xml?foo=bar', { page: 2 })
-        expect(parseURL).toHaveBeenCalledWith('https://example.com/rss.xml?foo=bar&page=2')
-        parseURL.mockRestore()
+    afterEach(() => {
+        jest.clearAllMocks()
+        jest.restoreAllMocks()
+    })
+
+    it('应通过 ajax 请求并使用合并后的 url 解析 rss', async () => {
+        const ajaxMock = ajax as jest.MockedFunction<typeof ajax>
+        ajaxMock.mockResolvedValue({ data: '<rss></rss>' } as any)
+        const parseString = jest.spyOn(rssParser, 'parseString').mockResolvedValue({ items: [] } as any)
+
+        const result = await rssParserURL('https://example.com/rss.xml?foo=bar', { page: 2 })
+
+        expect(ajaxMock).toHaveBeenCalledWith(expect.objectContaining({
+            url: 'https://example.com/rss.xml?foo=bar&page=2',
+        }))
+        expect(parseString).toHaveBeenCalledWith('<rss></rss>')
+        expect(result.items).toEqual([])
     })
 })
