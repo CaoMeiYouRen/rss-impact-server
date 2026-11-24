@@ -224,7 +224,35 @@ CACHE_CONTENT_EXPIRE=3600
 
 # Sentry dsn 路径，用于错误上报
 SENTRY_DSN=''
+
+# 出站请求 SSRF 防护（默认开启）。关闭后所有出站 URL 不再校验，请确认风险后再关闭。
+SSRF_GUARD_ENABLED=true
+# 允许 Hook/订阅访问私网、回环、CGNAT、ULA 地址。默认 false。
+# 云元数据地址（169.254.169.254、fd00:ec2::254 等）仍会被拒绝。
+SSRF_ALLOW_PRIVATE_NETWORK=false
+# 额外放行的 CIDR，逗号分隔，优先级最高。例如：192.168.1.0/24,10.0.0.0/8
+SSRF_ALLOWED_CIDRS=''
+# 额外封禁的 CIDR，逗号分隔
+SSRF_BLOCKED_CIDRS=''
 ```
+
+## 出站请求安全（SSRF 防护）
+
+所有由用户配置的出站请求（RSS 订阅、Webhook、推送通知、AI 接口、下载等）都会经过 SSRF 校验：
+
+-   仅允许 `http` / `https` 协议，禁止 URL 中内嵌用户名和密码。
+-   默认拒绝回环、私网、CGNAT、ULA、链路本地地址以及云厂商元数据地址（`169.254.169.254`、`fd00:ec2::254` 等）。
+-   域名会在**建立连接时**解析并校验，且校验结果与真正连接的地址一致，可防止 DNS rebinding 和 302 跳转绕过。
+
+如果需要调用局域网内的服务（例如 Home Assistant、自建 Bark、NAS），推荐使用 CIDR 白名单精确放行：
+
+```bash
+SSRF_ALLOWED_CIDRS='192.168.1.0/24'
+```
+
+也可以开启 `SSRF_ALLOW_PRIVATE_NETWORK=true` 放行全部私网地址，但云元数据地址仍会被拒绝。`SSRF_GUARD_ENABLED=false` 会完全关闭防护，仅建议在确认风险后临时使用。
+
+> 升级提示：旧版本允许访问任意地址。升级后，指向私网地址的 Webhook、通知或订阅会失败，请按需配置上述变量。
 
 ## 缓存配置
 

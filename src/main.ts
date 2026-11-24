@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/order
-import { CI, ENABLE_AUTH0, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, SESSION_SECRET, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
+import { CI, ENABLE_AUTH0, ENABLE_ORIGIN_LIST, PORT, RESOURCE_DOWNLOAD_PATH, SESSION_SECRET, SSRF_ALLOW_PRIVATE_NETWORK, SSRF_GUARD_ENABLED, __BENCHMARKS_TEST__, __DEV__ } from './app.config'
 import path from 'path'
 import moduleAlias = require('module-alias')
 import './utils/sentry'
@@ -26,6 +26,11 @@ import { OIDCUserService } from './services/oidc/oidc-user.service'
 moduleAlias.addAlias('@', path.join(__dirname, './'))
 
 async function bootstrap() {
+    if (!SSRF_GUARD_ENABLED) {
+        logger.warn('SSRF 防护已关闭（SSRF_GUARD_ENABLED=false），所有出站 URL 将不再校验，请确认风险。')
+    } else if (SSRF_ALLOW_PRIVATE_NETWORK) {
+        logger.warn('SSRF 防护已放行私网地址（SSRF_ALLOW_PRIVATE_NETWORK=true），云元数据地址仍会被拒绝。')
+    }
     if (!await fs.pathExists(DATABASE_DIR)) {
         await fs.mkdir(DATABASE_DIR)
     }

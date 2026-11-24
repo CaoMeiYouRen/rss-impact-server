@@ -180,6 +180,8 @@ Hook 是 RSS Impact 的核心功能，支持在文章新增的时候触发某些
 
 支持 GET/POST/PUT/DELETE 等全部 HTTP 方法进行调用。
 
+> 出于安全考虑，Webhook 默认禁止访问私网、回环与云元数据地址。如需调用局域网服务（如 Home Assistant），请使用 `SSRF_ALLOWED_CIDRS` 精确放行网段，或设置 `SSRF_ALLOW_PRIVATE_NETWORK=true`，详见[部署文档](./deploy.md#出站请求安全ssrf-防护)。
+
 ![image-20241208182710742](https://oss.cmyr.dev/images/20241208182710792.png)
 
 ### 下载
