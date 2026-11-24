@@ -28,6 +28,8 @@ import { Article } from '@/db/models/article.entity'
 import { Hook } from '@/db/models/hook.entity'
 import { ajax } from '@/utils/ajax'
 import { createProxyFetch } from '@/utils/proxy-fetch'
+import { buildRequestErrorLog, truncateLogValue } from '@/utils/request-log'
+import { SsrfBlockedError } from '@/utils/ssrf-guard'
 import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
 import { runPushAllInOne } from '@/utils/notification'
@@ -360,19 +362,23 @@ export class TasksService implements OnApplicationBootstrap {
         try {
             this.logger.log(`正在执行推送渠道 ${config.type}`)
             const resp = await runPushAllInOne(title, desp, config, proxyUrl)
-            Object.assign(webhookLog, pick(resp, ['data', 'statusText', 'headers']), {
+            Object.assign(webhookLog, {
+                data: truncateLogValue(resp?.data),
+                statusText: resp?.statusText,
+                headers: truncateLogValue(resp?.headers),
+            }, {
                 status: 'success',
-                statusCode: resp.status,
+                statusCode: resp?.status,
             })
             await this.retryDb(() => this.webhookLogRepository.save(webhookLog))
             this.logger.log(`执行推送渠道 ${config.type} 成功`)
         } catch (error) {
             this.logger.error(error?.message, error?.stack)
             Object.assign(webhookLog, {
-                data: error?.response?.data || error?.response || error,
-                statusCode: 500,
-                statusText: 'Internal Server Error',
-                headers: error?.response?.headers || {},
+                data: buildRequestErrorLog(error),
+                statusCode: error?.response?.status ?? 500,
+                statusText: error?.response?.statusText || 'Internal Server Error',
+                headers: truncateLogValue(error?.response?.headers) ?? {},
                 status: 'fail',
             })
             await this.retryDb(() => this.webhookLogRepository.save(webhookLog))
@@ -534,6 +540,7 @@ export class TasksService implements OnApplicationBootstrap {
     private async webhook(hook: Hook, feed: Feed, data: Article[] | any) {
         const userId = hook.userId
         const proxyUrl = hook.proxyConfig?.url
+        const config = hook.config as WebhookConfig
         const webhookLog = this.webhookLogRepository.create({
             hookId: hook.id,
             userId,
@@ -543,7 +550,6 @@ export class TasksService implements OnApplicationBootstrap {
             articles: Array.isArray(data) ? data : null,
         })
         try {
-            const config = hook.config as WebhookConfig
             this.logger.log(`正在触发 Webhook: ${config?.url}`)
             const resp = await ajax({
                 ...config,
@@ -551,19 +557,28 @@ export class TasksService implements OnApplicationBootstrap {
                 timeout: (config?.timeout || 60) * 1000,
                 data,
             })
-            Object.assign(webhookLog, pick(resp, ['data', 'statusText', 'headers']), {
+            Object.assign(webhookLog, {
+                data: truncateLogValue(resp.data),
+                statusText: resp.statusText,
+                headers: truncateLogValue(resp.headers),
+            }, {
                 status: 'success',
                 statusCode: resp.status,
             })
             await this.retryDb(() => this.webhookLogRepository.save(webhookLog))
             this.logger.log(`触发 Webhook: ${config?.url} 成功`)
         } catch (error) {
-            this.logger.error(error?.message, error?.stack)
+            const isSsrfBlocked = error?.name === SsrfBlockedError.name || error?.cause?.name === SsrfBlockedError.name
+            if (isSsrfBlocked) {
+                this.logger.warn(`Webhook 目标地址被拒绝: ${config?.url}，${error?.message}`)
+            } else {
+                this.logger.error(error?.message, error?.stack)
+            }
             Object.assign(webhookLog, {
-                data: error?.response?.data || error?.response || error,
-                statusCode: 500,
-                statusText: 'Internal Server Error',
-                headers: error?.response?.headers || {},
+                data: buildRequestErrorLog(error),
+                statusCode: error?.response?.status ?? 500,
+                statusText: error?.response?.statusText || 'Internal Server Error',
+                headers: truncateLogValue(error?.response?.headers) ?? {},
                 status: 'fail',
             })
             await this.retryDb(() => this.webhookLogRepository.save(webhookLog))
