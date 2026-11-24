@@ -168,3 +168,12 @@ export const MAX_ERROR_COUNT = Number(env.MAX_ERROR_COUNT || 10)
 
 // 禁用不包含任何 Hook 和 自定义查询的订阅
 export const DISABLE_EMPTY_FEEDS = env.DISABLE_EMPTY_FEEDS === 'true'
+
+// 出站 URL 安全校验（SSRF 防护）
+export const SSRF_GUARD_ENABLED = env.SSRF_GUARD_ENABLED !== 'false'
+// 默认拒绝私网/回环/CGNAT/ULA 地址，仅显式开启后放行
+export const SSRF_ALLOW_PRIVATE_NETWORK = env.SSRF_ALLOW_PRIVATE_NETWORK === 'true'
+// 额外放行的 CIDR，优先级最高
+export const SSRF_ALLOWED_CIDRS = env.SSRF_ALLOWED_CIDRS?.split(',')?.map((e) => e?.trim())?.filter(Boolean) ?? []
+// 额外封禁的 CIDR
+export const SSRF_BLOCKED_CIDRS = env.SSRF_BLOCKED_CIDRS?.split(',')?.map((e) => e?.trim())?.filter(Boolean) ?? []
