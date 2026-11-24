@@ -42,6 +42,7 @@ describe('isBlockedAddress', () => {
         'fe80::1',
         '::ffff:127.0.0.1',
         '::ffff:7f00:1',
+        '::7f00:1',
         'fd00:ec2::254',
         '100.100.100.200',
     ])('should block internal address %s', (address) => {
