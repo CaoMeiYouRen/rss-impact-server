@@ -1,6 +1,7 @@
 import { runPushAllInOne as $runPushAllInOne } from 'push-all-in-one'
 import { mdToCqcode } from './helper'
 import { ajax } from './ajax'
+import { assertSafeUrlsInValue } from './ssrf-guard'
 import { NotificationConfig } from '@/models/notification-config'
 import { logger } from '@/middlewares/logger.middleware'
 
@@ -58,6 +59,9 @@ export async function runPushAllInOne(title: string, desp: string, pushConfig: N
         pushConfig.option = option
         return runPushAllInCloud(title, desp, pushConfig, proxyUrl)
     }
+    // push-all-in-one 会自行发起请求，这里先校验配置中的 URL（代理地址除外）
+    await assertSafeUrlsInValue(config, { resolve: true, skipKeys: ['proxy'] })
+    await assertSafeUrlsInValue(option, { resolve: true, skipKeys: ['proxy'] })
     return $runPushAllInOne(title, desp, {
         type,
         config,

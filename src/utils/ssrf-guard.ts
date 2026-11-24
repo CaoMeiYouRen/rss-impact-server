@@ -337,6 +337,41 @@ export function isSafeHttpUrl(rawUrl: string, options: SsrfGuardOptions = {}): b
 }
 
 /**
+ * 递归校验对象中所有 http/https URL 字符串。
+ * 用于把配置对象交给第三方库发请求、无法在连接阶段接管 DNS 的场景。
+ */
+export async function assertSafeUrlsInValue(
+    value: unknown,
+    options: AssertSafeUrlOptions & { skipKeys?: string[], maxDepth?: number } = {},
+    depth = 0,
+): Promise<void> {
+    if (depth > (options.maxDepth ?? 5)) {
+        return
+    }
+    if (typeof value === 'string') {
+        if (/^https?:\/\//i.test(value)) {
+            await assertSafeUrl(value, options)
+        }
+        return
+    }
+    if (Array.isArray(value)) {
+        for (const item of value) {
+            await assertSafeUrlsInValue(item, options, depth + 1)
+        }
+        return
+    }
+    if (value && typeof value === 'object') {
+        const skipKeys = (options.skipKeys ?? []).map((key) => key.toLowerCase())
+        for (const [key, item] of Object.entries(value as Record<string, unknown>)) {
+            if (skipKeys.some((skipKey) => key.toLowerCase().includes(skipKey))) {
+                continue
+            }
+            await assertSafeUrlsInValue(item, options, depth + 1)
+        }
+    }
+}
+
+/**
  * 创建带地址校验的 DNS lookup，供 http/https Agent 使用。
  * 每次建立连接都会执行，覆盖 DNS rebinding 与重定向后的新连接。
  */

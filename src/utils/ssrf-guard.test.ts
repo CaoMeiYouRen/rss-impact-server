@@ -1,5 +1,5 @@
 import dns from 'dns'
-import { assertSafeUrl, createSafeLookup, isBlockedAddress, isSafeHttpUrl, normalizeHostname, SafeLookupFunction, SsrfBlockedError } from './ssrf-guard'
+import { assertSafeUrl, assertSafeUrlsInValue, createSafeLookup, isBlockedAddress, isSafeHttpUrl, normalizeHostname, SafeLookupFunction, SsrfBlockedError } from './ssrf-guard'
 
 const strictOptions = {
     allowPrivateNetwork: false,
@@ -170,6 +170,32 @@ describe('isSafeHttpUrl', () => {
         expect(isSafeHttpUrl('ftp://example.com/file', strictOptions)).toBe(false)
         expect(isSafeHttpUrl('http://user:pass@example.com/', strictOptions)).toBe(false)
         expect(isSafeHttpUrl('not-a-url', strictOptions)).toBe(false)
+    })
+})
+
+describe('assertSafeUrlsInValue', () => {
+    it('should reject nested internal urls', async () => {
+        await expect(assertSafeUrlsInValue({
+            url: 'https://example.com/',
+            nested: {
+                list: ['https://example.com/a', 'http://127.0.0.1:3000/'],
+            },
+        }, strictOptions)).rejects.toBeInstanceOf(SsrfBlockedError)
+    })
+
+    it('should allow public urls and ignore non-url strings', async () => {
+        await expect(assertSafeUrlsInValue({
+            url: 'https://example.com/',
+            text: 'not a url',
+            number: 1,
+        }, strictOptions)).resolves.toBeUndefined()
+    })
+
+    it('should skip proxy keys', async () => {
+        await expect(assertSafeUrlsInValue({
+            PROXY_URL: 'http://127.0.0.1:7890/',
+            url: 'https://example.com/',
+        }, { ...strictOptions, skipKeys: ['proxy'] })).resolves.toBeUndefined()
     })
 })
 

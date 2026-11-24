@@ -29,7 +29,7 @@ import { Hook } from '@/db/models/hook.entity'
 import { ajax } from '@/utils/ajax'
 import { createProxyFetch } from '@/utils/proxy-fetch'
 import { buildRequestErrorLog, truncateLogValue } from '@/utils/request-log'
-import { SsrfBlockedError } from '@/utils/ssrf-guard'
+import { SsrfBlockedError, assertSafeUrl } from '@/utils/ssrf-guard'
 import { Resource } from '@/db/models/resource.entiy'
 import { WebhookLog } from '@/db/models/webhook-log.entity'
 import { runPushAllInOne } from '@/utils/notification'
@@ -700,6 +700,7 @@ export class TasksService implements OnApplicationBootstrap {
         switch (type) {
             case 'qBittorrent': {
                 const { baseUrl, username, password, downloadPath, autoRemove = false } = config
+                await assertSafeUrl(baseUrl, { resolve: true })
                 const maxSize = parseDataSize(config.maxSize || 0) // 附件的最大值
                 const minDiskSize = parseDataSize(config.minDiskSize || 0) // 保留磁盘的最小值
                 const qBittorrent = new QBittorrent({
