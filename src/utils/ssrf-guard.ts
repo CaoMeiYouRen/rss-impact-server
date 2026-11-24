@@ -370,11 +370,29 @@ export function createSafeLookup(options: SsrfGuardOptions = {}): SafeLookupFunc
 
 /**
  * 创建带地址校验的 http/https Agent。SSRF 防护关闭时返回空对象。
+ * 使用默认配置时复用同一组 Agent，避免每个请求都新建连接池。
  */
-export function createSafeAgents(options: SsrfGuardOptions = {}) {
+export function createSafeAgents(options?: SsrfGuardOptions) {
     if (!isSsrfGuardEnabled()) {
         return {}
     }
+    if (!options) {
+        if (!cachedDefaultAgents) {
+            cachedDefaultAgents = buildSafeAgents({})
+        }
+        return cachedDefaultAgents
+    }
+    return buildSafeAgents(options)
+}
+
+interface SafeAgents {
+    httpAgent: http.Agent
+    httpsAgent: https.Agent
+}
+
+let cachedDefaultAgents: SafeAgents | undefined
+
+function buildSafeAgents(options: SsrfGuardOptions): SafeAgents {
     const lookup = createSafeLookup(options)
     return {
         httpAgent: new http.Agent({ lookup } as http.AgentOptions),
