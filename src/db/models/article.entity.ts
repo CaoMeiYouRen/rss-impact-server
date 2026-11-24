@@ -12,7 +12,7 @@ import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { IsUrlOrMagnetUri } from '@/decorators/is-url-or-magnet-uri.decorator'
 import { dataFormat } from '@/utils/helper'
-import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
+import { IsSafeUrl } from '@/decorators/is-safe-url.decorator'
 import { CustomColumn } from '@/decorators/custom-column.decorator'
 
 export class EnclosureImpl implements Enclosure {
@@ -69,7 +69,7 @@ export class Article extends AclBase {
     guid: string
 
     @ApiProperty({ title: '链接', example: 'https://blog.cmyr.ltd/archives/499d4cee.html' })
-    @IsCustomURL()
+    @IsSafeUrl()
     @CustomColumn({
         length: 2048,
         nullable: true,

@@ -13,7 +13,7 @@ import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
 import { RssLabelList } from '@/constant/rss-cron'
 import { FindPlaceholderDto } from '@/models/find-placeholder.dto'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
-import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
+import { IsSafeUrl } from '@/decorators/is-safe-url.decorator'
 import { CustomColumn } from '@/decorators/custom-column.decorator'
 import { DEFAULT_FEED_CRON } from '@/app.config'
 
@@ -32,7 +32,7 @@ export class Feed extends AclBase {
         search: true,
     })
     @ApiProperty({ title: 'URL', example: 'https://blog.cmyr.ltd/atom.xml' })
-    @IsCustomURL()
+    @IsSafeUrl()
     @CustomColumn({
         length: 2048,
     })
@@ -63,7 +63,7 @@ export class Feed extends AclBase {
         value: '',
     })
     @ApiProperty({ title: '封面 URL', example: 'https://blog.cmyr.ltd/images/logo.svg' })
-    @IsCustomURL({}, { message: '封面Url必须为标准URL格式' })
+    @IsSafeUrl({}, { message: '封面Url必须为标准URL格式' })
     @CustomColumn({
         length: 2048,
         nullable: true,

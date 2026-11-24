@@ -3,7 +3,7 @@ import { IsBoolean, IsIn, IsNotEmpty, IsObject, IsOptional, Length, ValidateIf }
 import { MetaPushConfig, PushType, PushTypeList } from '@/interfaces/push-type'
 import { IsSafeNaturalNumber } from '@/decorators/is-safe-integer.decorator'
 import { SetAclCrudField } from '@/decorators/set-acl-crud-field.decorator'
-import { IsCustomURL } from '@/decorators/is-custom-url.decorator'
+import { IsSafeUrl } from '@/decorators/is-safe-url.decorator'
 
 export class NotificationConfig<T extends PushType = PushType> implements MetaPushConfig<PushType> {
 
@@ -81,7 +81,7 @@ export class NotificationConfig<T extends PushType = PushType> implements MetaPu
     })
     @ApiProperty({ title: '远程推送地址', description: '远程推送请设置本字段为 push-all-in-cloud 服务的地址。参考：https://github.com/CaoMeiYouRen/push-all-in-cloud', example: '' })
     @IsOptional()
-    @IsCustomURL()
+    @IsSafeUrl()
     @Length(0, 1024)
     @ValidateIf((o) => o.isRemotePush === true)
     remotePushUrl?: string
